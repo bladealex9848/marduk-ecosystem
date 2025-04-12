@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discusiones - Marduk</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/fixes.css">
+    <link rel="stylesheet" href="../css/search.css">
+
+    <!-- Tema oscuro/claro -->
+    <script>
+      // Verificar preferencia guardada
+      const darkModeEnabled = localStorage.getItem('darkModeEnabled') === 'true';
+      // Verificar preferencia del sistema
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // Aplicar tema oscuro si está habilitado o preferido por el sistema
+      if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('darkModeEnabled', 'true');
+      }
+    </script>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-gradient sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <i class="fas fa-balance-scale me-2"></i>
+                <span>Marduk</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="solutions.html"><i class="fas fa-tools me-1"></i> Soluciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html"><i class="fas fa-users me-1"></i> Comunidad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="discussions.html"><i class="fas fa-comments me-1"></i> Discusiones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ai-test.html"><i class="fas fa-robot me-1"></i> Prueba IA</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <!-- Search Form -->
+                    <form class="d-flex me-2 search-container">
+                        <div class="position-relative w-100">
+                            <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input class="form-control ps-5" type="search" placeholder="Buscar..." aria-label="Search">
+                        </div>
+                    </form>
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="btn btn-link text-light me-3">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <!-- Notifications Dropdown -->
+                    <div class="dropdown me-2">
+                        <button class="btn btn-link text-light position-relative p-1" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0 overflow-hidden" aria-labelledby="notificationsDropdown">
+                            <!-- Notification header -->
+                            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                                <h6 class="mb-0">Notificaciones</h6>
+                                <a href="#" class="text-decoration-none small">Marcar todas como leídas</a>
+                            </div>
+                            <!-- Notification items -->
+                            <div class="notification-list">
+                                <a href="#" class="notification-item d-flex p-3 border-bottom unread">
+                                    <div class="flex-shrink-0">
+                                        <div class="avatar-circle bg-primary text-white">
+                                            <i class="fas fa-gavel"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <p class="mb-0 fw-medium">Nueva actualización en el caso #12345</p>
+                                        <p class="text-muted small mb-0">Se ha añadido un nuevo documento</p>
+                                        <span class="text-muted small">Hace 5 minutos</span>
+                                    </div>
+                                </a>
+                                <!-- More notification items... -->
+                            </div>
+                            <!-- View all link -->
+                            <a href="#" class="dropdown-item text-center p-3 border-top">Ver todas las notificaciones</a>
+                        </div>
+                    </div>
+                    <!-- User Menu -->
+                    <div class="dropdown">
+                        <button class="btn btn-link d-flex align-items-center text-light text-decoration-none dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="avatar-circle avatar-circle-sm bg-primary text-white me-2">
+                                AF
+                            </div>
+                            <span class="d-none d-md-block">Alexander Fadul</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i> Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <!-- Banner de Discusiones -->
+        <div class="card border-0 bg-gradient-indigo mb-4 rounded-3 theme-immune">
+            <div class="card-body text-white p-4">
+                <h1 class="h3 fw-bold">Foros de Discusión</h1>
+                <p class="mb-4 opacity-90">
+                    Participa en conversaciones sobre el ecosistema Marduk, comparte experiencias y aprende de otros profesionales judiciales.
+                </p>
+
+                <!-- Acciones rápidas -->
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-light">
+                        <i class="fas fa-plus-circle me-2"></i>Iniciar nueva discusión
+                    </button>
+                    <button class="btn btn-outline-light">
+                        <i class="fas fa-star me-2"></i>Discusiones destacadas
+                    </button>
+                    <button class="btn btn-outline-light">
+                        <i class="fas fa-bookmark me-2"></i>Mis discusiones guardadas
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros y Búsqueda -->
+        <div class="row mb-4">
+            <!-- Filtros de Categorías -->
+            <div class="col-md-8 mb-3 mb-md-0">
+                <div class="d-flex flex-wrap gap-2" id="categoryFilters">
+                    <button class="btn btn-primary" data-category="all">
+                        <i class="fas fa-layer-group me-2"></i>Todas
+                    </button>
+                    <button class="btn btn-outline-secondary" data-category="general">
+                        <i class="fas fa-comments me-2"></i>General
+                    </button>
+                    <button class="btn btn-outline-secondary" data-category="soluciones">
+                        <i class="fas fa-tools me-2"></i>Soluciones
+                    </button>
+                    <button class="btn btn-outline-secondary" data-category="practicas">
+                        <i class="fas fa-lightbulb me-2"></i>Mejores Prácticas
+                    </button>
+                    <button class="btn btn-outline-secondary" data-category="colaboracion">
+                        <i class="fas fa-users me-2"></i>Colaboración
+                    </button>
+                    <button class="btn btn-outline-secondary" data-category="tecnico">
+                        <i class="fas fa-code me-2"></i>Técnico
+                    </button>
+                </div>
+            </div>
+
+            <!-- Barra de Búsqueda -->
+            <div class="col-md-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Buscar discusiones..." id="searchInput">
+                    <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros adicionales -->
+        <div class="card mb-4 border">
+            <div class="card-body p-3">
+                <div class="row align-items-center">
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <label class="form-label small mb-1">Ordenar por</label>
+                        <select class="form-select form-select-sm" id="sortFilter">
+                            <option value="recent">Más recientes</option>
+                            <option value="popular">Más populares</option>
+                            <option value="activity">Mayor actividad</option>
+                            <option value="unanswered">Sin respuestas</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <label class="form-label small mb-1">Estado</label>
+                        <select class="form-select form-select-sm" id="statusFilter">
+                            <option value="all">Todos</option>
+                            <option value="open">Abiertos</option>
+                            <option value="solved">Resueltos</option>
+                            <option value="closed">Cerrados</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <label class="form-label small mb-1">Etiquetas</label>
+                        <select class="form-select form-select-sm" id="tagFilter">
+                            <option value="all">Todas</option>
+                            <option value="implementacion">Implementación</option>
+                            <option value="desarrollo">Desarrollo</option>
+                            <option value="integracion">Integración</option>
+                            <option value="api">API</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end justify-content-end">
+                        <button class="btn btn-sm btn-outline-secondary me-2">
+                            <i class="fas fa-redo-alt me-1"></i>Reiniciar
+                        </button>
+                        <button class="btn btn-sm btn-primary">
+                            <i class="fas fa-filter me-1"></i>Aplicar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor de Discusiones -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush" id="discussionsList">
+                    <!-- Las discusiones se cargarán dinámicamente aquí -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginación -->
+        <nav aria-label="Navegación de páginas">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5 border-top">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="h6 fw-bold text-primary">Marduk</h5>
+                    <p class="small text-secondary mb-0">Ecosistema de soluciones para la transformación judicial</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0 text-center">
+                    <div class="d-flex flex-wrap justify-content-center gap-3 footer-links">
+                        <a href="about.html" class="text-decoration-none text-secondary small">Acerca de</a>
+                        <a href="policies.html" class="text-decoration-none text-secondary small">Políticas</a>
+                        <a href="contribute.html" class="text-decoration-none text-secondary small">Contribuir</a>
+                        <a href="support.html" class="text-decoration-none text-secondary small">Soporte</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <p class="small text-muted mb-0">© 2025 Rama Judicial de Colombia</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+
+    <!-- Inicializar el toggle de tema -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar el toggle de tema
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+          // Actualizar el icono según el tema actual
+          if (document.body.classList.contains('dark-mode')) {
+            themeToggle.querySelector('i').classList.remove('fa-moon');
+            themeToggle.querySelector('i').classList.add('fa-sun');
+          }
+
+          // Agregar evento de click
+          themeToggle.addEventListener('click', function() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            if (isDarkMode) {
+              document.documentElement.removeAttribute('data-theme');
+              document.body.classList.remove('dark-mode');
+              localStorage.setItem('darkModeEnabled', 'false');
+            } else {
+              document.documentElement.setAttribute('data-theme', 'dark');
+              document.body.classList.add('dark-mode');
+              localStorage.setItem('darkModeEnabled', 'true');
+            }
+
+            // Actualizar el icono
+            const themeIcon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+              themeIcon.classList.remove('fa-moon');
+              themeIcon.classList.add('fa-sun');
+            } else {
+              themeIcon.classList.remove('fa-sun');
+              themeIcon.classList.add('fa-moon');
+            }
+          });
+        }
+      });
+    </script>
+
+    <!-- Script para manejar las discusiones -->
+    <script>
+        // Datos de ejemplo para las discusiones
+        const discussions = [
+            // Categoría: General
+            {
+                id: 1,
+                title: "Bienvenida al nuevo foro de Marduk",
+                content: "Espacio para presentarse y conocer a otros miembros de la comunidad judicial.",
+                author: {
+                    name: "Admin Marduk",
+                    avatar: "AM",
+                    role: "Administrador"
+                },
+                category: "general",
+                tags: ["bienvenida", "comunidad"],
+                status: "open",
+                replies: 42,
+                views: 156,
+                lastUpdate: "Hace 2 horas",
+                isHighlighted: true
+            },
+            {
+                id: 2,
+                title: "Sugerencias para mejorar la plataforma Marduk",
+                content: "Comparte tus ideas sobre cómo podemos mejorar la experiencia de usuario en el ecosistema.",
+                author: {
+                    name: "Laura Martínez",
+                    avatar: "LM",
+                    role: "Juez Municipal"
+                },
+                category: "general",
+                tags: ["sugerencias", "mejoras", "ux"],
+                status: "open",
+                replies: 28,
+                views: 103,
+                lastUpdate: "Hace 1 día"
+            },
+            {
+                id: 3,
+                title: "Calendario de eventos y capacitaciones 2025",
+                content: "Información sobre próximos eventos, talleres y capacitaciones para el ecosistema Marduk.",
+                author: {
+                    name: "Carlos Rodríguez",
+                    avatar: "CR",
+                    role: "Coordinador de Capacitación"
+                },
+                category: "general",
+                tags: ["eventos", "capacitación", "calendario"],
+                status: "open",
+                replies: 15,
+                views: 89,
+                lastUpdate: "Hace 3 días"
+            },
+
+            // Categoría: Soluciones
+            {
+                id: 4,
+                title: "Estrategias para implementar IA en tribunales pequeños",
+                content: "Compartiendo experiencias sobre la implementación de OmniChat en juzgados con recursos limitados.",
+                author: {
+                    name: "María Rodríguez",
+                    avatar: "MR",
+                    role: "Juez Civil Municipal"
+                },
+                category: "soluciones",
+                tags: ["IA", "implementación", "recursos limitados"],
+                status: "open",
+                replies: 35,
+                views: 128,
+                lastUpdate: "Hace 4 horas",
+                isHighlighted: true
+            },
+            {
+                id: 5,
+                title: "Experiencias con MALLO para análisis de jurisprudencia",
+                content: "Resultados y casos de uso del sistema MultiAgent para identificar patrones en jurisprudencia.",
+                author: {
+                    name: "Juan Pérez",
+                    avatar: "JP",
+                    role: "Analista Judicial"
+                },
+                category: "soluciones",
+                tags: ["MALLO", "jurisprudencia", "análisis"],
+                status: "open",
+                replies: 27,
+                views: 112,
+                lastUpdate: "Hace 1 día"
+            },
+            {
+                id: 6,
+                title: "Integración de SGEJ con sistemas de terceros",
+                content: "Opciones y mejores prácticas para integrar el Sistema de Gestión con otras plataformas.",
+                author: {
+                    name: "Carlos López",
+                    avatar: "CL",
+                    role: "Desarrollador Senior"
+                },
+                category: "soluciones",
+                tags: ["SGEJ", "integración", "API"],
+                status: "solved",
+                replies: 19,
+                views: 87,
+                lastUpdate: "Hace 3 días"
+            },
+
+            // Categoría: Mejores Prácticas
+            {
+                id: 7,
+                title: "Optimización de flujos de trabajo con JudiCalc",
+                content: "Cómo estamos utilizando la calculadora de términos para mejorar la eficiencia en nuestro despacho.",
+                author: {
+                    name: "Ana Gómez",
+                    avatar: "AG",
+                    role: "Secretaria Judicial"
+                },
+                category: "practicas",
+                tags: ["JudiCalc", "eficiencia", "flujos de trabajo"],
+                status: "open",
+                replies: 23,
+                views: 95,
+                lastUpdate: "Hace 6 horas"
+            },
+            {
+                id: 8,
+                title: "Estrategias de capacitación para nuevos usuarios",
+                content: "Compartiendo metodologías efectivas para capacitar al personal en el uso de las herramientas Marduk.",
+                author: {
+                    name: "Roberto Vargas",
+                    avatar: "RV",
+                    role: "Coordinador TI"
+                },
+                category: "practicas",
+                tags: ["capacitación", "onboarding", "usuarios"],
+                status: "open",
+                replies: 18,
+                views: 76,
+                lastUpdate: "Hace 2 días"
+            },
+            {
+                id: 9,
+                title: "Gestión de expedientes digitales: lecciones aprendidas",
+                content: "Experiencias y aprendizajes tras un año de implementación completa de expedientes digitales.",
+                author: {
+                    name: "Patricia Mendoza",
+                    avatar: "PM",
+                    role: "Juez de Circuito"
+                },
+                category: "practicas",
+                tags: ["expedientes digitales", "gestión", "SGEJ"],
+                status: "open",
+                replies: 31,
+                views: 124,
+                lastUpdate: "Hace 4 días",
+                isHighlighted: true
+            },
+
+            // Categoría: Colaboración
+            {
+                id: 10,
+                title: "Proyecto colaborativo: Plantillas estandarizadas para providencias",
+                content: "Iniciativa para crear un repositorio de plantillas judiciales optimizadas para SGEJ.",
+                author: {
+                    name: "Fernando Torres",
+                    avatar: "FT",
+                    role: "Magistrado"
+                },
+                category: "colaboracion",
+                tags: ["plantillas", "colaboración", "estandarización"],
+                status: "open",
+                replies: 29,
+                views: 118,
+                lastUpdate: "Hace 5 horas"
+            },
+            {
+                id: 11,
+                title: "Grupo de trabajo: Mejoras en la accesibilidad de OmniChat",
+                content: "Convocatoria para participar en el grupo de trabajo enfocado en mejorar la accesibilidad del asistente virtual.",
+                author: {
+                    name: "Diana Herrera",
+                    avatar: "DH",
+                    role: "Especialista en UX"
+                },
+                category: "colaboracion",
+                tags: ["accesibilidad", "OmniChat", "grupo de trabajo"],
+                status: "open",
+                replies: 14,
+                views: 67,
+                lastUpdate: "Hace 1 día"
+            },
+            {
+                id: 12,
+                title: "Hackathon Judicial 2025: Inscripciones abiertas",
+                content: "Información sobre el próximo hackathon para desarrollar soluciones innovadoras para el sistema judicial.",
+                author: {
+                    name: "Miguel Ángel Ruiz",
+                    avatar: "MR",
+                    role: "Coordinador de Innovación"
+                },
+                category: "colaboracion",
+                tags: ["hackathon", "innovación", "desarrollo"],
+                status: "open",
+                replies: 42,
+                views: 189,
+                lastUpdate: "Hace 2 días",
+                isHighlighted: true
+            },
+
+            // Categoría: Técnico
+            {
+                id: 13,
+                title: "Documentación de la API de SGEJ v2.5",
+                content: "Recursos y ejemplos para trabajar con la nueva versión de la API del Sistema de Gestión de Expedientes.",
+                author: {
+                    name: "Javier Morales",
+                    avatar: "JM",
+                    role: "Desarrollador Backend"
+                },
+                category: "tecnico",
+                tags: ["API", "documentación", "SGEJ"],
+                status: "open",
+                replies: 16,
+                views: 83,
+                lastUpdate: "Hace 8 horas"
+            },
+            {
+                id: 14,
+                title: "Optimización de consultas en OmniChat",
+                content: "Técnicas para mejorar la precisión y velocidad de las consultas en el asistente virtual.",
+                author: {
+                    name: "Laura Méndez",
+                    avatar: "LM",
+                    role: "Ingeniera de IA"
+                },
+                category: "tecnico",
+                tags: ["OmniChat", "optimización", "consultas"],
+                status: "open",
+                replies: 21,
+                views: 94,
+                lastUpdate: "Hace 1 día"
+            },
+            {
+                id: 15,
+                title: "Implementación de autenticación multifactor en aplicaciones Marduk",
+                content: "Guía técnica para implementar MFA en las diferentes soluciones del ecosistema.",
+                author: {
+                    name: "Ricardo Vega",
+                    avatar: "RV",
+                    role: "Especialista en Seguridad"
+                },
+                category: "tecnico",
+                tags: ["seguridad", "autenticación", "MFA"],
+                status: "solved",
+                replies: 25,
+                views: 112,
+                lastUpdate: "Hace 3 días"
+            }
+        ];
+
+        // Función para generar el HTML de una discusión
+        function generateDiscussionHTML(discussion) {
+            const statusBadge = getStatusBadge(discussion.status);
+            const highlightClass = discussion.isHighlighted ? 'bg-light-subtle' : '';
+
+            return `
+                <a href="#" class="list-group-item list-group-item-action p-3 ${highlightClass}" data-id="${discussion.id}" data-category="${discussion.category}">
+                    <div class="d-flex">
+                        <div class="avatar-circle-sm me-3">${discussion.author.avatar}</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="h6 fw-medium mb-0">${discussion.title}</h3>
+                                ${statusBadge}
+                            </div>
+                            <p class="text-secondary small mb-2">
+                                ${discussion.content}
+                            </p>
+                            <div class="d-flex flex-wrap gap-1 mb-2">
+                                ${discussion.tags.map(tag => `<span class="badge bg-light text-secondary">${tag}</span>`).join('')}
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center small text-muted">
+                                    <span>Por <strong>${discussion.author.name}</strong></span>
+                                    <span class="mx-2">•</span>
+                                    <span><i class="fa-solid fa-reply me-1"></i> ${discussion.replies} respuestas</span>
+                                    <span class="mx-2">•</span>
+                                    <span><i class="fa-solid fa-eye me-1"></i> ${discussion.views} vistas</span>
+                                </div>
+                                <span class="text-muted small">${discussion.lastUpdate}</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        // Función para obtener el badge de estado
+        function getStatusBadge(status) {
+            switch(status) {
+                case 'open':
+                    return '<span class="badge bg-success">Activo</span>';
+                case 'solved':
+                    return '<span class="badge bg-primary">Resuelto</span>';
+                case 'closed':
+                    return '<span class="badge bg-secondary">Cerrado</span>';
+                default:
+                    return '';
+            }
+        }
+
+        // Función para filtrar discusiones por categoría
+        function filterDiscussions(category = 'all') {
+            const discussionsList = document.getElementById('discussionsList');
+            discussionsList.innerHTML = '';
+
+            const filteredDiscussions = category === 'all'
+                ? discussions
+                : discussions.filter(d => d.category === category);
+
+            if (filteredDiscussions.length === 0) {
+                discussionsList.innerHTML = `
+                    <div class="text-center p-5">
+                        <div class="mb-3"><i class="fas fa-comments fa-3x text-muted"></i></div>
+                        <h3 class="h5 mb-2">No hay discusiones en esta categoría</h3>
+                        <p class="text-muted">Sé el primero en iniciar una conversación</p>
+                        <button class="btn btn-primary mt-2">
+                            <i class="fas fa-plus-circle me-2"></i>Iniciar discusión
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredDiscussions.forEach(discussion => {
+                discussionsList.innerHTML += generateDiscussionHTML(discussion);
+            });
+        }
+
+        // Inicializar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cargar todas las discusiones al inicio
+            filterDiscussions();
+
+            // Configurar filtros de categoría
+            const categoryButtons = document.querySelectorAll('#categoryFilters button');
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Actualizar estado activo de los botones
+                    categoryButtons.forEach(btn => {
+                        btn.classList.remove('btn-primary');
+                        btn.classList.add('btn-outline-secondary');
+                    });
+                    this.classList.remove('btn-outline-secondary');
+                    this.classList.add('btn-primary');
+
+                    // Filtrar discusiones
+                    const category = this.getAttribute('data-category');
+                    filterDiscussions(category);
+                });
+            });
+
+            // Configurar búsqueda
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const discussionItems = document.querySelectorAll('#discussionsList a');
+
+                    discussionItems.forEach(item => {
+                        const title = item.querySelector('h3').textContent.toLowerCase();
+                        const content = item.querySelector('p').textContent.toLowerCase();
+
+                        if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

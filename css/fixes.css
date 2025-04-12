@@ -374,6 +374,121 @@
     }
 }
 
+/* Elementos inmunes a cambios de tema */
+.theme-immune {
+    /* Preservar colores y estilos independientemente del tema */
+    color-scheme: light !important;
+}
+
+/* Mantener gradientes originales */
+.bg-gradient-indigo {
+    background: linear-gradient(135deg, #6610f2, #6f42c1) !important;
+}
+
+.bg-gradient-blue {
+    background: linear-gradient(135deg, #0d6efd, #0dcaf0) !important;
+}
+
+.bg-gradient-purple {
+    background: linear-gradient(135deg, #6f42c1, #d63384) !important;
+}
+
+.bg-gradient-green {
+    background: linear-gradient(135deg, #198754, #20c997) !important;
+}
+
+.bg-gradient-red {
+    background: linear-gradient(135deg, #dc3545, #fd7e14) !important;
+}
+
+.bg-gradient-orange {
+    background: linear-gradient(135deg, #fd7e14, #ffc107) !important;
+}
+
+.bg-gradient-light {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+}
+
+/* Asegurar que los textos sean legibles en modo claro y oscuro */
+.theme-immune.bg-gradient-indigo,
+.theme-immune.bg-gradient-blue,
+.theme-immune.bg-gradient-purple,
+.theme-immune.bg-gradient-green,
+.theme-immune.bg-gradient-red,
+.theme-immune.bg-gradient-orange {
+    color: #ffffff !important;
+}
+
+.theme-immune.bg-gradient-indigo *,
+.theme-immune.bg-gradient-blue *,
+.theme-immune.bg-gradient-purple *,
+.theme-immune.bg-gradient-green *,
+.theme-immune.bg-gradient-red *,
+.theme-immune.bg-gradient-orange * {
+    color: #ffffff !important;
+}
+
+.theme-immune.bg-gradient-light,
+.theme-immune.bg-light,
+.theme-immune.bg-white {
+    color: #212529 !important;
+}
+
+.theme-immune.bg-gradient-light *,
+.theme-immune.bg-light *,
+.theme-immune.bg-white * {
+    color: #212529 !important;
+}
+
+.theme-immune .card-header,
+.theme-immune .card-body,
+.theme-immune .card-footer {
+    /* Mantener colores originales */
+    background-color: inherit !important;
+}
+
+.theme-immune .text-white {
+    color: #ffffff !important;
+}
+
+.theme-immune .text-dark {
+    color: #212529 !important;
+}
+
+.theme-immune .text-secondary {
+    color: #6c757d !important;
+}
+
+.theme-immune .text-primary {
+    color: #0d6efd !important;
+}
+
+.theme-immune .bg-white {
+    background-color: #ffffff !important;
+}
+
+.theme-immune .bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.theme-immune .border-light {
+    border-color: #f8f9fa !important;
+}
+
+/* Corregir colores específicos para badges y otros elementos */
+.theme-immune .badge.bg-indigo,
+.theme-immune .badge.bg-blue,
+.theme-immune .badge.bg-purple,
+.theme-immune .badge.bg-green,
+.theme-immune .badge.bg-red,
+.theme-immune .badge.bg-orange {
+    color: #ffffff !important;
+}
+
+.theme-immune .badge.bg-light {
+    color: #212529 !important;
+}
+
 /* Corrección para el footer */
 html, body {
     height: 100% !important;
