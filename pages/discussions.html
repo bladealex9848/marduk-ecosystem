@@ -237,11 +237,170 @@
             </div>
         </div>
 
-        <!-- Contenedor de Discusiones -->
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-body p-0">
-                <div class="list-group list-group-flush" id="discussionsList">
-                    <!-- Las discusiones se cargarán dinámicamente aquí -->
+        <!-- Contenedor Principal -->
+        <div id="mainContent">
+            <!-- Contenedor de Discusiones -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush" id="discussionsList">
+                        <!-- Las discusiones se cargarán dinámicamente aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista Detallada de Discusión (inicialmente oculta) -->
+        <div id="discussionDetail" class="d-none">
+            <!-- Cabecera de la discusión -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <!-- Botón para volver -->
+                    <button id="backToList" class="btn btn-sm btn-outline-secondary mb-3">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a la lista
+                    </button>
+
+                    <!-- Título y detalles -->
+                    <div class="d-flex align-items-start">
+                        <div class="avatar-circle me-3" id="detailAuthorAvatar">MR</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                <h1 class="h4 fw-bold mb-1" id="detailTitle">Título de la discusión</h1>
+                                <span class="badge bg-success" id="detailStatus">Activo</span>
+                            </div>
+                            <div class="d-flex flex-wrap gap-1 mb-3" id="detailTags">
+                                <!-- Las etiquetas se cargarán dinámicamente -->
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                <div class="d-flex align-items-center small text-muted">
+                                    <span>Por <strong id="detailAuthorName">María Rodríguez</strong></span>
+                                    <span class="mx-2">•</span>
+                                    <span id="detailAuthorRole">Juez Civil Municipal</span>
+                                </div>
+                                <div class="d-flex align-items-center small text-muted">
+                                    <span><i class="fa-solid fa-eye me-1"></i> <span id="detailViews">128</span> vistas</span>
+                                    <span class="mx-2">•</span>
+                                    <span id="detailLastUpdate">Actualizado hace 4 horas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido de la discusión -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex">
+                        <div class="avatar-circle me-3" id="detailContentAvatar">MR</div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-medium" id="detailContentAuthor">María Rodríguez</span>
+                                    <span class="text-muted small ms-2" id="detailContentRole">Juez Civil Municipal</span>
+                                </div>
+                                <span class="text-muted small" id="detailContentDate">Publicado hace 2 días</span>
+                            </div>
+                            <div class="mt-3 mb-3 discussion-content" id="detailContent">
+                                <!-- El contenido se cargará dinámicamente -->
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center gap-3">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-thumbs-up me-1"></i> Me gusta
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-share me-1"></i> Compartir
+                                    </button>
+                                </div>
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fas fa-reply me-1"></i> Responder
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Respuestas -->
+            <h3 class="h5 fw-bold mb-3">Respuestas (<span id="detailRepliesCount">35</span>)</h3>
+
+            <div id="repliesList">
+                <!-- Las respuestas se cargarán dinámicamente -->
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body p-4">
+                        <div class="d-flex">
+                            <div class="avatar-circle-sm me-3">JP</div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="fw-medium">Juan Pérez</span>
+                                        <span class="text-muted small ms-2">Analista Judicial</span>
+                                    </div>
+                                    <span class="text-muted small">Hace 1 día</span>
+                                </div>
+                                <div class="mt-3 mb-3">
+                                    <p>Excelente iniciativa. En nuestro juzgado implementamos OmniChat hace 3 meses y hemos notado una mejora significativa en la eficiencia.</p>
+                                    <p>Algunos consejos que puedo compartir:</p>
+                                    <ul>
+                                        <li>Realizar capacitaciones por grupos pequeños</li>
+                                        <li>Designar "campeones" que ayuden a sus compañeros</li>
+                                        <li>Comenzar con casos de uso simples e ir avanzando</li>
+                                    </ul>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-thumbs-up me-1"></i> Me gusta
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-reply me-1"></i> Responder
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body p-4">
+                        <div class="d-flex">
+                            <div class="avatar-circle-sm me-3">CL</div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="fw-medium">Carlos López</span>
+                                        <span class="text-muted small ms-2">Desarrollador Senior</span>
+                                    </div>
+                                    <span class="text-muted small">Hace 2 días</span>
+                                </div>
+                                <div class="mt-3 mb-3">
+                                    <p>¿Han considerado utilizar la versión lite de OmniChat? Está diseñada específicamente para entornos con recursos limitados y funciona muy bien.</p>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-thumbs-up me-1"></i> Me gusta
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-reply me-1"></i> Responder
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de respuesta -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h4 class="h6 fw-bold mb-3">Añadir respuesta</h4>
+                    <div class="mb-3">
+                        <textarea class="form-control" rows="4" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Enviar respuesta
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -338,55 +497,109 @@
             // Categoría: General
             {
                 id: 1,
-                title: "Bienvenida al nuevo foro de Marduk",
-                content: "Espacio para presentarse y conocer a otros miembros de la comunidad judicial.",
+                title: "Anuncios oficiales",
+                content: "Comunicados y novedades oficiales del ecosistema Marduk.",
                 author: {
                     name: "Admin Marduk",
                     avatar: "AM",
                     role: "Administrador"
                 },
                 category: "general",
-                tags: ["bienvenida", "comunidad"],
+                tags: ["anuncios", "oficial", "novedades"],
                 status: "open",
-                replies: 42,
-                views: 156,
-                lastUpdate: "Hace 2 horas",
-                isHighlighted: true
+                replies: 312,
+                views: 1450,
+                lastUpdate: "Hace 1 hora",
+                isHighlighted: true,
+                topics: 45
             },
             {
                 id: 2,
-                title: "Sugerencias para mejorar la plataforma Marduk",
-                content: "Comparte tus ideas sobre cómo podemos mejorar la experiencia de usuario en el ecosistema.",
+                title: "Bienvenida a nuevos miembros",
+                content: "Presentaciones y orientación para nuevos usuarios del ecosistema Marduk.",
                 author: {
                     name: "Laura Martínez",
                     avatar: "LM",
-                    role: "Juez Municipal"
+                    role: "Moderadora"
                 },
                 category: "general",
-                tags: ["sugerencias", "mejoras", "ux"],
+                tags: ["bienvenida", "nuevos usuarios", "orientación"],
                 status: "open",
-                replies: 28,
-                views: 103,
-                lastUpdate: "Hace 1 día"
+                replies: 754,
+                views: 2103,
+                lastUpdate: "Hace 3 horas",
+                topics: 128
             },
             {
                 id: 3,
-                title: "Calendario de eventos y capacitaciones 2025",
-                content: "Información sobre próximos eventos, talleres y capacitaciones para el ecosistema Marduk.",
+                title: "Feedback y sugerencias",
+                content: "Comparte tu opinión y sugiere mejoras para el ecosistema Marduk.",
                 author: {
                     name: "Carlos Rodríguez",
                     avatar: "CR",
-                    role: "Coordinador de Capacitación"
+                    role: "Coordinador de Desarrollo"
                 },
                 category: "general",
-                tags: ["eventos", "capacitación", "calendario"],
+                tags: ["feedback", "sugerencias", "mejoras"],
                 status: "open",
-                replies: 15,
-                views: 89,
-                lastUpdate: "Hace 3 días"
+                replies: 810,
+                views: 1890,
+                lastUpdate: "Hace 5 horas",
+                topics: 75
             },
 
             // Categoría: Soluciones
+            {
+                id: 1,
+                title: "Sistema de Gestión de Expedientes Judiciales",
+                content: "Todo sobre SGEJ: implementación, uso y mejores prácticas.",
+                author: {
+                    name: "María Rodríguez",
+                    avatar: "MR",
+                    role: "Especialista SGEJ"
+                },
+                category: "soluciones",
+                tags: ["SGEJ", "expedientes", "gestión"],
+                status: "open",
+                replies: 1452,
+                views: 3580,
+                lastUpdate: "Hace 2 horas",
+                topics: 187
+            },
+            {
+                id: 2,
+                title: "OmniChat: Asistente Virtual Judicial",
+                content: "Discusiones sobre OmniChat: configuración, casos de uso y actualizaciones.",
+                author: {
+                    name: "Juan Pérez",
+                    avatar: "JP",
+                    role: "Especialista en IA"
+                },
+                category: "soluciones",
+                tags: ["OmniChat", "IA", "asistente virtual"],
+                status: "open",
+                replies: 982,
+                views: 2450,
+                lastUpdate: "Hace 4 horas",
+                topics: 124
+            },
+            {
+                id: 3,
+                title: "MALLO (MultiAgent LLM Orchestrator)",
+                content: "Discusiones sobre MALLO: implementación, casos de uso y desarrollo.",
+                author: {
+                    name: "Carlos López",
+                    avatar: "CL",
+                    role: "Ingeniero de IA"
+                },
+                category: "soluciones",
+                tags: ["MALLO", "agentes", "orquestación"],
+                status: "open",
+                replies: 745,
+                views: 1890,
+                lastUpdate: "Hace 6 horas",
+                topics: 98
+            },
             {
                 id: 4,
                 title: "Estrategias para implementar IA en tribunales pequeños",
@@ -420,6 +633,114 @@
                 views: 112,
                 lastUpdate: "Hace 1 día"
             },
+
+            // Categoría: Mejores Prácticas
+            {
+                id: 7,
+                title: "Implementación",
+                content: "Estrategias para implementar soluciones efectivamente en entornos judiciales.",
+                author: {
+                    name: "Ana Gómez",
+                    avatar: "AG",
+                    role: "Directora de Proyectos"
+                },
+                category: "practicas",
+                tags: ["implementación", "estrategias", "proyectos"],
+                status: "open",
+                replies: 876,
+                views: 2340,
+                lastUpdate: "Hace 3 horas",
+                topics: 120
+            },
+            {
+                id: 8,
+                title: "Capacitación",
+                content: "Recursos y métodos para capacitar usuarios en las herramientas del ecosistema Marduk.",
+                author: {
+                    name: "Roberto Vargas",
+                    avatar: "RV",
+                    role: "Coordinador de Capacitación"
+                },
+                category: "practicas",
+                tags: ["capacitación", "formación", "recursos"],
+                status: "open",
+                replies: 654,
+                views: 1780,
+                lastUpdate: "Hace 5 horas",
+                topics: 85
+            },
+            {
+                id: 9,
+                title: "Optimización",
+                content: "Técnicas para maximizar el valor de las soluciones del ecosistema Marduk.",
+                author: {
+                    name: "Patricia Mendoza",
+                    avatar: "PM",
+                    role: "Especialista en Optimización"
+                },
+                category: "practicas",
+                tags: ["optimización", "eficiencia", "mejora continua"],
+                status: "open",
+                replies: 626,
+                views: 1950,
+                lastUpdate: "Hace 2 horas",
+                topics: 137
+            },
+
+            // Categoría: Colaboración
+            {
+                id: 10,
+                title: "Incubadora de ideas",
+                content: "Propuestas para nuevas soluciones y funcionalidades en el ecosistema Marduk.",
+                author: {
+                    name: "Fernando Torres",
+                    avatar: "FT",
+                    role: "Coordinador de Innovación"
+                },
+                category: "colaboracion",
+                tags: ["ideas", "innovación", "propuestas"],
+                status: "open",
+                replies: 542,
+                views: 1450,
+                lastUpdate: "Hace 4 horas",
+                topics: 87
+            },
+            {
+                id: 11,
+                title: "Proyectos activos",
+                content: "Iniciativas en desarrollo que buscan colaboradores en el ecosistema Marduk.",
+                author: {
+                    name: "Diana Herrera",
+                    avatar: "DH",
+                    role: "Gerente de Proyectos"
+                },
+                category: "colaboracion",
+                tags: ["proyectos", "colaboración", "desarrollo"],
+                status: "open",
+                replies: 387,
+                views: 980,
+                lastUpdate: "Hace 6 horas",
+                topics: 45
+            },
+            {
+                id: 12,
+                title: "Desarrollo de código",
+                content: "Discusiones técnicas sobre implementación y desarrollo en el ecosistema Marduk.",
+                author: {
+                    name: "Miguel Ángel Ruiz",
+                    avatar: "MR",
+                    role: "Desarrollador Senior"
+                },
+                category: "colaboracion",
+                tags: ["código", "desarrollo", "técnico"],
+                status: "open",
+                replies: 314,
+                views: 870,
+                lastUpdate: "Hace 8 horas",
+                topics: 46
+            },
+
+            // Categoría: Técnico
             {
                 id: 6,
                 title: "Integración de SGEJ con sistemas de terceros",
@@ -429,117 +750,13 @@
                     avatar: "CL",
                     role: "Desarrollador Senior"
                 },
-                category: "soluciones",
+                category: "tecnico",
                 tags: ["SGEJ", "integración", "API"],
                 status: "solved",
                 replies: 19,
                 views: 87,
                 lastUpdate: "Hace 3 días"
             },
-
-            // Categoría: Mejores Prácticas
-            {
-                id: 7,
-                title: "Optimización de flujos de trabajo con JudiCalc",
-                content: "Cómo estamos utilizando la calculadora de términos para mejorar la eficiencia en nuestro despacho.",
-                author: {
-                    name: "Ana Gómez",
-                    avatar: "AG",
-                    role: "Secretaria Judicial"
-                },
-                category: "practicas",
-                tags: ["JudiCalc", "eficiencia", "flujos de trabajo"],
-                status: "open",
-                replies: 23,
-                views: 95,
-                lastUpdate: "Hace 6 horas"
-            },
-            {
-                id: 8,
-                title: "Estrategias de capacitación para nuevos usuarios",
-                content: "Compartiendo metodologías efectivas para capacitar al personal en el uso de las herramientas Marduk.",
-                author: {
-                    name: "Roberto Vargas",
-                    avatar: "RV",
-                    role: "Coordinador TI"
-                },
-                category: "practicas",
-                tags: ["capacitación", "onboarding", "usuarios"],
-                status: "open",
-                replies: 18,
-                views: 76,
-                lastUpdate: "Hace 2 días"
-            },
-            {
-                id: 9,
-                title: "Gestión de expedientes digitales: lecciones aprendidas",
-                content: "Experiencias y aprendizajes tras un año de implementación completa de expedientes digitales.",
-                author: {
-                    name: "Patricia Mendoza",
-                    avatar: "PM",
-                    role: "Juez de Circuito"
-                },
-                category: "practicas",
-                tags: ["expedientes digitales", "gestión", "SGEJ"],
-                status: "open",
-                replies: 31,
-                views: 124,
-                lastUpdate: "Hace 4 días",
-                isHighlighted: true
-            },
-
-            // Categoría: Colaboración
-            {
-                id: 10,
-                title: "Proyecto colaborativo: Plantillas estandarizadas para providencias",
-                content: "Iniciativa para crear un repositorio de plantillas judiciales optimizadas para SGEJ.",
-                author: {
-                    name: "Fernando Torres",
-                    avatar: "FT",
-                    role: "Magistrado"
-                },
-                category: "colaboracion",
-                tags: ["plantillas", "colaboración", "estandarización"],
-                status: "open",
-                replies: 29,
-                views: 118,
-                lastUpdate: "Hace 5 horas"
-            },
-            {
-                id: 11,
-                title: "Grupo de trabajo: Mejoras en la accesibilidad de OmniChat",
-                content: "Convocatoria para participar en el grupo de trabajo enfocado en mejorar la accesibilidad del asistente virtual.",
-                author: {
-                    name: "Diana Herrera",
-                    avatar: "DH",
-                    role: "Especialista en UX"
-                },
-                category: "colaboracion",
-                tags: ["accesibilidad", "OmniChat", "grupo de trabajo"],
-                status: "open",
-                replies: 14,
-                views: 67,
-                lastUpdate: "Hace 1 día"
-            },
-            {
-                id: 12,
-                title: "Hackathon Judicial 2025: Inscripciones abiertas",
-                content: "Información sobre el próximo hackathon para desarrollar soluciones innovadoras para el sistema judicial.",
-                author: {
-                    name: "Miguel Ángel Ruiz",
-                    avatar: "MR",
-                    role: "Coordinador de Innovación"
-                },
-                category: "colaboracion",
-                tags: ["hackathon", "innovación", "desarrollo"],
-                status: "open",
-                replies: 42,
-                views: 189,
-                lastUpdate: "Hace 2 días",
-                isHighlighted: true
-            },
-
-            // Categoría: Técnico
             {
                 id: 13,
                 title: "Documentación de la API de SGEJ v2.5",
@@ -571,22 +788,6 @@
                 replies: 21,
                 views: 94,
                 lastUpdate: "Hace 1 día"
-            },
-            {
-                id: 15,
-                title: "Implementación de autenticación multifactor en aplicaciones Marduk",
-                content: "Guía técnica para implementar MFA en las diferentes soluciones del ecosistema.",
-                author: {
-                    name: "Ricardo Vega",
-                    avatar: "RV",
-                    role: "Especialista en Seguridad"
-                },
-                category: "tecnico",
-                tags: ["seguridad", "autenticación", "MFA"],
-                status: "solved",
-                replies: 25,
-                views: 112,
-                lastUpdate: "Hace 3 días"
             }
         ];
 
@@ -596,7 +797,7 @@
             const highlightClass = discussion.isHighlighted ? 'bg-light-subtle' : '';
 
             return `
-                <a href="#" class="list-group-item list-group-item-action p-3 ${highlightClass}" data-id="${discussion.id}" data-category="${discussion.category}">
+                <a href="javascript:void(0)" class="list-group-item list-group-item-action p-3 ${highlightClass}" data-id="${discussion.id}" data-category="${discussion.category}" onclick="showDiscussionDetail(${discussion.id}, '${discussion.category}')">
                     <div class="d-flex">
                         <div class="avatar-circle-sm me-3">${discussion.author.avatar}</div>
                         <div class="flex-grow-1">
@@ -681,6 +882,96 @@
             return params;
         }
 
+        // Función para mostrar el detalle de una discusión
+        function showDiscussionDetail(id, category) {
+            // Buscar la discusión por ID y categoría
+            const discussion = discussions.find(d => d.id === id && d.category === category);
+
+            if (!discussion) {
+                console.error('Discusión no encontrada');
+                return;
+            }
+
+            // Actualizar URL sin recargar la página
+            const url = new URL(window.location.href);
+            url.searchParams.set('category', category);
+            url.searchParams.set('id', id);
+            window.history.pushState({}, '', url);
+
+            // Actualizar los elementos de la vista detallada
+            document.getElementById('detailTitle').textContent = discussion.title;
+            document.getElementById('detailStatus').textContent = getStatusText(discussion.status);
+            document.getElementById('detailStatus').className = getStatusBadgeClass(discussion.status);
+            document.getElementById('detailAuthorAvatar').textContent = discussion.author.avatar;
+            document.getElementById('detailAuthorName').textContent = discussion.author.name;
+            document.getElementById('detailAuthorRole').textContent = discussion.author.role;
+            document.getElementById('detailViews').textContent = discussion.views;
+            document.getElementById('detailLastUpdate').textContent = discussion.lastUpdate;
+            document.getElementById('detailRepliesCount').textContent = discussion.replies;
+
+            // Actualizar contenido
+            document.getElementById('detailContentAvatar').textContent = discussion.author.avatar;
+            document.getElementById('detailContentAuthor').textContent = discussion.author.name;
+            document.getElementById('detailContentRole').textContent = discussion.author.role;
+            document.getElementById('detailContentDate').textContent = discussion.lastUpdate;
+            document.getElementById('detailContent').innerHTML = `<p>${discussion.content}</p>`;
+
+            // Actualizar etiquetas
+            const tagsContainer = document.getElementById('detailTags');
+            tagsContainer.innerHTML = '';
+            discussion.tags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'badge bg-light text-secondary';
+                tagElement.textContent = tag;
+                tagsContainer.appendChild(tagElement);
+            });
+
+            // Ocultar la lista de discusiones y mostrar el detalle
+            document.getElementById('mainContent').classList.add('d-none');
+            document.getElementById('discussionDetail').classList.remove('d-none');
+        }
+
+        // Función para volver a la lista de discusiones
+        function backToList() {
+            // Actualizar URL sin recargar la página
+            const url = new URL(window.location.href);
+            const category = url.searchParams.get('category');
+            url.searchParams.delete('id');
+            window.history.pushState({}, '', url);
+
+            // Ocultar el detalle y mostrar la lista de discusiones
+            document.getElementById('discussionDetail').classList.add('d-none');
+            document.getElementById('mainContent').classList.remove('d-none');
+        }
+
+        // Función para obtener el texto del estado
+        function getStatusText(status) {
+            switch(status) {
+                case 'open':
+                    return 'Activo';
+                case 'solved':
+                    return 'Resuelto';
+                case 'closed':
+                    return 'Cerrado';
+                default:
+                    return 'Activo';
+            }
+        }
+
+        // Función para obtener la clase del badge de estado
+        function getStatusBadgeClass(status) {
+            switch(status) {
+                case 'open':
+                    return 'badge bg-success';
+                case 'solved':
+                    return 'badge bg-primary';
+                case 'closed':
+                    return 'badge bg-secondary';
+                default:
+                    return 'badge bg-success';
+            }
+        }
+
         // Inicializar la página
         document.addEventListener('DOMContentLoaded', function() {
             // Obtener parámetros de la URL
@@ -729,21 +1020,34 @@
                     }
                     url.searchParams.delete('id'); // Eliminar ID al cambiar de categoría
                     window.history.pushState({}, '', url);
+
+                    // Asegurarse de que estamos en la vista de lista
+                    document.getElementById('discussionDetail').classList.add('d-none');
+                    document.getElementById('mainContent').classList.remove('d-none');
                 });
             });
+
+            // Configurar botón de volver
+            document.getElementById('backToList').addEventListener('click', backToList);
 
             // Cargar discusiones según la categoría
             filterDiscussions(category);
 
-            // Si hay un ID de discusión, resaltar esa discusión
+            // Si hay un ID de discusión, mostrar el detalle
             if (discussionId) {
-                setTimeout(() => {
-                    const discussionElement = document.querySelector(`#discussionsList a[data-id="${discussionId}"]`);
-                    if (discussionElement) {
-                        discussionElement.classList.add('bg-light-subtle');
-                        discussionElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                }, 100); // Pequeño retraso para asegurar que las discusiones estén cargadas
+                const discussion = discussions.find(d => d.id === discussionId && d.category === category);
+                if (discussion) {
+                    showDiscussionDetail(discussionId, category);
+                } else {
+                    // Si no se encuentra la discusión, resaltar en la lista
+                    setTimeout(() => {
+                        const discussionElement = document.querySelector(`#discussionsList a[data-id="${discussionId}"]`);
+                        if (discussionElement) {
+                            discussionElement.classList.add('bg-light-subtle');
+                            discussionElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }, 100); // Pequeño retraso para asegurar que las discusiones estén cargadas
+                }
             }
 
             // Configurar búsqueda
