@@ -536,8 +536,9 @@
                                             <h3 class="h6 fw-semibold mb-0">Sistema de Gestión de Expedientes Electrónicos</h3>
                                             <div class="small text-secondary">Equipo SGEJ</div>
                                         </div>
-                                        <div>
+                                        <div class="d-flex align-items-center gap-2">
                                             <span class="badge bg-teal-soft text-teal">Consolidada</span>
+                                            <span class="badge bg-blue-soft text-blue"><i class="fa-solid fa-shield-alt me-1"></i>Oficial</span>
                                         </div>
                                     </div>
 
@@ -2373,7 +2374,7 @@
                 icon: "fa-robot",
                 iconBg: "bg-gradient-orange",
                 lastUpdate: "2 de febrero de 2023",
-                isOfficial: true,
+                isOfficial: false,
                 recommendedFor: ["Investigadores Jurídicos", "Magistrados", "Jueces Especializados"]
             },
             {
@@ -2388,7 +2389,7 @@
                 reviews: 320,
                 downloads: 15800,
                 description: "JudiCalc es una herramienta especializada para el cálculo preciso de términos y plazos judiciales en Colombia. Desarrollada para eliminar errores humanos en el conteo de días hábiles, esta calculadora integra automáticamente festivos nacionales, regionales y suspensiones judiciales extraordinarias.",
-                tags: ["Plazos", "Términos", "Cálculo"],
+                tags: ["Herramientas", "Plazos", "Términos"],
                 benefits: [
                     "Reducción del 98% en errores de cálculo de términos",
                     "Ahorro de 2 horas semanales por funcionario en verificación de plazos",
@@ -2444,7 +2445,7 @@
                 icon: "fa-chart-line",
                 iconBg: "bg-gradient-purple",
                 lastUpdate: "5 de abril de 2023",
-                isOfficial: true,
+                isOfficial: false,
                 recommendedFor: ["Consejos Seccionales", "Magistrados", "Jueces", "Analistas Judiciales"]
             },
             {
@@ -2482,6 +2483,78 @@
                 lastUpdate: "20 de enero de 2023",
                 isOfficial: true,
                 recommendedFor: ["Magistrados", "Jueces", "Abogados Constitucionalistas", "Investigadores"]
+            },
+            {
+                id: 7,
+                name: "AutoDoc: Generador de Documentos Judiciales",
+                shortName: "AutoDoc",
+                category: "automatizacion",
+                maturityLevel: 3,
+                maturityName: "Beta",
+                developer: "Equipo Automatización",
+                rating: 4.6,
+                reviews: 98,
+                downloads: 6800,
+                description: "AutoDoc es una herramienta de automatización para la generación de documentos judiciales que agiliza la creación de providencias, oficios, notificaciones y otros documentos procesales. Mediante plantillas inteligentes y autocompletado contextual, reduce significativamente el tiempo dedicado a tareas administrativas.",
+                tags: ["Automatización", "Documentos", "Plantillas"],
+                benefits: [
+                    "Reducción del 70% en tiempo de elaboración de documentos",
+                    "Estandarización de formatos y contenidos jurídicos",
+                    "Minimización de errores en documentos oficiales"
+                ],
+                requirements: [
+                    "Navegador web actualizado",
+                    "Conexión a internet",
+                    "Cuenta institucional para acceso completo"
+                ],
+                features: [
+                    "Plantillas inteligentes para diversos tipos documentales",
+                    "Autocompletado con datos de expedientes",
+                    "Control de versiones de documentos",
+                    "Firma electrónica integrada"
+                ],
+                version: "1.8.3",
+                icon: "fa-file-alt",
+                iconBg: "bg-gradient-blue",
+                lastUpdate: "10 de abril de 2023",
+                isOfficial: false,
+                recommendedFor: ["Secretarios", "Asistentes Judiciales", "Jueces"]
+            },
+            {
+                id: 8,
+                name: "JudiConnect: Plataforma de Comunicación Judicial",
+                shortName: "JudiConnect",
+                category: "comunicacion",
+                maturityLevel: 4,
+                maturityName: "Producción",
+                developer: "Equipo Comunicaciones",
+                rating: 4.8,
+                reviews: 175,
+                downloads: 8900,
+                description: "JudiConnect es una plataforma integral de comunicación diseñada específicamente para el entorno judicial, facilitando la interacción segura entre funcionarios, abogados y ciudadanos. Ofrece canales de comunicación cifrados, notificaciones electrónicas certificadas y salas virtuales para audiencias.",
+                tags: ["Comunicación", "Notificaciones", "Audiencias"],
+                benefits: [
+                    "Reducción del 90% en tiempos de notificación",
+                    "Ahorro de recursos en desplazamientos para audiencias",
+                    "Trazabilidad completa de comunicaciones oficiales"
+                ],
+                requirements: [
+                    "Dispositivo con cámara y micrófono",
+                    "Conexión a internet estable",
+                    "Cuenta verificada en el sistema judicial"
+                ],
+                features: [
+                    "Mensajería segura con certificación de entrega",
+                    "Videoconferencias optimizadas para audiencias judiciales",
+                    "Notificaciones electrónicas con valor legal",
+                    "Integración con expedientes electrónicos"
+                ],
+                version: "2.5.1",
+                icon: "fa-comments-alt",
+                iconBg: "bg-gradient-purple",
+                lastUpdate: "5 de marzo de 2023",
+                isOfficial: true,
+                recommendedFor: ["Jueces", "Secretarios", "Abogados", "Ciudadanos"]
             }
         ];
 
@@ -2723,9 +2796,18 @@
 
                     // Type filter
                     if (typeValue && showItem) {
-                        const isOfficial = item.querySelector('.fa-shield-alt') !== null;
-                        if ((typeValue === 'oficial' && !isOfficial) || (typeValue === 'community' && isOfficial)) {
-                            showItem = false;
+                        // Get app ID
+                        const onclickAttr = item.getAttribute('onclick');
+                        if (onclickAttr) {
+                            const appId = onclickAttr.match(/\d+/)[0];
+                            const app = solutions.find(s => s.id == appId);
+
+                            if (app) {
+                                const isOfficial = app.isOfficial === true;
+                                if ((typeValue === 'oficial' && !isOfficial) || (typeValue === 'community' && isOfficial)) {
+                                    showItem = false;
+                                }
+                            }
                         }
                     }
 
@@ -3056,6 +3138,30 @@
                 });
             }
 
+            // Add direct event listener to type filter
+            const typeFilter = document.getElementById('typeFilter');
+            if (typeFilter) {
+                typeFilter.addEventListener('change', function() {
+                    const typeValue = this.value;
+                    console.log('Type filter changed:', typeValue);
+
+                    // Filter by type
+                    filterByType(typeValue);
+                });
+            }
+
+            // Add direct event listener to maturity filter
+            const maturityFilter = document.getElementById('maturityFilter');
+            if (maturityFilter) {
+                maturityFilter.addEventListener('change', function() {
+                    const maturityValue = this.value;
+                    console.log('Maturity filter changed:', maturityValue);
+
+                    // Filter by maturity
+                    filterByMaturity(maturityValue);
+                });
+            }
+
             // Setup view toggles
             setupViewToggles();
             // Setup search functionality
@@ -3157,6 +3263,168 @@
                     } else {
                         item.style.display = 'none';
                     }
+                }
+            });
+        }
+
+        // Function to filter by type
+        function filterByType(typeValue) {
+            console.log('Filtering by type:', typeValue);
+
+            if (!typeValue) {
+                // If no type filter, show all items
+                document.querySelectorAll('#gridView .col').forEach(col => {
+                    col.style.display = '';
+                });
+                document.querySelectorAll('#listView .list-group-item').forEach(item => {
+                    item.style.display = '';
+                });
+                return;
+            }
+
+            // Get all cards and list items
+            const gridCards = document.querySelectorAll('#gridView .card');
+            const listItems = document.querySelectorAll('#listView .list-group-item');
+
+            console.log('Grid cards:', gridCards.length);
+            console.log('List items:', listItems.length);
+
+            // Filter grid cards
+            gridCards.forEach(card => {
+                const parent = card.closest('.col');
+                // Get app ID from onclick attribute
+                const onclickAttr = card.getAttribute('onclick');
+                if (onclickAttr) {
+                    const match = onclickAttr.match(/showAppDetail\((\d+)\)/);
+                    if (match && match[1]) {
+                        const appId = parseInt(match[1]);
+                        const app = solutions.find(s => s.id === appId);
+
+                        if (app) {
+                            console.log('App:', app.name, 'isOfficial:', app.isOfficial, 'typeValue:', typeValue);
+                            const isOfficial = app.isOfficial === true;
+                            const matches = (typeValue === 'oficial' && isOfficial) || (typeValue === 'community' && !isOfficial);
+                            parent.style.display = matches ? '' : 'none';
+                        } else {
+                            console.log('App not found for ID:', appId);
+                            parent.style.display = 'none';
+                        }
+                    } else {
+                        console.log('No match in onclick:', onclickAttr);
+                        parent.style.display = 'none';
+                    }
+                } else {
+                    console.log('No onclick attribute');
+                    parent.style.display = 'none';
+                }
+            });
+
+            // Filter list items
+            listItems.forEach(item => {
+                // Get app ID from onclick attribute
+                const onclickAttr = item.getAttribute('onclick');
+                if (onclickAttr) {
+                    const match = onclickAttr.match(/showAppDetail\((\d+)\)/);
+                    if (match && match[1]) {
+                        const appId = parseInt(match[1]);
+                        const app = solutions.find(s => s.id === appId);
+
+                        if (app) {
+                            console.log('App (list):', app.name, 'isOfficial:', app.isOfficial, 'typeValue:', typeValue);
+                            const isOfficial = app.isOfficial === true;
+                            const matches = (typeValue === 'oficial' && isOfficial) || (typeValue === 'community' && !isOfficial);
+                            item.style.display = matches ? '' : 'none';
+                        } else {
+                            console.log('App not found for ID (list):', appId);
+                            item.style.display = 'none';
+                        }
+                    } else {
+                        console.log('No match in onclick (list):', onclickAttr);
+                        item.style.display = 'none';
+                    }
+                } else {
+                    console.log('No onclick attribute (list)');
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Function to filter by maturity
+        function filterByMaturity(maturityValue) {
+            console.log('Filtering by maturity:', maturityValue);
+
+            if (!maturityValue) {
+                // If no maturity filter, show all items
+                document.querySelectorAll('#gridView .col').forEach(col => {
+                    col.style.display = '';
+                });
+                document.querySelectorAll('#listView .list-group-item').forEach(item => {
+                    item.style.display = '';
+                });
+                return;
+            }
+
+            // Get all cards and list items
+            const gridCards = document.querySelectorAll('#gridView .card');
+            const listItems = document.querySelectorAll('#listView .list-group-item');
+
+            console.log('Grid cards:', gridCards.length);
+            console.log('List items:', listItems.length);
+
+            // Filter grid cards
+            gridCards.forEach(card => {
+                const parent = card.closest('.col');
+                // Get app ID from onclick attribute
+                const onclickAttr = card.getAttribute('onclick');
+                if (onclickAttr) {
+                    const match = onclickAttr.match(/showAppDetail\((\d+)\)/);
+                    if (match && match[1]) {
+                        const appId = parseInt(match[1]);
+                        const app = solutions.find(s => s.id === appId);
+
+                        if (app) {
+                            console.log('App:', app.name, 'maturityLevel:', app.maturityLevel, 'maturityValue:', maturityValue);
+                            const matches = app.maturityLevel == parseInt(maturityValue);
+                            parent.style.display = matches ? '' : 'none';
+                        } else {
+                            console.log('App not found for ID:', appId);
+                            parent.style.display = 'none';
+                        }
+                    } else {
+                        console.log('No match in onclick:', onclickAttr);
+                        parent.style.display = 'none';
+                    }
+                } else {
+                    console.log('No onclick attribute');
+                    parent.style.display = 'none';
+                }
+            });
+
+            // Filter list items
+            listItems.forEach(item => {
+                // Get app ID from onclick attribute
+                const onclickAttr = item.getAttribute('onclick');
+                if (onclickAttr) {
+                    const match = onclickAttr.match(/showAppDetail\((\d+)\)/);
+                    if (match && match[1]) {
+                        const appId = parseInt(match[1]);
+                        const app = solutions.find(s => s.id === appId);
+
+                        if (app) {
+                            console.log('App (list):', app.name, 'maturityLevel:', app.maturityLevel, 'maturityValue:', maturityValue);
+                            const matches = app.maturityLevel == parseInt(maturityValue);
+                            item.style.display = matches ? '' : 'none';
+                        } else {
+                            console.log('App not found for ID (list):', appId);
+                            item.style.display = 'none';
+                        }
+                    } else {
+                        console.log('No match in onclick (list):', onclickAttr);
+                        item.style.display = 'none';
+                    }
+                } else {
+                    console.log('No onclick attribute (list)');
+                    item.style.display = 'none';
                 }
             });
         }
