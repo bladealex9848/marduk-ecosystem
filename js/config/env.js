@@ -1,18 +1,19 @@
 /**
- * MARDUK ECOSYSTEM - CARGADOR DE VARIABLES DE ENTORNO
+ * MARDUK ECOSYSTEM - GESTOR DE VARIABLES DE ENTORNO
  * 
- * Este archivo se encarga de cargar las variables de entorno desde el archivo .env
- * y proporcionarlas a la aplicación de manera segura.
+ * Este archivo se encarga de gestionar las variables de entorno para la aplicación,
+ * permitiendo almacenarlas y recuperarlas de manera segura.
  */
 
-class EnvLoader {
+class EnvManager {
   constructor() {
     this.env = {};
     this.loaded = false;
+    this.storagePrefix = 'marduk_env_';
   }
 
   /**
-   * Carga las variables de entorno desde el archivo .env
+   * Carga las variables de entorno
    * @returns {Promise<Object>} - Objeto con las variables de entorno
    */
   async load() {
@@ -21,68 +22,63 @@ class EnvLoader {
     }
 
     try {
-      // Intentar cargar el archivo .env
-      const response = await fetch('/.env');
+      // Cargar variables desde localStorage
+      this._loadFromLocalStorage();
       
-      if (!response.ok) {
-        console.warn('No se pudo cargar el archivo .env. Usando valores por defecto.');
-        this._setDefaultValues();
-        return this.env;
+      // Si no hay API key, usar valor por defecto
+      if (!this.env.OPENROUTER_API_KEY) {
+        this.env.OPENROUTER_API_KEY = 'demo';
+        console.warn('No se encontró API key. Usando valor por defecto.');
+      } else {
+        console.log('Variables de entorno cargadas correctamente');
       }
-      
-      const envText = await response.text();
-      this._parseEnvFile(envText);
-      
-      this.loaded = true;
-      console.log('Variables de entorno cargadas correctamente');
     } catch (error) {
       console.error('Error al cargar variables de entorno:', error);
-      this._setDefaultValues();
+      this.env.OPENROUTER_API_KEY = 'demo';
     }
     
+    this.loaded = true;
     return this.env;
   }
   
   /**
-   * Parsea el contenido del archivo .env
-   * @param {string} envText - Contenido del archivo .env
+   * Carga variables desde localStorage
    * @private
    */
-  _parseEnvFile(envText) {
-    const lines = envText.split('\n');
-    
-    for (const line of lines) {
-      // Ignorar líneas vacías o comentarios
-      if (!line || line.trim().startsWith('#')) {
-        continue;
-      }
-      
-      // Buscar pares clave=valor
-      const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
-      if (match) {
-        const key = match[1];
-        let value = match[2] || '';
-        
-        // Eliminar comillas si existen
-        if (value.startsWith('"') && value.endsWith('"')) {
-          value = value.slice(1, -1);
-        }
-        
-        this.env[key] = value;
+  _loadFromLocalStorage() {
+    // Buscar todas las claves que empiezan con el prefijo
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(this.storagePrefix)) {
+        const envKey = key.replace(this.storagePrefix, '');
+        this.env[envKey] = localStorage.getItem(key);
       }
     }
-  }
-  
-  /**
-   * Establece valores por defecto para las variables de entorno
-   * @private
-   */
-  _setDefaultValues() {
-    this.env = {
-      OPENROUTER_API_KEY: 'demo'
-    };
     
-    this.loaded = true;
+    // Buscar específicamente la API key (para compatibilidad)
+    const apiKey = localStorage.getItem('OPENROUTER_API_KEY');
+    if (apiKey) {
+      this.env.OPENROUTER_API_KEY = apiKey;
+    }
+  }
+
+  /**
+   * Establece una variable de entorno
+   * @param {string} key - Nombre de la variable
+   * @param {string} value - Valor de la variable
+   * @param {boolean} persist - Si se debe guardar en localStorage
+   */
+  set(key, value, persist = true) {
+    this.env[key] = value;
+    
+    // Guardar en localStorage si se solicita
+    if (persist) {
+      try {
+        localStorage.setItem(`${this.storagePrefix}${key}`, value);
+      } catch (error) {
+        console.error('Error al guardar en localStorage:', error);
+      }
+    }
   }
   
   /**
@@ -94,10 +90,43 @@ class EnvLoader {
   get(key, defaultValue = '') {
     return this.env[key] !== undefined ? this.env[key] : defaultValue;
   }
+  
+  /**
+   * Elimina una variable de entorno
+   * @param {string} key - Nombre de la variable
+   */
+  remove(key) {
+    delete this.env[key];
+    
+    try {
+      localStorage.removeItem(`${this.storagePrefix}${key}`);
+    } catch (error) {
+      console.error('Error al eliminar de localStorage:', error);
+    }
+  }
+  
+  /**
+   * Limpia todas las variables de entorno
+   */
+  clear() {
+    this.env = {};
+    
+    try {
+      // Eliminar solo las claves con el prefijo
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(this.storagePrefix)) {
+          localStorage.removeItem(key);
+        }
+      }
+    } catch (error) {
+      console.error('Error al limpiar localStorage:', error);
+    }
+  }
 }
 
 // Crear una instancia global
-const envLoader = new EnvLoader();
+const envManager = new EnvManager();
 
 // Exportar la instancia
-export default envLoader;
+export default envManager;
