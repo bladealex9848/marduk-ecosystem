@@ -57,9 +57,6 @@
                         <a class="nav-link active" href="solutions.html"><i class="fas fa-tools me-1"></i> Soluciones</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="profile.html"><i class="fas fa-user me-1"></i> Mi Perfil</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="community.html"><i class="fas fa-users me-1"></i> Comunidad</a>
                     </li>
                     <li class="nav-item">
@@ -119,9 +116,9 @@
                 <div class="dropdown">
                     <button class="btn btn-link d-flex align-items-center text-light text-decoration-none dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="avatar-circle avatar-circle-sm bg-primary text-white me-2">
-                            AG
+                            AF
                         </div>
-                        <span class="d-none d-md-block">Ana María González</span>
+                        <span class="d-none d-md-block">Alexander Fadul</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                         <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i> Mi Perfil</a></li>
@@ -154,6 +151,7 @@
                             placeholder="Buscar soluciones, categorías o funcionalidades..."
                             class="form-control form-control-lg ps-5 bg-white bg-opacity-20 text-white border-0"
                             id="solutionSearch"
+                            autocomplete="off"
                         >
                         <span class="position-absolute top-50 end-0 translate-middle-y me-3 d-lg-none">
                             <i class="fa-solid fa-filter text-white opacity-70"></i>
@@ -214,7 +212,7 @@
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <label class="form-label small text-muted mb-1">Nivel de desarrollo</label>
-                                <select class="form-select form-select-sm">
+                                <select class="form-select form-select-sm" id="maturityFilter">
                                     <option value="">Todos los niveles</option>
                                     <option value="1">Nivel 1: Idea</option>
                                     <option value="2">Nivel 2: Prototipo</option>
@@ -225,7 +223,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label small text-muted mb-1">Tipo de solución</label>
-                                <select class="form-select form-select-sm">
+                                <select class="form-select form-select-sm" id="typeFilter">
                                     <option value="">Todas las soluciones</option>
                                     <option value="oficial">Oficiales</option>
                                     <option value="community">Comunidad</option>
@@ -233,7 +231,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label small text-muted mb-1">Ordenar por</label>
-                                <select class="form-select form-select-sm">
+                                <select class="form-select form-select-sm" id="sortFilter">
                                     <option value="featured">Destacados</option>
                                     <option value="newest">Más recientes</option>
                                     <option value="downloads">Más descargas</option>
@@ -673,6 +671,90 @@
                                             <div class="d-flex align-items-center text-muted small">
                                                 <i class="fa-solid fa-download me-1"></i>
                                                 <span>7.8K</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AnalizadorEstadisticoJudicial Solution Item -->
+                        <div class="list-group-item p-3 cursor-pointer hover-bg-light-active" onclick="showAppDetail(5)">
+                            <div class="d-flex">
+                                <div class="solution-icon-sm bg-gradient-purple me-3">
+                                    <i class="fa-solid fa-chart-line"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h3 class="h6 fw-semibold mb-0">Analizador Estadístico Judicial</h3>
+                                            <div class="small text-secondary">Equipo Estadística</div>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-blue-soft text-blue">Beta</span>
+                                        </div>
+                                    </div>
+
+                                    <p class="small text-secondary my-2">
+                                        Herramienta de análisis estadístico para la toma de decisiones basada en datos históricos de casos judiciales y tendencias de resolución.
+                                    </p>
+
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex flex-wrap gap-1">
+                                            <span class="badge bg-light text-secondary">Estadística</span>
+                                            <span class="badge bg-light text-secondary">Análisis</span>
+                                            <span class="badge bg-light text-secondary">Datos</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fa-solid fa-star text-warning me-1"></i>
+                                                <span class="small fw-medium">4.3</span>
+                                            </div>
+                                            <div class="d-flex align-items-center text-muted small">
+                                                <i class="fa-solid fa-download me-1"></i>
+                                                <span>5.2K</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Constitutor Solution Item -->
+                        <div class="list-group-item p-3 cursor-pointer hover-bg-light-active" onclick="showAppDetail(6)">
+                            <div class="d-flex">
+                                <div class="solution-icon-sm bg-gradient-green me-3">
+                                    <i class="fa-solid fa-book"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h3 class="h6 fw-semibold mb-0">Constitutor: Buscador Constitucional</h3>
+                                            <div class="small text-secondary">Equipo Constitucional</div>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-green-soft text-green">Producción</span>
+                                        </div>
+                                    </div>
+
+                                    <p class="small text-secondary my-2">
+                                        Motor de búsqueda especializado en jurisprudencia constitucional con análisis semántico y conexiones entre sentencias relacionadas.
+                                    </p>
+
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex flex-wrap gap-1">
+                                            <span class="badge bg-light text-secondary">Constitucional</span>
+                                            <span class="badge bg-light text-secondary">Búsqueda</span>
+                                            <span class="badge bg-light text-secondary">Jurisprudencia</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fa-solid fa-star text-warning me-1"></i>
+                                                <span class="small fw-medium">4.7</span>
+                                            </div>
+                                            <div class="d-flex align-items-center text-muted small">
+                                                <i class="fa-solid fa-download me-1"></i>
+                                                <span>9.3K</span>
                                             </div>
                                         </div>
                                     </div>
@@ -2322,12 +2404,136 @@
          */
         function setupSearch() {
             const searchInput = document.getElementById('solutionSearch');
+            const maturityFilter = document.getElementById('maturityFilter');
+            const typeFilter = document.getElementById('typeFilter');
+            const sortFilter = document.getElementById('sortFilter');
 
-            if (searchInput) {
-                searchInput.addEventListener('input', function() {
-                    // In a real app, this would filter results dynamically
-                    console.log('Searching for:', this.value);
+            // Function to filter solutions
+            function filterSolutions() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const maturityValue = maturityFilter.value;
+                const typeValue = typeFilter.value;
+                const sortValue = sortFilter.value;
+
+                // Get all solution cards in grid view
+                const gridCards = document.querySelectorAll('#gridView .card');
+                // Get all solution items in list view
+                const listItems = document.querySelectorAll('#listView .list-group-item');
+
+                // Filter grid cards
+                gridCards.forEach(card => {
+                    let showCard = true;
+
+                    // Search term filter
+                    if (searchTerm) {
+                        const cardTitle = card.querySelector('.card-title').textContent.toLowerCase();
+                        const cardDesc = card.querySelector('.card-text').textContent.toLowerCase();
+                        const cardTags = Array.from(card.querySelectorAll('.badge')).map(tag => tag.textContent.toLowerCase()).join(' ');
+
+                        if (!cardTitle.includes(searchTerm) && !cardDesc.includes(searchTerm) && !cardTags.includes(searchTerm)) {
+                            showCard = false;
+                        }
+                    }
+
+                    // Maturity level filter
+                    if (maturityValue && showCard) {
+                        const maturityBadge = card.querySelector('.badge.bg-teal-soft, .badge.bg-blue-soft, .badge.bg-green-soft, .badge.bg-purple-soft');
+                        if (maturityBadge) {
+                            const maturityText = maturityBadge.textContent.toLowerCase();
+
+                            // Map maturity text to level
+                            let level = 0;
+                            if (maturityText.includes('idea')) level = 1;
+                            else if (maturityText.includes('prototipo')) level = 2;
+                            else if (maturityText.includes('beta')) level = 3;
+                            else if (maturityText.includes('producción')) level = 4;
+                            else if (maturityText.includes('consolidada')) level = 5;
+
+                            if (level != parseInt(maturityValue)) {
+                                showCard = false;
+                            }
+                        }
+                    }
+
+                    // Type filter
+                    if (typeValue && showCard) {
+                        const isOfficial = card.querySelector('.fa-shield-alt') !== null;
+                        if ((typeValue === 'oficial' && !isOfficial) || (typeValue === 'community' && isOfficial)) {
+                            showCard = false;
+                        }
+                    }
+
+                    // Show or hide the card
+                    card.parentElement.style.display = showCard ? '' : 'none';
                 });
+
+                // Filter list items
+                listItems.forEach(item => {
+                    let showItem = true;
+
+                    // Search term filter
+                    if (searchTerm) {
+                        const itemTitle = item.querySelector('.h6').textContent.toLowerCase();
+                        const itemDesc = item.querySelector('p.small.text-secondary').textContent.toLowerCase();
+                        const itemTags = Array.from(item.querySelectorAll('.badge')).map(tag => tag.textContent.toLowerCase()).join(' ');
+
+                        if (!itemTitle.includes(searchTerm) && !itemDesc.includes(searchTerm) && !itemTags.includes(searchTerm)) {
+                            showItem = false;
+                        }
+                    }
+
+                    // Maturity level filter
+                    if (maturityValue && showItem) {
+                        const maturityBadge = item.querySelector('.badge.bg-teal-soft, .badge.bg-blue-soft, .badge.bg-green-soft, .badge.bg-purple-soft');
+                        if (maturityBadge) {
+                            const maturityText = maturityBadge.textContent.toLowerCase();
+
+                            // Map maturity text to level
+                            let level = 0;
+                            if (maturityText.includes('idea')) level = 1;
+                            else if (maturityText.includes('prototipo')) level = 2;
+                            else if (maturityText.includes('beta')) level = 3;
+                            else if (maturityText.includes('producción')) level = 4;
+                            else if (maturityText.includes('consolidada')) level = 5;
+
+                            if (level != parseInt(maturityValue)) {
+                                showItem = false;
+                            }
+                        }
+                    }
+
+                    // Type filter
+                    if (typeValue && showItem) {
+                        const isOfficial = item.querySelector('.fa-shield-alt') !== null;
+                        if ((typeValue === 'oficial' && !isOfficial) || (typeValue === 'community' && isOfficial)) {
+                            showItem = false;
+                        }
+                    }
+
+                    // Show or hide the item
+                    item.style.display = showItem ? '' : 'none';
+                });
+
+                // Sort functionality would be implemented here
+                // For now, we'll just log the sort value
+                console.log('Sorting by:', sortValue);
+            }
+
+            // Add event listeners
+            if (searchInput) {
+                searchInput.addEventListener('input', filterSolutions);
+            }
+
+            if (maturityFilter) {
+                maturityFilter.addEventListener('change', filterSolutions);
+            }
+
+            if (typeFilter) {
+                typeFilter.addEventListener('change', filterSolutions);
+            }
+
+            if (sortFilter) {
+                sortFilter.addEventListener('change', filterSolutions);
             }
         }
 
