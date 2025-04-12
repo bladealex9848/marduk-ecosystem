@@ -2593,7 +2593,24 @@
                         if (onclickAttr) {
                             const appId = onclickAttr.match(/\d+/)[0];
                             const app = solutionsData.find(s => s.id == appId);
-                            if (app && app.category !== currentCategory) {
+
+                            // Map category button to actual data categories
+                            let matches = false;
+                            if (currentCategory === 'ia' && (app.category === 'ia' || app.tags.some(t => t.toLowerCase().includes('ia') || t.toLowerCase().includes('inteligencia')))) {
+                                matches = true;
+                            } else if (currentCategory === 'gestion' && (app.category === 'gestion' || app.tags.some(t => t.toLowerCase().includes('gesti')))) {
+                                matches = true;
+                            } else if (currentCategory === 'automatizacion' && (app.category === 'automatizacion' || app.tags.some(t => t.toLowerCase().includes('automatiza')))) {
+                                matches = true;
+                            } else if (currentCategory === 'analisis' && (app.category === 'analisis' || app.tags.some(t => t.toLowerCase().includes('anal') || t.toLowerCase().includes('estad')))) {
+                                matches = true;
+                            } else if (currentCategory === 'comunicacion' && (app.category === 'comunicacion' || app.tags.some(t => t.toLowerCase().includes('comunica')))) {
+                                matches = true;
+                            } else if (app.category === currentCategory) {
+                                matches = true;
+                            }
+
+                            if (!matches) {
                                 showCard = false;
                             }
                         }
@@ -2653,7 +2670,24 @@
                         if (onclickAttr) {
                             const appId = onclickAttr.match(/\d+/)[0];
                             const app = solutionsData.find(s => s.id == appId);
-                            if (app && app.category !== currentCategory) {
+
+                            // Map category button to actual data categories
+                            let matches = false;
+                            if (currentCategory === 'ia' && (app.category === 'ia' || app.tags.some(t => t.toLowerCase().includes('ia') || t.toLowerCase().includes('inteligencia')))) {
+                                matches = true;
+                            } else if (currentCategory === 'gestion' && (app.category === 'gestion' || app.tags.some(t => t.toLowerCase().includes('gesti')))) {
+                                matches = true;
+                            } else if (currentCategory === 'automatizacion' && (app.category === 'automatizacion' || app.tags.some(t => t.toLowerCase().includes('automatiza')))) {
+                                matches = true;
+                            } else if (currentCategory === 'analisis' && (app.category === 'analisis' || app.tags.some(t => t.toLowerCase().includes('anal') || t.toLowerCase().includes('estad')))) {
+                                matches = true;
+                            } else if (currentCategory === 'comunicacion' && (app.category === 'comunicacion' || app.tags.some(t => t.toLowerCase().includes('comunica')))) {
+                                matches = true;
+                            } else if (app.category === currentCategory) {
+                                matches = true;
+                            }
+
+                            if (!matches) {
                                 showItem = false;
                             }
                         }
@@ -2744,8 +2778,49 @@
                     advancedFilters.classList.toggle('d-none');
                     // Toggle active class on button
                     this.classList.toggle('active');
+
+                    // Update button text and icon
+                    if (this.classList.contains('active')) {
+                        // Add a small badge to indicate active filters
+                        if (maturityFilter.value || typeFilter.value) {
+                            const badge = document.createElement('span');
+                            badge.className = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger';
+                            badge.textContent = '!';
+                            badge.id = 'filterBadge';
+                            this.appendChild(badge);
+                        }
+                    } else {
+                        // Remove the badge if it exists
+                        const badge = document.getElementById('filterBadge');
+                        if (badge) {
+                            badge.remove();
+                        }
+                    }
                 });
             }
+
+            // Add event listeners to advanced filter selects to update the filter badge
+            function updateFilterBadge() {
+                const hasActiveFilters = maturityFilter.value || typeFilter.value;
+                const badge = document.getElementById('filterBadge');
+
+                if (hasActiveFilters) {
+                    if (!badge && filterToggleBtn.classList.contains('active')) {
+                        const newBadge = document.createElement('span');
+                        newBadge.className = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger';
+                        newBadge.textContent = '!';
+                        newBadge.id = 'filterBadge';
+                        filterToggleBtn.appendChild(newBadge);
+                    }
+                } else {
+                    if (badge) {
+                        badge.remove();
+                    }
+                }
+            }
+
+            maturityFilter.addEventListener('change', updateFilterBadge);
+            typeFilter.addEventListener('change', updateFilterBadge);
         }
 
         /**

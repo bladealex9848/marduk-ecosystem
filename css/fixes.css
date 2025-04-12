@@ -323,6 +323,20 @@
     border-color: #444444 !important;
 }
 
+#filterToggleBtn {
+    position: relative !important;
+}
+
+#filterToggleBtn.active {
+    background-color: #e9ecef !important;
+    border-color: #dee2e6 !important;
+}
+
+[data-theme="dark"] #filterToggleBtn.active {
+    background-color: #2d3748 !important;
+    border-color: #4a5568 !important;
+}
+
 /* Corrección para el footer */
 html, body {
     height: 100% !important;
