@@ -812,9 +812,9 @@
                         </div>
 
                         <div class="d-flex align-items-center mt-3 mt-md-0">
-                            <span class="badge bg-teal-soft text-teal me-3 px-3 py-2" id="appMaturityBadge">
-                                Nivel 5: Consolidada
-                            </span>
+                            <div class="me-3 px-3 py-2" id="appMaturityBadge">
+                                <!-- Maturity progress will be inserted here -->
+                            </div>
                             <button class="btn btn-primary px-4 py-2">
                                 Instalar
                             </button>
@@ -896,7 +896,7 @@
                                     </div>
                                     <div class="col-md-4 text-center mt-3 mt-md-0">
                                         <div class="d-inline-block p-3 rounded-circle bg-primary bg-opacity-10 mb-2">
-                                            <i class="fas fa-file-lines fa-3x text-primary"></i>
+                                            <i class="fas fa-file-lines fa-3x text-light"></i>
                                         </div>
                                         <div class="mt-2">
                                             <span class="badge bg-success px-3 py-2 rounded-pill">Nivel 5: Consolidada</span>
@@ -1453,7 +1453,7 @@
                                     </div>
                                     <div class="col-md-4 text-center mt-3 mt-md-0">
                                         <div class="d-inline-block p-3 rounded-circle bg-primary bg-opacity-10 mb-2">
-                                            <i class="fas fa-history fa-3x text-primary"></i>
+                                            <i class="fas fa-history fa-3x text-light"></i>
                                         </div>
                                         <div class="mt-2">
                                             <span class="badge bg-success px-3 py-2 rounded-pill">Versión actual: 2.4.3</span>
@@ -1624,7 +1624,7 @@
                                     </div>
                                     <div class="col-md-4 text-center mt-3 mt-md-0">
                                         <div class="d-inline-block p-3 rounded-circle bg-primary bg-opacity-10 mb-2">
-                                            <i class="fas fa-tachometer-alt fa-3x text-primary"></i>
+                                            <i class="fas fa-tachometer-alt fa-3x text-light"></i>
                                         </div>
                                         <div class="mt-2">
                                             <span class="badge bg-success px-3 py-2 rounded-pill">Datos actualizados: Mayo 2023</span>
@@ -1896,7 +1896,7 @@
                                     </div>
                                     <div class="col-md-4 text-center mt-3 mt-md-0">
                                         <div class="d-inline-block p-3 rounded-circle bg-primary bg-opacity-10 mb-2">
-                                            <i class="fas fa-code-branch fa-3x text-primary"></i>
+                                            <i class="fas fa-code-branch fa-3x text-light"></i>
                                         </div>
                                         <div class="mt-2">
                                             <a href="#" class="btn btn-primary rounded-pill px-4">
@@ -2189,17 +2189,17 @@
                             <div class="card border-0 bg-primary bg-opacity-10 rounded-4 p-4">
                                 <div class="row align-items-center">
                                     <div class="col-md-8">
-                                        <h3 class="h5 fw-bold text-primary mb-3">Comunidad y soporte</h3>
+                                        <h3 class="h5 fw-bold mb-3">Comunidad y soporte</h3>
                                         <p class="mb-md-0">
                                             Únete a nuestra comunidad de desarrolladores para obtener ayuda, compartir ideas y colaborar en el proyecto. Tenemos canales de comunicación activos donde puedes conectar con otros contribuyentes.
                                         </p>
                                     </div>
                                     <div class="col-md-4 text-md-end mt-3 mt-md-0">
                                         <div class="d-flex flex-column flex-sm-row gap-2 justify-content-md-end">
-                                            <a href="#" class="btn btn-outline-primary rounded-pill">
+                                            <a href="#" class="btn btn-outline-light rounded-pill">
                                                 <i class="fab fa-slack me-2"></i> Slack
                                             </a>
-                                            <a href="#" class="btn btn-outline-primary rounded-pill">
+                                            <a href="#" class="btn btn-outline-light rounded-pill">
                                                 <i class="fab fa-discord me-2"></i> Discord
                                             </a>
                                         </div>
@@ -2555,6 +2555,42 @@
                 lastUpdate: "5 de marzo de 2023",
                 isOfficial: true,
                 recommendedFor: ["Jueces", "Secretarios", "Abogados", "Ciudadanos"]
+            },
+            {
+                id: 9,
+                name: "JusticeTalk: Asistente de Comunicación Ciudadana",
+                shortName: "JusticeTalk",
+                category: "comunicacion",
+                maturityLevel: 1,
+                maturityName: "Idea",
+                developer: "Equipo Innovación Ciudadana",
+                rating: 3.8,
+                reviews: 25,
+                downloads: 450,
+                description: "JusticeTalk es un concepto innovador que busca revolucionar la comunicación entre ciudadanos y el sistema judicial mediante un asistente conversacional multicanal. La idea propone un sistema que simplifique el lenguaje jurídico, guíe a los ciudadanos en sus trámites y facilite la participación ciudadana en procesos judiciales.",
+                tags: ["Comunicación", "Ciudadanía", "Accesibilidad"],
+                benefits: [
+                    "Democratización del acceso a la justicia",
+                    "Reducción de barreras lingüísticas en procesos judiciales",
+                    "Mayor participación ciudadana en el sistema judicial"
+                ],
+                requirements: [
+                    "Dispositivo móvil o computadora",
+                    "Conexión a internet básica",
+                    "No requiere conocimientos jurídicos previos"
+                ],
+                features: [
+                    "Traducción de lenguaje jurídico a lenguaje ciudadano",
+                    "Asistente conversacional para consultas judiciales",
+                    "Guía paso a paso para trámites comunes",
+                    "Notificaciones simplificadas sobre procesos"
+                ],
+                version: "0.2.1",
+                icon: "fa-comment-dots",
+                iconBg: "bg-gradient-teal",
+                lastUpdate: "15 de mayo de 2023",
+                isOfficial: false,
+                recommendedFor: ["Ciudadanos", "Organizaciones Sociales", "Defensores Públicos"]
             }
         ];
 
@@ -3035,7 +3071,84 @@
             // Update basic information
             document.getElementById('appTitle').textContent = app.name;
             document.getElementById('appDeveloper').textContent = `Por ${app.developer}`;
-            document.getElementById('appMaturityBadge').textContent = `Nivel ${app.maturityLevel}: ${app.maturityName}`;
+
+            // Update maturity badge with all levels
+            const maturityBadge = document.getElementById('appMaturityBadge');
+            maturityBadge.innerHTML = '';
+
+            // Create maturity progress container
+            const maturityContainer = document.createElement('div');
+            maturityContainer.className = 'd-flex align-items-center';
+
+            // Define all maturity levels
+            const maturityLevels = [
+                { level: 1, name: 'Idea' },
+                { level: 2, name: 'Prototipo' },
+                { level: 3, name: 'Beta' },
+                { level: 4, name: 'Producción' },
+                { level: 5, name: 'Consolidada' }
+            ];
+
+            // Create level indicators
+            maturityLevels.forEach(level => {
+                const levelIndicator = document.createElement('div');
+                levelIndicator.className = 'd-flex flex-column align-items-center mx-1';
+
+                // Circle indicator
+                const circle = document.createElement('div');
+                circle.className = 'rounded-circle d-flex align-items-center justify-content-center mb-1';
+                circle.style.width = '24px';
+                circle.style.height = '24px';
+
+                // Set styles based on app's maturity level
+                if (level.level < app.maturityLevel) {
+                    // Completed levels
+                    circle.classList.add('bg-success');
+                    circle.innerHTML = '<i class="fa-solid fa-check text-white small"></i>';
+                } else if (level.level === app.maturityLevel) {
+                    // Current level
+                    circle.classList.add('bg-primary');
+                    circle.textContent = level.level;
+                    circle.style.color = 'white';
+                } else {
+                    // Future levels
+                    circle.classList.add('bg-light', 'text-secondary', 'border');
+                    circle.textContent = level.level;
+                }
+
+                // Level name
+                const levelName = document.createElement('span');
+                levelName.className = 'small';
+                levelName.style.fontSize = '0.7rem';
+                levelName.textContent = level.name;
+
+                // Highlight current level
+                if (level.level === app.maturityLevel) {
+                    levelName.classList.add('fw-bold', 'text-primary');
+                } else {
+                    levelName.classList.add('text-muted');
+                }
+
+                // Add to indicator
+                levelIndicator.appendChild(circle);
+                levelIndicator.appendChild(levelName);
+
+                // Add to container
+                maturityContainer.appendChild(levelIndicator);
+
+                // Add connector line between circles (except for the last one)
+                if (level.level < maturityLevels.length) {
+                    const connector = document.createElement('div');
+                    connector.className = 'bg-secondary opacity-25';
+                    connector.style.height = '2px';
+                    connector.style.width = '15px';
+                    connector.style.marginTop = '-12px';
+                    maturityContainer.appendChild(connector);
+                }
+            });
+
+            // Add to badge
+            maturityBadge.appendChild(maturityContainer);
             document.getElementById('appRating').textContent = app.rating;
             document.getElementById('appReviews').textContent = `(${app.reviews})`;
             document.getElementById('appDownloads').textContent = app.downloads.toLocaleString();
