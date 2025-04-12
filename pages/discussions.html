@@ -668,14 +668,45 @@
             });
         }
 
+        // Función para obtener parámetros de la URL
+        function getUrlParams() {
+            const params = {};
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+
+            for (const [key, value] of urlParams.entries()) {
+                params[key] = value;
+            }
+
+            return params;
+        }
+
         // Inicializar la página
         document.addEventListener('DOMContentLoaded', function() {
-            // Cargar todas las discusiones al inicio
-            filterDiscussions();
+            // Obtener parámetros de la URL
+            const params = getUrlParams();
+            const category = params.category || 'all';
+            const discussionId = params.id ? parseInt(params.id) : null;
 
-            // Configurar filtros de categoría
+            // Activar el botón de categoría correspondiente
             const categoryButtons = document.querySelectorAll('#categoryFilters button');
             categoryButtons.forEach(button => {
+                const buttonCategory = button.getAttribute('data-category');
+                if (buttonCategory === category) {
+                    button.classList.remove('btn-outline-secondary');
+                    button.classList.add('btn-primary');
+                } else if (buttonCategory !== 'all') {
+                    button.classList.remove('btn-primary');
+                    button.classList.add('btn-outline-secondary');
+                } else if (category === 'all') {
+                    // Si la categoría es 'all', activar el botón 'Todas'
+                    if (buttonCategory === 'all') {
+                        button.classList.remove('btn-outline-secondary');
+                        button.classList.add('btn-primary');
+                    }
+                }
+
+                // Agregar event listener
                 button.addEventListener('click', function() {
                     // Actualizar estado activo de los botones
                     categoryButtons.forEach(btn => {
@@ -688,8 +719,32 @@
                     // Filtrar discusiones
                     const category = this.getAttribute('data-category');
                     filterDiscussions(category);
+
+                    // Actualizar URL sin recargar la página
+                    const url = new URL(window.location.href);
+                    if (category === 'all') {
+                        url.searchParams.delete('category');
+                    } else {
+                        url.searchParams.set('category', category);
+                    }
+                    url.searchParams.delete('id'); // Eliminar ID al cambiar de categoría
+                    window.history.pushState({}, '', url);
                 });
             });
+
+            // Cargar discusiones según la categoría
+            filterDiscussions(category);
+
+            // Si hay un ID de discusión, resaltar esa discusión
+            if (discussionId) {
+                setTimeout(() => {
+                    const discussionElement = document.querySelector(`#discussionsList a[data-id="${discussionId}"]`);
+                    if (discussionElement) {
+                        discussionElement.classList.add('bg-light-subtle');
+                        discussionElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 100); // Pequeño retraso para asegurar que las discusiones estén cargadas
+            }
 
             // Configurar búsqueda
             const searchInput = document.getElementById('searchInput');
