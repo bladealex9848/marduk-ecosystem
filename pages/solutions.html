@@ -2997,6 +2997,144 @@
         }
 
         /**
+         * Generate solution cards and list items dynamically
+         */
+        function generateSolutionViews() {
+            const gridView = document.getElementById('gridView');
+            const listView = document.querySelector('#listView .list-group');
+
+            // Clear existing content
+            gridView.innerHTML = '';
+            listView.innerHTML = '';
+
+            // Generate grid view cards
+            solutions.forEach(app => {
+                // Create card HTML
+                const cardHtml = `
+                    <div class="col">
+                        <div class="card h-100 border shadow-sm hover-shadow-sm transition-all cursor-pointer" onclick="showAppDetail(${app.id})">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="solution-icon ${app.iconBg} me-3">
+                                        <i class="fa-solid ${app.icon}"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="card-title h6 fw-semibold mb-0 text-truncate">${app.name}</h3>
+                                        <div class="text-secondary small">${app.developer}</div>
+                                        <div class="d-flex align-items-center small mt-1">
+                                            <span class="badge ${getBadgeClass(app.maturityLevel)} text-${getBadgeTextClass(app.maturityLevel)}">${app.maturityName}</span>
+                                            ${app.isOfficial ? `
+                                            <span class="ms-2 d-flex align-items-center text-primary small">
+                                                <i class="fa-solid fa-shield-alt me-1 small"></i>Oficial
+                                            </span>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="card-text small text-secondary mb-3 two-lines">
+                                    ${app.description}
+                                </p>
+
+                                <div class="d-flex flex-wrap gap-1 mb-3">
+                                    ${app.tags.map(tag => `<span class="badge bg-light text-secondary">${tag}</span>`).join('')}
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fa-solid fa-star text-warning me-1"></i>
+                                        <span class="small fw-medium">${app.rating}</span>
+                                        <span class="text-muted small ms-1">(${app.reviews})</span>
+                                    </div>
+                                    <div class="d-flex align-items-center text-muted small">
+                                        <i class="fa-solid fa-download me-1"></i>
+                                        <span>${app.downloads.toLocaleString()}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Add card to grid view
+                gridView.innerHTML += cardHtml;
+
+                // Create list item HTML
+                const listItemHtml = `
+                    <div class="list-group-item p-3 cursor-pointer hover-bg-light-active" onclick="showAppDetail(${app.id})">
+                        <div class="d-flex">
+                            <div class="solution-icon-sm ${app.iconBg} me-3">
+                                <i class="fa-solid ${app.icon}"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h3 class="h6 fw-semibold mb-0">${app.name}</h3>
+                                        <div class="small text-secondary">${app.developer}</div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="badge ${getBadgeClass(app.maturityLevel)} text-${getBadgeTextClass(app.maturityLevel)}">${app.maturityName}</span>
+                                        ${app.isOfficial ? `<span class="badge bg-blue-soft text-blue"><i class="fa-solid fa-shield-alt me-1"></i>Oficial</span>` : ''}
+                                    </div>
+                                </div>
+
+                                <p class="small text-secondary my-2">
+                                    ${app.description}
+                                </p>
+
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex flex-wrap gap-1">
+                                        ${app.tags.map(tag => `<span class="badge bg-light text-secondary">${tag}</span>`).join('')}
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fa-solid fa-star text-warning me-1"></i>
+                                            <span class="small fw-medium">${app.rating}</span>
+                                        </div>
+                                        <div class="d-flex align-items-center text-muted small">
+                                            <i class="fa-solid fa-download me-1"></i>
+                                            <span>${app.downloads.toLocaleString()}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Add list item to list view
+                listView.innerHTML += listItemHtml;
+            });
+        }
+
+        /**
+         * Get badge class based on maturity level
+         */
+        function getBadgeClass(level) {
+            switch(level) {
+                case 1: return 'bg-teal-soft';
+                case 2: return 'bg-purple-soft';
+                case 3: return 'bg-blue-soft';
+                case 4: return 'bg-green-soft';
+                case 5: return 'bg-teal-soft';
+                default: return 'bg-secondary-soft';
+            }
+        }
+
+        /**
+         * Get badge text class based on maturity level
+         */
+        function getBadgeTextClass(level) {
+            switch(level) {
+                case 1: return 'teal';
+                case 2: return 'purple';
+                case 3: return 'blue';
+                case 4: return 'green';
+                case 5: return 'teal';
+                default: return 'secondary';
+            }
+        }
+
+        /**
          * Check URL for app detail parameter
          */
         function checkUrlForAppDetail() {
@@ -3594,6 +3732,21 @@
                 listGroup.appendChild(item);
             });
         }
+    </script>
+
+    <!-- Inicializar la página de soluciones -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Generar vistas de soluciones dinámicamente
+        generateSolutionViews();
+
+        // Inicializar filtros y búsqueda
+        setupViewToggles();
+        setupSearch();
+
+        // Verificar parámetros de URL
+        checkUrlForAppDetail();
+      });
     </script>
 
     <!-- Inicializar el toggle de tema -->
