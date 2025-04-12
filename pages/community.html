@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidad - Marduk</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <!-- Header/Navbar (Same as index.html) -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-gradient sticky-top">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <div class="logo-bg me-2">M</div>
+                <span class="d-none d-md-inline">Marduk</span>
+            </a>
+            
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#mainNav" aria-controls="mainNav" 
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation Items -->
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="solutions.html">Soluciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">Mi Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="community.html">Comunidad</a>
+                    </li>
+                </ul>
+                
+                <!-- Search -->
+                <form class="d-none d-md-flex me-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0">
+                            <i class="fa-solid fa-search text-light"></i>
+                        </span>
+                        <input type="search" class="form-control bg-transparent border-start-0" 
+                               placeholder="Buscar en Marduk..." aria-label="Search">
+                    </div>
+                </form>
+                
+                <!-- User Menu (Same as index.html) -->
+                <div class="d-flex align-items-center">
+                    <!-- Notifications -->
+                    <div class="dropdown me-3 position-relative">
+                        <button class="btn btn-link text-light position-relative p-1" 
+                                id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                4
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0" 
+                             aria-labelledby="notificationDropdown">
+                            <!-- Notification Header -->
+                            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                                <h6 class="m-0">Notificaciones</h6>
+                                <button class="btn btn-sm text-primary">Marcar todas como leídas</button>
+                            </div>
+                            
+                            <!-- Notifications List (simplified) -->
+                            <div class="notification-list">
+                                <div class="notification-item unread p-3 border-bottom">
+                                    <div class="d-flex">
+                                        <div class="notification-icon bg-blue-soft me-3">
+                                            <i class="fa-solid fa-comments"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1 fw-medium">3 personas respondieron a tu discusión</h6>
+                                            <p class="text-secondary mb-1 small">Tu tema sobre implementación de MALLO recibió nuevas respuestas</p>
+                                            <p class="text-muted mt-2 mb-0 small">Hace 5 horas</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- More notifications would go here -->
+                                
+                                <!-- Footer -->
+                                <div class="p-2 text-center border-top bg-light">
+                                    <a href="#" class="text-decoration-none">Ver todas las notificaciones</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- User Profile Menu -->
+                    <div class="dropdown">
+                        <button class="btn btn-link p-0 d-flex align-items-center text-light text-decoration-none dropdown-toggle" 
+                                id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="avatar-circle me-2">AG</div>
+                            <div class="d-none d-md-block text-start">
+                                <div class="lh-1">Ana María González</div>
+                                <div class="small opacity-75">Juez Civil Municipal</div>
+                            </div>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="profile.html">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <!-- Role switcher for demo purposes -->
+                            <li><span class="dropdown-item-text small text-muted">Cambiar rol (demo)</span></li>
+                            <li>
+                                <div class="px-3 py-1 d-flex gap-2 flex-wrap">
+                                    <button class="btn btn-sm btn-primary" onclick="switchUserRole('funcionario')">Funcionario</button>
+                                    <button class="btn btn-sm btn-outline-success" onclick="switchUserRole('ciudadano')">Ciudadano</button>
+                                    <button class="btn btn-sm btn-outline-purple" onclick="switchUserRole('administrador')">Admin</button>
+                                    <button class="btn btn-sm btn-outline-orange" onclick="switchUserRole('desarrollador')">Dev</button>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container py-4">
+        <!-- Community Banner -->
+        <div class="card border-0 bg-gradient-indigo mb-4 rounded-3">
+            <div class="card-body text-white p-4">
+                <h1 class="h3 fw-bold">Comunidad Judicial Marduk</h1>
+                <p class="mb-4 opacity-90">
+                    Conecta, colabora y aprende con otros profesionales dedicados a transformar el sistema judicial colombiano a través de la innovación.
+                </p>
+                
+                <!-- Community Navigation Tabs -->
+                <ul class="nav nav-tabs border-bottom-0">
+                    <li class="nav-item">
+                        <button class="nav-link active text-white border-bottom-0" data-bs-toggle="tab" data-bs-target="#forosTab">
+                            Foros de Discusión
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link text-white-75 border-bottom-0" data-bs-toggle="tab" data-bs-target="#eventosTab">
+                            Eventos
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link text-white-75 border-bottom-0" data-bs-toggle="tab" data-bs-target="#recursosTab">
+                            Recursos
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link text-white-75 border-bottom-0" data-bs-toggle="tab" data-bs-target="#colaboracionTab">
+                            Colaboración en Vivo
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link text-white-75 border-bottom-0" data-bs-toggle="tab" data-bs-target="#mentoriasTab">
+                            Programa de Mentorías
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Foros Tab -->
+            <div class="tab-pane fade show active" id="forosTab">
+                <!-- Forum Categories -->
+                <div class="row g-4">
+                    <!-- General Category -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white p-3 border-0">
+                                <h2 class="h5 fw-bold mb-0">General</h2>
+                                <p class="text-secondary small mb-0">Discusiones generales sobre el ecosistema Marduk</p>
+                            </div>
+                            <div class="list-group list-group-flush">
+                                <!-- Official Announcements Subforum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 bg-blue-soft text-primary rounded p-2 me-3">
+                                            <i class="fa-solid fa-bullhorn"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h3 class="h6 fw-medium mb-0">Anuncios oficiales</h3>
+                                                <span class="badge bg-primary">Oficial</span>
+                                            </div>
+                                            <p class="text-secondary small mb-0">Comunicados y novedades oficiales del ecosistema</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 45 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 312 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- New Members Subforum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 bg-green-soft text-success rounded p-2 me-3">
+                                            <i class="fa-solid fa-user-plus"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-medium mb-0">Bienvenida a nuevos miembros</h3>
+                                            <p class="text-secondary small mb-0">Presentaciones y orientación para nuevos usuarios</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 128 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 754 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- Feedback Subforum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 bg-purple-soft text-purple rounded p-2 me-3">
+                                            <i class="fa-solid fa-comment-dots"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-medium mb-0">Feedback y sugerencias</h3>
+                                            <p class="text-secondary small mb-0">Comparte tu opinión y sugiere mejoras</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 75 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 810 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Solutions Category -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white p-3 border-0">
+                                <h2 class="h5 fw-bold mb-0">Soluciones</h2>
+                                <p class="text-secondary small mb-0">Discusiones específicas sobre soluciones del ecosistema</p>
+                            </div>
+                            <div class="list-group list-group-flush">
+                                <!-- SGEJ Solution Forum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 solution-icon-sm bg-gradient-blue me-3">
+                                            <i class="fa-solid fa-file-alt"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-medium mb-0">Sistema de Gestión de Expedientes Judiciales</h3>
+                                            <p class="text-secondary small mb-0">Todo sobre SGEJ</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 187 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 1452 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- OmniChat Solution Forum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 solution-icon-sm bg-gradient-purple me-3">
+                                            <i class="fa-solid fa-comments"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-medium mb-0">OmniChat: Asistente Virtual Judicial</h3>
+                                            <p class="text-secondary small mb-0">Discusiones sobre OmniChat</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 124 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 982 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- MALLO Solution Forum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 solution-icon-sm bg-gradient-indigo me-3">
+                                            <i class="fa-solid fa-microchip"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-medium mb-0">MALLO (MultiAgent LLM Orchestrator)</h3>
+                                            <p class="text-secondary small mb-0">Discusiones sobre MALLO</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 98 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 745 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- More solution forums button -->
+                                <div class="list-group-item p-3 text-center">
+                                    <button class="btn btn-link text-primary">Ver todas las soluciones</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Best Practices Category -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm mb-4 h-100">
+                            <div class="card-header bg-white p-3 border-0">
+                                <h2 class="h5 fw-bold mb-0">Mejores Prácticas</h2>
+                                <p class="text-secondary small mb-0">Compartir conocimiento y experiencias de implementación</p>
+                            </div>
+                            <div class="list-group list-group-flush">
+                                <!-- Implementation Subforum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 bg-blue-soft text-primary rounded p-2 me-3">
+                                            <i class="fa-solid fa-tools"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-medium mb-0">Implementación</h3>
+                                            <p class="text-secondary small mb-0">Estrategias para implementar soluciones efectivamente</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 120 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 876 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- Training Subforum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 bg-green-soft text-success rounded p-2 me-3">
+                                            <i class="fa-solid fa-graduation-cap"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-medium mb-0">Capacitación</h3>
+                                            <p class="text-secondary small mb-0">Recursos y métodos para capacitar usuarios</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 85 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 654 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- Optimization Subforum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 bg-warning-soft text-warning rounded p-2 me-3">
+                                            <i class="fa-solid fa-bolt"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-medium mb-0">Optimización</h3>
+                                            <p class="text-secondary small mb-0">Técnicas para maximizar el valor de las soluciones</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 137 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 626 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Collaboration Category -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm mb-4 h-100">
+                            <div class="card-header bg-white p-3 border-0">
+                                <h2 class="h5 fw-bold mb-0">Colaboración</h2>
+                                <p class="text-secondary small mb-0">Proyectos colaborativos y desarrollo conjunto</p>
+                            </div>
+                            <div class="list-group list-group-flush">
+                                <!-- Ideas Incubator Subforum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 bg-blue-soft text-primary rounded p-2 me-3">
+                                            <i class="fa-solid fa-lightbulb"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-medium mb-0">Incubadora de ideas</h3>
+                                            <p class="text-secondary small mb-0">Propuestas para nuevas soluciones y funcionalidades</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 87 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 542 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- Active Projects Subforum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 bg-purple-soft text-purple rounded p-2 me-3">
+                                            <i class="fa-solid fa-project-diagram"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-medium mb-0">Proyectos activos</h3>
+                                            <p class="text-secondary small mb-0">Iniciativas en desarrollo que buscan colaboradores</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 45 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 387 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- Code Development Subforum -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0 bg-orange-soft text-orange rounded p-2 me-3">
+                                            <i class="fa-solid fa-code"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-medium mb-0">Desarrollo de código</h3>
+                                            <p class="text-secondary small mb-0">Discusiones técnicas sobre implementación</p>
+                                            <div class="d-flex align-items-center small text-muted mt-1">
+                                                <span><i class="fa-solid fa-comment me-1"></i> 46 temas</span>
+                                                <span class="ms-3"><i class="fa-solid fa-reply me-1"></i> 314 respuestas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Popular Discussions -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white p-3 border-0 d-flex justify-content-between align-items-center">
+                                <h2 class="h5 fw-bold mb-0">Discusiones populares</h2>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        Ordenar por
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Más recientes</a></li>
+                                        <li><a class="dropdown-item" href="#">Más activas</a></li>
+                                        <li><a class="dropdown-item" href="#">Más populares</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="list-group list-group-flush">
+                                <!-- Popular Discussion 1 -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex">
+                                        <div class="avatar-circle-sm me-3">MR</div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h3 class="h6 fw-medium mb-0">Estrategias para implementar IA en tribunales pequeños</h3>
+                                                <span class="badge bg-success">Activo</span>
+                                            </div>
+                                            <p class="text-secondary small mb-0">
+                                                Compartiendo experiencias sobre la implementación de OmniChat en juzgados con recursos limitados
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                <div class="d-flex align-items-center small text-muted">
+                                                    <span>Por <strong>María Rodríguez</strong></span>
+                                                    <span class="mx-2">•</span>
+                                                    <span><i class="fa-solid fa-reply me-1"></i> 35 respuestas</span>
+                                                </div>
+                                                <span class="text-muted small">Actualizado hace 4 horas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- Popular Discussion 2 -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex">
+                                        <div class="avatar-circle-sm me-3">JP</div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h3 class="h6 fw-medium mb-0">Experiencias con MALLO para análisis de jurisprudencia</h3>
+                                                <span class="badge bg-primary">Destacado</span>
+                                            </div>
+                                            <p class="text-secondary small mb-0">
+                                                Resultados y casos de uso del sistema MultiAgent para identificar patrones en jurisprudencia
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                <div class="d-flex align-items-center small text-muted">
+                                                    <span>Por <strong>Juan Pérez</strong></span>
+                                                    <span class="mx-2">•</span>
+                                                    <span><i class="fa-solid fa-reply me-1"></i> 27 respuestas</span>
+                                                </div>
+                                                <span class="text-muted small">Actualizado hace 1 día</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- Popular Discussion 3 -->
+                                <a href="#" class="list-group-item list-group-item-action p-3">
+                                    <div class="d-flex">
+                                        <div class="avatar-circle-sm me-3">CL</div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h3 class="h6 fw-medium mb-0">Integración de SGEJ con sistemas de terceros</h3>
+                                                <span class="badge bg-info">Técnico</span>
+                                            </div>
+                                            <p class="text-secondary small mb-0">
+                                                Opciones y mejores prácticas para integrar el Sistema de Gestión con otras plataformas
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                <div class="d-flex align-items-center small text-muted">
+                                                    <span>Por <strong>Carlos López</strong></span>
+                                                    <span class="mx-2">•</span>
+                                                    <span><i class="fa-solid fa-reply me-1"></i> 19 respuestas</span>
+                                                </div>
+                                                <span class="text-muted small">Actualizado hace 3 días</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- View All Button -->
+                                <div class="list-group-item p-3 text-center">
+                                    <button class="btn btn-primary">Ver todas las discusiones</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Eventos Tab -->
+            <div class="tab-pane fade" id="eventosTab">
+                <div class="row g-4">
+                    <!-- Featured Event -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm mb-4 bg-gradient-light p-0 overflow-hidden">
+                            <div class="card-body p-0">
+                                <div class="row g-0">
+                                    <div class="col-md-3 bg-indigo d-flex align-items-center justify-content-center text-white p-4">
+                                        <div class="text-center">
+                                            <h3 class="display-4 fw-bold mb-0">20</h3>
+                                            <p class="h5 mb-0">Mayo</p>
+                                            <p class="small opacity-75 mb-0">2025</p>
+                                            <div class="badge bg-white text-indigo mt-2">3 días</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9 p-4">
+                                        <span class="badge bg-indigo mb-2">Destacado</span>
+                                        <h2 class="h4 fw-bold">Hackathon: Innovación Judicial 2025</h2>
+                                        <p class="text-secondary mb-3">
+                                            Tres días de innovación intensiva para desarrollar soluciones que transformen el sistema judicial.
+                                        </p>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="d-flex mb-2">
+                                                    <i class="fa-solid fa-calendar-alt text-secondary me-2 mt-1"></i>
+                                                    <div>
+                                                        <p class="fw-medium mb-0 small">Fecha y hora</p>
+                                                        <p class="text-secondary small mb-0">20-22 Mayo, 2025 • 09:00 - 18:00</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="d-flex">
+                                                    <i class="fa-solid fa-map-marker-alt text-secondary me-2 mt-1"></i>
+                                                    <div>
+                                                        <p class="fw-medium mb-0 small">Ubicación</p>
+                                                        <p class="text-secondary small mb-0">Virtual + Sede Judicial Bogotá</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="d-flex mb-2">
+                                                    <i class="fa-solid fa-users text-secondary me-2 mt-1"></i>
+                                                    <div>
+                                                        <p class="fw-medium mb-0 small">Participantes</p>
+                                                        <p class="text-secondary small mb-0">237 inscritos</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="d-flex">
+                                                    <i class="fa-solid fa-tag text-secondary me-2 mt-1"></i>
+                                                    <div>
+                                                        <p class="fw-medium mb-0 small">Etiquetas</p>
+                                                        <div class="d-flex gap-1 mt-1">
+                                                            <span class="badge bg-light text-secondary">innovación</span>
+                                                            <span class="badge bg-light text-secondary">desarrollo</span>
+                                                            <span class="badge bg-light text-secondary">colaboración</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <button class="btn btn-indigo">Inscribirme</button>
+                                            <button class="btn btn-outline-secondary btn-sm">
+                                                <i class="fa-solid fa-calendar-plus me-1"></i> Añadir al calendario
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upcoming Events Section -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white p-3 border-0 d-flex justify-content-between align-items-center">
+                                <h2 class="h5 fw-bold mb-0">Próximos eventos</h2>
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check form-switch me-3">
+                                        <input class="form-check-input" type="checkbox" id="showVirtualOnly">
+                                        <label class="form-check-label small" for="showVirtualOnly">Solo virtuales</label>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fa-solid fa-filter me-1"></i> Filtrar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="list-group list-group-flush">
+                                <!-- Workshop Event -->
+                                <div class="list-group-item p-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-2 text-center mb-3 mb-md-0">
+                                            <div class="date-box bg-light rounded p-2 mx-auto" style="max-width: 100px;">
+                                                <h3 class="fw-bold text-primary mb-0">15</h3>
+                                                <p class="small text-secondary mb-0">Abril, 2025</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 mb-3 mb-md-0">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <span class="badge bg-success me-2">Workshop</span>
+                                                <span class="badge bg-info text-dark">Virtual</span>
+                                            </div>
+                                            <h3 class="h6 fw-semibold mb-1">Workshop: Implementación Avanzada de SGEJ</h3>
+                                            <p class="small text-secondary mb-1">
+                                                Sesión práctica sobre implementación y optimización del Sistema de Gestión de Expedientes Judiciales.
+                                            </p>
+                                            <div class="d-flex align-items-center small text-muted">
+                                                <i class="fa-solid fa-clock me-1"></i>
+                                                <span>09:00 - 12:30</span>
+                                                <span class="mx-2">•</span>
+                                                <i class="fa-solid fa-users me-1"></i>
+                                                <span>85 inscritos</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 text-md-end">
+                                            <button class="btn btn-primary btn-sm mb-2 mb-md-0 me-2">Inscribirme</button>
+                                            <button class="btn btn-outline-secondary btn-sm">
+                                                <i class="fa-solid fa-info-circle"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Webinar Event -->
+                                <div class="list-group-item p-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-2 text-center mb-3 mb-md-0">
+                                            <div class="date-box bg-light rounded p-2 mx-auto" style="max-width: 100px;">
+                                                <h3 class="fw-bold text-primary mb-0">28</h3>
+                                                <p class="small text-secondary mb-0">Abril, 2025</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 mb-3 mb-md-0">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <span class="badge bg-info text-dark me-2">Webinar</span>
+                                                <span class="badge bg-info text-dark">Virtual</span>
+                                            </div>
+                                            <h3 class="h6 fw-semibold mb-1">Webinar: Inteligencia Artificial en la Justicia</h3>
+                                            <p class="small text-secondary mb-1">
+                                                Presentación sobre los avances y aplicaciones de IA en el sistema judicial colombiano.
+                                            </p>
+                                            <div class="d-flex align-items-center small text-muted">
+                                                <i class="fa-solid fa-clock me-1"></i>
+                                                <span>16:00 - 17:30</span>
+                                                <span class="mx-2">•</span>
+                                                <i class="fa-solid fa-users me-1"></i>
+                                                <span>120 inscritos</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 text-md-end">
+                                            <button class="btn btn-primary btn-sm mb-2 mb-md-0 me-2">Inscribirme</button>
+                                            <button class="btn btn-outline-secondary btn-sm">
+                                                <i class="fa-solid fa-info-circle"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Integration Workshop Event -->
+                                <div class="list-group-item p-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-2 text-center mb-3 mb-md-0">
+                                            <div class="date-box bg-light rounded p-2 mx-auto" style="max-width: 100px;">
+                                                <h3 class="fw-bold text-primary mb-0">12</h3>
+                                                <p class="small text-secondary mb-0">Abril, 2025</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 mb-3 mb-md-0">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <span class="badge bg-purple me-2">Taller</span>
+                                                <span class="badge bg-info text-dark">Virtual</span>
+                                            </div>
+                                            <h3 class="h6 fw-semibold mb-1">Taller: Integración entre MALLO y SGEJ</h3>
+                                            <p class="small text-secondary mb-1">
+                                                Sesión práctica sobre cómo integrar MALLO con el Sistema de Gestión de Expedientes Judiciales.
+                                            </p>
+                                            <div class="d-flex align-items-center small text-muted">
+                                                <i class="fa-solid fa-clock me-1"></i>
+                                                <span>10:00 - 12:00</span>
+                                                <span class="mx-2">•</span>
+                                                <i class="fa-solid fa-users me-1"></i>
+                                                <span>18 inscritos</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 text-md-end">
+                                            <button class="btn btn-primary btn-sm mb-2 mb-md-0 me-2">Inscribirme</button>
+                                            <button class="btn btn-outline-secondary btn-sm">
+                                                <i class="fa-solid fa-info-circle"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- View All Button -->
+                                <div class="list-group-item p-3 text-center">
+                                    <button class="btn btn-primary">Ver todos los eventos</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recursos Tab -->
+            <div class="tab-pane fade" id="recursosTab">
+                <div class="row g-4">
+                    <!-- Resource Categories -->
+                    <div class="col-12">
+                        <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
+                            <!-- All Resources Category -->
+                            <div class="col">
+                                <div class="card h-100 border-0 bg-blue-soft shadow-sm text-center">
+                                    <div class="card-body p-4">
+                                        <div class="rounded-circle bg-blue-soft-dark p-3 d-inline-flex mb-3">
+                                            <i class="fa-solid fa-compass fa-2x text-primary"></i>
+                                        </div>
+                                        <h3 class="h5 fw-bold">Todos los recursos</h3>
+                                        <p class="text-secondary mb-0">279 recursos disponibles</p>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+                                        <button class="btn btn-primary">Explorar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Guides Category -->
+                            <div class="col">
+                                <div class="card h-100 border shadow-sm text-center">
+                                    <div class="card-body p-4">
+                                        <div class="rounded-circle bg-blue-soft p-3 d-inline-flex mb-3">
+                                            <i class="fa-solid fa-file-alt fa-2x text-primary"></i>
+                                        </div>
+                                        <h3 class="h5 fw-bold">Guías y Manuales</h3>
+                                        <p class="text-secondary mb-0">78 recursos disponibles</p>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+                                        <button class="btn btn-outline-primary">Explorar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Videos Category -->
+                            <div class="col">
+                                <div class="card h-100 border shadow-sm text-center">
+                                    <div class="card-body p-4">
+                                        <div class="rounded-circle bg-green-soft p-3 d-inline-flex mb-3">
+                                            <i class="fa-solid fa-video fa-2x text-success"></i>
+                                        </div>
+                                        <h3 class="h5 fw-bold">Videos Tutoriales</h3>
+                                        <p class="text-secondary mb-0">42 recursos disponibles</p>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+                                        <button class="btn btn-outline-success">Explorar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Code Category -->
+                            <div class="col">
+                                <div class="card h-100 border shadow-sm text-center">
+                                    <div class="card-body p-4">
+                                        <div class="rounded-circle bg-purple-soft p-3 d-inline-flex mb-3">
+                                            <i class="fa-solid fa-code fa-2x text-purple"></i>
+                                        </div>
+                                        <h3 class="h5 fw-bold">Código y Snippets</h3>
+                                        <p class="text-secondary mb-0">124 recursos disponibles</p>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pt-0 pb-3">
+                                        <button class="btn btn-outline-purple">Explorar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Featured Resources -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white p-3 border-0">
+                                <h2 class="h5 fw-bold mb-0">Recursos destacados</h2>
+                            </div>
+                            <div class="list-group list-group-flush">
+                                <!-- SGEJ Implementation Guide -->
+                                <div class="list-group-item p-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0 bg-blue-soft p-3 rounded me-3 text-center" style="width: 75px;">
+                                            <i class="fa-solid fa-file-alt text-primary fa-2x"></i>
+                                            <p class="small text-primary mb-0 mt-1">Guía</p>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h3 class="h6 fw-semibold mb-1">Guía de Implementación: SGEJ en Juzgados Pequeños</h3>
+                                                    <p class="small text-secondary mb-2">
+                                                        Guía completa con estrategias para implementar el Sistema de Gestión de Expedientes Judiciales en despachos con recursos limitados.
+                                                    </p>
+                                                </div>
+                                                <span class="badge bg-success ms-2">Popular</span>
+                                            </div>
+                                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                                <span class="badge bg-light text-secondary">SGEJ</span>
+                                                <span class="badge bg-light text-secondary">implementación</span>
+                                                <span class="badge bg-light text-secondary">optimización</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center small text-muted">
+                                                    <div class="avatar-circle-xs me-2">RM</div>
+                                                    <span class="me-2">Ricardo Méndez</span>
+                                                    <span class="text-secondary small">Juez Civil Municipal</span>
+                                                </div>
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <span class="small text-muted">Marzo 15, 2025</span>
+                                                    <div class="d-flex align-items-center text-warning">
+                                                        <i class="fa-solid fa-star me-1"></i>
+                                                        <span>4.8</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center text-muted">
+                                                        <i class="fa-solid fa-download me-1"></i>
+                                                        <span>1,234</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- OmniChat Video Tutorial -->
+                                <div class="list-group-item p-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0 bg-green-soft p-3 rounded me-3 text-center" style="width: 75px;">
+                                            <i class="fa-solid fa-video text-success fa-2x"></i>
+                                            <p class="small text-success mb-0 mt-1">Video</p>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-semibold mb-1">Video Tutorial: Uso avanzado de OmniChat para consultas complejas</h3>
+                                            <p class="small text-secondary mb-2">
+                                                Tutorial detallado sobre técnicas avanzadas para formular consultas complejas al asistente virtual OmniChat.
+                                            </p>
+                                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                                <span class="badge bg-light text-secondary">OmniChat</span>
+                                                <span class="badge bg-light text-secondary">IA</span>
+                                                <span class="badge bg-light text-secondary">consultas</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center small text-muted">
+                                                    <div class="avatar-circle-xs me-2">MH</div>
+                                                    <span class="me-2">María Hernández</span>
+                                                    <span class="text-secondary small">Especialista en IA Judicial</span>
+                                                </div>
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <span class="small text-muted">Marzo 10, 2025</span>
+                                                    <div class="d-flex align-items-center text-warning">
+                                                        <i class="fa-solid fa-star me-1"></i>
+                                                        <span>4.7</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center text-muted">
+                                                        <i class="fa-solid fa-eye me-1"></i>
+                                                        <span>876</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- API Integration Code -->
+                                <div class="list-group-item p-3">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0 bg-purple-soft p-3 rounded me-3 text-center" style="width: 75px;">
+                                            <i class="fa-solid fa-code text-purple fa-2x"></i>
+                                            <p class="small text-purple mb-0 mt-1">Código</p>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h3 class="h6 fw-semibold mb-1">Implementación de API personalizada para integración con SGEJ</h3>
+                                            <p class="small text-secondary mb-2">
+                                                Código comentado y documentación para desarrollar una API personalizada que se integre con SGEJ para necesidades específicas.
+                                            </p>
+                                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                                <span class="badge bg-light text-secondary">API</span>
+                                                <span class="badge bg-light text-secondary">integración</span>
+                                                <span class="badge bg-light text-secondary">SGEJ</span>
+                                                <span class="badge bg-light text-secondary">desarrollo</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center small text-muted">
+                                                    <div class="avatar-circle-xs me-2">CR</div>
+                                                    <span class="me-2">Carlos Ramírez</span>
+                                                    <span class="text-secondary small">Desarrollador Full Stack</span>
+                                                </div>
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <span class="small text-muted">Marzo 5, 2025</span>
+                                                    <div class="d-flex align-items-center text-warning">
+                                                        <i class="fa-solid fa-star me-1"></i>
+                                                        <span>4.9</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center text-muted">
+                                                        <i class="fa-solid fa-download me-1"></i>
+                                                        <span>587</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- View All Button -->
+                                <div class="list-group-item p-3 text-center">
+                                    <button class="btn btn-primary">Explorar todos los recursos</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contribute Resource Section -->
+                    <div class="col-12">
+                        <div class="card border-0 bg-gradient-light mb-4">
+                            <div class="card-body p-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h2 class="h4 fw-bold">¿Tienes un recurso para compartir?</h2>
+                                        <p class="mb-0">
+                                            Comparte tus guías, tutoriales, código o experiencias con la comunidad judicial y ayuda a otros a implementar mejores soluciones.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                        <button class="btn btn-primary">
+                                            <i class="fa-solid fa-plus me-1"></i> Contribuir recurso
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Colaboración en Vivo Tab -->
+            <div class="tab-pane fade" id="colaboracionTab">
+                <div class="row g-4">
+                    <!-- Live Collaboration Section -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body p-4">
+                                <h2 class="h5 fw-bold mb-4">Colaboración en vivo</h2>
+                                
+                                <div class="row g-4">
+                                    <!-- Virtual Sessions -->
+                                    <div class="col-md-6">
+                                        <div class="card border border-primary-subtle rounded-3 h-100">
+                                            <div class="card-body p-4">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3 text-primary">
+                                                        <i class="fa-solid fa-video"></i>
+                                                    </div>
+                                                    <h3 class="h6 fw-semibold mb-0">Sesiones virtuales</h3>
+                                                </div>
+                                                
+                                                <div class="card bg-primary bg-opacity-10 border-0 mb-3">
+                                                    <div class="card-body p-3">
+                                                        <p class="fw-medium mb-1">Implementación de SGEJ: Mejores prácticas</p>
+                                                        <div class="d-flex justify-content-between small mb-2">
+                                                            <span class="text-secondary">Hoy, 15:00 - 16:30</span>
+                                                            <span class="text-primary">23 participantes</span>
+                                                        </div>
+                                                        <button class="btn btn-primary btn-sm w-100">
+                                                            Unirse ahora
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="card bg-light border-0">
+                                                    <div class="card-body p-3">
+                                                        <p class="fw-medium mb-1">Taller: Integración entre MALLO y SGEJ</p>
+                                                        <div class="d-flex justify-content-between small mb-2">
+                                                            <span class="text-secondary">Mañana, 10:00 - 12:00</span>
+                                                            <span class="text-secondary">18 participantes</span>
+                                                        </div>
+                                                        <button class="btn btn-outline-secondary btn-sm w-100">
+                                                            Recordármelo
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Collaborative Development -->
+                                    <div class="col-md-6">
+                                        <div class="card border border-success-subtle rounded-3 h-100">
+                                            <div class="card-body p-4">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="rounded-circle bg-success bg-opacity-10 p-2 me-3 text-success">
+                                                        <i class="fa-solid fa-code"></i>
+                                                    </div>
+                                                    <h3 class="h6 fw-semibold mb-0">Desarrollo colaborativo</h3>
+                                                </div>
+                                                
+                                                <div class="card bg-success bg-opacity-10 border-0 mb-3">
+                                                    <div class="card-body p-3">
+                                                        <div class="d-flex justify-content-between mb-1">
+                                                            <p class="fw-medium mb-0">API Unificada</p>
+                                                            <span class="badge bg-success bg-opacity-25 text-success">
+                                                                Activo ahora
+                                                            </span>
+                                                        </div>
+                                                        <p class="small text-secondary mb-2">
+                                                            4 desarrolladores trabajando en integración de endpoints
+                                                        </p>
+                                                        <button class="btn btn-success btn-sm w-100">
+                                                            Unirse a la sesión
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="card bg-light border-0">
+                                                    <div class="card-body p-3">
+                                                        <p class="fw-medium mb-1">Framework de Accesibilidad</p>
+                                                        <p class="small text-secondary mb-2">
+                                                            Próxima sesión: Componentes accesibles para formularios
+                                                        </p>
+                                                        <button class="btn btn-outline-secondary btn-sm w-100">
+                                                            Programado para 18/04
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Collaboration Schedule -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white p-3 border-0 d-flex justify-content-between align-items-center">
+                                <h2 class="h5 fw-bold mb-0">Calendario de colaboración</h2>
+                                <button class="btn btn-outline-primary btn-sm">
+                                    <i class="fa-solid fa-calendar-plus me-1"></i> Programar sesión
+                                </button>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Hora</th>
+                                                <th>Tema</th>
+                                                <th>Tipo</th>
+                                                <th>Facilitador</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Hoy</td>
+                                                <td>15:00 - 16:30</td>
+                                                <td>Implementación de SGEJ: Mejores prácticas</td>
+                                                <td><span class="badge bg-primary">Webinar</span></td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar-circle-xs me-2">MV</div>
+                                                        <span>Mónica Valencia</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-primary btn-sm">Unirse</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>12 Abr</td>
+                                                <td>10:00 - 12:00</td>
+                                                <td>Taller: Integración entre MALLO y SGEJ</td>
+                                                <td><span class="badge bg-purple">Taller</span></td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar-circle-xs me-2">JR</div>
+                                                        <span>Juan Ramírez</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-outline-primary btn-sm">Inscribirse</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>18 Abr</td>
+                                                <td>14:00 - 17:00</td>
+                                                <td>Framework de Accesibilidad</td>
+                                                <td><span class="badge bg-success">Desarrollo</span></td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar-circle-xs me-2">CR</div>
+                                                        <span>Carlos Rodríguez</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-outline-primary btn-sm">Inscribirse</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>25 Abr</td>
+                                                <td>09:00 - 11:00</td>
+                                                <td>Optimización de consultas OmniChat</td>
+                                                <td><span class="badge bg-info text-dark">Workshop</span></td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar-circle-xs me-2">LM</div>
+                                                        <span>Laura Méndez</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-outline-primary btn-sm">Inscribirse</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-0 text-center">
+                                <button class="btn btn-primary">Ver calendario completo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mentorías Tab -->
+            <div class="tab-pane fade" id="mentoriasTab">
+                <div class="row g-4">
+                    <!-- Mentorship Program Info -->
+                    <div class="col-12">
+                        <div class="card border-0 bg-gradient-blue mb-4">
+                            <div class="card-body p-4 text-white">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h2 class="h4 fw-bold">Programa de Mentorías</h2>
+                                        <p class="mb-3">
+                                            Conecta con expertos judiciales y tecnológicos para acelerar tu aprendizaje y maximizar el valor de las soluciones que utilizas.
+                                        </p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="d-flex align-items-center mb-2">
+                                                <i class="fa-solid fa-check-circle me-2"></i>
+                                                <span>Mentoría personalizada en áreas específicas</span>
+                                            </li>
+                                            <li class="d-flex align-items-center mb-2">
+                                                <i class="fa-solid fa-check-circle me-2"></i>
+                                                <span>Sesiones regulares con expertos del ecosistema</span>
+                                            </li>
+                                            <li class="d-flex align-items-center">
+                                                <i class="fa-solid fa-check-circle me-2"></i>
+                                                <span>Seguimiento de progreso y objetivos personalizados</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4 text-center mt-4 mt-md-0">
+                                        <div class="display-4 mb-2"><i class="fa-solid fa-users"></i></div>
+                                        <button class="btn btn-light">
+                                            <i class="fa-solid fa-user-plus me-1"></i> Solicitar un mentor
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mentors List -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white p-3 border-0 d-flex justify-content-between align-items-center">
+                                <h2 class="h5 fw-bold mb-0">Mentores destacados</h2>
+                                <div class="d-flex align-items-center">
+                                    <select class="form-select form-select-sm me-2">
+                                        <option value="">Todas las especialidades</option>
+                                        <option value="implementacion">Implementación</option>
+                                        <option value="desarrollo">Desarrollo</option>
+                                        <option value="analitica">Analítica de datos</option>
+                                    </select>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fa-solid fa-filter me-1"></i> Filtrar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="row row-cols-1 row-cols-md-3 g-4">
+                                    <!-- Mentor 1 -->
+                                    <div class="col">
+                                        <div class="card h-100 border hover-shadow transition-all">
+                                            <div class="card-body p-4">
+                                                <div class="text-center mb-3">
+                                                    <div class="avatar-circle-lg mx-auto mb-3">LS</div>
+                                                    <h3 class="h5 fw-bold mb-1">Laura Sánchez</h3>
+                                                    <p class="text-secondary small mb-2">Juez de Circuito</p>
+                                                    <div class="d-flex justify-content-center align-items-center mb-3">
+                                                        <div class="d-flex align-items-center text-warning me-3">
+                                                            <i class="fa-solid fa-star me-1"></i>
+                                                            <span>4.9</span>
+                                                        </div>
+                                                        <span class="text-secondary small">
+                                                            <i class="fa-solid fa-user-friends me-1"></i> 8 aprendices
+                                                        </span>
+                                                    </div>
+                                                    <p class="badge bg-primary mb-0">Implementación de SGEJ</p>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <p class="small text-secondary mb-3">
+                                                        Especialista en optimización de procesos judiciales a través de herramientas digitales.
+                                                    </p>
+                                                    <div class="d-flex align-items-center small text-muted mb-2">
+                                                        <i class="fa-solid fa-clock me-2"></i>
+                                                        <span>Experiencia: 5 años</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center small text-muted">
+                                                        <i class="fa-solid fa-calendar-check me-2"></i>
+                                                        <span>Disponibilidad: Martes y Jueves, 16:00-18:00</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="d-flex flex-wrap gap-1 mb-3">
+                                                    <span class="badge bg-blue-soft text-primary">Experto SGEJ</span>
+                                                    <span class="badge bg-purple-soft text-purple">Mentor Destacado</span>
+                                                    <span class="badge bg-indigo-soft text-indigo">Innovador Digital</span>
+                                                </div>
+                                                
+                                                <button class="btn btn-primary btn-sm w-100">Solicitar mentoría</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Mentor 2 -->
+                                    <div class="col">
+                                        <div class="card h-100 border hover-shadow transition-all">
+                                            <div class="card-body p-4">
+                                                <div class="text-center mb-3">
+                                                    <div class="avatar-circle-lg mx-auto mb-3">RG</div>
+                                                    <h3 class="h5 fw-bold mb-1">Roberto Gómez</h3>
+                                                    <p class="text-secondary small mb-2">Desarrollador Senior</p>
+                                                    <div class="d-flex justify-content-center align-items-center mb-3">
+                                                        <div class="d-flex align-items-center text-warning me-3">
+                                                            <i class="fa-solid fa-star me-1"></i>
+                                                            <span>4.8</span>
+                                                        </div>
+                                                        <span class="text-secondary small">
+                                                            <i class="fa-solid fa-user-friends me-1"></i> 5 aprendices
+                                                        </span>
+                                                    </div>
+                                                    <p class="badge bg-orange mb-0">Integración de APIs</p>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <p class="small text-secondary mb-3">
+                                                        Especializado en desarrollo de integraciones y extensiones para el ecosistema Marduk.
+                                                    </p>
+                                                    <div class="d-flex align-items-center small text-muted mb-2">
+                                                        <i class="fa-solid fa-clock me-2"></i>
+                                                        <span>Experiencia: 7 años</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center small text-muted">
+                                                        <i class="fa-solid fa-calendar-check me-2"></i>
+                                                        <span>Disponibilidad: Lunes y Miércoles, 18:00-20:00</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="d-flex flex-wrap gap-1 mb-3">
+                                                    <span class="badge bg-orange-soft text-orange">Experto Técnico</span>
+                                                    <span class="badge bg-success-soft text-success">Contribuidor Élite</span>
+                                                    <span class="badge bg-blue-soft text-primary">Maestro API</span>
+                                                </div>
+                                                
+                                                <button class="btn btn-primary btn-sm w-100">Solicitar mentoría</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Mentor 3 -->
+                                    <div class="col">
+                                        <div class="card h-100 border hover-shadow transition-all">
+                                            <div class="card-body p-4">
+                                                <div class="text-center mb-3">
+                                                    <div class="avatar-circle-lg mx-auto mb-3">CR</div>
+                                                    <h3 class="h5 fw-bold mb-1">Catalina Restrepo</h3>
+                                                    <p class="text-secondary small mb-2">Analista de Datos Judicial</p>
+                                                    <div class="d-flex justify-content-center align-items-center mb-3">
+                                                        <div class="d-flex align-items-center text-warning me-3">
+                                                            <i class="fa-solid fa-star me-1"></i>
+                                                            <span>4.7</span>
+                                                        </div>
+                                                        <span class="text-secondary small">
+                                                            <i class="fa-solid fa-user-friends me-1"></i> 4 aprendices
+                                                        </span>
+                                                    </div>
+                                                    <p class="badge bg-success mb-0">Analítica para toma de decisiones</p>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <p class="small text-secondary mb-3">
+                                                        Experta en el uso de datos judiciales para optimizar procesos y tomar decisiones estratégicas.
+                                                    </p>
+                                                    <div class="d-flex align-items-center small text-muted mb-2">
+                                                        <i class="fa-solid fa-clock me-2"></i>
+                                                        <span>Experiencia: 4 años</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center small text-muted">
+                                                        <i class="fa-solid fa-calendar-check me-2"></i>
+                                                        <span>Disponibilidad: Viernes, 15:00-19:00</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="d-flex flex-wrap gap-1 mb-3">
+                                                    <span class="badge bg-info-soft text-info">Analista Experto</span>
+                                                    <span class="badge bg-purple-soft text-purple">Innovador Analítico</span>
+                                                    <span class="badge bg-teal-soft text-teal">Mentor</span>
+                                                </div>
+                                                
+                                                <button class="btn btn-primary btn-sm w-100">Solicitar mentoría</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-0 text-center">
+                                <button class="btn btn-primary">Ver todos los mentores</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonials Section -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white p-3 border-0">
+                                <h2 class="h5 fw-bold mb-0">Testimonios del programa</h2>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="row g-4">
+                                    <!-- Testimonial 1 -->
+                                    <div class="col-md-6">
+                                        <div class="card bg-light border-0 h-100">
+                                            <div class="card-body p-4">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="avatar-circle me-3">JR</div>
+                                                    <div>
+                                                        <h3 class="h6 fw-semibold mb-0">Jorge Ramírez</h3>
+                                                        <p class="small text-secondary mb-0">Secretario Judicial</p>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div class="d-flex text-warning mb-1">
+                                                        <i class="fa-solid fa-star"></i>
+                                                        <i class="fa-solid fa-star"></i>
+                                                        <i class="fa-solid fa-star"></i>
+                                                        <i class="fa-solid fa-star"></i>
+                                                        <i class="fa-solid fa-star"></i>
+                                                    </div>
+                                                    <p class="fst-italic mb-0">
+                                                        "El programa de mentoría me permitió implementar SGEJ en mi despacho en la mitad del tiempo estimado inicialmente."
+                                                    </p>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="small text-muted">Mentor:</span>
+                                                    <span class="badge bg-blue-soft text-primary ms-2">Laura Sánchez</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Testimonial 2 -->
+                                    <div class="col-md-6">
+                                        <div class="card bg-light border-0 h-100">
+                                            <div class="card-body p-4">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="avatar-circle me-3">MT</div>
+                                                    <div>
+                                                        <h3 class="h6 fw-semibold mb-0">Mónica Torres</h3>
+                                                        <p class="small text-secondary mb-0">Desarrolladora Junior</p>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div class="d-flex text-warning mb-1">
+                                                        <i class="fa-solid fa-star"></i>
+                                                        <i class="fa-solid fa-star"></i>
+                                                        <i class="fa-solid fa-star"></i>
+                                                        <i class="fa-solid fa-star"></i>
+                                                        <i class="fa-solid fa-star"></i>
+                                                    </div>
+                                                    <p class="fst-italic mb-0">
+                                                        "Gracias a las sesiones con mi mentor, pude desarrollar mi primera integración con la API de Marduk en solo dos semanas."
+                                                    </p>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="small text-muted">Mentor:</span>
+                                                    <span class="badge bg-orange-soft text-orange ms-2">Roberto Gómez</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer (Same as index.html) -->
+    <footer class="bg-light py-4 mt-auto border-top">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="h6 fw-bold text-primary">Marduk</h5>
+                    <p class="small text-secondary mb-0">Ecosistema de soluciones para la transformación judicial</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0 text-center">
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="#" class="text-decoration-none text-secondary small">Acerca de</a>
+                        <a href="#" class="text-decoration-none text-secondary small">Políticas</a>
+                        <a href="#" class="text-decoration-none text-secondary small">Contribuir</a>
+                        <a href="#" class="text-decoration-none text-secondary small">Soporte</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <p class="small text-muted mb-0">© 2025 Rama Judicial de Colombia</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/community.js"></script>
+</body>
+</html>

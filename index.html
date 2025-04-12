@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marduk - Ecosistema de Transformación Judicial</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-gradient sticky-top">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <div class="logo-bg me-2">M</div>
+                <span class="d-none d-md-inline">Marduk</span>
+            </a>
+            
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#mainNav" aria-controls="mainNav" 
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation Items -->
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/solutions.html">Soluciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/profile.html">Mi Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/community.html">Comunidad</a>
+                    </li>
+                </ul>
+                
+                <!-- Search -->
+                <form class="d-none d-md-flex me-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0">
+                            <i class="fa-solid fa-search text-light"></i>
+                        </span>
+                        <input type="search" class="form-control bg-transparent border-start-0" 
+                               placeholder="Buscar en Marduk..." aria-label="Search">
+                    </div>
+                </form>
+                
+                <!-- User Menu -->
+                <div class="d-flex align-items-center">
+                    <!-- Notifications -->
+                    <div class="dropdown me-3 position-relative">
+                        <button class="btn btn-link text-light position-relative p-1" 
+                                id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                4
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0" 
+                             aria-labelledby="notificationDropdown">
+                            <!-- Notification Header -->
+                            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                                <h6 class="m-0">Notificaciones</h6>
+                                <button class="btn btn-sm text-primary">Marcar todas como leídas</button>
+                            </div>
+                            
+                            <!-- Notifications List -->
+                            <div class="notification-list">
+                                <!-- Update Notification -->
+                                <div class="notification-item unread p-3 border-bottom">
+                                    <div class="d-flex">
+                                        <div class="notification-icon bg-blue-soft me-3">
+                                            <i class="fa-solid fa-download"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1 fw-medium">Actualización disponible para SGEJ</h6>
+                                            <p class="text-secondary mb-1 small">La nueva versión 2.5.3 incluye mejoras en la búsqueda de expedientes</p>
+                                            <div class="d-flex mt-2 gap-2">
+                                                <button class="btn btn-sm btn-primary">Actualizar ahora</button>
+                                                <button class="btn btn-sm btn-light">Ver novedades</button>
+                                            </div>
+                                            <p class="text-muted mt-2 mb-0 small">Hace 2 horas</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Social Notification -->
+                                <div class="notification-item unread p-3 border-bottom">
+                                    <div class="d-flex">
+                                        <div class="notification-icon bg-purple-soft me-3">
+                                            <i class="fa-solid fa-comments"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1 fw-medium">3 personas respondieron a tu discusión</h6>
+                                            <p class="text-secondary mb-1 small">Tu tema sobre implementación de MALLO recibió nuevas respuestas</p>
+                                            <div class="d-flex mt-2">
+                                                <button class="btn btn-sm btn-primary">Ver respuestas</button>
+                                            </div>
+                                            <p class="text-muted mt-2 mb-0 small">Hace 5 horas</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Achievement Notification -->
+                                <div class="notification-item p-3 border-bottom">
+                                    <div class="d-flex">
+                                        <div class="notification-icon bg-green-soft me-3">
+                                            <i class="fa-solid fa-award"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1 fw-medium">¡Objetivo alcanzado!</h6>
+                                            <p class="text-secondary mb-1 small">Has completado tu objetivo de probar 5 soluciones diferentes</p>
+                                            <div class="d-flex mt-2">
+                                                <button class="btn btn-sm btn-primary">Ver recompensa</button>
+                                            </div>
+                                            <p class="text-muted mt-2 mb-0 small">Hace 1 día</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- More notifications would go here -->
+                                
+                                <!-- Footer -->
+                                <div class="p-2 text-center border-top bg-light">
+                                    <a href="#" class="text-decoration-none">Ver todas las notificaciones</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- User Profile Menu -->
+                    <div class="dropdown">
+                        <button class="btn btn-link p-0 d-flex align-items-center text-light text-decoration-none dropdown-toggle" 
+                                id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="avatar-circle me-2">AG</div>
+                            <div class="d-none d-md-block text-start">
+                                <div class="lh-1">Ana María González</div>
+                                <div class="small opacity-75">Juez Civil Municipal</div>
+                            </div>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="pages/profile.html">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <!-- Role switcher for demo purposes -->
+                            <li><span class="dropdown-item-text small text-muted">Cambiar rol (demo)</span></li>
+                            <li>
+                                <div class="px-3 py-1 d-flex gap-2 flex-wrap">
+                                    <button class="btn btn-sm btn-primary" onclick="switchUserRole('funcionario')">Funcionario</button>
+                                    <button class="btn btn-sm btn-outline-success" onclick="switchUserRole('ciudadano')">Ciudadano</button>
+                                    <button class="btn btn-sm btn-outline-purple" onclick="switchUserRole('administrador')">Admin</button>
+                                    <button class="btn btn-sm btn-outline-orange" onclick="switchUserRole('desarrollador')">Dev</button>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <!-- Personal Dashboard Section -->
+        <section id="personalDashboard">
+            <!-- Welcome Banner with User Stats -->
+            <div class="card mb-4 border-0 bg-gradient dashboard-banner">
+                <div class="card-body text-white p-4">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-7">
+                            <h1 class="h3 fw-bold">Dashboard de Funcionario Judicial</h1>
+                            <p class="mb-0 opacity-90">Bienvenido de nuevo, Ana María González</p>
+                        </div>
+                        <div class="col-md-5 mt-3 mt-md-0">
+                            <div class="d-flex align-items-center rounded p-3 bg-white bg-opacity-20">
+                                <div class="rounded-circle bg-white bg-opacity-20 p-2 me-3 text-white">
+                                    <i class="fa-solid fa-award"></i>
+                                </div>
+                                <div>
+                                    <p class="small mb-0 opacity-80">Nivel 3</p>
+                                    <p class="fw-semibold mb-0">Innovador Digital</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- User Stats -->
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="rounded p-3 bg-white bg-opacity-20 d-flex align-items-center">
+                                <div class="rounded-circle bg-white bg-opacity-30 p-2 me-3 text-white">
+                                    <i class="fa-solid fa-briefcase"></i>
+                                </div>
+                                <div>
+                                    <p class="small mb-0 opacity-80">Procesos activos</p>
+                                    <div class="d-flex align-items-end">
+                                        <p class="h3 fw-bold mb-0">28</p>
+                                        <span class="small ms-2 mb-1 opacity-90">+5% vs mes anterior</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="rounded p-3 bg-white bg-opacity-20 d-flex align-items-center">
+                                <div class="rounded-circle bg-white bg-opacity-30 p-2 me-3 text-white">
+                                    <i class="fa-solid fa-calendar"></i>
+                                </div>
+                                <div>
+                                    <p class="small mb-0 opacity-80">Audiencias pendientes</p>
+                                    <div class="d-flex align-items-end">
+                                        <p class="h3 fw-bold mb-0">5</p>
+                                        <span class="small ms-2 mb-1 opacity-90">-2 vs semana anterior</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="rounded p-3 bg-white bg-opacity-20 d-flex align-items-center">
+                                <div class="rounded-circle bg-white bg-opacity-30 p-2 me-3 text-white">
+                                    <i class="fa-solid fa-bell"></i>
+                                </div>
+                                <div>
+                                    <p class="small mb-0 opacity-80">Notificaciones hoy</p>
+                                    <div class="d-flex align-items-end">
+                                        <p class="h3 fw-bold mb-0">12</p>
+                                        <span class="small ms-2 mb-1 opacity-90">+8 nuevas</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Dashboard Content -->
+            <div class="row g-4">
+                <!-- Left Column (2/3 width) -->
+                <div class="col-lg-8">
+                    <!-- Gamification Progress Section -->
+                    <div class="card mb-4 border-0 shadow-sm overflow-hidden">
+                        <div class="card-header bg-gradient-primary p-4 text-white border-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h2 class="h5 fw-bold mb-0">Tu Progreso Judicial</h2>
+                                <span class="bg-white bg-opacity-20 px-3 py-1 rounded-pill small">
+                                    Nivel 3: Innovador Digital
+                                </span>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span>450 XP</span>
+                                    <span>750 XP</span>
+                                </div>
+                                <div class="progress bg-white bg-opacity-20" style="height: 10px;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 60%;" 
+                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <p class="small mt-1 opacity-80">300 XP para el siguiente nivel</p>
+                            </div>
+                            
+                            <div class="mt-4 d-flex flex-wrap gap-2">
+                                <div class="badge-item" title="Contribuidor Activo">
+                                    <i class="fa-solid fa-award"></i>
+                                    <span class="small mt-1">Contribuidor</span>
+                                </div>
+                                <div class="badge-item" title="Analista de Datos">
+                                    <i class="fa-solid fa-chart-bar"></i>
+                                    <span class="small mt-1">Analista</span>
+                                </div>
+                                <div class="badge-item" title="Explorador Innovador">
+                                    <i class="fa-solid fa-compass"></i>
+                                    <span class="small mt-1">Explorador</span>
+                                </div>
+                                <div class="badge-item-unlock" title="Desbloquea más insignias">
+                                    <i class="fa-solid fa-plus-circle"></i>
+                                    <span class="small mt-1">Más</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Gamification Objectives -->
+                        <div class="card-body p-4">
+                            <h3 class="h6 fw-medium mb-3">Próximos objetivos</h3>
+                            <div class="mb-3">
+                                <div class="d-flex mb-3">
+                                    <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3 text-primary" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fa-solid fa-comments"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h4 class="small fw-medium">Participa en 3 discusiones</h4>
+                                        <div class="progress mt-1" style="height: 6px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 33%;" 
+                                                aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between small text-muted mt-1">
+                                            <span>1/3 completado</span>
+                                            <span>+75 XP</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex mb-3">
+                                    <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3 text-primary" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h4 class="small fw-medium">Valora 5 aplicaciones</h4>
+                                        <div class="progress mt-1" style="height: 6px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 60%;" 
+                                                aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between small text-muted mt-1">
+                                            <span>3/5 completado</span>
+                                            <span>+50 XP</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex">
+                                    <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3 text-primary" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fa-solid fa-share-alt"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h4 class="small fw-medium">Comparte 2 recursos</h4>
+                                        <div class="progress mt-1" style="height: 6px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 0%;" 
+                                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between small text-muted mt-1">
+                                            <span>0/2 completado</span>
+                                            <span>+100 XP</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button class="btn btn-link text-primary fw-medium btn-sm">Ver todos los objetivos</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ecosystem Impact Section -->
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h2 class="h5 fw-bold mb-4">Impacto del Ecosistema</h2>
+                            <div class="row g-4">
+                                <div class="col-md-3">
+                                    <div class="border border-success border-opacity-25 bg-success bg-opacity-10 rounded-3 p-3">
+                                        <h3 class="h6 fw-medium text-success">Ahorro de tiempo</h3>
+                                        <p class="display-6 fw-bold text-success mb-0">6.8M</p>
+                                        <div class="d-flex align-items-center mt-1">
+                                            <p class="small text-success mb-0">horas/año</p>
+                                            <span class="ms-2 badge bg-success bg-opacity-25 text-success d-flex align-items-center">
+                                                <i class="fa-solid fa-arrow-up me-1 small"></i>+12.4%
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <div class="border border-primary border-opacity-25 bg-primary bg-opacity-10 rounded-3 p-3">
+                                        <h3 class="h6 fw-medium text-primary">Acceso a justicia</h3>
+                                        <p class="display-6 fw-bold text-primary mb-0">+187%</p>
+                                        <div class="d-flex align-items-center mt-1">
+                                            <p class="small text-primary mb-0">incremento</p>
+                                            <span class="ms-2 badge bg-primary bg-opacity-25 text-primary d-flex align-items-center">
+                                                <i class="fa-solid fa-arrow-up me-1 small"></i>+24%
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <div class="border border-purple border-opacity-25 bg-purple bg-opacity-10 rounded-3 p-3">
+                                        <h3 class="h6 fw-medium text-purple">Reducción de costos</h3>
+                                        <p class="display-6 fw-bold text-purple mb-0">32.7%</p>
+                                        <div class="d-flex align-items-center mt-1">
+                                            <p class="small text-purple mb-0">ahorro</p>
+                                            <span class="ms-2 badge bg-purple bg-opacity-25 text-purple d-flex align-items-center">
+                                                <i class="fa-solid fa-arrow-up me-1 small"></i>+8.2%
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <div class="border border-warning border-opacity-25 bg-warning bg-opacity-10 rounded-3 p-3">
+                                        <h3 class="h6 fw-medium text-warning">Casos resueltos</h3>
+                                        <p class="display-6 fw-bold text-warning mb-0">42.3%</p>
+                                        <div class="d-flex align-items-center mt-1">
+                                            <p class="small text-warning mb-0">incremento</p>
+                                            <span class="ms-2 badge bg-warning bg-opacity-25 text-warning d-flex align-items-center">
+                                                <i class="fa-solid fa-arrow-up me-1 small"></i>+15.7%
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-3">
+                                <button class="btn btn-link text-primary fw-medium btn-sm d-flex align-items-center mx-auto">
+                                    Ver métricas detalladas
+                                    <i class="fa-solid fa-chevron-right ms-1 small"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Success Stories Section -->
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h2 class="h5 fw-bold mb-4">Historias de Éxito</h2>
+                            
+                            <!-- Success Story Carousel -->
+                            <div id="successStories" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <div class="bg-gradient-light p-4 rounded-3">
+                                            <div class="d-flex">
+                                                <div class="rounded-circle bg-primary bg-opacity-10 text-primary fw-bold d-flex align-items-center justify-content-center flex-shrink-0 me-3" style="width: 64px; height: 64px;">
+                                                    TB
+                                                </div>
+                                                <div>
+                                                    <h3 class="h6 fw-semibold">Tribunal Superior de Bogotá</h3>
+                                                    <p class="small text-secondary mb-3">
+                                                        "La implementación de SGEJ y OmniChat ha reducido nuestros tiempos de tramitación en un 42%, permitiéndonos dedicar más tiempo a la administración de justicia."
+                                                    </p>
+                                                    <div class="d-flex align-items-center text-primary">
+                                                        <span class="small fw-medium">Leer caso completo</span>
+                                                        <i class="fa-solid fa-arrow-right ms-1 small"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="carousel-item">
+                                        <div class="bg-gradient-light p-4 rounded-3">
+                                            <div class="d-flex">
+                                                <div class="rounded-circle bg-success bg-opacity-10 text-success fw-bold d-flex align-items-center justify-content-center flex-shrink-0 me-3" style="width: 64px; height: 64px;">
+                                                    JM
+                                                </div>
+                                                <div>
+                                                    <h3 class="h6 fw-semibold">Juzgado Civil Municipal de Medellín</h3>
+                                                    <p class="small text-secondary mb-3">
+                                                        "El uso combinado de JudiCalc y AnalizadorEstadisticoJudicial nos ha permitido optimizar la gestión de audiencias y priorizar casos eficientemente, logrando un incremento del 35% en productividad."
+                                                    </p>
+                                                    <div class="d-flex align-items-center text-primary">
+                                                        <span class="small fw-medium">Leer caso completo</span>
+                                                        <i class="fa-solid fa-arrow-right ms-1 small"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="carousel-item">
+                                        <div class="bg-gradient-light p-4 rounded-3">
+                                            <div class="d-flex">
+                                                <div class="rounded-circle bg-purple bg-opacity-10 text-purple fw-bold d-flex align-items-center justify-content-center flex-shrink-0 me-3" style="width: 64px; height: 64px;">
+                                                    PV
+                                                </div>
+                                                <div>
+                                                    <h3 class="h6 fw-semibold">Procuraduría Regional del Valle</h3>
+                                                    <p class="small text-secondary mb-3">
+                                                        "La plataforma Celeste ha sido fundamental para gestionar el bienestar de nuestro equipo durante la transición digital. Los niveles de estrés reportados se han reducido un 28%."
+                                                    </p>
+                                                    <div class="d-flex align-items-center text-primary">
+                                                        <span class="small fw-medium">Leer caso completo</span>
+                                                        <i class="fa-solid fa-arrow-right ms-1 small"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Carousel Controls -->
+                                <div class="d-flex justify-content-center mt-3">
+                                    <button class="carousel-control-link me-2" type="button" data-bs-target="#successStories" data-bs-slide="prev">
+                                        <i class="fa-solid fa-arrow-left"></i>
+                                    </button>
+                                    <ol class="carousel-indicators position-static m-0 d-flex align-items-center">
+                                        <li data-bs-target="#successStories" data-bs-slide-to="0" class="active"></li>
+                                        <li data-bs-target="#successStories" data-bs-slide-to="1"></li>
+                                        <li data-bs-target="#successStories" data-bs-slide-to="2"></li>
+                                    </ol>
+                                    <button class="carousel-control-link ms-2" type="button" data-bs-target="#successStories" data-bs-slide="next">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recommended Solutions Section -->
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h2 class="h5 fw-bold mb-4">Soluciones Recomendadas para Ti</h2>
+                            <div class="row g-4">
+                                <!-- SGEJ Solution Card -->
+                                <div class="col-md-4">
+                                    <div class="card h-100 border hover-shadow-sm transition-all cursor-pointer solution-card">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="solution-icon bg-gradient-blue me-3">
+                                                    <i class="fa-solid fa-file-alt"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 class="card-title h6 fw-semibold mb-0 text-truncate">Sistema de Gestión de Expedientes</h3>
+                                                    <div class="d-flex align-items-center small mt-1">
+                                                        <span class="badge bg-teal-soft text-teal">Consolidada</span>
+                                                        <span class="ms-2 d-flex align-items-center text-primary small">
+                                                            <i class="fa-solid fa-shield-alt me-1 small"></i>Oficial
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <p class="card-text small text-secondary mb-3 two-lines">
+                                                Sistema integral para la gestión digital de expedientes judiciales, facilitando el acceso, búsqueda y seguimiento de información.
+                                            </p>
+                                            
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fa-solid fa-star text-warning me-1"></i>
+                                                    <span class="small fw-medium">4.8</span>
+                                                </div>
+                                                <button class="btn btn-link text-primary btn-sm p-0">Ver detalles</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- OmniChat Solution Card -->
+                                <div class="col-md-4">
+                                    <div class="card h-100 border hover-shadow-sm transition-all cursor-pointer solution-card">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="solution-icon bg-gradient-purple me-3">
+                                                    <i class="fa-solid fa-comments"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 class="card-title h6 fw-semibold mb-0 text-truncate">OmniChat: Asistente Virtual</h3>
+                                                    <div class="d-flex align-items-center small mt-1">
+                                                        <span class="badge bg-green-soft text-green">Producción</span>
+                                                        <span class="ms-2 d-flex align-items-center text-primary small">
+                                                            <i class="fa-solid fa-shield-alt me-1 small"></i>Oficial
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <p class="card-text small text-secondary mb-3 two-lines">
+                                                Asistente virtual versátil que integra múltiples fuentes de información judicial, democratizando el acceso a información judicial compleja.
+                                            </p>
+                                            
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fa-solid fa-star text-warning me-1"></i>
+                                                    <span class="small fw-medium">4.7</span>
+                                                </div>
+                                                <button class="btn btn-link text-primary btn-sm p-0">Ver detalles</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- MALLO Solution Card -->
+                                <div class="col-md-4">
+                                    <div class="card h-100 border hover-shadow-sm transition-all cursor-pointer solution-card">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <div class="solution-icon bg-gradient-indigo me-3">
+                                                    <i class="fa-solid fa-microchip"></i>
+                                                </div>
+                                                <div>
+                                                    <h3 class="card-title h6 fw-semibold mb-0 text-truncate">MALLO (MultiAgent LLM Orchestrator)</h3>
+                                                    <div class="d-flex align-items-center small mt-1">
+                                                        <span class="badge bg-amber-soft text-amber">Beta</span>
+                                                        <span class="ms-2 d-flex align-items-center text-muted small">
+                                                            Comunidad
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <p class="card-text small text-secondary mb-3 two-lines">
+                                                Sistema avanzado de orquestación de múltiples agentes de IA para consultas legales complejas, revolucionando la investigación legal.
+                                            </p>
+                                            
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fa-solid fa-star text-warning me-1"></i>
+                                                    <span class="small fw-medium">4.5</span>
+                                                </div>
+                                                <button class="btn btn-link text-primary btn-sm p-0">Ver detalles</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <a href="pages/solutions.html" class="btn btn-link text-primary fw-medium btn-sm d-flex align-items-center mx-auto">
+                                    Ver todas las soluciones
+                                    <i class="fa-solid fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column (1/3 width) -->
+                <div class="col-lg-4">
+                    <!-- Recent Activity Section -->
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2 class="h5 fw-bold mb-0">Actividad Reciente</h2>
+                                <button class="btn btn-link text-primary p-0 btn-sm">Ver todo</button>
+                            </div>
+                            
+                            <div class="activity-feed">
+                                <!-- Update Activity -->
+                                <div class="d-flex mb-4">
+                                    <div class="bg-light rounded p-2 me-3">
+                                        <i class="fa-solid fa-download text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="small fw-medium">Nueva versión de SGEJ</h3>
+                                        <p class="small text-secondary">La versión 2.5.3 incluye búsqueda avanzada y mejoras de rendimiento</p>
+                                        <p class="small text-muted">Hace 2 horas</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Community Activity -->
+                                <div class="d-flex mb-4">
+                                    <div class="bg-light rounded p-2 me-3">
+                                        <i class="fa-solid fa-comments text-indigo"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="small fw-medium">Discusión destacada</h3>
+                                        <p class="small text-secondary">"Estrategias para implementar IA en tribunales pequeños" tiene 35 respuestas</p>
+                                        <p class="small text-muted">Hace 4 horas</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Event Activity -->
+                                <div class="d-flex mb-4">
+                                    <div class="bg-light rounded p-2 me-3">
+                                        <i class="fa-solid fa-calendar text-success"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="small fw-medium">Próximo webinar</h3>
+                                        <p class="small text-secondary">"Optimización de flujos de trabajo con MALLO" - Mañana, 15:00</p>
+                                        <p class="small text-muted">Mañana</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Milestone Activity -->
+                                <div class="d-flex mb-4">
+                                    <div class="bg-light rounded p-2 me-3">
+                                        <i class="fa-solid fa-award text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="small fw-medium">Hito alcanzado</h3>
+                                        <p class="small text-secondary">1 millón de expedientes digitalizados con SGEJ en toda Colombia</p>
+                                        <p class="small text-muted">Hace 1 día</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Resource Activity -->
+                                <div class="d-flex">
+                                    <div class="bg-light rounded p-2 me-3">
+                                        <i class="fa-solid fa-file-alt text-purple"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="small fw-medium">Nuevo recurso disponible</h3>
+                                        <p class="small text-secondary">Guía: "Implementación de SGEJ en juzgados pequeños"</p>
+                                        <p class="small text-muted">Hace 2 días</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Key Dates Calendar -->
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2 class="h5 fw-bold mb-0">Fechas Importantes</h2>
+                                <button class="btn btn-link text-primary p-0 btn-sm">Calendario completo</button>
+                            </div>
+                            
+                            <div class="date-items">
+                                <!-- Audiencia Date Item -->
+                                <div class="d-flex align-items-start p-3 rounded bg-light hover-bg-light-active cursor-pointer mb-3">
+                                    <div class="flex-shrink-0 date-box bg-white rounded shadow-sm me-3 text-center">
+                                        <div class="small fw-bold text-primary">12</div>
+                                        <div class="x-small text-primary">Abr</div>
+                                    </div>
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="badge bg-primary-soft text-primary">Audiencia</span>
+                                            <span class="badge bg-danger-soft text-danger ms-2">Urgente</span>
+                                        </div>
+                                        <h3 class="small fw-medium mt-1 mb-0">Torres vs. García</h3>
+                                    </div>
+                                </div>
+                                
+                                <!-- Capacitación Date Item -->
+                                <div class="d-flex align-items-start p-3 rounded bg-light hover-bg-light-active cursor-pointer mb-3">
+                                    <div class="flex-shrink-0 date-box bg-white rounded shadow-sm me-3 text-center">
+                                        <div class="small fw-bold text-primary">15</div>
+                                        <div class="x-small text-primary">Abr</div>
+                                    </div>
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="badge bg-success-soft text-success">Capacitación</span>
+                                        </div>
+                                        <h3 class="small fw-medium mt-1 mb-0">Webinar: Implementación SGEJ</h3>
+                                    </div>
+                                </div>
+                                
+                                <!-- Vencimiento Date Item -->
+                                <div class="d-flex align-items-start p-3 rounded bg-light hover-bg-light-active cursor-pointer">
+                                    <div class="flex-shrink-0 date-box bg-white rounded shadow-sm me-3 text-center">
+                                        <div class="small fw-bold text-primary">18</div>
+                                        <div class="x-small text-primary">Abr</div>
+                                    </div>
+                                    <div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="badge bg-danger-soft text-danger">Vencimiento</span>
+                                            <span class="badge bg-danger-soft text-danger ms-2">Urgente</span>
+                                        </div>
+                                        <h3 class="small fw-medium mt-1 mb-0">Vencimiento expediente #45678</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-outline-primary w-100 mt-4 btn-sm">
+                                Programar recordatorio
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Tasks Section -->
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2 class="h5 fw-bold mb-0">Tareas Pendientes</h2>
+                                <button class="btn btn-link text-primary p-0">
+                                    <i class="fa-solid fa-plus-circle"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="task-items">
+                                <!-- Task Item 1 -->
+                                <div class="d-flex align-items-center p-3 rounded bg-light hover-bg-light-active cursor-pointer mb-2">
+                                    <input class="form-check-input me-3" type="checkbox" value="" id="task1">
+                                    <div class="flex-grow-1">
+                                        <label class="form-check-label fw-medium small w-100" for="task1">
+                                            Revisar expediente #45678
+                                        </label>
+                                        <div class="d-flex align-items-center mt-1">
+                                            <span class="badge bg-danger-soft text-danger">Alta</span>
+                                            <span class="text-muted small ms-2">Hoy</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Task Item 2 -->
+                                <div class="d-flex align-items-center p-3 rounded bg-light hover-bg-light-active cursor-pointer mb-2">
+                                    <input class="form-check-input me-3" type="checkbox" value="" id="task2">
+                                    <div class="flex-grow-1">
+                                        <label class="form-check-label fw-medium small w-100" for="task2">
+                                            Preparar audiencia Torres vs. García
+                                        </label>
+                                        <div class="d-flex align-items-center mt-1">
+                                            <span class="badge bg-danger-soft text-danger">Alta</span>
+                                            <span class="text-muted small ms-2">12 Abr</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Task Item 3 -->
+                                <div class="d-flex align-items-center p-3 rounded bg-light hover-bg-light-active cursor-pointer mb-2">
+                                    <input class="form-check-input me-3" type="checkbox" value="" id="task3">
+                                    <div class="flex-grow-1">
+                                        <label class="form-check-label fw-medium small w-100" for="task3">
+                                            Actualizar SGEJ a versión 2.5.3
+                                        </label>
+                                        <div class="d-flex align-items-center mt-1">
+                                            <span class="badge bg-warning-soft text-warning">Media</span>
+                                            <span class="text-muted small ms-2">Esta semana</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Task Item 4 -->
+                                <div class="d-flex align-items-center p-3 rounded bg-light hover-bg-light-active cursor-pointer">
+                                    <input class="form-check-input me-3" type="checkbox" value="" id="task4">
+                                    <div class="flex-grow-1">
+                                        <label class="form-check-label fw-medium small w-100" for="task4">
+                                            Completar capacitación en MALLO
+                                        </label>
+                                        <div class="d-flex align-items-center mt-1">
+                                            <span class="badge bg-success-soft text-success">Baja</span>
+                                            <span class="text-muted small ms-2">30 Abr</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-auto border-top">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="h6 fw-bold text-primary">Marduk</h5>
+                    <p class="small text-secondary mb-0">Ecosistema de soluciones para la transformación judicial</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0 text-center">
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="#" class="text-decoration-none text-secondary small">Acerca de</a>
+                        <a href="#" class="text-decoration-none text-secondary small">Políticas</a>
+                        <a href="#" class="text-decoration-none text-secondary small">Contribuir</a>
+                        <a href="#" class="text-decoration-none text-secondary small">Soporte</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <p class="small text-muted mb-0">© 2025 Rama Judicial de Colombia</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/gamification.js"></script>
+</body>
+</html>
