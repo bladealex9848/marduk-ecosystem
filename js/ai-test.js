@@ -167,11 +167,45 @@ function loadSavedApiKey() {
  */
 async function loadModelsFromService() {
     try {
-        // Obtener API key desde localStorage
-        const apiKey = localStorage.getItem('OPENROUTER_API_KEY');
+        // Obtener API key desde localStorage o desde .env
+        let apiKey = localStorage.getItem('OPENROUTER_API_KEY');
 
+        // Si no hay API key en localStorage, intentar obtenerla del archivo .env
         if (!apiKey || apiKey === 'demo' || apiKey === 'tu-api-key-aquí') {
-            throw new Error('API key no válida');
+            // Intentar obtener la API key del archivo .env (esto depende de cómo se cargue en el frontend)
+            // Como alternativa, mostrar un modal para solicitar la API key
+            const result = await Swal.fire({
+                title: 'API Key Requerida',
+                html: `
+                    <p>Para utilizar esta página, necesitas una API key de OpenRouter.</p>
+                    <p>Puedes obtener una en <a href="https://openrouter.ai" target="_blank">OpenRouter.ai</a></p>
+                    <div class="mb-3">
+                        <input type="password" id="swal-api-key" class="swal2-input" placeholder="Ingresa tu API key">
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Usar modo simulación',
+                allowOutsideClick: false,
+                preConfirm: () => {
+                    const apiKey = document.getElementById('swal-api-key').value;
+                    if (!apiKey) {
+                        Swal.showValidationMessage('La API key es requerida');
+                        return false;
+                    }
+                    return apiKey;
+                }
+            });
+
+            if (result.isConfirmed) {
+                apiKey = result.value;
+                localStorage.setItem('OPENROUTER_API_KEY', apiKey);
+                document.getElementById('api-key-input').value = apiKey;
+                showToast('API key guardada correctamente', 'success');
+            } else {
+                // Si el usuario cancela, cargar modelos desde la configuración
+                return loadModelsFromConfig();
+            }
         }
 
         // Mostrar indicador de carga
@@ -195,7 +229,9 @@ async function loadModelsFromService() {
         });
 
         if (!response.ok) {
-            throw new Error(`Error al obtener modelos: ${response.status} ${response.statusText}`);
+            const errorData = await response.json().catch(() => ({}));
+            console.error('Error de OpenRouter:', errorData);
+            throw new Error(`Error al obtener modelos: ${response.status} - ${errorData.error?.message || 'Error desconocido'}`);
         }
 
         const data = await response.json();
@@ -227,12 +263,14 @@ async function loadModelsFromService() {
 
         return models;
     } catch (error) {
-        console.error('Error al cargar modelos desde la API:', error);
+        console.error('Error al cargar modelos desde OpenRouter:', error);
+        showToast('Error al cargar modelos: ' + error.message, 'error');
+
         // Cerrar indicador de carga si está abierto
         Swal.close();
-        // Fallar y usar la configuración estática
-        loadModelsFromConfig();
-        return null;
+
+        // Cargar modelos desde la configuración como fallback
+        return loadModelsFromConfig();
     }
 }
 
@@ -294,6 +332,9 @@ function getModelCapabilities(model) {
  */
 function loadModelsFromConfig() {
     try {
+        // Mostrar mensaje de modo simulación
+        showApiKeyMissingMessage();
+
         // Obtener modelos de la configuración
         const models = OPENROUTER_MODELS_CONFIG.models;
 
@@ -307,9 +348,15 @@ function loadModelsFromConfig() {
         } else if (models.length > 0) {
             selectModel(models[0]);
         }
+
+        // Mostrar notificación
+        showToast('Usando modelos de simulación. Configura tu API key para usar modelos reales.', 'warning');
+
+        return models;
     } catch (error) {
         console.error('Error al cargar modelos desde la configuración:', error);
         showModelError();
+        return [];
     }
 }
 
@@ -614,12 +661,13 @@ function setupEventListeners() {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: currentModel.id,
+                        model: currentModel.id || 'openrouter/optimus-alpha', // Usar Optimus Alpha como fallback
                         messages: [
                             {
                                 role: 'system',
                                 content: 'Eres un asistente útil especializado en temas jurídicos y legales. Responde de manera clara, precisa y profesional.'
                             },
+                            ...chatHistory, // Incluir historial de chat para mantener contexto
                             {
                                 role: 'user',
                                 content: message
@@ -631,15 +679,82 @@ function setupEventListeners() {
                 });
 
                 if (!openRouterResponse.ok) {
-                    throw new Error(`Error en la API de OpenRouter: ${openRouterResponse.status} ${openRouterResponse.statusText}`);
+                    const errorData = await openRouterResponse.json().catch(() => ({}));
+                    console.error('Error de OpenRouter:', errorData);
+                    throw new Error(`Error en la API de OpenRouter: ${openRouterResponse.status} - ${errorData.error?.message || 'Error desconocido'}`);
                 }
 
                 const data = await openRouterResponse.json();
                 response = data.choices[0].message.content;
+
+                // Guardar mensaje en el historial
+                chatHistory.push({ role: 'user', content: message });
+                chatHistory.push({ role: 'assistant', content: response });
             } else {
                 // Simular respuesta si no hay API key válida
                 await simulateAIResponse();
                 response = generateSimulatedResponse(message, currentModel);
+
+                // Mostrar alerta para configurar API key
+                if (!document.querySelector('.api-key-alert')) {
+                    const apiKeyAlert = document.createElement('div');
+                    apiKeyAlert.className = 'alert alert-warning mt-3 api-key-alert';
+                    apiKeyAlert.innerHTML = `
+                        <h5><i class="fas fa-exclamation-triangle me-2"></i> Modo simulación</h5>
+                        <p>Estás usando el modo de simulación porque no hay una API key válida configurada.</p>
+                        <p>Para usar modelos reales de OpenRouter, configura tu API key en la sección de configuración.</p>
+                        <button class="btn btn-primary btn-sm" id="configure-api-key-btn">Configurar API Key</button>
+                    `;
+
+                    // Insertar alerta antes del contenedor de chat
+                    const chatCard = document.querySelector('.card:has(#chat-container)');
+                    if (chatCard) {
+                        chatCard.parentNode.insertBefore(apiKeyAlert, chatCard);
+
+                        // Agregar evento al botón
+                        document.getElementById('configure-api-key-btn').addEventListener('click', function() {
+                            // Mostrar modal para configurar API key
+                            Swal.fire({
+                                title: 'Configurar API Key',
+                                html: `
+                                    <p>Ingresa tu API key de OpenRouter para usar modelos reales de IA.</p>
+                                    <p>Puedes obtener una en <a href="https://openrouter.ai" target="_blank">OpenRouter.ai</a></p>
+                                    <div class="mb-3">
+                                        <input type="password" id="swal-api-key" class="swal2-input" placeholder="Ingresa tu API key">
+                                    </div>
+                                `,
+                                showCancelButton: true,
+                                confirmButtonText: 'Guardar',
+                                cancelButtonText: 'Cancelar',
+                                preConfirm: () => {
+                                    const apiKey = document.getElementById('swal-api-key').value;
+                                    if (!apiKey) {
+                                        Swal.showValidationMessage('La API key es requerida');
+                                        return false;
+                                    }
+                                    return apiKey;
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    localStorage.setItem('OPENROUTER_API_KEY', result.value);
+                                    document.getElementById('api-key-input').value = result.value;
+                                    showToast('API key guardada correctamente', 'success');
+
+                                    // Recargar la página para aplicar cambios
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'API key guardada',
+                                        text: 'La página se recargará para aplicar los cambios.',
+                                        showCancelButton: false,
+                                        confirmButtonText: 'Aceptar'
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                }
+                            });
+                        });
+                    }
+                }
             }
 
             // Ocultar indicador de escritura
@@ -653,7 +768,8 @@ function setupEventListeners() {
 
             // Mostrar error
             console.error('Error al generar respuesta:', error);
-            addErrorMessage('Error al generar respuesta. Por favor, intenta de nuevo.');
+            addErrorMessage(`Error: ${error.message}`);
+            showToast(`Error al procesar tu mensaje: ${error.message}`, 'error');
 
             // Mostrar notificación de error
             Swal.fire({
