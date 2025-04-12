@@ -55,6 +55,7 @@
     border-radius: 50% !important;
     overflow: hidden !important;
     border: 3px solid rgba(255, 255, 255, 0.3) !important;
+    background-color: #ffffff !important;
 }
 
 .avatar-img {
@@ -63,11 +64,21 @@
     object-fit: cover !important;
 }
 
+#profileBanner .avatar-img-container {
+    border: 3px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1) !important;
+}
+
 /* Corrección para los títulos en "Soluciones Recomendadas para Ti" */
-.solution-card .card-title {
+.solution-card .card-title,
+.card-title.h6.fw-semibold.mb-0.text-truncate {
     white-space: normal !important;
     overflow: visible !important;
     text-overflow: clip !important;
+    max-width: 100% !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
     height: auto !important;
     min-height: 40px !important;
 }
@@ -201,6 +212,146 @@
 .dashboard-banner .opacity-80,
 .dashboard-banner .opacity-90 {
     opacity: 0.8 !important;
+}
+
+/* Corrección para el Profile Banner */
+#profileBanner {
+    background-color: #3b82f6 !important;
+    background-image: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+    color: #ffffff !important;
+}
+
+#profileBanner .card-body {
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+
+#profileBanner h1,
+#profileBanner h2,
+#profileBanner p,
+#profileBanner .text-white {
+    color: #ffffff !important;
+}
+
+#profileBanner .small {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+#profileBanner .opacity-75,
+#profileBanner .opacity-80,
+#profileBanner .opacity-90 {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+#profileBanner .bg-white.bg-opacity-20 {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+#profileBanner .bg-white.bg-opacity-30 {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+#profileBanner .h4.fw-bold {
+    color: #ffffff !important;
+}
+
+/* Corrección para el buscador en solutions.html */
+#solutionsList .dashboard-banner {
+    background-color: #6366f1 !important;
+    background-image: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+    color: #ffffff !important;
+}
+
+#solutionsList .dashboard-banner .card-body {
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+
+#solutionsList .dashboard-banner h1,
+#solutionsList .dashboard-banner p,
+#solutionsList .dashboard-banner .text-white {
+    color: #ffffff !important;
+}
+
+#solutionsList .dashboard-banner .opacity-90 {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+#solutionsList .dashboard-banner .form-control {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+}
+
+#solutionsList .dashboard-banner .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+#solutionsList .dashboard-banner .form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Corrección para la vista de lista */
+.hover-bg-light-active:hover {
+    background-color: rgba(59, 130, 246, 0.05) !important;
+}
+
+[data-theme="dark"] .hover-bg-light-active:hover {
+    background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Corrección para los filtros */
+#advancedFilters {
+    background-color: #ffffff !important;
+}
+
+[data-theme="dark"] #advancedFilters {
+    background-color: #2d2d2d !important;
+}
+
+#advancedFilters .form-select,
+#advancedFilters .form-control {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+    border-color: #dee2e6 !important;
+}
+
+[data-theme="dark"] #advancedFilters .form-select,
+[data-theme="dark"] #advancedFilters .form-control {
+    background-color: #1e1e1e !important;
+    color: #e0e0e0 !important;
+    border-color: #444444 !important;
+}
+
+.solution-icon-sm {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #ffffff !important;
+    flex-shrink: 0 !important;
+}
+
+.bg-gradient-blue {
+    background-color: #3b82f6 !important;
+    background-image: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+}
+
+.bg-gradient-purple {
+    background-color: #8b5cf6 !important;
+    background-image: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+}
+
+.bg-gradient-green {
+    background-color: #10b981 !important;
+    background-image: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.bg-gradient-orange {
+    background-color: #f97316 !important;
+    background-image: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
 }
 
 /* Corrección para textos en fondos de colores */
@@ -465,44 +616,64 @@
 }
 
 /* Corrección para los badges en las soluciones recomendadas */
-.badge.bg-teal-soft {
+.badge.bg-teal-soft, span.badge.bg-teal-soft {
     background-color: rgba(20, 184, 166, 0.15) !important;
     color: #14b8a6 !important;
 }
 
-[data-theme="dark"] .badge.bg-teal-soft {
+[data-theme="dark"] .badge.bg-teal-soft, [data-theme="dark"] span.badge.bg-teal-soft {
     background-color: rgba(20, 184, 166, 0.25) !important;
     color: #2dd4bf !important;
 }
 
-.badge.bg-blue-soft {
+.badge.bg-blue-soft, span.badge.bg-blue-soft {
     background-color: rgba(59, 130, 246, 0.15) !important;
     color: #3b82f6 !important;
 }
 
-[data-theme="dark"] .badge.bg-blue-soft {
+[data-theme="dark"] .badge.bg-blue-soft, [data-theme="dark"] span.badge.bg-blue-soft {
     background-color: rgba(59, 130, 246, 0.25) !important;
     color: #60a5fa !important;
 }
 
-.badge.bg-purple-soft {
+.badge.bg-purple-soft, span.badge.bg-purple-soft {
     background-color: rgba(139, 92, 246, 0.15) !important;
     color: #8b5cf6 !important;
 }
 
-[data-theme="dark"] .badge.bg-purple-soft {
+[data-theme="dark"] .badge.bg-purple-soft, [data-theme="dark"] span.badge.bg-purple-soft {
     background-color: rgba(139, 92, 246, 0.25) !important;
     color: #a78bfa !important;
 }
 
-.badge.bg-orange-soft {
+.badge.bg-orange-soft, span.badge.bg-orange-soft {
     background-color: rgba(249, 115, 22, 0.15) !important;
     color: #f97316 !important;
 }
 
-[data-theme="dark"] .badge.bg-orange-soft {
+[data-theme="dark"] .badge.bg-orange-soft, [data-theme="dark"] span.badge.bg-orange-soft {
     background-color: rgba(249, 115, 22, 0.25) !important;
     color: #fb923c !important;
+}
+
+.badge.bg-green-soft, span.badge.bg-green-soft {
+    background-color: rgba(16, 185, 129, 0.15) !important;
+    color: #10b981 !important;
+}
+
+[data-theme="dark"] .badge.bg-green-soft, [data-theme="dark"] span.badge.bg-green-soft {
+    background-color: rgba(16, 185, 129, 0.25) !important;
+    color: #34d399 !important;
+}
+
+.badge.bg-light, span.badge.bg-light {
+    background-color: #f3f4f6 !important;
+    color: #6b7280 !important;
+}
+
+[data-theme="dark"] .badge.bg-light, [data-theme="dark"] span.badge.bg-light {
+    background-color: #374151 !important;
+    color: #d1d5db !important;
 }
 
 /* Corrección para las cajas de Impacto del Ecosistema */
