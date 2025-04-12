@@ -23,6 +23,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/fixes.css">
 
     <!-- Tema oscuro/claro -->
     <script>
@@ -195,6 +196,10 @@
                             <input class="form-control ps-5" type="search" placeholder="Buscar..." aria-label="Search">
                         </div>
                     </form>
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="btn btn-link text-light me-3">
+                        <i class="fas fa-moon"></i>
+                    </button>
                     <!-- Notifications Dropdown -->
                     <div class="dropdown me-2">
                         <button class="btn btn-link text-light position-relative p-1" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -480,5 +485,67 @@
       // Hacer disponible globalmente
       window.showToast = showToast;
     </script>
+
+    <!-- Inicializar el toggle de tema -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar el toggle de tema
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+          // Actualizar el icono según el tema actual
+          if (document.body.classList.contains('dark-mode')) {
+            themeToggle.querySelector('i').classList.remove('fa-moon');
+            themeToggle.querySelector('i').classList.add('fa-sun');
+          }
+
+          // Agregar evento de click
+          themeToggle.addEventListener('click', function() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            if (isDarkMode) {
+              document.documentElement.removeAttribute('data-theme');
+              document.body.classList.remove('dark-mode');
+              localStorage.setItem('darkModeEnabled', 'false');
+            } else {
+              document.documentElement.setAttribute('data-theme', 'dark');
+              document.body.classList.add('dark-mode');
+              localStorage.setItem('darkModeEnabled', 'true');
+            }
+
+            // Actualizar el icono
+            const themeIcon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+              themeIcon.classList.remove('fa-moon');
+              themeIcon.classList.add('fa-sun');
+            } else {
+              themeIcon.classList.remove('fa-sun');
+              themeIcon.classList.add('fa-moon');
+            }
+          });
+        }
+      });
+    </script>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5 border-top">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="h6 fw-bold text-primary">Marduk</h5>
+                    <p class="small text-secondary mb-0">Ecosistema de soluciones para la transformación judicial</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0 text-center">
+                    <div class="d-flex flex-wrap justify-content-center gap-3 footer-links">
+                        <a href="about.html" class="text-decoration-none text-secondary small">Acerca de</a>
+                        <a href="policies.html" class="text-decoration-none text-secondary small">Políticas</a>
+                        <a href="contribute.html" class="text-decoration-none text-secondary small">Contribuir</a>
+                        <a href="support.html" class="text-decoration-none text-secondary small">Soporte</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <p class="small text-muted mb-0">© 2025 Rama Judicial de Colombia</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

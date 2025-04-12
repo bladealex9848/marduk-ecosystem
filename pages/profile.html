@@ -19,6 +19,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/fixes.css">
 
     <!-- Tema oscuro/claro -->
     <script>
@@ -36,120 +37,93 @@
     </script>
 </head>
 <body>
-    <!-- Header/Navbar (Same as index.html) -->
+    <!-- Header/Navbar -->
     <header class="navbar navbar-expand-lg navbar-dark bg-gradient sticky-top">
         <div class="container-fluid">
-            <!-- Logo -->
             <a class="navbar-brand d-flex align-items-center" href="../index.html">
-                <div class="logo-bg me-2">M</div>
-                <span class="d-none d-md-inline">Marduk</span>
+                <i class="fas fa-balance-scale me-2"></i>
+                <span>Marduk</span>
             </a>
-
-            <!-- Mobile Toggle Button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#mainNav" aria-controls="mainNav"
-                    aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <!-- Navigation Items -->
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.html">Inicio</a>
+                        <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i> Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="solutions.html">Soluciones</a>
+                        <a class="nav-link" href="solutions.html"><i class="fas fa-tools me-1"></i> Soluciones</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="profile.html">Mi Perfil</a>
+                        <a class="nav-link active" href="profile.html"><i class="fas fa-user me-1"></i> Mi Perfil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="community.html">Comunidad</a>
+                        <a class="nav-link" href="community.html"><i class="fas fa-users me-1"></i> Comunidad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ai-test.html"><i class="fas fa-robot me-1"></i> Prueba IA</a>
                     </li>
                 </ul>
-
-                <!-- Search -->
-                <form class="d-none d-md-flex me-3">
-                    <div class="input-group">
-                        <span class="input-group-text bg-transparent border-end-0">
-                            <i class="fa-solid fa-search text-light"></i>
-                        </span>
-                        <input type="search" class="form-control bg-transparent border-start-0"
-                               placeholder="Buscar en Marduk..." aria-label="Search">
-                    </div>
-                </form>
-
-                <!-- User Menu (Same as index.html) -->
                 <div class="d-flex align-items-center">
-                    <!-- Notifications -->
-                    <div class="dropdown me-3 position-relative">
-                        <button class="btn btn-link text-light position-relative p-1"
-                                id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-bell"></i>
+                    <!-- Search Form -->
+                    <form class="d-flex me-2 search-container">
+                        <div class="position-relative w-100">
+                            <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input class="form-control ps-5" type="search" placeholder="Buscar..." aria-label="Search">
+                        </div>
+                    </form>
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="btn btn-link text-light me-3">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <!-- Notifications Dropdown -->
+                    <div class="dropdown me-2">
+                        <button class="btn btn-link text-light position-relative p-1" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                4
+                                3
                             </span>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0"
-                             aria-labelledby="notificationDropdown">
-                            <!-- Notification Header -->
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0 overflow-hidden" aria-labelledby="notificationsDropdown">
+                            <!-- Notification header -->
                             <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
-                                <h6 class="m-0">Notificaciones</h6>
-                                <button class="btn btn-sm text-primary">Marcar todas como leídas</button>
+                                <h6 class="mb-0">Notificaciones</h6>
+                                <a href="#" class="text-decoration-none small">Marcar todas como leídas</a>
                             </div>
-
-                            <!-- Notifications List (simplified) -->
+                            <!-- Notification items -->
                             <div class="notification-list">
-                                <div class="notification-item unread p-3 border-bottom">
-                                    <div class="d-flex">
-                                        <div class="notification-icon bg-blue-soft me-3">
-                                            <i class="fa-solid fa-download"></i>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <h6 class="mb-1 fw-medium">Actualización disponible para SGEJ</h6>
-                                            <p class="text-secondary mb-1 small">La nueva versión 2.5.3 incluye mejoras en la búsqueda de expedientes</p>
-                                            <p class="text-muted mt-2 mb-0 small">Hace 2 horas</p>
+                                <a href="#" class="notification-item d-flex p-3 border-bottom unread">
+                                    <div class="flex-shrink-0">
+                                        <div class="avatar-circle bg-primary text-white">
+                                            <i class="fas fa-gavel"></i>
                                         </div>
                                     </div>
-                                </div>
-
-                                <!-- More notifications would go here -->
-
-                                <!-- Footer -->
-                                <div class="p-2 text-center border-top bg-light">
-                                    <a href="#" class="text-decoration-none">Ver todas las notificaciones</a>
-                                </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <p class="mb-0 fw-medium">Nueva actualización en el caso #12345</p>
+                                        <p class="text-muted small mb-0">Se ha añadido un nuevo documento</p>
+                                        <span class="text-muted small">Hace 5 minutos</span>
+                                    </div>
+                                </a>
+                                <!-- More notification items... -->
                             </div>
+                            <!-- View all link -->
+                            <a href="#" class="dropdown-item text-center p-3 border-top">Ver todas las notificaciones</a>
                         </div>
                     </div>
-
-                    <!-- User Profile Menu -->
+                    <!-- User Menu -->
                     <div class="dropdown">
-                        <button class="btn btn-link p-0 d-flex align-items-center text-light text-decoration-none dropdown-toggle"
-                                id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="avatar-circle me-2">AG</div>
-                            <div class="d-none d-md-block text-start">
-                                <div class="lh-1">Ana María González</div>
-                                <div class="small opacity-75">Juez Civil Municipal</div>
+                        <button class="btn btn-link d-flex align-items-center text-light text-decoration-none dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="avatar-circle avatar-circle-sm bg-primary text-white me-2">
+                                AG
                             </div>
+                            <span class="d-none d-md-block">Ana María González</span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="profile.html">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Configuración</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i> Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Configuración</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <!-- Role switcher for demo purposes -->
-                            <li><span class="dropdown-item-text small text-muted">Cambiar rol (demo)</span></li>
-                            <li>
-                                <div class="px-3 py-1 d-flex gap-2 flex-wrap">
-                                    <button class="btn btn-sm btn-primary" onclick="switchUserRole('funcionario')">Funcionario</button>
-                                    <button class="btn btn-sm btn-outline-success" onclick="switchUserRole('ciudadano')">Ciudadano</button>
-                                    <button class="btn btn-sm btn-outline-purple" onclick="switchUserRole('administrador')">Admin</button>
-                                    <button class="btn btn-sm btn-outline-orange" onclick="switchUserRole('desarrollador')">Dev</button>
-                                </div>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
                         </ul>
                     </div>
                 </div>
@@ -160,7 +134,7 @@
     <!-- Main Content -->
     <main class="container py-4">
         <!-- Profile Banner -->
-        <div class="card border-0 bg-gradient-blue mb-4 rounded-3" id="profileBanner">
+        <div class="card border-0 bg-gradient-blue mb-4 rounded-3 dashboard-banner" id="profileBanner">
             <div class="card-body text-white p-4">
                 <h1 class="h3 fw-bold" id="profileTitle">Panel de Funcionario Judicial</h1>
                 <p class="mb-3 opacity-90">Soluciones personalizadas para su rol en el sistema judicial</p>
@@ -168,7 +142,9 @@
                 <div class="row align-items-center">
                     <div class="col-md-6 mb-4 mb-md-0">
                         <div class="d-flex align-items-center">
-                            <div class="avatar-circle-lg me-4" id="profileAvatar">AG</div>
+                            <div class="avatar-img-container me-4">
+                                <img src="../images/users/user-female-1.jpg" alt="Ana María González" class="avatar-img rounded-circle" id="profileAvatar">
+                            </div>
                             <div>
                                 <h2 class="h5 fw-semibold mb-0" id="profileName">Ana María González</h2>
                                 <p class="mb-0 small" id="profileRole">Juez Civil Municipal</p>
@@ -660,6 +636,45 @@
     <!-- Toastify JS -->
     <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
 
+    <!-- Inicializar el toggle de tema -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar el toggle de tema
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+          // Actualizar el icono según el tema actual
+          if (document.body.classList.contains('dark-mode')) {
+            themeToggle.querySelector('i').classList.remove('fa-moon');
+            themeToggle.querySelector('i').classList.add('fa-sun');
+          }
+
+          // Agregar evento de click
+          themeToggle.addEventListener('click', function() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            if (isDarkMode) {
+              document.documentElement.removeAttribute('data-theme');
+              document.body.classList.remove('dark-mode');
+              localStorage.setItem('darkModeEnabled', 'false');
+            } else {
+              document.documentElement.setAttribute('data-theme', 'dark');
+              document.body.classList.add('dark-mode');
+              localStorage.setItem('darkModeEnabled', 'true');
+            }
+
+            // Actualizar el icono
+            const themeIcon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+              themeIcon.classList.remove('fa-moon');
+              themeIcon.classList.add('fa-sun');
+            } else {
+              themeIcon.classList.remove('fa-sun');
+              themeIcon.classList.add('fa-moon');
+            }
+          });
+        }
+      });
+    </script>
+
     <!-- Configuración de módulos -->
     <script type="module">
       // Importar módulos
@@ -670,18 +685,6 @@
       window.openRouterService = openRouterService;
       window.themeManager = themeManager;
     </script>
-
-    <!-- OpenRouter Integration (para compatibilidad) -->
-    <script src="../js/openrouter.js" type="module"></script>
-
-    <!-- Theme Manager -->
-    <script src="../js/theme-manager.js" type="module"></script>
-
-    <!-- Enhanced Navigation -->
-    <script src="../js/navigation.js"></script>
-
-    <!-- Advanced Search -->
-    <script src="../js/search.js"></script>
 
     <!-- Custom Scripts -->
     <script src="../js/main.js"></script>

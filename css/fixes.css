@@ -10,6 +10,24 @@
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .badge-item, [data-theme="dark"] .badge-item-unlock {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+.card-body .badge-item, .card-body .badge-item-unlock {
+    background-color: rgba(59, 130, 246, 0.1) !important;
+    color: #3b82f6 !important;
+}
+
+[data-theme="dark"] .card-body .badge-item, [data-theme="dark"] .card-body .badge-item-unlock {
+    background-color: rgba(59, 130, 246, 0.2) !important;
+    color: #60a5fa !important;
 }
 
 .badge-item span, .badge-item-unlock span {
@@ -20,6 +38,29 @@
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     width: 100% !important;
+}
+
+.card-body .badge-item span, .card-body .badge-item-unlock span {
+    color: #3b82f6 !important;
+}
+
+[data-theme="dark"] .card-body .badge-item span, [data-theme="dark"] .card-body .badge-item-unlock span {
+    color: #60a5fa !important;
+}
+
+/* Corrección para la imagen de perfil */
+.avatar-img-container {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    border: 3px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.avatar-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
 }
 
 /* Corrección para los títulos en "Soluciones Recomendadas para Ti" */
@@ -136,6 +177,32 @@
     font-weight: 600 !important;
 }
 
+/* Corrección para el Dashboard Banner */
+.dashboard-banner {
+    background-color: #3b82f6 !important;
+    background-image: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+    color: #ffffff !important;
+}
+
+.dashboard-banner .card-body {
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+
+.dashboard-banner .text-white {
+    color: #ffffff !important;
+}
+
+.dashboard-banner .bg-white.bg-opacity-20,
+.dashboard-banner .bg-white.bg-opacity-30 {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.dashboard-banner .opacity-80,
+.dashboard-banner .opacity-90 {
+    opacity: 0.8 !important;
+}
+
 /* Corrección para textos en fondos de colores */
 .bg-gradient-primary, .bg-primary {
     background-color: #3b82f6 !important;
@@ -162,6 +229,41 @@
 
 .card-header.bg-gradient-primary .small {
     color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Corrección para el botón de nivel en Mi Progreso Judicial */
+.card-header.bg-gradient-primary .bg-white.bg-opacity-20 {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .card-header.bg-gradient-primary .bg-white.bg-opacity-20 {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+.card-header.bg-gradient-primary .rounded-pill.small {
+    color: #ffffff !important;
+}
+
+/* Corrección para la sección de perfil en modo claro */
+.dashboard-banner .bg-white.bg-opacity-20 {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+.dashboard-banner .bg-white.bg-opacity-30 {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+}
+
+.dashboard-banner .small.opacity-80,
+.dashboard-banner .small.opacity-75 {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.dashboard-banner .h4.fw-bold {
+    color: #ffffff !important;
 }
 
 /* Corrección para fondos de colores en tarjetas */
@@ -222,6 +324,13 @@
 .carousel-control-link {
     background-color: #ffffff !important;
     color: #495057 !important;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="dark"] .carousel-control-link {
@@ -232,6 +341,10 @@
 /* Corrección para los indicadores del carrusel */
 .carousel-indicators [data-bs-target] {
     background-color: #adb5bd !important;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin: 0 4px;
 }
 
 [data-theme="dark"] .carousel-indicators [data-bs-target] {
@@ -240,6 +353,34 @@
 
 .carousel-indicators .active {
     background-color: #3b82f6 !important;
+}
+
+/* Corrección para las historias de éxito */
+.bg-gradient-light {
+    background-color: #f8f9fa !important;
+    background-image: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+}
+
+[data-theme="dark"] .bg-gradient-light {
+    background-color: #2d2d2d !important;
+    background-image: linear-gradient(135deg, #2d2d2d 0%, #212529 100%) !important;
+}
+
+/* Corrección para las actividades recientes */
+.bg-light.rounded {
+    background-color: #f0f4f8 !important;
+}
+
+[data-theme="dark"] .bg-light.rounded {
+    background-color: #2d2d2d !important;
+}
+
+.text-indigo {
+    color: #6366f1 !important;
+}
+
+[data-theme="dark"] .text-indigo {
+    color: #818cf8 !important;
 }
 
 /* Corrección para el contraste en modo oscuro */
@@ -251,8 +392,122 @@
     color: #a0a0a0 !important;
 }
 
+/* Corrección para las fechas importantes */
+.date-box {
+    background-color: #ffffff !important;
+    color: #3b82f6 !important;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+[data-theme="dark"] .date-box {
+    background-color: #2d2d2d !important;
+    color: #60a5fa !important;
+}
+
+.bg-danger-soft {
+    background-color: rgba(220, 53, 69, 0.15) !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.bg-warning-soft {
+    background-color: rgba(255, 193, 7, 0.15) !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+/* Corrección para los fondos de las tareas */
+.hover-bg-light-active {
+    background-color: #f8f9fa !important;
+}
+
+[data-theme="dark"] .hover-bg-light-active {
+    background-color: #2d2d2d !important;
+}
+
+/* Corrección para los fondos de colores con opacidad */
+.bg-success.bg-opacity-10 {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+}
+
+.bg-primary.bg-opacity-10 {
+    background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.bg-purple.bg-opacity-10 {
+    background-color: rgba(139, 92, 246, 0.1) !important;
+}
+
+.bg-warning.bg-opacity-10 {
+    background-color: rgba(245, 158, 11, 0.1) !important;
+}
+
+/* Corrección para los bordes de colores con opacidad */
+.border-success.border-opacity-25 {
+    border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+.border-primary.border-opacity-25 {
+    border-color: rgba(59, 130, 246, 0.25) !important;
+}
+
+.border-purple.border-opacity-25 {
+    border-color: rgba(139, 92, 246, 0.25) !important;
+}
+
+.border-warning.border-opacity-25 {
+    border-color: rgba(245, 158, 11, 0.25) !important;
+}
+
+/* Corrección para los badges en las soluciones recomendadas */
+.badge.bg-teal-soft {
+    background-color: rgba(20, 184, 166, 0.15) !important;
+    color: #14b8a6 !important;
+}
+
+[data-theme="dark"] .badge.bg-teal-soft {
+    background-color: rgba(20, 184, 166, 0.25) !important;
+    color: #2dd4bf !important;
+}
+
+.badge.bg-blue-soft {
+    background-color: rgba(59, 130, 246, 0.15) !important;
+    color: #3b82f6 !important;
+}
+
+[data-theme="dark"] .badge.bg-blue-soft {
+    background-color: rgba(59, 130, 246, 0.25) !important;
+    color: #60a5fa !important;
+}
+
+.badge.bg-purple-soft {
+    background-color: rgba(139, 92, 246, 0.15) !important;
+    color: #8b5cf6 !important;
+}
+
+[data-theme="dark"] .badge.bg-purple-soft {
+    background-color: rgba(139, 92, 246, 0.25) !important;
+    color: #a78bfa !important;
+}
+
+.badge.bg-orange-soft {
+    background-color: rgba(249, 115, 22, 0.15) !important;
+    color: #f97316 !important;
+}
+
+[data-theme="dark"] .badge.bg-orange-soft {
+    background-color: rgba(249, 115, 22, 0.25) !important;
+    color: #fb923c !important;
+}
+
 /* Corrección para las cajas de Impacto del Ecosistema */
-.row .border-success, .row .border-primary, .row .border-purple, .row .border-warning {
+.row .border-success, .row .border-primary, .row .border-purple, .row .border-warning,
+.row .border-info {
     height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
@@ -262,9 +517,56 @@
 .row .border-success p.display-6,
 .row .border-primary p.display-6,
 .row .border-purple p.display-6,
-.row .border-warning p.display-6 {
+.row .border-warning p.display-6,
+.row .border-info p.display-6,
+.row .border-success p.h4,
+.row .border-primary p.h4,
+.row .border-purple p.h4,
+.row .border-warning p.h4,
+.row .border-info p.h4 {
     margin-top: auto !important;
     margin-bottom: 0.5rem !important;
+}
+
+/* Corrección para los colores de texto en las cajas de impacto */
+.text-success {
+    color: #10b981 !important;
+}
+
+.text-primary {
+    color: #3b82f6 !important;
+}
+
+.text-purple {
+    color: #8b5cf6 !important;
+}
+
+.text-warning {
+    color: #f59e0b !important;
+}
+
+.text-info {
+    color: #0ea5e9 !important;
+}
+
+[data-theme="dark"] .text-success {
+    color: #34d399 !important;
+}
+
+[data-theme="dark"] .text-primary {
+    color: #60a5fa !important;
+}
+
+[data-theme="dark"] .text-purple {
+    color: #a78bfa !important;
+}
+
+[data-theme="dark"] .text-warning {
+    color: #fbbf24 !important;
+}
+
+[data-theme="dark"] .text-info {
+    color: #38bdf8 !important;
 }
 
 /* Corrección para las tarjetas en modo oscuro */
