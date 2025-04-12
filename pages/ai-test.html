@@ -359,6 +359,75 @@
                 </div>
             </div>
         </div>
+
+        <!-- Sección de prueba directa -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white" data-bs-toggle="collapse" href="#directTestCollapse" role="button" aria-expanded="false" aria-controls="directTestCollapse" style="cursor: pointer;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="fas fa-vial me-2"></i> Prueba Directa de API</h5>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="collapse" id="directTestCollapse">
+                        <div class="card-body">
+                        <p class="mb-3">Esta sección te permite probar directamente la conexión con OpenRouter usando el modelo <strong>openrouter/optimus-alpha</strong>.</p>
+
+                        <form id="direct-test-form">
+                            <div class="mb-3">
+                                <label for="direct-api-key" class="form-label">API Key</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="direct-api-key" value="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" placeholder="Ingresa tu API key">
+                                    <button class="btn btn-outline-secondary" type="button" id="toggle-direct-api-key">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="direct-model-select" class="form-label">Modelo</label>
+                                <select class="form-select" id="direct-model-select">
+                                    <option value="" disabled>Selecciona un modelo</option>
+                                    <option value="openrouter/optimus-alpha">Optimus Alpha (OpenRouter)</option>
+                                    <option value="openrouter/quasar-alpha">Quasar Alpha (OpenRouter)</option>
+                                    <option value="anthropic/claude-3-opus:beta">Claude 3 Opus (Anthropic)</option>
+                                    <option value="anthropic/claude-3-sonnet:beta">Claude 3 Sonnet (Anthropic)</option>
+                                    <option value="anthropic/claude-3-haiku:beta">Claude 3 Haiku (Anthropic)</option>
+                                    <option value="google/gemini-1.5-pro-latest">Gemini 1.5 Pro (Google)</option>
+                                    <option value="google/gemini-1.5-flash-latest">Gemini 1.5 Flash (Google)</option>
+                                    <option value="meta-llama/llama-3-70b-instruct">Llama 3 70B (Meta)</option>
+                                    <option value="meta-llama/llama-3-8b-instruct">Llama 3 8B (Meta)</option>
+                                    <option value="mistralai/mistral-large-latest">Mistral Large (Mistral AI)</option>
+                                    <option value="mistralai/mistral-medium-latest">Mistral Medium (Mistral AI)</option>
+                                    <option value="mistralai/mistral-small-latest">Mistral Small (Mistral AI)</option>
+                                </select>
+                                <div class="form-text">Selecciona un modelo de la lista para probar la API</div>
+                                <input type="hidden" id="direct-model" value="openrouter/optimus-alpha">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="direct-message" class="form-label">Mensaje</label>
+                                <textarea class="form-control" id="direct-message" rows="3" placeholder="Escribe tu mensaje aquí...">Hola, ¿cómo estás?</textarea>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary" id="direct-test-btn">
+                                    <i class="fas fa-paper-plane me-2"></i> Enviar Prueba
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="mt-4" id="direct-test-result" style="display: none;">
+                            <h6 class="border-bottom pb-2 mb-3">Respuesta:</h6>
+                            <div class="p-3 bg-light rounded" id="direct-test-response">
+                                <!-- La respuesta se mostrará aquí -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Contenido principal termina aquí -->
@@ -414,6 +483,9 @@
 
     <!-- AI Test Page Script -->
     <script src="../js/ai-test.js" type="module"></script>
+
+    <!-- Direct Test Script -->
+    <script src="../js/direct-test.js" type="module"></script>
 
     <!-- Inicialización de Toasts -->
     <script>
