@@ -4,12 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soluciones - Marduk</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/search.css">
+
+    <!-- Tema oscuro/claro -->
+    <script>
+      // Verificar preferencia guardada
+      const darkModeEnabled = localStorage.getItem('darkModeEnabled') === 'true';
+      // Verificar preferencia del sistema
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // Aplicar tema oscuro si está habilitado o preferido por el sistema
+      if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('darkModeEnabled', 'true');
+      }
+    </script>
 </head>
 <body>
     <!-- Header/Navbar (Same as other pages) -->
@@ -20,14 +43,14 @@
                 <div class="logo-bg me-2">M</div>
                 <span class="d-none d-md-inline">Marduk</span>
             </a>
-            
+
             <!-- Mobile Toggle Button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-                    data-bs-target="#mainNav" aria-controls="mainNav" 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#mainNav" aria-controls="mainNav"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <!-- Navigation Items -->
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -44,37 +67,37 @@
                         <a class="nav-link" href="community.html">Comunidad</a>
                     </li>
                 </ul>
-                
+
                 <!-- Search -->
                 <form class="d-none d-md-flex me-3">
                     <div class="input-group">
                         <span class="input-group-text bg-transparent border-end-0">
                             <i class="fa-solid fa-search text-light"></i>
                         </span>
-                        <input type="search" class="form-control bg-transparent border-start-0" 
+                        <input type="search" class="form-control bg-transparent border-start-0"
                                placeholder="Buscar en Marduk..." aria-label="Search">
                     </div>
                 </form>
-                
+
                 <!-- User Menu (Same as other pages) -->
                 <div class="d-flex align-items-center">
                     <!-- Notifications -->
                     <div class="dropdown me-3 position-relative">
-                        <button class="btn btn-link text-light position-relative p-1" 
+                        <button class="btn btn-link text-light position-relative p-1"
                                 id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-bell"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 4
                             </span>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0" 
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0"
                              aria-labelledby="notificationDropdown">
                             <!-- Notification Header -->
                             <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
                                 <h6 class="m-0">Notificaciones</h6>
                                 <button class="btn btn-sm text-primary">Marcar todas como leídas</button>
                             </div>
-                            
+
                             <!-- Notifications List (simplified) -->
                             <div class="notification-list">
                                 <div class="notification-item unread p-3 border-bottom">
@@ -89,9 +112,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- More notifications would go here -->
-                                
+
                                 <!-- Footer -->
                                 <div class="p-2 text-center border-top bg-light">
                                     <a href="#" class="text-decoration-none">Ver todas las notificaciones</a>
@@ -99,10 +122,10 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- User Profile Menu -->
                     <div class="dropdown">
-                        <button class="btn btn-link p-0 d-flex align-items-center text-light text-decoration-none dropdown-toggle" 
+                        <button class="btn btn-link p-0 d-flex align-items-center text-light text-decoration-none dropdown-toggle"
                                 id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="avatar-circle me-2">AG</div>
                             <div class="d-none d-md-block text-start">
@@ -132,7 +155,7 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Main Content -->
     <main class="container py-4">
         <div id="solutionsList">
@@ -143,13 +166,13 @@
                     <p class="mb-4 opacity-90">
                         Descubra soluciones innovadoras desarrolladas por la comunidad judicial para transformar la administración de justicia.
                     </p>
-                    
+
                     <div class="position-relative">
                         <span class="position-absolute top-50 start-0 translate-middle-y ms-3">
                             <i class="fa-solid fa-search text-white opacity-70"></i>
                         </span>
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             placeholder="Buscar soluciones, categorías o funcionalidades..."
                             class="form-control form-control-lg ps-5 bg-white bg-opacity-20 text-white border-0"
                             id="solutionSearch"
@@ -160,7 +183,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Filters and Display Options -->
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body p-3">
@@ -192,7 +215,7 @@
                                 <span>Comunicación</span>
                             </button>
                         </div>
-                        
+
                         <!-- Display Options -->
                         <div class="d-flex align-items-center">
                             <button class="btn btn-light active me-2" id="gridViewBtn">
@@ -206,7 +229,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Advanced Filters (initially hidden) -->
                     <div class="mt-3 pt-3 border-top d-none" id="advancedFilters">
                         <h3 class="h6 fw-medium mb-3">Filtros avanzados</h3>
@@ -243,7 +266,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Grid View of Solutions -->
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="gridView">
                 <!-- SGEJ Solution Card -->
@@ -264,17 +287,17 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <p class="card-text small text-secondary mb-3 two-lines">
                                 Sistema integral para la gestión digital de expedientes judiciales, facilitando el acceso, búsqueda y seguimiento de información.
                             </p>
-                            
+
                             <div class="d-flex flex-wrap gap-1 mb-3">
                                 <span class="badge bg-light text-secondary">Expedientes</span>
                                 <span class="badge bg-light text-secondary">Digital</span>
                                 <span class="badge bg-light text-secondary">Búsqueda</span>
                             </div>
-                            
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     <i class="fa-solid fa-star text-warning me-1"></i>
@@ -289,7 +312,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- OmniChat Solution Card -->
                 <div class="col">
                     <div class="card h-100 border shadow-sm hover-shadow-sm transition-all cursor-pointer" onclick="showAppDetail(2)">
@@ -308,17 +331,17 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <p class="card-text small text-secondary mb-3 two-lines">
                                 Asistente virtual versátil que integra múltiples fuentes de información judicial, democratizando el acceso a información judicial compleja.
                             </p>
-                            
+
                             <div class="d-flex flex-wrap gap-1 mb-3">
                                 <span class="badge bg-light text-secondary">IA</span>
                                 <span class="badge bg-light text-secondary">Asistente</span>
                                 <span class="badge bg-light text-secondary">Chat</span>
                             </div>
-                            
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     <i class="fa-solid fa-star text-warning me-1"></i>
@@ -333,7 +356,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- MALLO Solution Card -->
                 <div class="col">
                     <div class="card h-100 border shadow-sm hover-shadow-sm transition-all cursor-pointer" onclick="showAppDetail(3)">
@@ -350,17 +373,17 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <p class="card-text small text-secondary mb-3 two-lines">
                                 Sistema avanzado de orquestación de múltiples agentes de IA para consultas legales complejas, revolucionando la investigación legal.
                             </p>
-                            
+
                             <div class="d-flex flex-wrap gap-1 mb-3">
                                 <span class="badge bg-light text-secondary">IA</span>
                                 <span class="badge bg-light text-secondary">MultiAgente</span>
                                 <span class="badge bg-light text-secondary">Orquestación</span>
                             </div>
-                            
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     <i class="fa-solid fa-star text-warning me-1"></i>
@@ -375,7 +398,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- JudiCalc Solution Card -->
                 <div class="col">
                     <div class="card h-100 border shadow-sm hover-shadow-sm transition-all cursor-pointer" onclick="showAppDetail(4)">
@@ -394,17 +417,17 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <p class="card-text small text-secondary mb-3 two-lines">
                                 Calculadora avanzada de días hábiles para la Rama Judicial de Colombia, mejorando la precisión y eficiencia en la gestión de plazos judiciales.
                             </p>
-                            
+
                             <div class="d-flex flex-wrap gap-1 mb-3">
                                 <span class="badge bg-light text-secondary">Plazos</span>
                                 <span class="badge bg-light text-secondary">Términos</span>
                                 <span class="badge bg-light text-secondary">Cálculo</span>
                             </div>
-                            
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     <i class="fa-solid fa-star text-warning me-1"></i>
@@ -419,7 +442,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- AnalizadorEstadisticoJudicial Solution Card -->
                 <div class="col">
                     <div class="card h-100 border shadow-sm hover-shadow-sm transition-all cursor-pointer" onclick="showAppDetail(5)">
@@ -438,17 +461,17 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <p class="card-text small text-secondary mb-3 two-lines">
                                 Sistema para análisis automático de datos estadísticos judiciales, facilitando la toma de decisiones basada en evidencia.
                             </p>
-                            
+
                             <div class="d-flex flex-wrap gap-1 mb-3">
                                 <span class="badge bg-light text-secondary">Estadísticas</span>
                                 <span class="badge bg-light text-secondary">Datos</span>
                                 <span class="badge bg-light text-secondary">Análisis</span>
                             </div>
-                            
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     <i class="fa-solid fa-star text-warning me-1"></i>
@@ -463,7 +486,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Constitutor Solution Card -->
                 <div class="col">
                     <div class="card h-100 border shadow-sm hover-shadow-sm transition-all cursor-pointer" onclick="showAppDetail(6)">
@@ -480,17 +503,17 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <p class="card-text small text-secondary mb-3 two-lines">
                                 Aplicación interactiva sobre la Constitución Política de Colombia de 1991, promoviendo la educación constitucional.
                             </p>
-                            
+
                             <div class="d-flex flex-wrap gap-1 mb-3">
                                 <span class="badge bg-light text-secondary">Constitución</span>
                                 <span class="badge bg-light text-secondary">Educación</span>
                                 <span class="badge bg-light text-secondary">Interactivo</span>
                             </div>
-                            
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     <i class="fa-solid fa-star text-warning me-1"></i>
@@ -505,10 +528,10 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- More solution cards would go here -->
             </div>
-            
+
             <!-- List View of Solutions (initially hidden) -->
             <div class="d-none" id="listView">
                 <div class="card border-0 shadow-sm">
@@ -529,11 +552,11 @@
                                             <span class="badge bg-teal-soft text-teal">Consolidada</span>
                                         </div>
                                     </div>
-                                    
+
                                     <p class="small text-secondary my-2">
                                         Sistema integral para la gestión digital de expedientes judiciales, facilitando el acceso, búsqueda y seguimiento de información.
                                     </p>
-                                    
+
                                     <div class="d-flex justify-content-between">
                                         <div class="d-flex flex-wrap gap-1">
                                             <span class="badge bg-light text-secondary">Expedientes</span>
@@ -553,7 +576,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- OmniChat Solution Item -->
                         <div class="list-group-item p-3 cursor-pointer hover-bg-light-active" onclick="showAppDetail(2)">
                             <div class="d-flex">
@@ -570,11 +593,11 @@
                                             <span class="badge bg-green-soft text-green">Producción</span>
                                         </div>
                                     </div>
-                                    
+
                                     <p class="small text-secondary my-2">
                                         Asistente virtual versátil que integra múltiples fuentes de información judicial, democratizando el acceso a información judicial compleja.
                                     </p>
-                                    
+
                                     <div class="d-flex justify-content-between">
                                         <div class="d-flex flex-wrap gap-1">
                                             <span class="badge bg-light text-secondary">IA</span>
@@ -594,13 +617,13 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- More solution items would go here -->
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- App Detail View (initially hidden) -->
         <div id="appDetail" class="d-none">
             <div class="card border-0 shadow-sm overflow-hidden">
@@ -613,13 +636,13 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Back button -->
                     <button class="btn btn-dark btn-sm rounded-circle position-absolute top-3 start-3 opacity-75" onclick="showSolutionsList()">
                         <i class="fa-solid fa-times"></i>
                     </button>
                 </div>
-                
+
                 <div class="card-body p-4">
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-4">
                         <div>
@@ -632,7 +655,7 @@
                                 </span>
                             </div>
                         </div>
-                        
+
                         <div class="d-flex align-items-center mt-3 mt-md-0">
                             <span class="badge bg-teal-soft text-teal me-3 px-3 py-2" id="appMaturityBadge">
                                 Nivel 5: Consolidada
@@ -642,30 +665,30 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="d-flex flex-wrap align-items-center mb-4 gap-4">
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-star text-warning me-1"></i>
                             <span class="fw-semibold" id="appRating">4.8</span>
                             <span class="text-secondary small ms-1" id="appReviews">(245)</span>
                         </div>
-                        
+
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-download text-secondary me-1"></i>
                             <span class="text-secondary" id="appDownloads">12,500</span>
                         </div>
-                        
+
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-clock text-secondary me-1"></i>
                             <span class="small text-secondary" id="appLastUpdate">2 semanas atrás</span>
                         </div>
-                        
+
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-code-branch text-secondary me-1"></i>
                             <span class="small text-secondary" id="appVersion">v2.4.3</span>
                         </div>
                     </div>
-                    
+
                     <!-- App Tabs Navigation -->
                     <ul class="nav nav-tabs mb-4" id="appTabs" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -699,7 +722,7 @@
                             </button>
                         </li>
                     </ul>
-                    
+
                     <!-- App Tab Content -->
                     <div class="tab-content" id="appTabContent">
                         <!-- Information Tab -->
@@ -710,13 +733,13 @@
                                     El Sistema de Gestión de Expedientes Electrónicos (SGEJ) representa la columna vertebral de la transformación digital del sistema judicial colombiano. Esta plataforma integral permite el manejo completamente digital de los expedientes, desde su creación hasta su archivo definitivo.
                                 </p>
                             </div>
-                            
+
                             <div class="d-flex flex-wrap gap-2 mt-4" id="appTags">
                                 <span class="badge bg-light text-secondary px-3 py-2">Expedientes</span>
                                 <span class="badge bg-light text-secondary px-3 py-2">Digital</span>
                                 <span class="badge bg-light text-secondary px-3 py-2">Búsqueda</span>
                             </div>
-                            
+
                             <div class="mt-5">
                                 <h3 class="h5 fw-semibold mb-3">Beneficios clave</h3>
                                 <ul class="list-unstyled" id="appBenefits">
@@ -734,7 +757,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            
+
                             <div class="mt-5">
                                 <h3 class="h5 fw-semibold mb-3">Requisitos</h3>
                                 <ul class="list-unstyled" id="appRequirements">
@@ -752,7 +775,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            
+
                             <div class="mt-5">
                                 <h3 class="h5 fw-semibold mb-3">Recomendado para</h3>
                                 <div class="d-flex flex-wrap gap-2" id="appRecommendedFor">
@@ -764,12 +787,12 @@
                                     </span>
                                 </div>
                             </div>
-                            
+
                             <div class="mt-5">
                                 <h3 class="h5 fw-semibold mb-3">Proceso de evolución</h3>
                                 <div class="position-relative">
                                     <div class="position-absolute start-4 top-0 bottom-0 border-start border-2 border-gray-200"></div>
-                                    
+
                                     <div class="d-flex mb-4 position-relative">
                                         <div class="bg-blue-600 text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3" style="width: 30px; height: 30px; position: relative; z-index: 1;">
                                             1
@@ -780,29 +803,29 @@
                                             <p class="x-small text-muted">Completado</p>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- More evolution stages would go here -->
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Reviews, Team, Versions, Metrics, Contribute tabs would be implemented here -->
                         <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel" aria-labelledby="reviews-tab" tabindex="0">
                             <p class="text-center py-5">Contenido de valoraciones se cargará dinámicamente</p>
                         </div>
-                        
+
                         <div class="tab-pane fade" id="team-tab-pane" role="tabpanel" aria-labelledby="team-tab" tabindex="0">
                             <p class="text-center py-5">Información del equipo de desarrollo se cargará dinámicamente</p>
                         </div>
-                        
+
                         <div class="tab-pane fade" id="versions-tab-pane" role="tabpanel" aria-labelledby="versions-tab" tabindex="0">
                             <p class="text-center py-5">Historial de versiones se cargará dinámicamente</p>
                         </div>
-                        
+
                         <div class="tab-pane fade" id="metrics-tab-pane" role="tabpanel" aria-labelledby="metrics-tab" tabindex="0">
                             <p class="text-center py-5">Métricas e impacto se cargarán dinámicamente</p>
                         </div>
-                        
+
                         <div class="tab-pane fade" id="contribute-tab-pane" role="tabpanel" aria-labelledby="contribute-tab" tabindex="0">
                             <p class="text-center py-5">Información de contribución se cargará dinámicamente</p>
                         </div>
@@ -811,7 +834,7 @@
             </div>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="bg-light py-4 mt-auto border-top">
         <div class="container">
@@ -835,15 +858,65 @@
         </div>
     </footer>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5.3 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+    <!-- Toastify JS -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+
+    <!-- Configuración de módulos -->
+    <script type="module">
+      // Importar módulos
+      import openRouterService from '../js/openrouter.js';
+
+      // Hacer disponibles globalmente
+      window.openRouterService = openRouterService;
+    </script>
+
+    <!-- OpenRouter Integration (para compatibilidad) -->
+    <script src="../js/openrouter.js" type="module"></script>
+
+    <!-- Enhanced Navigation -->
+    <script src="../js/navigation.js"></script>
+
+    <!-- Advanced Search -->
+    <script src="../js/search.js"></script>
+
     <!-- Custom Scripts -->
     <script src="../js/main.js"></script>
-    
+
+    <!-- Inicialización de Toasts -->
+    <script>
+      // Configuración global para Toastify
+      const showToast = (message, type = 'info') => {
+        const bgColors = {
+          success: 'linear-gradient(to right, #00b09b, #96c93d)',
+          error: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+          warning: 'linear-gradient(to right, #f7b733, #fc4a1a)',
+          info: 'linear-gradient(to right, #2193b0, #6dd5ed)'
+        };
+
+        Toastify({
+          text: message,
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "right",
+          backgroundColor: bgColors[type],
+          stopOnFocus: true,
+          className: `toast-${type}`
+        }).showToast();
+      };
+
+      // Hacer disponible globalmente
+      window.showToast = showToast;
+    </script>
+
     <!-- Solutions specific JavaScript -->
     <script>
         // Solutions data - in a real app this would come from an API
@@ -909,22 +982,22 @@
             },
             // Additional solutions would be defined here
         ];
-        
+
         // Initialize when DOM is fully loaded
         document.addEventListener('DOMContentLoaded', function() {
             // Setup view mode toggles
             setupViewModeToggles();
-            
+
             // Setup filter toggle
             setupFilterToggle();
-            
+
             // Setup search
             setupSearch();
-            
+
             // Check if we should show an app detail based on URL
             checkUrlForAppDetail();
         });
-        
+
         /**
          * Setup view mode toggles (grid/list)
          */
@@ -933,28 +1006,28 @@
             const listViewBtn = document.getElementById('listViewBtn');
             const gridView = document.getElementById('gridView');
             const listView = document.getElementById('listView');
-            
+
             if (gridViewBtn && listViewBtn) {
                 gridViewBtn.addEventListener('click', function() {
                     gridViewBtn.classList.add('active');
                     listViewBtn.classList.remove('active');
                     gridView.classList.remove('d-none');
                     listView.classList.add('d-none');
-                    
+
                     // Save preference
                     localStorage.setItem('mardukViewMode', 'grid');
                 });
-                
+
                 listViewBtn.addEventListener('click', function() {
                     listViewBtn.classList.add('active');
                     gridViewBtn.classList.remove('active');
                     listView.classList.remove('d-none');
                     gridView.classList.add('d-none');
-                    
+
                     // Save preference
                     localStorage.setItem('mardukViewMode', 'list');
                 });
-                
+
                 // Load saved preference
                 const savedMode = localStorage.getItem('mardukViewMode');
                 if (savedMode === 'list') {
@@ -962,14 +1035,14 @@
                 }
             }
         }
-        
+
         /**
          * Setup filter toggle
          */
         function setupFilterToggle() {
             const filterToggleBtn = document.getElementById('filterToggleBtn');
             const advancedFilters = document.getElementById('advancedFilters');
-            
+
             if (filterToggleBtn && advancedFilters) {
                 filterToggleBtn.addEventListener('click', function() {
                     filterToggleBtn.classList.toggle('active');
@@ -977,13 +1050,13 @@
                 });
             }
         }
-        
+
         /**
          * Setup search functionality
          */
         function setupSearch() {
             const searchInput = document.getElementById('solutionSearch');
-            
+
             if (searchInput) {
                 searchInput.addEventListener('input', function() {
                     // In a real app, this would filter results dynamically
@@ -991,19 +1064,19 @@
                 });
             }
         }
-        
+
         /**
          * Check URL for app detail parameter
          */
         function checkUrlForAppDetail() {
             const urlParams = new URLSearchParams(window.location.search);
             const appId = urlParams.get('app');
-            
+
             if (appId) {
                 showAppDetail(parseInt(appId));
             }
         }
-        
+
         /**
          * Show app detail view
          * @param {number} appId - The app ID to show
@@ -1011,42 +1084,42 @@
         function showAppDetail(appId) {
             const solutionsList = document.getElementById('solutionsList');
             const appDetail = document.getElementById('appDetail');
-            
+
             if (solutionsList && appDetail) {
                 // Find the app data
                 const app = solutions.find(s => s.id === appId) || solutions[0];
-                
+
                 // Update app detail view with data
                 updateAppDetailView(app);
-                
+
                 // Show app detail view
                 solutionsList.classList.add('d-none');
                 appDetail.classList.remove('d-none');
-                
+
                 // Update URL without reloading page
                 history.pushState({app: appId}, '', `?app=${appId}`);
-                
+
                 // Scroll to top
                 window.scrollTo(0, 0);
             }
         }
-        
+
         /**
          * Show solutions list view
          */
         function showSolutionsList() {
             const solutionsList = document.getElementById('solutionsList');
             const appDetail = document.getElementById('appDetail');
-            
+
             if (solutionsList && appDetail) {
                 solutionsList.classList.remove('d-none');
                 appDetail.classList.add('d-none');
-                
+
                 // Update URL without reloading page
                 history.pushState({}, '', 'solutions.html');
             }
         }
-        
+
         /**
          * Update app detail view with app data
          * @param {Object} app - The app data
@@ -1055,15 +1128,15 @@
             // Update header background and icon
             const appHeaderBg = document.getElementById('appHeaderBg');
             const appIcon = document.getElementById('appIcon');
-            
+
             if (appHeaderBg) {
                 appHeaderBg.className = `h-48 ${app.iconBg}`;
             }
-            
+
             if (appIcon) {
                 appIcon.innerHTML = `<i class="fa-solid ${app.icon}"></i>`;
             }
-            
+
             // Update basic information
             document.getElementById('appTitle').textContent = app.name;
             document.getElementById('appDeveloper').textContent = `Por ${app.developer}`;
@@ -1074,7 +1147,7 @@
             document.getElementById('appLastUpdate').textContent = app.lastUpdate;
             document.getElementById('appVersion').textContent = `v${app.version}`;
             document.getElementById('appDescription').textContent = app.description;
-            
+
             // Update tags
             const tagsContainer = document.getElementById('appTags');
             tagsContainer.innerHTML = '';
@@ -1084,7 +1157,7 @@
                 tagSpan.textContent = tag;
                 tagsContainer.appendChild(tagSpan);
             });
-            
+
             // Update benefits
             const benefitsContainer = document.getElementById('appBenefits');
             benefitsContainer.innerHTML = '';
@@ -1097,7 +1170,7 @@
                 `;
                 benefitsContainer.appendChild(benefitLi);
             });
-            
+
             // Update requirements
             const requirementsContainer = document.getElementById('appRequirements');
             requirementsContainer.innerHTML = '';
@@ -1110,7 +1183,7 @@
                 `;
                 requirementsContainer.appendChild(reqLi);
             });
-            
+
             // Update recommended for
             const recommendedForContainer = document.getElementById('appRecommendedFor');
             recommendedForContainer.innerHTML = '';
@@ -1121,7 +1194,7 @@
                 recommendedForContainer.appendChild(roleSpan);
             });
         }
-        
+
         // Handle browser back button
         window.addEventListener('popstate', function(event) {
             if (event.state && event.state.app) {

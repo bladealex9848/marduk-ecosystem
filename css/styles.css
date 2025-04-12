@@ -1,68 +1,71 @@
-/* 
+/*
 * MARDUK ECOSYSTEM - CUSTOM STYLES
-* Ecosystem for Judicial Transformation
+* Ecosistema para la Transformación Judicial
+* Versión: 2.0
+* Última actualización: 2023
 */
 
+/* =========== Variables CSS Globales =========== */
 :root {
     /* Primary colors */
     --primary: #3b82f6;
     --primary-dark: #2563eb;
     --primary-light: #60a5fa;
     --primary-subtle: #eff6ff;
-    
+
     /* Secondary colors */
     --secondary: #64748b;
     --secondary-dark: #475569;
     --secondary-light: #94a3b8;
     --secondary-subtle: #f8fafc;
-    
+
     /* Status colors */
     --success: #10b981;
     --success-dark: #059669;
     --success-light: #34d399;
     --success-subtle: #ecfdf5;
-    
+
     --warning: #f59e0b;
     --warning-dark: #d97706;
     --warning-light: #fbbf24;
     --warning-subtle: #fffbeb;
-    
+
     --danger: #ef4444;
     --danger-dark: #dc2626;
     --danger-light: #f87171;
     --danger-subtle: #fee2e2;
-    
+
     --info: #3b82f6;
     --info-dark: #2563eb;
     --info-light: #60a5fa;
     --info-subtle: #eff6ff;
-    
+
     /* Custom colors */
     --purple: #8b5cf6;
     --purple-dark: #7c3aed;
     --purple-light: #a78bfa;
     --purple-subtle: #f5f3ff;
-    
+
     --indigo: #6366f1;
     --indigo-dark: #4f46e5;
     --indigo-light: #818cf8;
     --indigo-subtle: #eef2ff;
-    
+
     --teal: #14b8a6;
     --teal-dark: #0d9488;
     --teal-light: #2dd4bf;
     --teal-subtle: #f0fdfa;
-    
+
     --orange: #f97316;
     --orange-dark: #ea580c;
     --orange-light: #fb923c;
     --orange-subtle: #fff7ed;
-    
+
     --amber: #f59e0b;
     --amber-dark: #d97706;
     --amber-light: #fbbf24;
     --amber-subtle: #fffbeb;
-    
+
     /* Neutral colors */
     --gray-100: #f3f4f6;
     --gray-200: #e5e7eb;
@@ -73,7 +76,7 @@
     --gray-700: #374151;
     --gray-800: #1f2937;
     --gray-900: #111827;
-    
+
     /* Spacing */
     --spacing-xxs: 0.25rem;
     --spacing-xs: 0.5rem;
@@ -82,7 +85,7 @@
     --spacing-lg: 1.5rem;
     --spacing-xl: 2rem;
     --spacing-xxl: 3rem;
-    
+
     /* Border radius */
     --radius-sm: 0.125rem;
     --radius-md: 0.25rem;
@@ -90,12 +93,12 @@
     --radius-xl: 0.75rem;
     --radius-xxl: 1rem;
     --radius-full: 9999px;
-    
+
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    
+
     /* Font sizes */
     --text-xs: 0.75rem;
     --text-sm: 0.875rem;
@@ -105,19 +108,19 @@
     --text-2xl: 1.5rem;
     --text-3xl: 1.875rem;
     --text-4xl: 2.25rem;
-    
+
     /* Font weights */
     --font-normal: 400;
     --font-medium: 500;
     --font-semibold: 600;
     --font-bold: 700;
-    
+
     /* Transitions */
     --transition-fast: 150ms;
     --transition-normal: 250ms;
     --transition-slow: 350ms;
   }
-  
+
   /* =========== Base Styles =========== */
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -126,22 +129,22 @@
     font-size: var(--text-md);
     line-height: 1.5;
   }
-  
+
   a {
     text-decoration: none;
     color: var(--primary);
     transition: color var(--transition-fast) ease-in-out;
   }
-  
+
   a:hover {
     color: var(--primary-dark);
   }
-  
+
   /* =========== Navbar Styles =========== */
   .navbar.bg-gradient {
     background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
   }
-  
+
   .logo-bg {
     width: 2.5rem;
     height: 2.5rem;
@@ -153,21 +156,21 @@
     font-weight: var(--font-bold);
     font-size: 1.25rem;
   }
-  
+
   .navbar .form-control.bg-transparent {
     border-color: rgba(255, 255, 255, 0.3);
     color: #fff;
   }
-  
+
   .navbar .form-control.bg-transparent::placeholder {
     color: rgba(255, 255, 255, 0.7);
   }
-  
+
   .navbar .input-group-text.bg-transparent {
     border-color: rgba(255, 255, 255, 0.3);
     color: rgba(255, 255, 255, 0.7);
   }
-  
+
   /* =========== Avatar Styles =========== */
   .avatar-circle {
     width: 40px;
@@ -180,50 +183,50 @@
     color: #334155;
     font-weight: var(--font-medium);
   }
-  
+
   .avatar-circle-xs {
     width: 28px;
     height: 28px;
     font-size: var(--text-xs);
   }
-  
+
   .avatar-circle-sm {
     width: 35px;
     height: 35px;
     font-size: var(--text-sm);
   }
-  
+
   .avatar-circle-lg {
     width: 80px;
     height: 80px;
     font-size: 1.75rem;
     font-weight: var(--font-semibold);
   }
-  
+
   /* =========== Notification Dropdown =========== */
   .notification-dropdown {
     width: 350px;
     max-height: 400px;
     box-shadow: var(--shadow-lg);
   }
-  
+
   .notification-list {
     max-height: 300px;
     overflow-y: auto;
   }
-  
+
   .notification-item {
     transition: background-color var(--transition-fast) ease-in-out;
   }
-  
+
   .notification-item:hover {
     background-color: var(--gray-100);
   }
-  
+
   .notification-item.unread {
     background-color: var(--primary-subtle);
   }
-  
+
   .notification-icon {
     width: 40px;
     height: 40px;
@@ -232,195 +235,195 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   /* =========== Custom Gradient Backgrounds =========== */
   .bg-gradient-primary {
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   }
-  
+
   .bg-gradient-blue {
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   }
-  
+
   .bg-gradient-indigo {
     background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   }
-  
+
   .bg-gradient-purple {
     background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
   }
-  
+
   .bg-gradient-green {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   }
-  
+
   .bg-gradient-orange {
     background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
   }
-  
+
   .bg-gradient-red {
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   }
-  
+
   .bg-gradient-light {
     background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
   }
-  
+
   /* =========== Dashboard Banner =========== */
   .dashboard-banner {
     background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
     border-radius: var(--radius-lg);
   }
-  
+
   /* =========== Soft Background Colors =========== */
   .bg-blue-soft {
     background-color: var(--primary-subtle);
   }
-  
+
   .bg-blue-soft-dark {
     background-color: rgba(59, 130, 246, 0.15);
   }
-  
+
   .bg-purple-soft {
     background-color: var(--purple-subtle);
   }
-  
+
   .bg-green-soft {
     background-color: var(--success-subtle);
   }
-  
+
   .bg-red-soft {
     background-color: var(--danger-subtle);
   }
-  
+
   .bg-orange-soft {
     background-color: var(--orange-subtle);
   }
-  
+
   .bg-amber-soft {
     background-color: var(--amber-subtle);
   }
-  
+
   .bg-teal-soft {
     background-color: var(--teal-subtle);
   }
-  
+
   .bg-indigo-soft {
     background-color: var(--indigo-subtle);
   }
-  
+
   .bg-primary-soft {
     background-color: var(--primary-subtle);
   }
-  
+
   .bg-success-soft {
     background-color: var(--success-subtle);
   }
-  
+
   .bg-danger-soft {
     background-color: var(--danger-subtle);
   }
-  
+
   .bg-warning-soft {
     background-color: var(--warning-subtle);
   }
-  
+
   .bg-info-soft {
     background-color: var(--info-subtle);
   }
-  
+
   /* =========== Custom Text Colors =========== */
   .text-purple {
     color: var(--purple);
   }
-  
+
   .text-indigo {
     color: var(--indigo);
   }
-  
+
   .text-teal {
     color: var(--teal);
   }
-  
+
   .text-amber {
     color: var(--amber);
   }
-  
+
   .text-orange {
     color: var(--orange);
   }
-  
+
   .text-white-75 {
     color: rgba(255, 255, 255, 0.75);
   }
-  
+
   /* =========== Custom Button Colors =========== */
   .btn-purple {
     background-color: var(--purple);
     border-color: var(--purple);
     color: #fff;
   }
-  
+
   .btn-purple:hover {
     background-color: var(--purple-dark);
     border-color: var(--purple-dark);
     color: #fff;
   }
-  
+
   .btn-outline-purple {
     color: var(--purple);
     border-color: var(--purple);
   }
-  
+
   .btn-outline-purple:hover {
     background-color: var(--purple);
     color: #fff;
   }
-  
+
   .btn-indigo {
     background-color: var(--indigo);
     border-color: var(--indigo);
     color: #fff;
   }
-  
+
   .btn-indigo:hover {
     background-color: var(--indigo-dark);
     border-color: var(--indigo-dark);
     color: #fff;
   }
-  
+
   .btn-outline-indigo {
     color: var(--indigo);
     border-color: var(--indigo);
   }
-  
+
   .btn-outline-indigo:hover {
     background-color: var(--indigo);
     color: #fff;
   }
-  
+
   .btn-orange {
     background-color: var(--orange);
     border-color: var(--orange);
     color: #fff;
   }
-  
+
   .btn-orange:hover {
     background-color: var(--orange-dark);
     border-color: var(--orange-dark);
     color: #fff;
   }
-  
+
   .btn-outline-orange {
     color: var(--orange);
     border-color: var(--orange);
   }
-  
+
   .btn-outline-orange:hover {
     background-color: var(--orange);
     color: #fff;
   }
-  
+
   /* =========== Solution Cards =========== */
   .solution-icon {
     width: 48px;
@@ -431,7 +434,7 @@
     justify-content: center;
     color: #fff;
   }
-  
+
   .solution-icon-sm {
     width: 40px;
     height: 40px;
@@ -441,23 +444,23 @@
     justify-content: center;
     color: #fff;
   }
-  
+
   .solution-card {
     transition: all var(--transition-normal) ease-in-out;
   }
-  
+
   .solution-card:hover {
     transform: translateY(-3px);
   }
-  
+
   .two-lines {
     display: -webkit-box;
     -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;  
+    -webkit-box-orient: vertical;
     overflow: hidden;
     height: 3em;
   }
-  
+
   /* =========== Badge Items =========== */
   .badge-item {
     width: 50px;
@@ -471,11 +474,11 @@
     cursor: pointer;
     transition: all var(--transition-fast) ease-in-out;
   }
-  
+
   .badge-item:hover {
     background-color: rgba(255, 255, 255, 0.2);
   }
-  
+
   .badge-item-unlock {
     width: 50px;
     height: 50px;
@@ -489,11 +492,11 @@
     cursor: pointer;
     transition: all var(--transition-fast) ease-in-out;
   }
-  
+
   .badge-item-unlock:hover {
     background-color: rgba(255, 255, 255, 0.1);
   }
-  
+
   /* =========== Date Box Styles =========== */
   .date-box {
     padding: 8px;
@@ -501,7 +504,7 @@
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
   }
-  
+
   /* =========== Carousel Controls =========== */
   .carousel-control-link {
     width: 32px;
@@ -515,17 +518,17 @@
     color: var(--gray-600);
     transition: all var(--transition-fast) ease-in-out;
   }
-  
+
   .carousel-control-link:hover {
     background-color: var(--primary);
     color: #fff;
   }
-  
+
   .carousel-indicators {
     margin: 0;
     position: relative;
   }
-  
+
   .carousel-indicators [data-bs-target] {
     width: 8px;
     height: 8px;
@@ -533,82 +536,550 @@
     background-color: var(--gray-300);
     opacity: 1;
   }
-  
+
   .carousel-indicators .active {
     background-color: var(--primary);
   }
-  
+
   /* =========== Utility Classes =========== */
   .hover-shadow-sm {
     transition: box-shadow var(--transition-fast) ease-in-out;
   }
-  
+
   .hover-shadow-sm:hover {
     box-shadow: var(--shadow-md);
   }
-  
+
   .hover-bg-light-active:hover {
     background-color: rgba(0, 0, 0, 0.03) !important;
   }
-  
+
   .transition-all {
     transition: all var(--transition-normal) ease-in-out;
   }
-  
+
   .cursor-pointer {
     cursor: pointer;
   }
-  
+
   /* =========== Community Tab Styles =========== */
   .nav-tabs .nav-link.active {
     font-weight: var(--font-medium);
     border-bottom: 2px solid #fff;
     background-color: transparent;
   }
-  
+
   .nav-tabs .nav-link {
     border: none;
     padding: 0.75rem 1rem;
     transition: all var(--transition-fast) ease-in-out;
   }
-  
+
   .nav-tabs .nav-link:hover:not(.active) {
     border-bottom: 2px solid rgba(255, 255, 255, 0.5);
   }
-  
-  /* =========== Responsiveness =========== */
-  @media (max-width: 768px) {
+
+  /* =========== Modo Oscuro =========== */
+  :root {
+    /* Variables para modo claro (por defecto) */
+    --body-bg: #f8f9fa;
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+    --navbar-bg: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+    --text-color: var(--gray-800);
+    --text-muted: var(--gray-600);
+    --border-color: var(--gray-300);
+    --hover-bg: rgba(0, 0, 0, 0.03);
+    --dropdown-shadow: var(--shadow-md);
+  }
+
+  [data-theme="dark"] {
+    /* Colores de fondo */
+    --body-bg: #121212;
+    --card-bg: #1e1e1e;
+    --input-bg: #2d2d2d;
+    --navbar-bg: linear-gradient(90deg, #1a365d 0%, #2c3e50 100%);
+
+    /* Colores de texto */
+    --text-color: #e0e0e0;
+    --text-muted: #a0a0a0;
+
+    /* Colores de borde */
+    --border-color: #333;
+    --hover-bg: rgba(255, 255, 255, 0.05);
+    --dropdown-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+
+    /* Ajustes de sombras */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+
+    /* Colores de Bootstrap */
+    --bs-primary-rgb: 59, 130, 246;
+    --bs-secondary-rgb: 100, 116, 139;
+    --bs-success-rgb: 16, 185, 129;
+    --bs-info-rgb: 59, 130, 246;
+    --bs-warning-rgb: 245, 158, 11;
+    --bs-danger-rgb: 239, 68, 68;
+    --bs-light-rgb: 30, 41, 59;
+    --bs-dark-rgb: 226, 232, 240;
+  }
+
+  /* Estilos base para modo oscuro */
+  [data-theme="dark"] body {
+    background-color: var(--body-bg);
+    color: var(--text-color);
+  }
+
+  /* Navbar en modo oscuro */
+  [data-theme="dark"] .navbar.bg-gradient {
+    background: var(--navbar-bg);
+  }
+
+  /* Tarjetas y contenedores en modo oscuro */
+  [data-theme="dark"] .card,
+  [data-theme="dark"] .dropdown-menu,
+  [data-theme="dark"] .modal-content,
+  [data-theme="dark"] .toast,
+  [data-theme="dark"] .offcanvas,
+  [data-theme="dark"] .list-group-item {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
+  }
+
+  /* Formularios en modo oscuro */
+  [data-theme="dark"] .form-control,
+  [data-theme="dark"] .form-select,
+  [data-theme="dark"] .input-group-text {
+    background-color: var(--input-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
+  }
+
+  [data-theme="dark"] .form-control:focus,
+  [data-theme="dark"] .form-select:focus {
+    background-color: var(--input-bg);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+    color: var(--text-color);
+  }
+
+  [data-theme="dark"] .form-control::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+
+  /* Textos en modo oscuro */
+  [data-theme="dark"] .text-dark {
+    color: var(--text-color) !important;
+  }
+
+  [data-theme="dark"] .text-muted,
+  [data-theme="dark"] .text-secondary {
+    color: var(--text-muted) !important;
+  }
+
+  /* Bordes en modo oscuro */
+  [data-theme="dark"] .border,
+  [data-theme="dark"] .border-top,
+  [data-theme="dark"] .border-bottom,
+  [data-theme="dark"] .border-start,
+  [data-theme="dark"] .border-end {
+    border-color: var(--border-color) !important;
+  }
+
+  /* Menú de navegación en modo oscuro */
+  [data-theme="dark"] .navbar-collapse {
+    background-color: var(--card-bg);
+    box-shadow: var(--dropdown-shadow);
+  }
+
+  [data-theme="dark"] .navbar-collapse .navbar-nav .nav-link {
+    color: var(--text-color);
+  }
+
+  [data-theme="dark"] .navbar-collapse .navbar-nav .nav-link:hover {
+    background-color: var(--hover-bg);
+  }
+
+  [data-theme="dark"] .navbar-collapse .navbar-nav .nav-link.active {
+    color: var(--primary);
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+  }
+
+  /* Tablas en modo oscuro */
+  [data-theme="dark"] .table {
+    color: var(--text-color);
+    border-color: var(--border-color);
+  }
+
+  [data-theme="dark"] .table-striped>tbody>tr:nth-of-type(odd)>* {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+  }
+
+  [data-theme="dark"] .table-hover>tbody>tr:hover>* {
+    background-color: rgba(255, 255, 255, 0.075);
+    color: var(--text-color);
+  }
+
+  /* Notificaciones en modo oscuro */
+  [data-theme="dark"] .notification-item {
+    border-color: var(--border-color);
+  }
+
+  [data-theme="dark"] .notification-item:hover {
+    background-color: var(--hover-bg);
+  }
+
+  [data-theme="dark"] .notification-item.unread {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+  }
+
+  /* Botones en modo oscuro */
+  [data-theme="dark"] .btn-light {
+    background-color: var(--input-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
+  }
+
+  [data-theme="dark"] .btn-light:hover {
+    background-color: #3a3a3a;
+    border-color: var(--border-color);
+    color: var(--text-color);
+  }
+
+  [data-theme="dark"] .btn-outline-secondary {
+    color: var(--text-muted);
+    border-color: var(--border-color);
+  }
+
+  [data-theme="dark"] .btn-outline-secondary:hover {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+  }
+
+  /* Badges en modo oscuro */
+  [data-theme="dark"] .badge.bg-light {
+    background-color: var(--input-bg) !important;
+    color: var(--text-color);
+  }
+
+  [data-theme="dark"] .badge.bg-secondary {
+    background-color: #475569 !important;
+  }
+
+  /* Tooltips y popovers en modo oscuro */
+  [data-theme="dark"] .tooltip-inner,
+  [data-theme="dark"] .popover {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
+  }
+
+  [data-theme="dark"] .bs-popover-auto[data-popper-placement^=top]>.popover-arrow::after,
+  [data-theme="dark"] .bs-popover-top>.popover-arrow::after {
+    border-top-color: var(--card-bg);
+  }
+
+  [data-theme="dark"] .bs-popover-auto[data-popper-placement^=bottom]>.popover-arrow::after,
+  [data-theme="dark"] .bs-popover-bottom>.popover-arrow::after {
+    border-bottom-color: var(--card-bg);
+  }
+
+  /* Modales en modo oscuro */
+  [data-theme="dark"] .modal-header,
+  [data-theme="dark"] .modal-footer {
+    border-color: var(--border-color);
+  }
+
+  /* Acordeones en modo oscuro */
+  [data-theme="dark"] .accordion-button {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+  }
+
+  [data-theme="dark"] .accordion-button:not(.collapsed) {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+    color: var(--primary);
+  }
+
+  [data-theme="dark"] .accordion-button::after {
+    filter: invert(1);
+  }
+
+  /* =========== Animaciones y Transiciones =========== */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideInUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideInUp 0.5s ease-out;
+  }
+
+  .animate-pulse {
+    animation: pulse 2s infinite;
+  }
+
+  /* Mejora para la clase two-lines */
+  .two-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2; /* Propiedad estándar */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 3em;
+  }
+
+  /* =========== Mejoras Responsivas =========== */
+  /* Estilos base responsivos */
+  .row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 1rem;
+  }
+
+  .container-fluid {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* Ajustes para dispositivos extra pequeños (menos de 576px) */
+  @media (max-width: 575.98px) {
+    .notification-dropdown {
+      width: 280px;
+      right: -70px;
+    }
+
+    .badge-item, .badge-item-unlock {
+      width: 36px;
+      height: 36px;
+    }
+
+    .avatar-circle-lg {
+      width: 50px;
+      height: 50px;
+      font-size: 1.125rem;
+    }
+
+    /* Mejoras para dispositivos móviles pequeños */
+    .card {
+      margin-bottom: 1rem;
+    }
+
+    .container-fluid {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+
+    h1, .h1 {
+      font-size: 1.5rem;
+    }
+
+    h2, .h2 {
+      font-size: 1.25rem;
+    }
+
+    h3, .h3 {
+      font-size: 1.125rem;
+    }
+
+    /* Ajustes para tablas en móviles */
+    .table-responsive {
+      font-size: 0.875rem;
+    }
+
+    /* Ajustes para botones en móviles */
+    .btn {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    /* Ajustes para formularios en móviles */
+    .form-control, .form-select {
+      font-size: 0.875rem;
+      padding: 0.375rem 0.75rem;
+    }
+
+    /* Ajustes para espaciado en móviles */
+    .section-padding {
+      padding: 2rem 0;
+    }
+
+    /* Ajustes para tarjetas en móviles */
+    .card-body {
+      padding: 1rem;
+    }
+
+    /* Ajustes para menú de navegación en móviles */
+    .navbar-brand {
+      font-size: 1.25rem;
+    }
+  }
+
+  /* Ajustes para dispositivos pequeños (576px - 767px) */
+  @media (min-width: 576px) and (max-width: 767.98px) {
     .notification-dropdown {
       width: 300px;
     }
-    
+
     .badge-item, .badge-item-unlock {
       width: 40px;
       height: 40px;
     }
-    
+
     .avatar-circle-lg {
       width: 60px;
       height: 60px;
       font-size: 1.25rem;
     }
+
+    /* Mejoras para dispositivos móviles */
+    .card {
+      margin-bottom: 1rem;
+    }
+
+    .container-fluid {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    h1, .h1 {
+      font-size: 1.75rem;
+    }
+
+    h2, .h2 {
+      font-size: 1.5rem;
+    }
+
+    /* Ajustes para espaciado en tablets pequeñas */
+    .section-padding {
+      padding: 2.5rem 0;
+    }
   }
-  
+
+  /* Ajustes para dispositivos medianos (768px - 991px) */
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    .container-fluid {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    /* Ajustes para tarjetas en tablets */
+    .card-deck .card {
+      flex: 0 0 calc(50% - 30px);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Ajustes para espaciado en tablets */
+    .section-padding {
+      padding: 3rem 0;
+    }
+  }
+
+  /* Ajustes para dispositivos grandes (992px - 1199px) */
+  @media (min-width: 992px) and (max-width: 1199.98px) {
+    .container-fluid {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+
+    /* Ajustes para tarjetas en pantallas grandes */
+    .card-deck .card {
+      flex: 0 0 calc(33.333% - 30px);
+    }
+  }
+
+  /* Ajustes para dispositivos extra grandes (1200px y más) */
+  @media (min-width: 1200px) {
+    .container-fluid {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+  }
+
   /* Mobile Navigation Adjustments */
-  @media (max-width: 992px) {
+  @media (max-width: 991.98px) {
     .navbar-collapse {
-      background-color: #fff;
+      background-color: var(--card-bg);
       border-radius: var(--radius-lg);
       padding: 1rem;
       margin-top: 0.5rem;
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--dropdown-shadow);
+      animation: slideInUp 0.3s ease-out;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      max-height: 80vh;
+      overflow-y: auto;
     }
-    
+
     .navbar-collapse .navbar-nav .nav-link {
-      color: var(--gray-800);
+      color: var(--text-color);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      transition: all var(--transition-fast) ease-in-out;
+      margin-bottom: 0.25rem;
     }
-    
+
+    .navbar-collapse .navbar-nav .nav-link:hover {
+      background-color: var(--hover-bg);
+    }
+
     .navbar-collapse .navbar-nav .nav-link.active {
       color: var(--primary);
+      background-color: rgba(var(--bs-primary-rgb), 0.1);
+    }
+
+    /* Ajustes para el menú de usuario en móviles */
+    .user-menu-dropdown {
+      position: static !important;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .user-menu-dropdown .dropdown-menu {
+      width: 100%;
+      margin-top: 0.5rem;
+      position: static !important;
+      transform: none !important;
+    }
+
+    /* Ajustes para la barra de búsqueda en móviles */
+    .navbar .search-container {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+
+    /* Ajustes para el logo en móviles */
+    .navbar-brand img {
+      max-height: 30px;
     }
   }

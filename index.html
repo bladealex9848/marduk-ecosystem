@@ -4,12 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marduk - Ecosistema de Transformación Judicial</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/search.css">
+
+    <!-- Tema oscuro/claro -->
+    <script>
+      // Verificar preferencia guardada
+      const darkModeEnabled = localStorage.getItem('darkModeEnabled') === 'true';
+      // Verificar preferencia del sistema
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // Aplicar tema oscuro si está habilitado o preferido por el sistema
+      if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('darkModeEnabled', 'true');
+      }
+    </script>
 </head>
 <body>
     <!-- Header/Navbar -->
@@ -20,14 +43,14 @@
                 <div class="logo-bg me-2">M</div>
                 <span class="d-none d-md-inline">Marduk</span>
             </a>
-            
+
             <!-- Mobile Toggle Button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-                    data-bs-target="#mainNav" aria-controls="mainNav" 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#mainNav" aria-controls="mainNav"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <!-- Navigation Items -->
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -44,37 +67,37 @@
                         <a class="nav-link" href="pages/community.html">Comunidad</a>
                     </li>
                 </ul>
-                
+
                 <!-- Search -->
                 <form class="d-none d-md-flex me-3">
                     <div class="input-group">
                         <span class="input-group-text bg-transparent border-end-0">
                             <i class="fa-solid fa-search text-light"></i>
                         </span>
-                        <input type="search" class="form-control bg-transparent border-start-0" 
+                        <input type="search" class="form-control bg-transparent border-start-0"
                                placeholder="Buscar en Marduk..." aria-label="Search">
                     </div>
                 </form>
-                
+
                 <!-- User Menu -->
                 <div class="d-flex align-items-center">
                     <!-- Notifications -->
                     <div class="dropdown me-3 position-relative">
-                        <button class="btn btn-link text-light position-relative p-1" 
+                        <button class="btn btn-link text-light position-relative p-1"
                                 id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-bell"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 4
                             </span>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0" 
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0"
                              aria-labelledby="notificationDropdown">
                             <!-- Notification Header -->
                             <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
                                 <h6 class="m-0">Notificaciones</h6>
                                 <button class="btn btn-sm text-primary">Marcar todas como leídas</button>
                             </div>
-                            
+
                             <!-- Notifications List -->
                             <div class="notification-list">
                                 <!-- Update Notification -->
@@ -94,7 +117,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Social Notification -->
                                 <div class="notification-item unread p-3 border-bottom">
                                     <div class="d-flex">
@@ -130,7 +153,7 @@
                                 </div>
 
                                 <!-- More notifications would go here -->
-                                
+
                                 <!-- Footer -->
                                 <div class="p-2 text-center border-top bg-light">
                                     <a href="#" class="text-decoration-none">Ver todas las notificaciones</a>
@@ -138,10 +161,10 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- User Profile Menu -->
                     <div class="dropdown">
-                        <button class="btn btn-link p-0 d-flex align-items-center text-light text-decoration-none dropdown-toggle" 
+                        <button class="btn btn-link p-0 d-flex align-items-center text-light text-decoration-none dropdown-toggle"
                                 id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="avatar-circle me-2">AG</div>
                             <div class="d-none d-md-block text-start">
@@ -196,7 +219,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- User Stats -->
                     <div class="row g-4">
                         <div class="col-md-4">
@@ -244,7 +267,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Main Dashboard Content -->
             <div class="row g-4">
                 <!-- Left Column (2/3 width) -->
@@ -258,19 +281,19 @@
                                     Nivel 3: Innovador Digital
                                 </span>
                             </div>
-                            
+
                             <div class="mt-3">
                                 <div class="d-flex justify-content-between small mb-1">
                                     <span>450 XP</span>
                                     <span>750 XP</span>
                                 </div>
                                 <div class="progress bg-white bg-opacity-20" style="height: 10px;">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 60%;" 
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 60%;"
                                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                                 <p class="small mt-1 opacity-80">300 XP para el siguiente nivel</p>
                             </div>
-                            
+
                             <div class="mt-4 d-flex flex-wrap gap-2">
                                 <div class="badge-item" title="Contribuidor Activo">
                                     <i class="fa-solid fa-award"></i>
@@ -290,7 +313,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Gamification Objectives -->
                         <div class="card-body p-4">
                             <h3 class="h6 fw-medium mb-3">Próximos objetivos</h3>
@@ -302,7 +325,7 @@
                                     <div class="flex-grow-1">
                                         <h4 class="small fw-medium">Participa en 3 discusiones</h4>
                                         <div class="progress mt-1" style="height: 6px;">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 33%;" 
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 33%;"
                                                 aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                         <div class="d-flex justify-content-between small text-muted mt-1">
@@ -311,7 +334,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="d-flex mb-3">
                                     <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3 text-primary" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                         <i class="fa-solid fa-star"></i>
@@ -319,7 +342,7 @@
                                     <div class="flex-grow-1">
                                         <h4 class="small fw-medium">Valora 5 aplicaciones</h4>
                                         <div class="progress mt-1" style="height: 6px;">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 60%;" 
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 60%;"
                                                 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                         <div class="d-flex justify-content-between small text-muted mt-1">
@@ -328,7 +351,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="d-flex">
                                     <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3 text-primary" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                         <i class="fa-solid fa-share-alt"></i>
@@ -336,7 +359,7 @@
                                     <div class="flex-grow-1">
                                         <h4 class="small fw-medium">Comparte 2 recursos</h4>
                                         <div class="progress mt-1" style="height: 6px;">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 0%;" 
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 0%;"
                                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                         <div class="d-flex justify-content-between small text-muted mt-1">
@@ -346,13 +369,13 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="text-center">
                                 <button class="btn btn-link text-primary fw-medium btn-sm">Ver todos los objetivos</button>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Ecosystem Impact Section -->
                     <div class="card mb-4 border-0 shadow-sm">
                         <div class="card-body p-4">
@@ -370,7 +393,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <div class="border border-primary border-opacity-25 bg-primary bg-opacity-10 rounded-3 p-3">
                                         <h3 class="h6 fw-medium text-primary">Acceso a justicia</h3>
@@ -383,7 +406,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <div class="border border-purple border-opacity-25 bg-purple bg-opacity-10 rounded-3 p-3">
                                         <h3 class="h6 fw-medium text-purple">Reducción de costos</h3>
@@ -396,7 +419,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <div class="border border-warning border-opacity-25 bg-warning bg-opacity-10 rounded-3 p-3">
                                         <h3 class="h6 fw-medium text-warning">Casos resueltos</h3>
@@ -410,7 +433,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="text-center mt-3">
                                 <button class="btn btn-link text-primary fw-medium btn-sm d-flex align-items-center mx-auto">
                                     Ver métricas detalladas
@@ -419,12 +442,12 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Success Stories Section -->
                     <div class="card mb-4 border-0 shadow-sm">
                         <div class="card-body p-4">
                             <h2 class="h5 fw-bold mb-4">Historias de Éxito</h2>
-                            
+
                             <!-- Success Story Carousel -->
                             <div id="successStories" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-inner">
@@ -447,7 +470,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="carousel-item">
                                         <div class="bg-gradient-light p-4 rounded-3">
                                             <div class="d-flex">
@@ -467,7 +490,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="carousel-item">
                                         <div class="bg-gradient-light p-4 rounded-3">
                                             <div class="d-flex">
@@ -488,7 +511,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Carousel Controls -->
                                 <div class="d-flex justify-content-center mt-3">
                                     <button class="carousel-control-link me-2" type="button" data-bs-target="#successStories" data-bs-slide="prev">
@@ -506,7 +529,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Recommended Solutions Section -->
                     <div class="card mb-4 border-0 shadow-sm">
                         <div class="card-body p-4">
@@ -530,11 +553,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <p class="card-text small text-secondary mb-3 two-lines">
                                                 Sistema integral para la gestión digital de expedientes judiciales, facilitando el acceso, búsqueda y seguimiento de información.
                                             </p>
-                                            
+
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="d-flex align-items-center">
                                                     <i class="fa-solid fa-star text-warning me-1"></i>
@@ -545,7 +568,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- OmniChat Solution Card -->
                                 <div class="col-md-4">
                                     <div class="card h-100 border hover-shadow-sm transition-all cursor-pointer solution-card">
@@ -564,11 +587,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <p class="card-text small text-secondary mb-3 two-lines">
                                                 Asistente virtual versátil que integra múltiples fuentes de información judicial, democratizando el acceso a información judicial compleja.
                                             </p>
-                                            
+
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="d-flex align-items-center">
                                                     <i class="fa-solid fa-star text-warning me-1"></i>
@@ -579,7 +602,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- MALLO Solution Card -->
                                 <div class="col-md-4">
                                     <div class="card h-100 border hover-shadow-sm transition-all cursor-pointer solution-card">
@@ -598,11 +621,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <p class="card-text small text-secondary mb-3 two-lines">
                                                 Sistema avanzado de orquestación de múltiples agentes de IA para consultas legales complejas, revolucionando la investigación legal.
                                             </p>
-                                            
+
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="d-flex align-items-center">
                                                     <i class="fa-solid fa-star text-warning me-1"></i>
@@ -614,7 +637,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="text-center mt-4">
                                 <a href="pages/solutions.html" class="btn btn-link text-primary fw-medium btn-sm d-flex align-items-center mx-auto">
                                     Ver todas las soluciones
@@ -624,7 +647,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Right Column (1/3 width) -->
                 <div class="col-lg-4">
                     <!-- Recent Activity Section -->
@@ -634,7 +657,7 @@
                                 <h2 class="h5 fw-bold mb-0">Actividad Reciente</h2>
                                 <button class="btn btn-link text-primary p-0 btn-sm">Ver todo</button>
                             </div>
-                            
+
                             <div class="activity-feed">
                                 <!-- Update Activity -->
                                 <div class="d-flex mb-4">
@@ -647,7 +670,7 @@
                                         <p class="small text-muted">Hace 2 horas</p>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Community Activity -->
                                 <div class="d-flex mb-4">
                                     <div class="bg-light rounded p-2 me-3">
@@ -659,7 +682,7 @@
                                         <p class="small text-muted">Hace 4 horas</p>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Event Activity -->
                                 <div class="d-flex mb-4">
                                     <div class="bg-light rounded p-2 me-3">
@@ -671,7 +694,7 @@
                                         <p class="small text-muted">Mañana</p>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Milestone Activity -->
                                 <div class="d-flex mb-4">
                                     <div class="bg-light rounded p-2 me-3">
@@ -683,7 +706,7 @@
                                         <p class="small text-muted">Hace 1 día</p>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Resource Activity -->
                                 <div class="d-flex">
                                     <div class="bg-light rounded p-2 me-3">
@@ -698,7 +721,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Key Dates Calendar -->
                     <div class="card mb-4 border-0 shadow-sm">
                         <div class="card-body p-4">
@@ -706,7 +729,7 @@
                                 <h2 class="h5 fw-bold mb-0">Fechas Importantes</h2>
                                 <button class="btn btn-link text-primary p-0 btn-sm">Calendario completo</button>
                             </div>
-                            
+
                             <div class="date-items">
                                 <!-- Audiencia Date Item -->
                                 <div class="d-flex align-items-start p-3 rounded bg-light hover-bg-light-active cursor-pointer mb-3">
@@ -722,7 +745,7 @@
                                         <h3 class="small fw-medium mt-1 mb-0">Torres vs. García</h3>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Capacitación Date Item -->
                                 <div class="d-flex align-items-start p-3 rounded bg-light hover-bg-light-active cursor-pointer mb-3">
                                     <div class="flex-shrink-0 date-box bg-white rounded shadow-sm me-3 text-center">
@@ -736,7 +759,7 @@
                                         <h3 class="small fw-medium mt-1 mb-0">Webinar: Implementación SGEJ</h3>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Vencimiento Date Item -->
                                 <div class="d-flex align-items-start p-3 rounded bg-light hover-bg-light-active cursor-pointer">
                                     <div class="flex-shrink-0 date-box bg-white rounded shadow-sm me-3 text-center">
@@ -752,13 +775,13 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <button class="btn btn-outline-primary w-100 mt-4 btn-sm">
                                 Programar recordatorio
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Tasks Section -->
                     <div class="card mb-4 border-0 shadow-sm">
                         <div class="card-body p-4">
@@ -768,7 +791,7 @@
                                     <i class="fa-solid fa-plus-circle"></i>
                                 </button>
                             </div>
-                            
+
                             <div class="task-items">
                                 <!-- Task Item 1 -->
                                 <div class="d-flex align-items-center p-3 rounded bg-light hover-bg-light-active cursor-pointer mb-2">
@@ -783,7 +806,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Task Item 2 -->
                                 <div class="d-flex align-items-center p-3 rounded bg-light hover-bg-light-active cursor-pointer mb-2">
                                     <input class="form-check-input me-3" type="checkbox" value="" id="task2">
@@ -797,7 +820,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Task Item 3 -->
                                 <div class="d-flex align-items-center p-3 rounded bg-light hover-bg-light-active cursor-pointer mb-2">
                                     <input class="form-check-input me-3" type="checkbox" value="" id="task3">
@@ -811,7 +834,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Task Item 4 -->
                                 <div class="d-flex align-items-center p-3 rounded bg-light hover-bg-light-active cursor-pointer">
                                     <input class="form-check-input me-3" type="checkbox" value="" id="task4">
@@ -856,15 +879,65 @@
         </div>
     </footer>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5.3 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+    <!-- Toastify JS -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+
+    <!-- Configuración de módulos -->
+    <script type="module">
+      // Importar módulos
+      import openRouterService from './js/openrouter.js';
+
+      // Hacer disponibles globalmente
+      window.openRouterService = openRouterService;
+    </script>
+
+    <!-- OpenRouter Integration (para compatibilidad) -->
+    <script src="js/openrouter.js" type="module"></script>
+
+    <!-- Enhanced Navigation -->
+    <script src="js/navigation.js"></script>
+
+    <!-- Advanced Search -->
+    <script src="js/search.js"></script>
+
     <!-- Custom Scripts -->
     <script src="js/main.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/gamification.js"></script>
+
+    <!-- Inicialización de Toasts -->
+    <script>
+      // Configuración global para Toastify
+      const showToast = (message, type = 'info') => {
+        const bgColors = {
+          success: 'linear-gradient(to right, #00b09b, #96c93d)',
+          error: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+          warning: 'linear-gradient(to right, #f7b733, #fc4a1a)',
+          info: 'linear-gradient(to right, #2193b0, #6dd5ed)'
+        };
+
+        Toastify({
+          text: message,
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "right",
+          backgroundColor: bgColors[type],
+          stopOnFocus: true,
+          className: `toast-${type}`
+        }).showToast();
+      };
+
+      // Hacer disponible globalmente
+      window.showToast = showToast;
+    </script>
 </body>
 </html>

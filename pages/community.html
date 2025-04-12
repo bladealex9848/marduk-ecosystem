@@ -4,12 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comunidad - Marduk</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/search.css">
+
+    <!-- Tema oscuro/claro -->
+    <script>
+      // Verificar preferencia guardada
+      const darkModeEnabled = localStorage.getItem('darkModeEnabled') === 'true';
+      // Verificar preferencia del sistema
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // Aplicar tema oscuro si está habilitado o preferido por el sistema
+      if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('darkModeEnabled', 'true');
+      }
+    </script>
 </head>
 <body>
     <!-- Header/Navbar (Same as index.html) -->
@@ -20,14 +43,14 @@
                 <div class="logo-bg me-2">M</div>
                 <span class="d-none d-md-inline">Marduk</span>
             </a>
-            
+
             <!-- Mobile Toggle Button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-                    data-bs-target="#mainNav" aria-controls="mainNav" 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#mainNav" aria-controls="mainNav"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <!-- Navigation Items -->
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -44,37 +67,37 @@
                         <a class="nav-link active" href="community.html">Comunidad</a>
                     </li>
                 </ul>
-                
+
                 <!-- Search -->
                 <form class="d-none d-md-flex me-3">
                     <div class="input-group">
                         <span class="input-group-text bg-transparent border-end-0">
                             <i class="fa-solid fa-search text-light"></i>
                         </span>
-                        <input type="search" class="form-control bg-transparent border-start-0" 
+                        <input type="search" class="form-control bg-transparent border-start-0"
                                placeholder="Buscar en Marduk..." aria-label="Search">
                     </div>
                 </form>
-                
+
                 <!-- User Menu (Same as index.html) -->
                 <div class="d-flex align-items-center">
                     <!-- Notifications -->
                     <div class="dropdown me-3 position-relative">
-                        <button class="btn btn-link text-light position-relative p-1" 
+                        <button class="btn btn-link text-light position-relative p-1"
                                 id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-bell"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 4
                             </span>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0" 
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0"
                              aria-labelledby="notificationDropdown">
                             <!-- Notification Header -->
                             <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
                                 <h6 class="m-0">Notificaciones</h6>
                                 <button class="btn btn-sm text-primary">Marcar todas como leídas</button>
                             </div>
-                            
+
                             <!-- Notifications List (simplified) -->
                             <div class="notification-list">
                                 <div class="notification-item unread p-3 border-bottom">
@@ -89,9 +112,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- More notifications would go here -->
-                                
+
                                 <!-- Footer -->
                                 <div class="p-2 text-center border-top bg-light">
                                     <a href="#" class="text-decoration-none">Ver todas las notificaciones</a>
@@ -99,10 +122,10 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- User Profile Menu -->
                     <div class="dropdown">
-                        <button class="btn btn-link p-0 d-flex align-items-center text-light text-decoration-none dropdown-toggle" 
+                        <button class="btn btn-link p-0 d-flex align-items-center text-light text-decoration-none dropdown-toggle"
                                 id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="avatar-circle me-2">AG</div>
                             <div class="d-none d-md-block text-start">
@@ -132,7 +155,7 @@
             </div>
         </div>
     </header>
-    
+
     <!-- Main Content -->
     <main class="container py-4">
         <!-- Community Banner -->
@@ -142,7 +165,7 @@
                 <p class="mb-4 opacity-90">
                     Conecta, colabora y aprende con otros profesionales dedicados a transformar el sistema judicial colombiano a través de la innovación.
                 </p>
-                
+
                 <!-- Community Navigation Tabs -->
                 <ul class="nav nav-tabs border-bottom-0">
                     <li class="nav-item">
@@ -173,7 +196,7 @@
                 </ul>
             </div>
         </div>
-        
+
         <!-- Tab Content -->
         <div class="tab-content">
             <!-- Foros Tab -->
@@ -207,7 +230,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- New Members Subforum -->
                                 <a href="#" class="list-group-item list-group-item-action p-3">
                                     <div class="d-flex align-items-center">
@@ -224,7 +247,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- Feedback Subforum -->
                                 <a href="#" class="list-group-item list-group-item-action p-3">
                                     <div class="d-flex align-items-center">
@@ -244,7 +267,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Solutions Category -->
                     <div class="col-12">
                         <div class="card border-0 shadow-sm mb-4">
@@ -269,7 +292,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- OmniChat Solution Forum -->
                                 <a href="#" class="list-group-item list-group-item-action p-3">
                                     <div class="d-flex align-items-center">
@@ -286,7 +309,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- MALLO Solution Forum -->
                                 <a href="#" class="list-group-item list-group-item-action p-3">
                                     <div class="d-flex align-items-center">
@@ -303,7 +326,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- More solution forums button -->
                                 <div class="list-group-item p-3 text-center">
                                     <button class="btn btn-link text-primary">Ver todas las soluciones</button>
@@ -311,7 +334,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Best Practices Category -->
                     <div class="col-md-6">
                         <div class="card border-0 shadow-sm mb-4 h-100">
@@ -336,7 +359,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- Training Subforum -->
                                 <a href="#" class="list-group-item list-group-item-action p-3">
                                     <div class="d-flex align-items-center">
@@ -353,7 +376,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- Optimization Subforum -->
                                 <a href="#" class="list-group-item list-group-item-action p-3">
                                     <div class="d-flex align-items-center">
@@ -373,7 +396,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Collaboration Category -->
                     <div class="col-md-6">
                         <div class="card border-0 shadow-sm mb-4 h-100">
@@ -398,7 +421,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- Active Projects Subforum -->
                                 <a href="#" class="list-group-item list-group-item-action p-3">
                                     <div class="d-flex align-items-center">
@@ -415,7 +438,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- Code Development Subforum -->
                                 <a href="#" class="list-group-item list-group-item-action p-3">
                                     <div class="d-flex align-items-center">
@@ -435,7 +458,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Popular Discussions -->
                     <div class="col-12">
                         <div class="card border-0 shadow-sm mb-4">
@@ -476,7 +499,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- Popular Discussion 2 -->
                                 <a href="#" class="list-group-item list-group-item-action p-3">
                                     <div class="d-flex">
@@ -500,7 +523,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- Popular Discussion 3 -->
                                 <a href="#" class="list-group-item list-group-item-action p-3">
                                     <div class="d-flex">
@@ -524,7 +547,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                
+
                                 <!-- View All Button -->
                                 <div class="list-group-item p-3 text-center">
                                     <button class="btn btn-primary">Ver todas las discusiones</button>
@@ -534,7 +557,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Eventos Tab -->
             <div class="tab-pane fade" id="eventosTab">
                 <div class="row g-4">
@@ -557,7 +580,7 @@
                                         <p class="text-secondary mb-3">
                                             Tres días de innovación intensiva para desarrollar soluciones que transformen el sistema judicial.
                                         </p>
-                                        
+
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="d-flex mb-2">
@@ -567,7 +590,7 @@
                                                         <p class="text-secondary small mb-0">20-22 Mayo, 2025 • 09:00 - 18:00</p>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="d-flex">
                                                     <i class="fa-solid fa-map-marker-alt text-secondary me-2 mt-1"></i>
                                                     <div>
@@ -584,7 +607,7 @@
                                                         <p class="text-secondary small mb-0">237 inscritos</p>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="d-flex">
                                                     <i class="fa-solid fa-tag text-secondary me-2 mt-1"></i>
                                                     <div>
@@ -598,7 +621,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="d-flex justify-content-between align-items-center">
                                             <button class="btn btn-indigo">Inscribirme</button>
                                             <button class="btn btn-outline-secondary btn-sm">
@@ -610,7 +633,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Upcoming Events Section -->
                     <div class="col-12">
                         <div class="card border-0 shadow-sm mb-4">
@@ -661,7 +684,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Webinar Event -->
                                 <div class="list-group-item p-3">
                                     <div class="row align-items-center">
@@ -696,7 +719,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Integration Workshop Event -->
                                 <div class="list-group-item p-3">
                                     <div class="row align-items-center">
@@ -731,7 +754,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- View All Button -->
                                 <div class="list-group-item p-3 text-center">
                                     <button class="btn btn-primary">Ver todos los eventos</button>
@@ -741,7 +764,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Recursos Tab -->
             <div class="tab-pane fade" id="recursosTab">
                 <div class="row g-4">
@@ -763,7 +786,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Guides Category -->
                             <div class="col">
                                 <div class="card h-100 border shadow-sm text-center">
@@ -779,7 +802,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Videos Category -->
                             <div class="col">
                                 <div class="card h-100 border shadow-sm text-center">
@@ -795,7 +818,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Code Category -->
                             <div class="col">
                                 <div class="card h-100 border shadow-sm text-center">
@@ -813,7 +836,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Featured Resources -->
                     <div class="col-12">
                         <div class="card border-0 shadow-sm mb-4">
@@ -864,7 +887,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- OmniChat Video Tutorial -->
                                 <div class="list-group-item p-3">
                                     <div class="d-flex">
@@ -903,7 +926,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- API Integration Code -->
                                 <div class="list-group-item p-3">
                                     <div class="d-flex">
@@ -943,7 +966,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- View All Button -->
                                 <div class="list-group-item p-3 text-center">
                                     <button class="btn btn-primary">Explorar todos los recursos</button>
@@ -951,7 +974,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Contribute Resource Section -->
                     <div class="col-12">
                         <div class="card border-0 bg-gradient-light mb-4">
@@ -974,7 +997,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Colaboración en Vivo Tab -->
             <div class="tab-pane fade" id="colaboracionTab">
                 <div class="row g-4">
@@ -983,7 +1006,7 @@
                         <div class="card border-0 shadow-sm mb-4">
                             <div class="card-body p-4">
                                 <h2 class="h5 fw-bold mb-4">Colaboración en vivo</h2>
-                                
+
                                 <div class="row g-4">
                                     <!-- Virtual Sessions -->
                                     <div class="col-md-6">
@@ -995,7 +1018,7 @@
                                                     </div>
                                                     <h3 class="h6 fw-semibold mb-0">Sesiones virtuales</h3>
                                                 </div>
-                                                
+
                                                 <div class="card bg-primary bg-opacity-10 border-0 mb-3">
                                                     <div class="card-body p-3">
                                                         <p class="fw-medium mb-1">Implementación de SGEJ: Mejores prácticas</p>
@@ -1008,7 +1031,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="card bg-light border-0">
                                                     <div class="card-body p-3">
                                                         <p class="fw-medium mb-1">Taller: Integración entre MALLO y SGEJ</p>
@@ -1024,7 +1047,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Collaborative Development -->
                                     <div class="col-md-6">
                                         <div class="card border border-success-subtle rounded-3 h-100">
@@ -1035,7 +1058,7 @@
                                                     </div>
                                                     <h3 class="h6 fw-semibold mb-0">Desarrollo colaborativo</h3>
                                                 </div>
-                                                
+
                                                 <div class="card bg-success bg-opacity-10 border-0 mb-3">
                                                     <div class="card-body p-3">
                                                         <div class="d-flex justify-content-between mb-1">
@@ -1052,7 +1075,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="card bg-light border-0">
                                                     <div class="card-body p-3">
                                                         <p class="fw-medium mb-1">Framework de Accesibilidad</p>
@@ -1071,7 +1094,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Collaboration Schedule -->
                     <div class="col-12">
                         <div class="card border-0 shadow-sm mb-4">
@@ -1166,7 +1189,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Mentorías Tab -->
             <div class="tab-pane fade" id="mentoriasTab">
                 <div class="row g-4">
@@ -1205,7 +1228,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Mentors List -->
                     <div class="col-12">
                         <div class="card border-0 shadow-sm mb-4">
@@ -1244,7 +1267,7 @@
                                                     </div>
                                                     <p class="badge bg-primary mb-0">Implementación de SGEJ</p>
                                                 </div>
-                                                
+
                                                 <div class="mb-3">
                                                     <p class="small text-secondary mb-3">
                                                         Especialista en optimización de procesos judiciales a través de herramientas digitales.
@@ -1258,18 +1281,18 @@
                                                         <span>Disponibilidad: Martes y Jueves, 16:00-18:00</span>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="d-flex flex-wrap gap-1 mb-3">
                                                     <span class="badge bg-blue-soft text-primary">Experto SGEJ</span>
                                                     <span class="badge bg-purple-soft text-purple">Mentor Destacado</span>
                                                     <span class="badge bg-indigo-soft text-indigo">Innovador Digital</span>
                                                 </div>
-                                                
+
                                                 <button class="btn btn-primary btn-sm w-100">Solicitar mentoría</button>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Mentor 2 -->
                                     <div class="col">
                                         <div class="card h-100 border hover-shadow transition-all">
@@ -1289,7 +1312,7 @@
                                                     </div>
                                                     <p class="badge bg-orange mb-0">Integración de APIs</p>
                                                 </div>
-                                                
+
                                                 <div class="mb-3">
                                                     <p class="small text-secondary mb-3">
                                                         Especializado en desarrollo de integraciones y extensiones para el ecosistema Marduk.
@@ -1303,18 +1326,18 @@
                                                         <span>Disponibilidad: Lunes y Miércoles, 18:00-20:00</span>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="d-flex flex-wrap gap-1 mb-3">
                                                     <span class="badge bg-orange-soft text-orange">Experto Técnico</span>
                                                     <span class="badge bg-success-soft text-success">Contribuidor Élite</span>
                                                     <span class="badge bg-blue-soft text-primary">Maestro API</span>
                                                 </div>
-                                                
+
                                                 <button class="btn btn-primary btn-sm w-100">Solicitar mentoría</button>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Mentor 3 -->
                                     <div class="col">
                                         <div class="card h-100 border hover-shadow transition-all">
@@ -1334,7 +1357,7 @@
                                                     </div>
                                                     <p class="badge bg-success mb-0">Analítica para toma de decisiones</p>
                                                 </div>
-                                                
+
                                                 <div class="mb-3">
                                                     <p class="small text-secondary mb-3">
                                                         Experta en el uso de datos judiciales para optimizar procesos y tomar decisiones estratégicas.
@@ -1348,13 +1371,13 @@
                                                         <span>Disponibilidad: Viernes, 15:00-19:00</span>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="d-flex flex-wrap gap-1 mb-3">
                                                     <span class="badge bg-info-soft text-info">Analista Experto</span>
                                                     <span class="badge bg-purple-soft text-purple">Innovador Analítico</span>
                                                     <span class="badge bg-teal-soft text-teal">Mentor</span>
                                                 </div>
-                                                
+
                                                 <button class="btn btn-primary btn-sm w-100">Solicitar mentoría</button>
                                             </div>
                                         </div>
@@ -1366,7 +1389,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Testimonials Section -->
                     <div class="col-12">
                         <div class="card border-0 shadow-sm mb-4">
@@ -1405,7 +1428,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Testimonial 2 -->
                                     <div class="col-md-6">
                                         <div class="card bg-light border-0 h-100">
@@ -1444,7 +1467,7 @@
             </div>
         </div>
     </main>
-    
+
     <!-- Footer (Same as index.html) -->
     <footer class="bg-light py-4 mt-auto border-top">
         <div class="container">
@@ -1468,12 +1491,64 @@
         </div>
     </footer>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5.3 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+    <!-- Toastify JS -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+
+    <!-- Configuración de módulos -->
+    <script type="module">
+      // Importar módulos
+      import openRouterService from '../js/openrouter.js';
+
+      // Hacer disponibles globalmente
+      window.openRouterService = openRouterService;
+    </script>
+
+    <!-- OpenRouter Integration (para compatibilidad) -->
+    <script src="../js/openrouter.js" type="module"></script>
+
+    <!-- Enhanced Navigation -->
+    <script src="../js/navigation.js"></script>
+
+    <!-- Advanced Search -->
+    <script src="../js/search.js"></script>
+
     <!-- Custom Scripts -->
     <script src="../js/main.js"></script>
     <script src="../js/community.js"></script>
+
+    <!-- Inicialización de Toasts -->
+    <script>
+      // Configuración global para Toastify
+      const showToast = (message, type = 'info') => {
+        const bgColors = {
+          success: 'linear-gradient(to right, #00b09b, #96c93d)',
+          error: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+          warning: 'linear-gradient(to right, #f7b733, #fc4a1a)',
+          info: 'linear-gradient(to right, #2193b0, #6dd5ed)'
+        };
+
+        Toastify({
+          text: message,
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "right",
+          backgroundColor: bgColors[type],
+          stopOnFocus: true,
+          className: `toast-${type}`
+        }).showToast();
+      };
+
+      // Hacer disponible globalmente
+      window.showToast = showToast;
+    </script>
 </body>
 </html>
