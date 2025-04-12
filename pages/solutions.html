@@ -192,6 +192,14 @@
                                 <i class="fa-solid fa-comments me-2"></i>
                                 <span>Comunicación</span>
                             </button>
+                            <button class="btn btn-outline-secondary me-2 d-flex align-items-center whitespace-nowrap" data-category="busqueda">
+                                <i class="fa-solid fa-search me-2"></i>
+                                <span>Búsqueda</span>
+                            </button>
+                            <button class="btn btn-outline-secondary me-2 d-flex align-items-center whitespace-nowrap" data-category="herramientas">
+                                <i class="fa-solid fa-tools me-2"></i>
+                                <span>Herramientas</span>
+                            </button>
                         </div>
 
                         <!-- Display Options -->
@@ -2592,7 +2600,7 @@
                         const onclickAttr = card.getAttribute('onclick');
                         if (onclickAttr) {
                             const appId = onclickAttr.match(/\d+/)[0];
-                            const app = solutionsData.find(s => s.id == appId);
+                            const app = solutions.find(s => s.id == appId);
 
                             // Map category button to actual data categories
                             let matches = false;
@@ -2669,7 +2677,7 @@
                         const onclickAttr = item.getAttribute('onclick');
                         if (onclickAttr) {
                             const appId = onclickAttr.match(/\d+/)[0];
-                            const app = solutionsData.find(s => s.id == appId);
+                            const app = solutions.find(s => s.id == appId);
 
                             // Map category button to actual data categories
                             let matches = false;
@@ -2725,9 +2733,56 @@
                     item.style.display = showItem ? '' : 'none';
                 });
 
-                // Sort functionality would be implemented here
-                // For now, we'll just log the sort value
-                console.log('Sorting by:', sortValue);
+                // Sort functionality
+                if (sortValue) {
+                    // Get all visible cards and items
+                    const visibleGridCards = Array.from(gridCards).filter(card => card.parentElement.style.display !== 'none');
+                    const visibleListItems = Array.from(listItems).filter(item => item.style.display !== 'none');
+
+                    // Sort function based on the selected value
+                    const sortFunction = (a, b) => {
+                        // Get app IDs
+                        const aId = a.getAttribute('onclick').match(/\d+/)[0];
+                        const bId = b.getAttribute('onclick').match(/\d+/)[0];
+
+                        // Get app data
+                        const aApp = solutions.find(s => s.id == aId);
+                        const bApp = solutions.find(s => s.id == bId);
+
+                        if (!aApp || !bApp) return 0;
+
+                        // Sort based on selected criteria
+                        if (sortValue === 'featured') {
+                            // Featured sorting (by ID for simplicity)
+                            return aApp.id - bApp.id;
+                        } else if (sortValue === 'newest') {
+                            // Newest sorting (by lastUpdate date)
+                            // For simplicity, we'll use a reverse sort by ID
+                            return bApp.id - aApp.id;
+                        } else if (sortValue === 'downloads') {
+                            // Most downloads
+                            return bApp.downloads - aApp.downloads;
+                        } else if (sortValue === 'rating') {
+                            // Best rated
+                            return bApp.rating - aApp.rating;
+                        }
+
+                        return 0;
+                    };
+
+                    // Sort grid cards
+                    visibleGridCards.sort(sortFunction).forEach((card, index) => {
+                        const parent = card.parentElement;
+                        const gridView = document.getElementById('gridView');
+                        gridView.appendChild(parent);
+                    });
+
+                    // Sort list items
+                    visibleListItems.sort(sortFunction).forEach((item, index) => {
+                        const listGroup = document.querySelector('#listView .list-group');
+                        listGroup.appendChild(item);
+                    });
+                }
             }
 
             // Function to handle category filter clicks
@@ -2961,6 +3016,203 @@
                 showSolutionsList();
             }
         });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing solutions page...');
+
+            // Add direct event listeners to category filters
+            const categoryFilters = document.querySelectorAll('#categoryFilters button');
+            categoryFilters.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    categoryFilters.forEach(btn => {
+                        btn.classList.remove('btn-primary');
+                        btn.classList.add('btn-outline-secondary');
+                    });
+
+                    // Add active class to clicked button
+                    this.classList.remove('btn-outline-secondary');
+                    this.classList.add('btn-primary');
+
+                    // Get category
+                    const category = this.getAttribute('data-category');
+                    console.log('Category clicked:', category);
+
+                    // Filter cards and list items
+                    filterByCategory(category);
+                });
+            });
+
+            // Add direct event listener to sort filter
+            const sortFilter = document.getElementById('sortFilter');
+            if (sortFilter) {
+                sortFilter.addEventListener('change', function() {
+                    const sortValue = this.value;
+                    console.log('Sort changed:', sortValue);
+
+                    // Sort cards and list items
+                    sortItems(sortValue);
+                });
+            }
+
+            // Setup view toggles
+            setupViewToggles();
+            // Setup search functionality
+            setupSearch();
+            // Check URL for app detail parameter
+            checkUrlForAppDetail();
+
+            // Log for debugging
+            console.log('Solutions data:', solutions);
+            console.log('Category filters:', categoryFilters);
+            console.log('Sort filter:', sortFilter);
+        });
+
+        // Function to filter by category
+        function filterByCategory(category) {
+            // Get all cards and list items
+            const gridCards = document.querySelectorAll('#gridView .card');
+            const listItems = document.querySelectorAll('#listView .list-group-item');
+
+            // Filter grid cards
+            gridCards.forEach(card => {
+                const parent = card.parentElement;
+                if (category === 'all') {
+                    parent.style.display = '';
+                } else {
+                    // Get app ID
+                    const onclickAttr = card.getAttribute('onclick');
+                    if (onclickAttr) {
+                        const appId = onclickAttr.match(/\d+/)[0];
+                        const app = solutions.find(s => s.id == appId);
+
+                        if (app) {
+                            // Check if app matches category
+                            let matches = false;
+                            if (category === 'ia' && (app.category === 'ia' || app.tags.some(t => t.toLowerCase().includes('ia') || t.toLowerCase().includes('inteligencia')))) {
+                                matches = true;
+                            } else if (category === 'gestion' && (app.category === 'gestion' || app.tags.some(t => t.toLowerCase().includes('gesti')))) {
+                                matches = true;
+                            } else if (category === 'automatizacion' && (app.category === 'automatizacion' || app.tags.some(t => t.toLowerCase().includes('automatiza')))) {
+                                matches = true;
+                            } else if (category === 'analisis' && (app.category === 'analisis' || app.tags.some(t => t.toLowerCase().includes('anal') || t.toLowerCase().includes('estad')))) {
+                                matches = true;
+                            } else if (category === 'comunicacion' && (app.category === 'comunicacion' || app.tags.some(t => t.toLowerCase().includes('comunica')))) {
+                                matches = true;
+                            } else if (category === 'busqueda' && (app.category === 'busqueda' || app.tags.some(t => t.toLowerCase().includes('busque') || t.toLowerCase().includes('busca')))) {
+                                matches = true;
+                            } else if (category === 'herramientas' && (app.category === 'herramientas' || app.tags.some(t => t.toLowerCase().includes('herramienta') || t.toLowerCase().includes('tool')))) {
+                                matches = true;
+                            } else if (app.category === category) {
+                                matches = true;
+                            }
+
+                            parent.style.display = matches ? '' : 'none';
+                        } else {
+                            parent.style.display = 'none';
+                        }
+                    } else {
+                        parent.style.display = 'none';
+                    }
+                }
+            });
+
+            // Filter list items
+            listItems.forEach(item => {
+                if (category === 'all') {
+                    item.style.display = '';
+                } else {
+                    // Get app ID
+                    const onclickAttr = item.getAttribute('onclick');
+                    if (onclickAttr) {
+                        const appId = onclickAttr.match(/\d+/)[0];
+                        const app = solutions.find(s => s.id == appId);
+
+                        if (app) {
+                            // Check if app matches category
+                            let matches = false;
+                            if (category === 'ia' && (app.category === 'ia' || app.tags.some(t => t.toLowerCase().includes('ia') || t.toLowerCase().includes('inteligencia')))) {
+                                matches = true;
+                            } else if (category === 'gestion' && (app.category === 'gestion' || app.tags.some(t => t.toLowerCase().includes('gesti')))) {
+                                matches = true;
+                            } else if (category === 'automatizacion' && (app.category === 'automatizacion' || app.tags.some(t => t.toLowerCase().includes('automatiza')))) {
+                                matches = true;
+                            } else if (category === 'analisis' && (app.category === 'analisis' || app.tags.some(t => t.toLowerCase().includes('anal') || t.toLowerCase().includes('estad')))) {
+                                matches = true;
+                            } else if (category === 'comunicacion' && (app.category === 'comunicacion' || app.tags.some(t => t.toLowerCase().includes('comunica')))) {
+                                matches = true;
+                            } else if (category === 'busqueda' && (app.category === 'busqueda' || app.tags.some(t => t.toLowerCase().includes('busque') || t.toLowerCase().includes('busca')))) {
+                                matches = true;
+                            } else if (category === 'herramientas' && (app.category === 'herramientas' || app.tags.some(t => t.toLowerCase().includes('herramienta') || t.toLowerCase().includes('tool')))) {
+                                matches = true;
+                            } else if (app.category === category) {
+                                matches = true;
+                            }
+
+                            item.style.display = matches ? '' : 'none';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Function to sort items
+        function sortItems(sortValue) {
+            if (!sortValue) return;
+
+            // Get all visible cards and items
+            const gridCards = Array.from(document.querySelectorAll('#gridView .card')).filter(card => card.parentElement.style.display !== 'none');
+            const listItems = Array.from(document.querySelectorAll('#listView .list-group-item')).filter(item => item.style.display !== 'none');
+
+            // Sort function
+            const sortFunction = (a, b) => {
+                // Get app IDs
+                const aId = a.getAttribute('onclick').match(/\d+/)[0];
+                const bId = b.getAttribute('onclick').match(/\d+/)[0];
+
+                // Get app data
+                const aApp = solutions.find(s => s.id == aId);
+                const bApp = solutions.find(s => s.id == bId);
+
+                if (!aApp || !bApp) return 0;
+
+                // Sort based on selected criteria
+                if (sortValue === 'featured') {
+                    // Featured sorting (by ID for simplicity)
+                    return aApp.id - bApp.id;
+                } else if (sortValue === 'newest') {
+                    // Newest sorting (by lastUpdate date)
+                    // For simplicity, we'll use a reverse sort by ID
+                    return bApp.id - aApp.id;
+                } else if (sortValue === 'downloads') {
+                    // Most downloads
+                    return bApp.downloads - aApp.downloads;
+                } else if (sortValue === 'rating') {
+                    // Best rated
+                    return bApp.rating - aApp.rating;
+                }
+
+                return 0;
+            };
+
+            // Sort grid cards
+            gridCards.sort(sortFunction).forEach((card, index) => {
+                const parent = card.parentElement;
+                const gridView = document.getElementById('gridView');
+                gridView.appendChild(parent);
+            });
+
+            // Sort list items
+            listItems.sort(sortFunction).forEach((item, index) => {
+                const listGroup = document.querySelector('#listView .list-group');
+                listGroup.appendChild(item);
+            });
+        }
     </script>
 
     <!-- Inicializar el toggle de tema -->
