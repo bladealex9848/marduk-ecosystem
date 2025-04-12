@@ -323,6 +323,26 @@
     border-color: #444444 !important;
 }
 
+/* Corrección para el footer */
+html, body {
+    height: 100% !important;
+}
+
+body {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+main {
+    flex: 1 0 auto !important;
+    min-height: 70vh !important;
+}
+
+footer {
+    flex-shrink: 0 !important;
+    margin-top: auto !important;
+}
+
 .solution-icon-sm {
     width: 40px !important;
     height: 40px !important;
