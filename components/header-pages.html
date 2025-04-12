@@ -1,0 +1,90 @@
+<!-- Header/Navbar -->
+<header class="navbar navbar-expand-lg navbar-dark bg-gradient sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="../index.html">
+            <i class="fas fa-balance-scale me-2"></i>
+            <span>Marduk</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i> Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="solutions.html"><i class="fas fa-tools me-1"></i> Soluciones</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="community.html"><i class="fas fa-users me-1"></i> Comunidad</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ai-test.html"><i class="fas fa-robot me-1"></i> Prueba IA</a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <!-- Search Form -->
+                <form class="d-flex me-2 search-container">
+                    <div class="position-relative w-100">
+                        <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                        <input class="form-control ps-5" type="search" placeholder="Buscar..." aria-label="Search">
+                    </div>
+                </form>
+                <!-- Theme Toggle -->
+                <button id="themeToggle" class="btn btn-link text-light me-3">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <!-- Notifications Dropdown -->
+                <div class="dropdown me-2">
+                    <button class="btn btn-link text-light position-relative p-1" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0 overflow-hidden" aria-labelledby="notificationsDropdown">
+                        <!-- Notification header -->
+                        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                            <h6 class="mb-0">Notificaciones</h6>
+                            <a href="#" class="text-decoration-none small">Marcar todas como leídas</a>
+                        </div>
+                        <!-- Notification items -->
+                        <div class="notification-list">
+                            <a href="#" class="notification-item d-flex p-3 border-bottom unread">
+                                <div class="flex-shrink-0">
+                                    <div class="avatar-circle bg-primary text-white">
+                                        <i class="fas fa-gavel"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <p class="mb-0 fw-medium">Nueva actualización en el caso #12345</p>
+                                    <p class="text-muted small mb-0">Se ha añadido un nuevo documento</p>
+                                    <span class="text-muted small">Hace 5 minutos</span>
+                                </div>
+                            </a>
+                            <!-- More notification items... -->
+                        </div>
+                        <!-- View all link -->
+                        <a href="#" class="dropdown-item text-center p-3 border-top">Ver todas las notificaciones</a>
+                    </div>
+                </div>
+                <!-- User Menu -->
+                <div class="dropdown">
+                    <button class="btn btn-link d-flex align-items-center text-light text-decoration-none dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="avatar-circle avatar-circle-sm bg-primary text-white me-2">
+                            AF
+                        </div>
+                        <span class="d-none d-md-block">Alexander Fadul</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                        <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i> Mi Perfil</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Configuración</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

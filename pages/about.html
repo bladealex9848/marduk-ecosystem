@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acerca de Marduk - Ecosistema de Soluciones Judiciales</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/app-cards.css">
+    <link rel="stylesheet" href="../css/fixes.css">
+
+    <!-- Tema oscuro/claro -->
+    <script>
+      // Verificar preferencia guardada
+      const darkModeEnabled = localStorage.getItem('darkModeEnabled') === 'true';
+      // Verificar preferencia del sistema
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // Aplicar tema oscuro si está habilitado o preferido por el sistema
+      if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('darkModeEnabled', 'true');
+      }
+    </script>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-gradient sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <i class="fas fa-balance-scale me-2"></i>
+                <span>Marduk</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="solutions.html"><i class="fas fa-tools me-1"></i> Soluciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html"><i class="fas fa-users me-1"></i> Comunidad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ai-test.html"><i class="fas fa-robot me-1"></i> Prueba IA</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <!-- Search Form -->
+                    <form class="d-flex me-2 search-container">
+                        <div class="position-relative w-100">
+                            <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input class="form-control ps-5" type="search" placeholder="Buscar..." aria-label="Search">
+                        </div>
+                    </form>
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="btn btn-link text-light me-3">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <!-- Notifications Dropdown -->
+                    <div class="dropdown me-2">
+                        <button class="btn btn-link text-light position-relative p-1" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0 overflow-hidden" aria-labelledby="notificationsDropdown">
+                            <!-- Notification header -->
+                            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                                <h6 class="mb-0">Notificaciones</h6>
+                                <a href="#" class="text-decoration-none small">Marcar todas como leídas</a>
+                            </div>
+                            <!-- Notification items -->
+                            <div class="notification-list">
+                                <a href="#" class="notification-item d-flex p-3 border-bottom unread">
+                                    <div class="flex-shrink-0">
+                                        <div class="avatar-circle bg-primary text-white">
+                                            <i class="fas fa-gavel"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <p class="mb-0 fw-medium">Nueva actualización en el caso #12345</p>
+                                        <p class="text-muted small mb-0">Se ha añadido un nuevo documento</p>
+                                        <span class="text-muted small">Hace 5 minutos</span>
+                                    </div>
+                                </a>
+                                <!-- More notification items... -->
+                            </div>
+                            <!-- View all link -->
+                            <a href="#" class="dropdown-item text-center p-3 border-top">Ver todas las notificaciones</a>
+                        </div>
+                    </div>
+                    <!-- User Menu -->
+                    <div class="dropdown">
+                        <button class="btn btn-link d-flex align-items-center text-light text-decoration-none dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="avatar-circle avatar-circle-sm bg-primary text-white me-2">
+                                AF
+                            </div>
+                            <span class="d-none d-md-block">Alexander Fadul</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i> Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+        <!-- Page Header -->
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-5 fw-bold mb-3">Acerca de Marduk</h1>
+                <p class="lead text-secondary">Transformando la justicia con tecnología e innovación</p>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="row mb-5">
+            <div class="col-lg-10 mx-auto">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="row g-0">
+                        <div class="col-md-5 bg-primary bg-opacity-10 d-flex align-items-center justify-content-center p-5">
+                            <img src="../img/marduk-logo.png" alt="Marduk Logo" class="img-fluid" style="max-width: 250px;">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body p-5">
+                                <h2 class="h4 fw-bold mb-4">Nuestra Misión</h2>
+                                <p class="mb-4">
+                                    Marduk es un ecosistema integral de soluciones tecnológicas diseñado para transformar y modernizar la administración de justicia en Colombia. Nuestra misión es facilitar el acceso a la justicia, optimizar los procesos judiciales y mejorar la experiencia de todos los actores del sistema judicial mediante herramientas digitales innovadoras.
+                                </p>
+                                <p>
+                                    Trabajamos con un enfoque centrado en el usuario, combinando tecnología de vanguardia con un profundo conocimiento del ámbito jurídico para crear soluciones que realmente respondan a las necesidades del sector.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vision and Values -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="p-3 rounded-circle bg-primary bg-opacity-10 me-3">
+                                <i class="fas fa-eye fa-2x text-primary"></i>
+                            </div>
+                            <h2 class="h4 fw-bold mb-0">Nuestra Visión</h2>
+                        </div>
+                        <p>
+                            Aspiramos a ser el referente en transformación digital del sector judicial en América Latina, creando un ecosistema donde la tecnología sea un facilitador de la justicia, no un obstáculo.
+                        </p>
+                        <p>
+                            Visualizamos un sistema judicial donde:
+                        </p>
+                        <ul class="mb-0">
+                            <li>La información sea accesible para todos los ciudadanos</li>
+                            <li>Los procesos sean eficientes y transparentes</li>
+                            <li>La tecnología elimine barreras y reduzca desigualdades</li>
+                            <li>La innovación sea constante y colaborativa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="p-3 rounded-circle bg-success bg-opacity-10 me-3">
+                                <i class="fas fa-heart fa-2x text-success"></i>
+                            </div>
+                            <h2 class="h4 fw-bold mb-0">Nuestros Valores</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 mb-3">
+                                <h3 class="h6 fw-bold">Innovación</h3>
+                                <p class="small">Buscamos constantemente nuevas formas de mejorar y transformar los procesos judiciales.</p>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <h3 class="h6 fw-bold">Accesibilidad</h3>
+                                <p class="small">Creamos soluciones inclusivas que eliminan barreras y facilitan el acceso a la justicia.</p>
+                            </div>
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <h3 class="h6 fw-bold">Colaboración</h3>
+                                <p class="small">Trabajamos en conjunto con todos los actores del sistema judicial para crear soluciones efectivas.</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <h3 class="h6 fw-bold">Transparencia</h3>
+                                <p class="small">Promovemos la claridad en los procesos y el acceso a la información como pilares fundamentales.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Timeline -->
+        <div class="row mb-5">
+            <div class="col-lg-10 mx-auto">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4 p-lg-5">
+                        <h2 class="h4 fw-bold mb-4 text-center">Nuestra Historia</h2>
+
+                        <div class="position-relative history-timeline">
+                            <!-- Timeline line -->
+                            <div class="position-absolute start-0 top-0 bottom-0 ms-5" style="width: 2px; background-color: #e9ecef;"></div>
+
+                            <!-- 2020: Fundación -->
+                            <div class="timeline-item d-flex mb-5 position-relative">
+                                <div class="timeline-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                    <i class="fas fa-flag"></i>
+                                </div>
+                                <div class="timeline-content ms-4 ps-3">
+                                    <h3 class="h5 fw-bold mb-2">2020: Fundación</h3>
+                                    <p class="text-secondary mb-0">
+                                        Marduk nace como una iniciativa para modernizar el sistema judicial colombiano, en respuesta a los desafíos de digitalización acelerados por la pandemia. Un equipo multidisciplinario de expertos en tecnología y derecho se une para crear las primeras soluciones.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 2021: Primeras Soluciones -->
+                            <div class="timeline-item d-flex mb-5 position-relative">
+                                <div class="timeline-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                    <i class="fas fa-rocket"></i>
+                                </div>
+                                <div class="timeline-content ms-4 ps-3">
+                                    <h3 class="h5 fw-bold mb-2">2021: Primeras Soluciones</h3>
+                                    <p class="text-secondary mb-0">
+                                        Lanzamiento del Sistema de Gestión de Expedientes Electrónicos (SGEJ), nuestra primera solución que revoluciona la forma de gestionar documentos judiciales. Se implementa en 5 juzgados piloto con excelentes resultados.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 2022: Expansión -->
+                            <div class="timeline-item d-flex mb-5 position-relative">
+                                <div class="timeline-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                    <i class="fas fa-expand-alt"></i>
+                                </div>
+                                <div class="timeline-content ms-4 ps-3">
+                                    <h3 class="h5 fw-bold mb-2">2022: Expansión</h3>
+                                    <p class="text-secondary mb-0">
+                                        El ecosistema Marduk se expande con nuevas soluciones como OmniChat y MALLO. La adopción crece exponencialmente, llegando a más de 100 despachos judiciales en todo el país. Se establece el programa de colaboración con universidades.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 2023: Reconocimiento -->
+                            <div class="timeline-item d-flex mb-5 position-relative">
+                                <div class="timeline-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                                <div class="timeline-content ms-4 ps-3">
+                                    <h3 class="h5 fw-bold mb-2">2023: Reconocimiento</h3>
+                                    <p class="text-secondary mb-0">
+                                        Marduk recibe el premio a la Innovación en Justicia Digital en el Foro Latinoamericano de Tecnología Judicial. Las soluciones alcanzan un 40% de reducción en tiempos de gestión procesal y un 95% en uso de papel.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 2024: Presente -->
+                            <div class="timeline-item d-flex position-relative">
+                                <div class="timeline-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="timeline-content ms-4 ps-3">
+                                    <h3 class="h5 fw-bold mb-2">2024: Presente y Futuro</h3>
+                                    <p class="text-secondary mb-0">
+                                        Actualmente, Marduk cuenta con un ecosistema de 8 soluciones integradas, utilizadas por más de 12,000 funcionarios judiciales. Estamos trabajando en la implementación de inteligencia artificial avanzada y expandiendo nuestras soluciones a otros países de la región.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="row mb-5">
+            <div class="col-lg-10 mx-auto">
+                <h2 class="h4 fw-bold mb-4 text-center">Nuestro Equipo Directivo</h2>
+
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <!-- Team Member 1 -->
+                    <div class="col">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 text-center">
+                            <div class="card-body p-4">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos Restrepo" class="rounded-circle mb-3" width="120" height="120">
+                                <h3 class="h5 fw-bold mb-1">Carlos Restrepo</h3>
+                                <p class="text-primary small mb-3">Director General</p>
+                                <p class="text-secondary small mb-3">
+                                    Abogado y especialista en tecnología con más de 15 años de experiencia en transformación digital del sector público.
+                                </p>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fab fa-linkedin"></i></a>
+                                    <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fab fa-twitter"></i></a>
+                                    <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 2 -->
+                    <div class="col">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 text-center">
+                            <div class="card-body p-4">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Laura Mendoza" class="rounded-circle mb-3" width="120" height="120">
+                                <h3 class="h5 fw-bold mb-1">Laura Mendoza</h3>
+                                <p class="text-primary small mb-3">Directora de Tecnología</p>
+                                <p class="text-secondary small mb-3">
+                                    Ingeniera de sistemas con maestría en IA. Lidera el desarrollo de todas las soluciones tecnológicas de Marduk.
+                                </p>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fab fa-linkedin"></i></a>
+                                    <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fab fa-github"></i></a>
+                                    <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 3 -->
+                    <div class="col">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 text-center">
+                            <div class="card-body p-4">
+                                <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Andrés Pérez" class="rounded-circle mb-3" width="120" height="120">
+                                <h3 class="h5 fw-bold mb-1">Andrés Pérez</h3>
+                                <p class="text-primary small mb-3">Director de Operaciones</p>
+                                <p class="text-secondary small mb-3">
+                                    Experto en gestión de proyectos con experiencia en el sector judicial. Coordina la implementación de soluciones en todo el país.
+                                </p>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fab fa-linkedin"></i></a>
+                                    <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fab fa-twitter"></i></a>
+                                    <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact CTA -->
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card border-0 bg-primary bg-opacity-10 rounded-4 p-4 p-md-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-8 mb-4 mb-md-0">
+                            <h2 class="h4 fw-bold text-primary mb-3">¿Quieres saber más sobre Marduk?</h2>
+                            <p class="mb-0">
+                                Estamos comprometidos con la transformación digital de la justicia. Si tienes preguntas o quieres conocer más sobre nuestras soluciones, no dudes en contactarnos.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <a href="support.html" class="btn btn-primary rounded-pill px-4 py-2">
+                                <i class="fas fa-envelope me-2"></i> Contáctanos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5 border-top">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="h6 fw-bold text-primary">Marduk</h5>
+                    <p class="small text-secondary mb-0">Ecosistema de soluciones para la transformación judicial</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0 text-center">
+                    <div class="d-flex flex-wrap justify-content-center gap-3 footer-links">
+                        <a href="about.html" class="text-decoration-none text-secondary small">Acerca de</a>
+                        <a href="policies.html" class="text-decoration-none text-secondary small">Políticas</a>
+                        <a href="contribute.html" class="text-decoration-none text-secondary small">Contribuir</a>
+                        <a href="support.html" class="text-decoration-none text-secondary small">Soporte</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <p class="small text-muted mb-0">© 2025 Rama Judicial de Colombia</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+    <!-- Toastify JS -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+
+    <!-- Inicializar el toggle de tema -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar el toggle de tema
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+          // Actualizar el icono según el tema actual
+          if (document.body.classList.contains('dark-mode')) {
+            themeToggle.querySelector('i').classList.remove('fa-moon');
+            themeToggle.querySelector('i').classList.add('fa-sun');
+          }
+
+          // Agregar evento de click
+          themeToggle.addEventListener('click', function() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            if (isDarkMode) {
+              document.documentElement.removeAttribute('data-theme');
+              document.body.classList.remove('dark-mode');
+              localStorage.setItem('darkModeEnabled', 'false');
+            } else {
+              document.documentElement.setAttribute('data-theme', 'dark');
+              document.body.classList.add('dark-mode');
+              localStorage.setItem('darkModeEnabled', 'true');
+            }
+
+            // Actualizar el icono
+            const themeIcon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+              themeIcon.classList.remove('fa-moon');
+              themeIcon.classList.add('fa-sun');
+            } else {
+              themeIcon.classList.remove('fa-sun');
+              themeIcon.classList.add('fa-moon');
+            }
+          });
+        }
+
+        // Activar el enlace actual
+        const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+        navLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          if (href === 'about.html') {
+            link.classList.add('active');
+          }
+        });
+      });
+    </script>
+
+    <!-- Configuración de módulos -->
+    <script type="module">
+      // Importar módulos
+      import openRouterService from '../js/openrouter.js';
+      import themeManager from '../js/theme-manager.js';
+
+      // Hacer disponibles globalmente
+      window.openRouterService = openRouterService;
+      window.themeManager = themeManager;
+    </script>
+
+    <!-- Enhanced Navigation -->
+    <script src="../js/navigation.js"></script>
+
+    <!-- Advanced Search -->
+    <script src="../js/search.js"></script>
+
+    <!-- Custom Scripts -->
+    <script src="../js/main.js"></script>
+</body>
+</html>

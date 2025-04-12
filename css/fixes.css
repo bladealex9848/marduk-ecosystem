@@ -1,0 +1,284 @@
+/* Correcciones para problemas de visualización */
+
+/* Corrección para las insignias en "Tu Progreso Judicial" */
+.badge-item, .badge-item-unlock {
+    width: 70px !important;
+    height: 70px !important;
+    padding: 8px !important;
+    margin: 5px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.badge-item span, .badge-item-unlock span {
+    font-size: 0.7rem !important;
+    margin-top: 5px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    width: 100% !important;
+}
+
+/* Corrección para los títulos en "Soluciones Recomendadas para Ti" */
+.solution-card .card-title {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    height: auto !important;
+    min-height: 40px !important;
+}
+
+/* Corrección para fondos en modo claro */
+.bg-white {
+    background-color: #ffffff !important;
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.card, .card-body, .card-footer {
+    background-color: #ffffff !important;
+}
+
+.card-header {
+    background-color: #f8f9fa !important;
+}
+
+/* Corrección para fondos en modo oscuro */
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] .bg-light,
+[data-theme="dark"] .card,
+[data-theme="dark"] .card-body,
+[data-theme="dark"] .card-header,
+[data-theme="dark"] .card-footer {
+    background-color: #2d2d2d !important;
+}
+
+/* Corrección para textos en modo claro */
+.text-dark {
+    color: #212529 !important;
+}
+
+.text-secondary {
+    color: #6c757d !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.card .text-dark {
+    color: #212529 !important;
+}
+
+.card .text-secondary, .card .text-muted {
+    color: #6c757d !important;
+}
+
+/* Corrección para textos en modo oscuro */
+[data-theme="dark"] .text-dark {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .text-secondary,
+[data-theme="dark"] .text-muted {
+    color: #adb5bd !important;
+}
+
+[data-theme="dark"] .card .text-dark {
+    color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .card .text-secondary,
+[data-theme="dark"] .card .text-muted {
+    color: #adb5bd !important;
+}
+
+/* Corrección para bordes en modo oscuro */
+[data-theme="dark"] .border,
+[data-theme="dark"] .border-top,
+[data-theme="dark"] .border-bottom,
+[data-theme="dark"] .border-start,
+[data-theme="dark"] .border-end {
+    border-color: #444 !important;
+}
+
+/* Corrección para fondos de tarjetas específicas */
+.card.bg-light, .card.bg-white {
+    background-color: #ffffff !important;
+}
+
+[data-theme="dark"] .card.bg-light, [data-theme="dark"] .card.bg-white {
+    background-color: #2d2d2d !important;
+}
+
+/* Corrección para el navbar */
+.navbar-dark {
+    background-color: #3b82f6 !important;
+    background-image: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus {
+    color: #ffffff !important;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Corrección para textos en fondos de colores */
+.bg-gradient-primary, .bg-primary {
+    background-color: #3b82f6 !important;
+    background-image: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+    color: #ffffff !important;
+}
+
+.bg-gradient-primary .text-white, .bg-primary .text-white,
+.bg-gradient-primary .text-white-75, .bg-primary .text-white-75,
+.bg-gradient-primary .text-light, .bg-primary .text-light {
+    color: #ffffff !important;
+}
+
+/* Corrección para el Centro de Administración Judicial */
+.card-header.bg-gradient-primary {
+    background-color: #3b82f6 !important;
+    background-image: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+    color: #ffffff !important;
+}
+
+.card-header.bg-gradient-primary .text-white {
+    color: #ffffff !important;
+}
+
+.card-header.bg-gradient-primary .small {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Corrección para fondos de colores en tarjetas */
+.card .bg-primary, .card .bg-gradient-primary {
+    background-color: #3b82f6 !important;
+    background-image: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+    color: #ffffff !important;
+}
+
+/* Corrección para Tu Progreso Judicial */
+.progress {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="dark"] .progress {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.progress-bar {
+    background-color: #3b82f6 !important;
+}
+
+/* Corrección para las tarjetas de progreso */
+.card.border-primary {
+    border-color: #3b82f6 !important;
+}
+
+.card.border-success {
+    border-color: #10b981 !important;
+}
+
+.card.border-warning {
+    border-color: #f59e0b !important;
+}
+
+.card.border-purple {
+    border-color: #8b5cf6 !important;
+}
+
+/* Corrección para los textos en las tarjetas de progreso */
+.card.border-primary .text-primary {
+    color: #3b82f6 !important;
+}
+
+.card.border-success .text-success {
+    color: #10b981 !important;
+}
+
+.card.border-warning .text-warning {
+    color: #f59e0b !important;
+}
+
+.card.border-purple .text-purple {
+    color: #8b5cf6 !important;
+}
+
+/* Corrección para los controles del carrusel */
+.carousel-control-link {
+    background-color: #ffffff !important;
+    color: #495057 !important;
+}
+
+[data-theme="dark"] .carousel-control-link {
+    background-color: #3a3a3a !important;
+    color: #e0e0e0 !important;
+}
+
+/* Corrección para los indicadores del carrusel */
+.carousel-indicators [data-bs-target] {
+    background-color: #adb5bd !important;
+}
+
+[data-theme="dark"] .carousel-indicators [data-bs-target] {
+    background-color: #6c757d !important;
+}
+
+.carousel-indicators .active {
+    background-color: #3b82f6 !important;
+}
+
+/* Corrección para el contraste en modo oscuro */
+[data-theme="dark"] .bg-light {
+    background-color: #1e1e1e !important;
+}
+
+[data-theme="dark"] .text-secondary {
+    color: #a0a0a0 !important;
+}
+
+/* Corrección para las cajas de Impacto del Ecosistema */
+.row .border-success, .row .border-primary, .row .border-purple, .row .border-warning {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+}
+
+.row .border-success p.display-6,
+.row .border-primary p.display-6,
+.row .border-purple p.display-6,
+.row .border-warning p.display-6 {
+    margin-top: auto !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Corrección para las tarjetas en modo oscuro */
+[data-theme="dark"] .card {
+    background-color: #1e1e1e !important;
+}
+
+/* Corrección para los enlaces del footer */
+.footer-links a {
+    color: inherit !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease-in-out !important;
+}
+
+.footer-links a:hover {
+    color: var(--primary) !important;
+}

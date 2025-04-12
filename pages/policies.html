@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Políticas - Marduk</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/fixes.css">
+
+    <!-- Tema oscuro/claro -->
+    <script>
+      // Verificar preferencia guardada
+      const darkModeEnabled = localStorage.getItem('darkModeEnabled') === 'true';
+      // Verificar preferencia del sistema
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // Aplicar tema oscuro si está habilitado o preferido por el sistema
+      if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('darkModeEnabled', 'true');
+      }
+    </script>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-gradient sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <i class="fas fa-balance-scale me-2"></i>
+                <span>Marduk</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="solutions.html"><i class="fas fa-tools me-1"></i> Soluciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html"><i class="fas fa-users me-1"></i> Comunidad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ai-test.html"><i class="fas fa-robot me-1"></i> Prueba IA</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <!-- Search Form -->
+                    <form class="d-flex me-2 search-container">
+                        <div class="position-relative w-100">
+                            <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input class="form-control ps-5" type="search" placeholder="Buscar..." aria-label="Search">
+                        </div>
+                    </form>
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="btn btn-link text-light me-3">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <!-- Notifications Dropdown -->
+                    <div class="dropdown me-2">
+                        <button class="btn btn-link text-light position-relative p-1" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0 overflow-hidden" aria-labelledby="notificationsDropdown">
+                            <!-- Notification header -->
+                            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                                <h6 class="mb-0">Notificaciones</h6>
+                                <a href="#" class="text-decoration-none small">Marcar todas como leídas</a>
+                            </div>
+                            <!-- Notification items -->
+                            <div class="notification-list">
+                                <a href="#" class="notification-item d-flex p-3 border-bottom unread">
+                                    <div class="flex-shrink-0">
+                                        <div class="avatar-circle bg-primary text-white">
+                                            <i class="fas fa-gavel"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <p class="mb-0 fw-medium">Nueva actualización en el caso #12345</p>
+                                        <p class="text-muted small mb-0">Se ha añadido un nuevo documento</p>
+                                        <span class="text-muted small">Hace 5 minutos</span>
+                                    </div>
+                                </a>
+                                <!-- More notification items... -->
+                            </div>
+                            <!-- View all link -->
+                            <a href="#" class="dropdown-item text-center p-3 border-top">Ver todas las notificaciones</a>
+                        </div>
+                    </div>
+                    <!-- User Menu -->
+                    <div class="dropdown">
+                        <button class="btn btn-link d-flex align-items-center text-light text-decoration-none dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="avatar-circle avatar-circle-sm bg-primary text-white me-2">
+                                AF
+                            </div>
+                            <span class="d-none d-md-block">Alexander Fadul</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i> Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+        <!-- Page Header -->
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-5 fw-bold mb-3">Políticas</h1>
+                <p class="lead text-secondary">Nuestros compromisos y lineamientos</p>
+            </div>
+        </div>
+
+        <!-- Policies Tabs -->
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <!-- Tabs Navigation -->
+                        <ul class="nav nav-pills mb-4" id="policyTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="privacy-tab" data-bs-toggle="pill" data-bs-target="#privacy" type="button" role="tab" aria-controls="privacy" aria-selected="true">
+                                    <i class="fas fa-shield-alt me-2"></i>Privacidad
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="terms-tab" data-bs-toggle="pill" data-bs-target="#terms" type="button" role="tab" aria-controls="terms" aria-selected="false">
+                                    <i class="fas fa-file-contract me-2"></i>Términos de Uso
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="security-tab" data-bs-toggle="pill" data-bs-target="#security" type="button" role="tab" aria-controls="security" aria-selected="false">
+                                    <i class="fas fa-lock me-2"></i>Seguridad
+                                </button>
+                            </li>
+                        </ul>
+
+                        <!-- Tabs Content -->
+                        <div class="tab-content" id="policyTabsContent">
+                            <!-- Privacy Policy -->
+                            <div class="tab-pane fade show active" id="privacy" role="tabpanel" aria-labelledby="privacy-tab">
+                                <h2 class="h4 fw-bold mb-4">Política de Privacidad</h2>
+
+                                <div class="mb-4">
+                                    <h3 class="h5 fw-bold mb-3">Información que recopilamos</h3>
+                                    <p>
+                                        Recopilamos información necesaria para el funcionamiento de nuestras soluciones, incluyendo datos de usuario, registros de actividad y estadísticas de uso. Esta información nos ayuda a mejorar nuestros servicios y garantizar su correcto funcionamiento.
+                                    </p>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h3 class="h5 fw-bold mb-3">Uso de la información</h3>
+                                    <p>
+                                        Utilizamos la información recopilada para proporcionar, mantener y mejorar nuestros servicios, así como para desarrollar nuevas funcionalidades. No compartimos información personal con terceros sin consentimiento explícito, excepto cuando sea requerido por ley.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h3 class="h5 fw-bold mb-3">Derechos del usuario</h3>
+                                    <p>
+                                        Los usuarios tienen derecho a acceder, rectificar y eliminar sus datos personales. Para ejercer estos derechos, pueden contactarnos a través de los canales oficiales de soporte.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Terms of Use -->
+                            <div class="tab-pane fade" id="terms" role="tabpanel" aria-labelledby="terms-tab">
+                                <h2 class="h4 fw-bold mb-4">Términos de Uso</h2>
+
+                                <div class="mb-4">
+                                    <h3 class="h5 fw-bold mb-3">Licencia y uso</h3>
+                                    <p>
+                                        Nuestras soluciones están disponibles bajo licencias específicas para entidades del sistema judicial. El uso de estas soluciones está sujeto a las condiciones establecidas en los acuerdos de licencia correspondientes.
+                                    </p>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h3 class="h5 fw-bold mb-3">Responsabilidades del usuario</h3>
+                                    <p>
+                                        Los usuarios son responsables de mantener la confidencialidad de sus credenciales de acceso y de utilizar las soluciones de acuerdo con las leyes aplicables y estos términos de uso.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h3 class="h5 fw-bold mb-3">Limitaciones de responsabilidad</h3>
+                                    <p>
+                                        Nos esforzamos por mantener nuestras soluciones funcionando correctamente, pero no podemos garantizar su disponibilidad ininterrumpida. No somos responsables de daños indirectos derivados del uso de nuestras soluciones.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Security Policy -->
+                            <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                                <h2 class="h4 fw-bold mb-4">Política de Seguridad</h2>
+
+                                <div class="mb-4">
+                                    <h3 class="h5 fw-bold mb-3">Protección de datos</h3>
+                                    <p>
+                                        Implementamos medidas técnicas y organizativas para proteger la información almacenada en nuestros sistemas, incluyendo cifrado de datos, controles de acceso y monitoreo continuo.
+                                    </p>
+                                </div>
+
+                                <div class="mb-4">
+                                    <h3 class="h5 fw-bold mb-3">Gestión de incidentes</h3>
+                                    <p>
+                                        Contamos con protocolos establecidos para la detección, respuesta y recuperación ante incidentes de seguridad. En caso de una brecha que afecte datos personales, notificaremos a los usuarios afectados según lo requiera la ley.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h3 class="h5 fw-bold mb-3">Mejora continua</h3>
+                                    <p>
+                                        Revisamos y actualizamos regularmente nuestras políticas y medidas de seguridad para adaptarnos a nuevas amenazas y cumplir con los estándares más recientes de la industria.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5 border-top">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="h6 fw-bold text-primary">Marduk</h5>
+                    <p class="small text-secondary mb-0">Ecosistema de soluciones para la transformación judicial</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0 text-center">
+                    <div class="d-flex flex-wrap justify-content-center gap-3 footer-links">
+                        <a href="about.html" class="text-decoration-none text-secondary small">Acerca de</a>
+                        <a href="policies.html" class="text-decoration-none text-secondary small">Políticas</a>
+                        <a href="contribute.html" class="text-decoration-none text-secondary small">Contribuir</a>
+                        <a href="support.html" class="text-decoration-none text-secondary small">Soporte</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <p class="small text-muted mb-0">© 2025 Rama Judicial de Colombia</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Componentes comunes -->
+    <script src="../js/components.js"></script>
+</body>
+</html>

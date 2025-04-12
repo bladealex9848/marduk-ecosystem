@@ -19,6 +19,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/app-cards.css">
 
     <!-- Tema oscuro/claro -->
     <script>
@@ -728,107 +729,1330 @@
                     <div class="tab-content" id="appTabContent">
                         <!-- Information Tab -->
                         <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab" tabindex="0">
-                            <div>
-                                <h2 class="h5 fw-semibold mb-3">Descripción</h2>
-                                <p class="text-secondary small leading-relaxed" id="appDescription">
-                                    El Sistema de Gestión de Expedientes Electrónicos (SGEJ) representa la columna vertebral de la transformación digital del sistema judicial colombiano. Esta plataforma integral permite el manejo completamente digital de los expedientes, desde su creación hasta su archivo definitivo.
-                                </p>
-                            </div>
-
-                            <div class="d-flex flex-wrap gap-2 mt-4" id="appTags">
-                                <span class="badge bg-light text-secondary px-3 py-2">Expedientes</span>
-                                <span class="badge bg-light text-secondary px-3 py-2">Digital</span>
-                                <span class="badge bg-light text-secondary px-3 py-2">Búsqueda</span>
-                            </div>
-
-                            <div class="mt-5">
-                                <h3 class="h5 fw-semibold mb-3">Beneficios clave</h3>
-                                <ul class="list-unstyled" id="appBenefits">
-                                    <li class="d-flex align-items-start mb-3">
-                                        <i class="fa-solid fa-check text-success mt-1 me-3"></i>
-                                        <span>Reducción del 40% en tiempos de gestión procesal</span>
-                                    </li>
-                                    <li class="d-flex align-items-start mb-3">
-                                        <i class="fa-solid fa-check text-success mt-1 me-3"></i>
-                                        <span>Disminución del 95% en el uso de papel</span>
-                                    </li>
-                                    <li class="d-flex align-items-start">
-                                        <i class="fa-solid fa-check text-success mt-1 me-3"></i>
-                                        <span>Acceso remoto y seguro a expedientes completos</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="mt-5">
-                                <h3 class="h5 fw-semibold mb-3">Requisitos</h3>
-                                <ul class="list-unstyled" id="appRequirements">
-                                    <li class="d-flex align-items-center mb-3 text-secondary">
-                                        <i class="fa-solid fa-chevron-right text-primary me-3"></i>
-                                        <span>Navegador web actualizado</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-3 text-secondary">
-                                        <i class="fa-solid fa-chevron-right text-primary me-3"></i>
-                                        <span>Certificado digital para firma electrónica</span>
-                                    </li>
-                                    <li class="d-flex align-items-center text-secondary">
-                                        <i class="fa-solid fa-chevron-right text-primary me-3"></i>
-                                        <span>Conexión a internet estable</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="mt-5">
-                                <h3 class="h5 fw-semibold mb-3">Recomendado para</h3>
-                                <div class="d-flex flex-wrap gap-2" id="appRecommendedFor">
-                                    <span class="badge bg-primary-soft text-primary px-3 py-2">
-                                        Funcionarios Judiciales
-                                    </span>
-                                    <span class="badge bg-primary-soft text-primary px-3 py-2">
-                                        Administradores
-                                    </span>
+                            <!-- App Overview Section -->
+                            <div class="card border-0 bg-light rounded-4 p-4 mb-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h2 class="h5 fw-bold mb-3 d-flex align-items-center">
+                                            <i class="fas fa-info-circle text-primary me-2"></i>
+                                            Descripción general
+                                        </h2>
+                                        <p class="text-secondary mb-0" id="appDescription">
+                                            El Sistema de Gestión de Expedientes Electrónicos (SGEJ) representa la columna vertebral de la transformación digital del sistema judicial colombiano. Esta plataforma integral permite el manejo completamente digital de los expedientes, desde su creación hasta su archivo definitivo.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 text-center mt-3 mt-md-0">
+                                        <div class="d-inline-block p-3 rounded-circle bg-primary bg-opacity-10 mb-2">
+                                            <i class="fas fa-file-lines fa-3x text-primary"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            <span class="badge bg-success px-3 py-2 rounded-pill">Nivel 5: Consolidada</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="mt-5">
-                                <h3 class="h5 fw-semibold mb-3">Proceso de evolución</h3>
-                                <div class="position-relative">
-                                    <div class="position-absolute start-4 top-0 bottom-0 border-start border-2 border-gray-200"></div>
+                            <!-- Tags Section -->
+                            <div class="d-flex flex-wrap gap-2 mb-4" id="appTags">
+                                <span class="badge bg-light text-secondary px-3 py-2 rounded-pill">
+                                    <i class="fas fa-tag me-1"></i> Expedientes
+                                </span>
+                                <span class="badge bg-light text-secondary px-3 py-2 rounded-pill">
+                                    <i class="fas fa-tag me-1"></i> Digital
+                                </span>
+                                <span class="badge bg-light text-secondary px-3 py-2 rounded-pill">
+                                    <i class="fas fa-tag me-1"></i> Búsqueda
+                                </span>
+                            </div>
 
-                                    <div class="d-flex mb-4 position-relative">
-                                        <div class="bg-blue-600 text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3" style="width: 30px; height: 30px; position: relative; z-index: 1;">
-                                            1
+                            <!-- Key Benefits Section -->
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-4 mb-md-0">
+                                    <div class="card h-100 border-0 shadow-sm rounded-4 p-4">
+                                        <h3 class="h5 fw-bold mb-3 d-flex align-items-center">
+                                            <i class="fas fa-star text-warning me-2"></i>
+                                            Beneficios clave
+                                        </h3>
+                                        <ul class="list-unstyled mb-0" id="appBenefits">
+                                            <li class="d-flex align-items-start mb-3">
+                                                <div class="flex-shrink-0 me-3 bg-success bg-opacity-10 rounded-circle p-1">
+                                                    <i class="fa-solid fa-check text-success"></i>
+                                                </div>
+                                                <div>
+                                                    <span class="fw-medium">Reducción del 40%</span>
+                                                    <p class="text-secondary small mb-0">en tiempos de gestión procesal</p>
+                                                </div>
+                                            </li>
+                                            <li class="d-flex align-items-start mb-3">
+                                                <div class="flex-shrink-0 me-3 bg-success bg-opacity-10 rounded-circle p-1">
+                                                    <i class="fa-solid fa-check text-success"></i>
+                                                </div>
+                                                <div>
+                                                    <span class="fw-medium">Disminución del 95%</span>
+                                                    <p class="text-secondary small mb-0">en el uso de papel</p>
+                                                </div>
+                                            </li>
+                                            <li class="d-flex align-items-start">
+                                                <div class="flex-shrink-0 me-3 bg-success bg-opacity-10 rounded-circle p-1">
+                                                    <i class="fa-solid fa-check text-success"></i>
+                                                </div>
+                                                <div>
+                                                    <span class="fw-medium">Acceso remoto y seguro</span>
+                                                    <p class="text-secondary small mb-0">a expedientes completos</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Requirements Section -->
+                                <div class="col-md-6">
+                                    <div class="card h-100 border-0 shadow-sm rounded-4 p-4">
+                                        <h3 class="h5 fw-bold mb-3 d-flex align-items-center">
+                                            <i class="fas fa-laptop-code text-info me-2"></i>
+                                            Requisitos
+                                        </h3>
+                                        <ul class="list-unstyled mb-0" id="appRequirements">
+                                            <li class="d-flex align-items-center mb-3">
+                                                <div class="flex-shrink-0 me-3 bg-primary bg-opacity-10 rounded-circle p-1">
+                                                    <i class="fa-solid fa-circle-check text-primary"></i>
+                                                </div>
+                                                <span>Navegador web actualizado</span>
+                                            </li>
+                                            <li class="d-flex align-items-center mb-3">
+                                                <div class="flex-shrink-0 me-3 bg-primary bg-opacity-10 rounded-circle p-1">
+                                                    <i class="fa-solid fa-circle-check text-primary"></i>
+                                                </div>
+                                                <span>Certificado digital para firma electrónica</span>
+                                            </li>
+                                            <li class="d-flex align-items-center">
+                                                <div class="flex-shrink-0 me-3 bg-primary bg-opacity-10 rounded-circle p-1">
+                                                    <i class="fa-solid fa-circle-check text-primary"></i>
+                                                </div>
+                                                <span>Conexión a internet estable</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recommended For Section -->
+                            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                                <h3 class="h5 fw-bold mb-3 d-flex align-items-center">
+                                    <i class="fas fa-users text-primary me-2"></i>
+                                    Recomendado para
+                                </h3>
+                                <div class="d-flex flex-wrap gap-3" id="appRecommendedFor">
+                                    <div class="d-flex align-items-center bg-primary bg-opacity-10 rounded-pill px-4 py-2">
+                                        <i class="fas fa-user-tie text-primary me-2"></i>
+                                        <span class="fw-medium">Funcionarios Judiciales</span>
+                                    </div>
+                                    <div class="d-flex align-items-center bg-primary bg-opacity-10 rounded-pill px-4 py-2">
+                                        <i class="fas fa-user-cog text-primary me-2"></i>
+                                        <span class="fw-medium">Administradores</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Evolution Process Section -->
+                            <div class="card border-0 shadow-sm rounded-4 p-4">
+                                <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                                    <i class="fas fa-chart-line text-success me-2"></i>
+                                    Proceso de evolución
+                                </h3>
+
+                                <div class="position-relative evolution-timeline">
+                                    <!-- Timeline line -->
+                                    <div class="position-absolute start-0 top-0 bottom-0 ms-5" style="width: 2px; background-color: #e9ecef;"></div>
+
+                                    <!-- Stage 1: Idea -->
+                                    <div class="timeline-item d-flex mb-4 position-relative">
+                                        <div class="timeline-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                            <i class="fas fa-lightbulb"></i>
                                         </div>
-                                        <div>
-                                            <h4 class="h6 fw-medium">Idea</h4>
-                                            <p class="small text-secondary mb-1">Fase inicial: Conceptualización de la herramienta</p>
-                                            <p class="x-small text-muted">Completado</p>
+                                        <div class="timeline-content ms-4 ps-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h4 class="h6 fw-bold mb-1">Idea</h4>
+                                                <span class="badge bg-success rounded-pill">Completado</span>
+                                            </div>
+                                            <p class="text-secondary mb-1">Fase inicial: Conceptualización de la herramienta</p>
+                                            <p class="small text-muted">Enero 2021</p>
                                         </div>
                                     </div>
 
-                                    <!-- More evolution stages would go here -->
+                                    <!-- Stage 2: Prototype -->
+                                    <div class="timeline-item d-flex mb-4 position-relative">
+                                        <div class="timeline-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                            <i class="fas fa-code"></i>
+                                        </div>
+                                        <div class="timeline-content ms-4 ps-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h4 class="h6 fw-bold mb-1">Prototipo</h4>
+                                                <span class="badge bg-success rounded-pill">Completado</span>
+                                            </div>
+                                            <p class="text-secondary mb-1">Desarrollo del primer prototipo funcional</p>
+                                            <p class="small text-muted">Marzo 2021</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Stage 3: Beta -->
+                                    <div class="timeline-item d-flex mb-4 position-relative">
+                                        <div class="timeline-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                            <i class="fas fa-flask"></i>
+                                        </div>
+                                        <div class="timeline-content ms-4 ps-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h4 class="h6 fw-bold mb-1">Beta</h4>
+                                                <span class="badge bg-success rounded-pill">Completado</span>
+                                            </div>
+                                            <p class="text-secondary mb-1">Pruebas con usuarios reales y ajustes</p>
+                                            <p class="small text-muted">Junio 2021</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Stage 4: Production -->
+                                    <div class="timeline-item d-flex mb-4 position-relative">
+                                        <div class="timeline-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                            <i class="fas fa-rocket"></i>
+                                        </div>
+                                        <div class="timeline-content ms-4 ps-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h4 class="h6 fw-bold mb-1">Producción</h4>
+                                                <span class="badge bg-success rounded-pill">Completado</span>
+                                            </div>
+                                            <p class="text-secondary mb-1">Lanzamiento oficial y despliegue</p>
+                                            <p class="small text-muted">Octubre 2021</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Stage 5: Consolidated -->
+                                    <div class="timeline-item d-flex position-relative">
+                                        <div class="timeline-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                            <i class="fas fa-check-double"></i>
+                                        </div>
+                                        <div class="timeline-content ms-4 ps-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h4 class="h6 fw-bold mb-1">Consolidada</h4>
+                                                <span class="badge bg-success rounded-pill">Actual</span>
+                                            </div>
+                                            <p class="text-secondary mb-1">Adopción generalizada y mejoras continuas</p>
+                                            <p class="small text-muted">Desde Enero 2022</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Reviews, Team, Versions, Metrics, Contribute tabs would be implemented here -->
                         <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel" aria-labelledby="reviews-tab" tabindex="0">
-                            <p class="text-center py-5">Contenido de valoraciones se cargará dinámicamente</p>
+                            <!-- Reviews Summary Section -->
+                            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 text-center mb-4 mb-md-0">
+                                        <h2 class="display-4 fw-bold text-primary mb-0">4.8</h2>
+                                        <div class="d-flex justify-content-center my-2">
+                                            <i class="fas fa-star text-warning mx-1"></i>
+                                            <i class="fas fa-star text-warning mx-1"></i>
+                                            <i class="fas fa-star text-warning mx-1"></i>
+                                            <i class="fas fa-star text-warning mx-1"></i>
+                                            <i class="fas fa-star-half-alt text-warning mx-1"></i>
+                                        </div>
+                                        <p class="text-secondary mb-0">Basado en 245 valoraciones</p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="mb-3">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <span class="text-secondary small me-2">5</span>
+                                                <div class="progress flex-grow-1" style="height: 8px;">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span class="text-secondary small ms-2">75%</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <span class="text-secondary small me-2">4</span>
+                                                <div class="progress flex-grow-1" style="height: 8px;">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 18%" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span class="text-secondary small ms-2">18%</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <span class="text-secondary small me-2">3</span>
+                                                <div class="progress flex-grow-1" style="height: 8px;">
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 5%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span class="text-secondary small ms-2">5%</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <span class="text-secondary small me-2">2</span>
+                                                <div class="progress flex-grow-1" style="height: 8px;">
+                                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 1%" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span class="text-secondary small ms-2">1%</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span class="text-secondary small me-2">1</span>
+                                                <div class="progress flex-grow-1" style="height: 8px;">
+                                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 1%" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <span class="text-secondary small ms-2">1%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Review Filters -->
+                            <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                                <div class="d-flex flex-wrap gap-2 mb-3 mb-md-0">
+                                    <button class="btn btn-sm btn-primary rounded-pill active">Todas</button>
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill">5 estrellas</button>
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill">4 estrellas</button>
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill">3 estrellas</button>
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill">2 estrellas</button>
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill">1 estrella</button>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <label class="me-2 text-secondary small">Ordenar por:</label>
+                                    <select class="form-select form-select-sm" style="width: auto;">
+                                        <option value="recent">Más recientes</option>
+                                        <option value="helpful">Más útiles</option>
+                                        <option value="highest">Mayor puntuación</option>
+                                        <option value="lowest">Menor puntuación</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Reviews List -->
+                            <div class="reviews-list">
+                                <!-- Review Item 1 -->
+                                <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="avatar-circle bg-primary text-white">
+                                                <span>JD</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <h5 class="fw-bold mb-0">Juan Díaz</h5>
+                                                <span class="badge bg-primary rounded-pill">Verificado</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <div class="me-2">
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                </div>
+                                                <span class="text-secondary small">hace 2 semanas</span>
+                                            </div>
+                                            <h6 class="fw-semibold mb-2">Excelente herramienta para la gestión judicial</h6>
+                                            <p class="text-secondary mb-3">
+                                                Ha transformado completamente nuestra forma de trabajar. La búsqueda de expedientes es increíblemente rápida y la interfaz es muy intuitiva. Recomiendo ampliamente esta solución a todos los despachos judiciales.
+                                            </p>
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn btn-sm btn-light me-2">
+                                                    <i class="far fa-thumbs-up me-1"></i> Útil (24)
+                                                </button>
+                                                <button class="btn btn-sm btn-light">
+                                                    <i class="far fa-comment me-1"></i> Responder
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Review Item 2 -->
+                                <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="avatar-circle bg-info text-white">
+                                                <span>MR</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <h5 class="fw-bold mb-0">María Rodríguez</h5>
+                                                <span class="badge bg-primary rounded-pill">Verificado</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <div class="me-2">
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="far fa-star text-warning"></i>
+                                                </div>
+                                                <span class="text-secondary small">hace 1 mes</span>
+                                            </div>
+                                            <h6 class="fw-semibold mb-2">Muy buena, pero con margen de mejora</h6>
+                                            <p class="text-secondary mb-3">
+                                                El sistema funciona muy bien en general y ha mejorado nuestra productividad. Sin embargo, a veces se ralentiza cuando hay muchos usuarios conectados simultáneamente. Espero que mejoren este aspecto en futuras actualizaciones.
+                                            </p>
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn btn-sm btn-light me-2">
+                                                    <i class="far fa-thumbs-up me-1"></i> Útil (15)
+                                                </button>
+                                                <button class="btn btn-sm btn-light">
+                                                    <i class="far fa-comment me-1"></i> Responder
+                                                </button>
+                                            </div>
+
+                                            <!-- Official Response -->
+                                            <div class="mt-3 ms-4 p-3 bg-light rounded-3">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-2">
+                                                        <div class="avatar-circle avatar-circle-sm bg-primary text-white">
+                                                            <i class="fas fa-shield-alt"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="fw-bold mb-1">Respuesta oficial</h6>
+                                                        <p class="text-secondary small mb-0">
+                                                            Gracias por su retroalimentación, María. Estamos trabajando en optimizar el rendimiento durante horas pico. La próxima actualización incluirá mejoras significativas en este aspecto.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Load More Button -->
+                                <div class="text-center mt-4">
+                                    <button class="btn btn-outline-primary rounded-pill px-4">
+                                        <i class="fas fa-sync-alt me-2"></i> Cargar más valoraciones
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="tab-pane fade" id="team-tab-pane" role="tabpanel" aria-labelledby="team-tab" tabindex="0">
-                            <p class="text-center py-5">Información del equipo de desarrollo se cargará dinámicamente</p>
+                            <!-- Team Header -->
+                            <div class="card border-0 bg-light rounded-4 p-4 mb-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h2 class="h5 fw-bold mb-3 d-flex align-items-center">
+                                            <i class="fas fa-users text-primary me-2"></i>
+                                            Equipo de desarrollo
+                                        </h2>
+                                        <p class="text-secondary mb-0">
+                                            Conozca al talentoso equipo detrás del Sistema de Gestión de Expedientes Electrónicos. Nuestros desarrolladores combinan experiencia técnica con conocimiento jurídico para crear soluciones innovadoras.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 text-center mt-3 mt-md-0">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="avatar-stack">
+                                                <div class="avatar-circle bg-primary text-white">
+                                                    <span>CR</span>
+                                                </div>
+                                                <div class="avatar-circle bg-info text-white">
+                                                    <span>LM</span>
+                                                </div>
+                                                <div class="avatar-circle bg-success text-white">
+                                                    <span>AP</span>
+                                                </div>
+                                                <div class="avatar-circle bg-warning text-white">
+                                                    <span>JG</span>
+                                                </div>
+                                                <div class="avatar-circle bg-danger text-white">
+                                                    <span>+3</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Team Members -->
+                            <div class="row">
+                                <!-- Team Lead -->
+                                <div class="col-12 mb-4">
+                                    <div class="card border-0 shadow-sm rounded-4 p-4">
+                                        <div class="d-flex flex-column flex-md-row">
+                                            <div class="flex-shrink-0 text-center mb-3 mb-md-0 me-md-4">
+                                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos Restrepo" class="rounded-circle" width="120" height="120">
+                                                <div class="mt-2">
+                                                    <span class="badge bg-primary rounded-pill px-3 py-2">Líder de Equipo</span>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h3 class="h5 fw-bold mb-0">Carlos Restrepo</h3>
+                                                    <div class="developer-links">
+                                                        <a href="#" class="btn btn-sm btn-light rounded-circle me-1"><i class="fab fa-linkedin"></i></a>
+                                                        <a href="#" class="btn btn-sm btn-light rounded-circle me-1"><i class="fab fa-github"></i></a>
+                                                        <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fas fa-globe"></i></a>
+                                                    </div>
+                                                </div>
+                                                <p class="text-primary mb-3">Arquitecto de Software Senior</p>
+                                                <p class="text-secondary mb-3">
+                                                    Con más de 15 años de experiencia en desarrollo de software para el sector judicial, Carlos lidera el equipo técnico del SGEJ. Su visión ha sido fundamental para crear una plataforma robusta y escalable que responde a las necesidades reales de los usuarios.
+                                                </p>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    <span class="badge bg-light text-secondary">Arquitectura</span>
+                                                    <span class="badge bg-light text-secondary">Java</span>
+                                                    <span class="badge bg-light text-secondary">Spring</span>
+                                                    <span class="badge bg-light text-secondary">Microservicios</span>
+                                                    <span class="badge bg-light text-secondary">DevOps</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Core Team Members -->
+                                <div class="col-md-6 mb-4">
+                                    <div class="card border-0 shadow-sm rounded-4 h-100 p-4">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Laura Mendoza" class="rounded-circle" width="80" height="80">
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h4 class="h6 fw-bold mb-0">Laura Mendoza</h4>
+                                                    <div class="developer-links">
+                                                        <a href="#" class="btn btn-sm btn-light rounded-circle me-1"><i class="fab fa-github"></i></a>
+                                                        <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fas fa-envelope"></i></a>
+                                                    </div>
+                                                </div>
+                                                <p class="text-primary small mb-2">Desarrolladora Frontend</p>
+                                                <p class="text-secondary small mb-3">
+                                                    Especialista en interfaces de usuario intuitivas y accesibles. Responsable de la experiencia de usuario del SGEJ.
+                                                </p>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    <span class="badge bg-light text-secondary">React</span>
+                                                    <span class="badge bg-light text-secondary">UX/UI</span>
+                                                    <span class="badge bg-light text-secondary">Accesibilidad</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <div class="card border-0 shadow-sm rounded-4 h-100 p-4">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Andrés Pérez" class="rounded-circle" width="80" height="80">
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h4 class="h6 fw-bold mb-0">Andrés Pérez</h4>
+                                                    <div class="developer-links">
+                                                        <a href="#" class="btn btn-sm btn-light rounded-circle me-1"><i class="fab fa-github"></i></a>
+                                                        <a href="#" class="btn btn-sm btn-light rounded-circle"><i class="fas fa-envelope"></i></a>
+                                                    </div>
+                                                </div>
+                                                <p class="text-primary small mb-2">Ingeniero Backend</p>
+                                                <p class="text-secondary small mb-3">
+                                                    Experto en bases de datos y optimización de consultas. Diseñó la arquitectura de almacenamiento del sistema.
+                                                </p>
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    <span class="badge bg-light text-secondary">Java</span>
+                                                    <span class="badge bg-light text-secondary">PostgreSQL</span>
+                                                    <span class="badge bg-light text-secondary">API REST</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- View All Team Button -->
+                                <div class="col-12 text-center mt-2">
+                                    <button class="btn btn-outline-primary rounded-pill px-4">
+                                        <i class="fas fa-users me-2"></i> Ver equipo completo
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Join Team Section -->
+                            <div class="card border-0 bg-primary bg-opacity-10 rounded-4 p-4 mt-5">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h3 class="h5 fw-bold text-primary mb-3">Únete a nuestro equipo</h3>
+                                        <p class="mb-md-0">
+                                            Estamos buscando desarrolladores talentosos y apasionados por la tecnología jurídica. Si quieres contribuir a transformar la justicia digital, ¡queremos conocerte!
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                        <a href="#" class="btn btn-primary rounded-pill px-4">
+                                            <i class="fas fa-briefcase me-2"></i> Ver vacantes
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="tab-pane fade" id="versions-tab-pane" role="tabpanel" aria-labelledby="versions-tab" tabindex="0">
-                            <p class="text-center py-5">Historial de versiones se cargará dinámicamente</p>
+                            <!-- Versions Header -->
+                            <div class="card border-0 bg-light rounded-4 p-4 mb-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h2 class="h5 fw-bold mb-3 d-flex align-items-center">
+                                            <i class="fas fa-code-branch text-primary me-2"></i>
+                                            Historial de versiones
+                                        </h2>
+                                        <p class="text-secondary mb-0">
+                                            Seguimiento de las actualizaciones y mejoras del Sistema de Gestión de Expedientes Electrónicos. Cada versión incluye nuevas funcionalidades, correcciones y optimizaciones.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 text-center mt-3 mt-md-0">
+                                        <div class="d-inline-block p-3 rounded-circle bg-primary bg-opacity-10 mb-2">
+                                            <i class="fas fa-history fa-3x text-primary"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            <span class="badge bg-success px-3 py-2 rounded-pill">Versión actual: 2.4.3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Version Filters -->
+                            <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                                <div class="d-flex flex-wrap gap-2 mb-3 mb-md-0">
+                                    <button class="btn btn-sm btn-primary rounded-pill active">Todas</button>
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill">Principales</button>
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill">Menores</button>
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill">Parches</button>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0">
+                                            <i class="fas fa-search text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control border-start-0 ps-0" placeholder="Buscar en versiones...">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Versions Timeline -->
+                            <div class="position-relative versions-timeline">
+                                <!-- Timeline line -->
+                                <div class="position-absolute start-0 top-0 bottom-0 ms-5" style="width: 2px; background-color: #e9ecef;"></div>
+
+                                <!-- Version 2.4.3 (Current) -->
+                                <div class="version-item d-flex mb-4 position-relative">
+                                    <div class="version-badge bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="version-content ms-4 ps-3">
+                                        <div class="card border-0 shadow-sm rounded-4 p-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <div>
+                                                    <h4 class="h5 fw-bold mb-0">Versión 2.4.3</h4>
+                                                    <p class="text-muted small mb-0">Lanzada el 15 de marzo de 2023</p>
+                                                </div>
+                                                <span class="badge bg-success rounded-pill px-3">Actual</span>
+                                            </div>
+
+                                            <div class="version-changes">
+                                                <h5 class="h6 fw-medium mb-2">Mejoras y correcciones:</h5>
+                                                <ul class="version-changes-list">
+                                                    <li class="improvement">Optimización del rendimiento en búsquedas complejas (30% más rápido)</li>
+                                                    <li class="fix">Corrección de error en la visualización de documentos PDF de gran tamaño</li>
+                                                    <li class="fix">Solución al problema de sincronización en dispositivos móviles</li>
+                                                    <li class="improvement">Mejora en la compatibilidad con navegadores antiguos</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                                                <div>
+                                                    <span class="badge bg-light text-secondary me-2">Parche</span>
+                                                    <span class="badge bg-light text-secondary">Estable</span>
+                                                </div>
+                                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">
+                                                    <i class="fas fa-file-alt me-1"></i> Notas completas
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Version 2.4.0 -->
+                                <div class="version-item d-flex mb-4 position-relative">
+                                    <div class="version-badge bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <div class="version-content ms-4 ps-3">
+                                        <div class="card border-0 shadow-sm rounded-4 p-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <div>
+                                                    <h4 class="h5 fw-bold mb-0">Versión 2.4.0</h4>
+                                                    <p class="text-muted small mb-0">Lanzada el 20 de enero de 2023</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="version-changes">
+                                                <h5 class="h6 fw-medium mb-2">Nuevas funcionalidades:</h5>
+                                                <ul class="version-changes-list">
+                                                    <li class="feature">Integración con firma electrónica avanzada</li>
+                                                    <li class="feature">Nuevo panel de estadísticas para administradores</li>
+                                                    <li class="improvement">Rediseño completo de la interfaz de búsqueda</li>
+                                                    <li class="improvement">Mejora en la velocidad de carga de expedientes grandes</li>
+                                                    <li class="fix">Corrección de múltiples errores reportados por usuarios</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                                                <div>
+                                                    <span class="badge bg-light text-secondary me-2">Menor</span>
+                                                    <span class="badge bg-light text-secondary">Estable</span>
+                                                </div>
+                                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">
+                                                    <i class="fas fa-file-alt me-1"></i> Notas completas
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Version 2.0.0 -->
+                                <div class="version-item d-flex mb-4 position-relative">
+                                    <div class="version-badge bg-info text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="version-content ms-4 ps-3">
+                                        <div class="card border-0 shadow-sm rounded-4 p-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <div>
+                                                    <h4 class="h5 fw-bold mb-0">Versión 2.0.0</h4>
+                                                    <p class="text-muted small mb-0">Lanzada el 5 de junio de 2022</p>
+                                                </div>
+                                                <span class="badge bg-info rounded-pill px-3">Principal</span>
+                                            </div>
+
+                                            <div class="version-changes">
+                                                <h5 class="h6 fw-medium mb-2">Cambios principales:</h5>
+                                                <ul class="version-changes-list">
+                                                    <li class="feature">Arquitectura completamente rediseñada para mayor escalabilidad</li>
+                                                    <li class="feature">Nuevo motor de búsqueda con indexación avanzada</li>
+                                                    <li class="feature">Soporte para dispositivos móviles y tablets</li>
+                                                    <li class="feature">Sistema de notificaciones en tiempo real</li>
+                                                    <li class="feature">Integración con sistemas externos mediante API REST</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                                                <div>
+                                                    <span class="badge bg-light text-secondary me-2">Mayor</span>
+                                                    <span class="badge bg-light text-secondary">Estable</span>
+                                                </div>
+                                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">
+                                                    <i class="fas fa-file-alt me-1"></i> Notas completas
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Load More Button -->
+                                <div class="text-center mt-4 mb-4">
+                                    <button class="btn btn-outline-primary rounded-pill px-4">
+                                        <i class="fas fa-history me-2"></i> Cargar versiones anteriores
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="tab-pane fade" id="metrics-tab-pane" role="tabpanel" aria-labelledby="metrics-tab" tabindex="0">
-                            <p class="text-center py-5">Métricas e impacto se cargarán dinámicamente</p>
+                            <!-- Metrics Header -->
+                            <div class="card border-0 bg-light rounded-4 p-4 mb-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h2 class="h5 fw-bold mb-3 d-flex align-items-center">
+                                            <i class="fas fa-chart-line text-primary me-2"></i>
+                                            Métricas e impacto
+                                        </h2>
+                                        <p class="text-secondary mb-0">
+                                            Datos estadísticos sobre el rendimiento y la adopción del Sistema de Gestión de Expedientes Electrónicos. Estas métricas demuestran el impacto positivo en la eficiencia judicial.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 text-center mt-3 mt-md-0">
+                                        <div class="d-inline-block p-3 rounded-circle bg-primary bg-opacity-10 mb-2">
+                                            <i class="fas fa-tachometer-alt fa-3x text-primary"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            <span class="badge bg-success px-3 py-2 rounded-pill">Datos actualizados: Mayo 2023</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Key Metrics Cards -->
+                            <div class="row mb-4">
+                                <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+                                    <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+                                        <div class="d-inline-block mx-auto p-3 rounded-circle bg-primary bg-opacity-10 mb-3">
+                                            <i class="fas fa-users fa-2x text-primary"></i>
+                                        </div>
+                                        <h3 class="display-5 fw-bold text-primary mb-0">12.4K</h3>
+                                        <p class="text-secondary mb-0">Usuarios activos</p>
+                                        <div class="mt-3">
+                                            <span class="badge bg-success rounded-pill"><i class="fas fa-arrow-up me-1"></i> 18%</span>
+                                            <span class="small text-muted ms-2">vs. 2022</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+                                    <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+                                        <div class="d-inline-block mx-auto p-3 rounded-circle bg-success bg-opacity-10 mb-3">
+                                            <i class="fas fa-file-alt fa-2x text-success"></i>
+                                        </div>
+                                        <h3 class="display-5 fw-bold text-success mb-0">1.8M</h3>
+                                        <p class="text-secondary mb-0">Expedientes digitalizados</p>
+                                        <div class="mt-3">
+                                            <span class="badge bg-success rounded-pill"><i class="fas fa-arrow-up me-1"></i> 32%</span>
+                                            <span class="small text-muted ms-2">vs. 2022</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6 mb-4 mb-md-0">
+                                    <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+                                        <div class="d-inline-block mx-auto p-3 rounded-circle bg-info bg-opacity-10 mb-3">
+                                            <i class="fas fa-search fa-2x text-info"></i>
+                                        </div>
+                                        <h3 class="display-5 fw-bold text-info mb-0">3.2M</h3>
+                                        <p class="text-secondary mb-0">Búsquedas mensuales</p>
+                                        <div class="mt-3">
+                                            <span class="badge bg-success rounded-pill"><i class="fas fa-arrow-up me-1"></i> 45%</span>
+                                            <span class="small text-muted ms-2">vs. 2022</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card border-0 shadow-sm rounded-4 p-4 text-center h-100">
+                                        <div class="d-inline-block mx-auto p-3 rounded-circle bg-warning bg-opacity-10 mb-3">
+                                            <i class="fas fa-clock fa-2x text-warning"></i>
+                                        </div>
+                                        <h3 class="display-5 fw-bold text-warning mb-0">40%</h3>
+                                        <p class="text-secondary mb-0">Reducción en tiempos</p>
+                                        <div class="mt-3">
+                                            <span class="badge bg-success rounded-pill"><i class="fas fa-arrow-up me-1"></i> 5%</span>
+                                            <span class="small text-muted ms-2">vs. 2022</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Charts Section -->
+                            <div class="row mb-4">
+                                <!-- Adoption Chart -->
+                                <div class="col-lg-6 mb-4 mb-lg-0">
+                                    <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                                        <h4 class="h6 fw-bold mb-3">Adopción por departamentos</h4>
+                                        <div class="chart-container" style="position: relative; height: 300px;">
+                                            <canvas id="adoptionChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Performance Chart -->
+                                <div class="col-lg-6">
+                                    <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                                        <h4 class="h6 fw-bold mb-3">Rendimiento del sistema</h4>
+                                        <div class="chart-container" style="position: relative; height: 300px;">
+                                            <canvas id="performanceChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Impact Metrics -->
+                            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                                <h4 class="h5 fw-bold mb-4">Impacto en la administración de justicia</h4>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="p-3 rounded-circle bg-success bg-opacity-10">
+                                                    <i class="fas fa-leaf text-success"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h5 class="h6 fw-bold mb-2">Impacto ambiental</h5>
+                                                <p class="text-secondary small mb-0">Reducción de 95% en el uso de papel, equivalente a salvar 1,200 árboles anualmente.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="p-3 rounded-circle bg-primary bg-opacity-10">
+                                                    <i class="fas fa-money-bill-wave text-primary"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h5 class="h6 fw-bold mb-2">Ahorro económico</h5>
+                                                <p class="text-secondary small mb-0">Reducción de costos operativos en un 35%, equivalente a $2.5 millones anuales.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4 mb-md-0">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="p-3 rounded-circle bg-info bg-opacity-10">
+                                                    <i class="fas fa-gavel text-info"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h5 class="h6 fw-bold mb-2">Eficiencia judicial</h5>
+                                                <p class="text-secondary small mb-0">Aumento del 28% en la resolución de casos, mejorando el acceso a la justicia.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="p-3 rounded-circle bg-warning bg-opacity-10">
+                                                    <i class="fas fa-shield-alt text-warning"></i>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h5 class="h6 fw-bold mb-2">Seguridad y transparencia</h5>
+                                                <p class="text-secondary small mb-0">Reducción del 75% en incidentes de pérdida de documentos y mayor trazabilidad.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Download Report -->
+                            <div class="card border-0 bg-primary bg-opacity-10 rounded-4 p-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h4 class="h5 fw-bold text-primary mb-2">Informe completo de impacto</h4>
+                                        <p class="mb-md-0">Descargue nuestro informe detallado con todas las métricas, análisis y casos de éxito del Sistema de Gestión de Expedientes Electrónicos.</p>
+                                    </div>
+                                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                        <a href="#" class="btn btn-primary rounded-pill px-4">
+                                            <i class="fas fa-download me-2"></i> Descargar informe
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Initialize Charts Script -->
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    // Verificar si el tab de métricas está activo
+                                    const metricsTab = document.getElementById('metrics-tab');
+
+                                    if (metricsTab) {
+                                        metricsTab.addEventListener('shown.bs.tab', function() {
+                                            initCharts();
+                                        });
+
+                                        // Si el tab está activo al cargar la página, inicializar gráficos
+                                        if (metricsTab.classList.contains('active')) {
+                                            initCharts();
+                                        }
+                                    }
+                                });
+
+                                function initCharts() {
+                                    // Gráfico de adopción por departamentos
+                                    const adoptionCtx = document.getElementById('adoptionChart');
+                                    if (adoptionCtx) {
+                                        new Chart(adoptionCtx, {
+                                            type: 'bar',
+                                            data: {
+                                                labels: ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 'Otros'],
+                                                datasets: [{
+                                                    label: 'Tasa de adopción (%)',
+                                                    data: [92, 85, 78, 72, 68, 55],
+                                                    backgroundColor: [
+                                                        'rgba(54, 162, 235, 0.7)',
+                                                        'rgba(54, 162, 235, 0.6)',
+                                                        'rgba(54, 162, 235, 0.5)',
+                                                        'rgba(54, 162, 235, 0.4)',
+                                                        'rgba(54, 162, 235, 0.3)',
+                                                        'rgba(54, 162, 235, 0.2)'
+                                                    ],
+                                                    borderColor: [
+                                                        'rgba(54, 162, 235, 1)',
+                                                        'rgba(54, 162, 235, 1)',
+                                                        'rgba(54, 162, 235, 1)',
+                                                        'rgba(54, 162, 235, 1)',
+                                                        'rgba(54, 162, 235, 1)',
+                                                        'rgba(54, 162, 235, 1)'
+                                                    ],
+                                                    borderWidth: 1
+                                                }]
+                                            },
+                                            options: {
+                                                responsive: true,
+                                                maintainAspectRatio: false,
+                                                scales: {
+                                                    y: {
+                                                        beginAtZero: true,
+                                                        max: 100
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    // Gráfico de rendimiento del sistema
+                                    const performanceCtx = document.getElementById('performanceChart');
+                                    if (performanceCtx) {
+                                        new Chart(performanceCtx, {
+                                            type: 'line',
+                                            data: {
+                                                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                                datasets: [{
+                                                    label: 'Tiempo de respuesta (ms)',
+                                                    data: [320, 310, 290, 275, 260, 240, 230, 225, 220, 215, 210, 200],
+                                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                                    backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                                                    tension: 0.4,
+                                                    fill: true
+                                                }, {
+                                                    label: 'Usuarios concurrentes (x100)',
+                                                    data: [25, 28, 32, 35, 40, 42, 45, 48, 52, 55, 58, 62],
+                                                    borderColor: 'rgba(153, 102, 255, 1)',
+                                                    backgroundColor: 'rgba(153, 102, 255, 0.1)',
+                                                    tension: 0.4,
+                                                    fill: true
+                                                }]
+                                            },
+                                            options: {
+                                                responsive: true,
+                                                maintainAspectRatio: false
+                                            }
+                                        });
+                                    }
+                                }
+                            </script>
                         </div>
 
                         <div class="tab-pane fade" id="contribute-tab-pane" role="tabpanel" aria-labelledby="contribute-tab" tabindex="0">
-                            <p class="text-center py-5">Información de contribución se cargará dinámicamente</p>
+                            <!-- Contribute Header -->
+                            <div class="card border-0 bg-light rounded-4 p-4 mb-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h2 class="h5 fw-bold mb-3 d-flex align-items-center">
+                                            <i class="fas fa-hands-helping text-primary me-2"></i>
+                                            Contribuir al proyecto
+                                        </h2>
+                                        <p class="text-secondary mb-0">
+                                            El Sistema de Gestión de Expedientes Electrónicos es un proyecto colaborativo que se beneficia de las contribuciones de la comunidad. Hay muchas formas de participar y ayudar a mejorar esta herramienta.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 text-center mt-3 mt-md-0">
+                                        <div class="d-inline-block p-3 rounded-circle bg-primary bg-opacity-10 mb-2">
+                                            <i class="fas fa-code-branch fa-3x text-primary"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            <a href="#" class="btn btn-primary rounded-pill px-4">
+                                                <i class="fab fa-github me-2"></i> Ver en GitHub
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ways to Contribute (New Design) -->
+                            <div class="mb-5">
+                                <!-- Contribution Options Tabs -->
+                                <ul class="nav nav-pills nav-justified mb-4" id="contributeOptionsTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="code-tab" data-bs-toggle="pill" data-bs-target="#code-content" type="button" role="tab" aria-controls="code-content" aria-selected="true">
+                                            <i class="fas fa-code text-primary me-2"></i> Desarrollo
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="docs-tab" data-bs-toggle="pill" data-bs-target="#docs-content" type="button" role="tab" aria-controls="docs-content" aria-selected="false">
+                                            <i class="fas fa-file-alt text-success me-2"></i> Documentación
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="testing-tab" data-bs-toggle="pill" data-bs-target="#testing-content" type="button" role="tab" aria-controls="testing-content" aria-selected="false">
+                                            <i class="fas fa-bug text-info me-2"></i> Pruebas
+                                        </button>
+                                    </li>
+                                </ul>
+
+                                <!-- Contribution Options Content -->
+                                <div class="tab-content" id="contributeOptionsContent">
+                                    <!-- Code Development -->
+                                    <div class="tab-pane fade show active" id="code-content" role="tabpanel" aria-labelledby="code-tab">
+                                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                                            <div class="row g-0">
+                                                <div class="col-md-4 bg-primary bg-opacity-10 d-flex align-items-center justify-content-center p-4">
+                                                    <div class="text-center">
+                                                        <div class="d-inline-block p-3 rounded-circle bg-white mb-3">
+                                                            <i class="fas fa-code fa-3x text-primary"></i>
+                                                        </div>
+                                                        <h3 class="h4 fw-bold text-primary">Desarrollo de código</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="card-body p-4">
+                                                        <h4 class="card-title h5 fw-bold mb-3">Cómo contribuir con código</h4>
+                                                        <p class="card-text mb-4">
+                                                            Contribuye con nuevas funcionalidades, correcciones de errores o mejoras de rendimiento. Aceptamos pull requests en nuestro repositorio de GitHub. Nuestro código sigue estándares de calidad y pasa por revisiones exhaustivas.
+                                                        </p>
+
+                                                        <h5 class="h6 fw-bold mb-2">Pasos para contribuir:</h5>
+                                                        <ol class="mb-4">
+                                                            <li>Revisa los issues abiertos o crea uno nuevo</li>
+                                                            <li>Haz fork del repositorio</li>
+                                                            <li>Crea una rama para tu contribución</li>
+                                                            <li>Implementa tus cambios siguiendo las guías de estilo</li>
+                                                            <li>Envía un pull request</li>
+                                                        </ol>
+
+                                                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                                            <a href="#" class="btn btn-primary rounded-pill px-4">
+                                                                <i class="fab fa-github me-2"></i> Ver repositorio
+                                                            </a>
+                                                            <a href="#" class="btn btn-outline-primary rounded-pill px-4">
+                                                                <i class="fas fa-code-branch me-2"></i> Ver issues
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Documentation -->
+                                    <div class="tab-pane fade" id="docs-content" role="tabpanel" aria-labelledby="docs-tab">
+                                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                                            <div class="row g-0">
+                                                <div class="col-md-4 bg-success bg-opacity-10 d-flex align-items-center justify-content-center p-4">
+                                                    <div class="text-center">
+                                                        <div class="d-inline-block p-3 rounded-circle bg-white mb-3">
+                                                            <i class="fas fa-file-alt fa-3x text-success"></i>
+                                                        </div>
+                                                        <h3 class="h4 fw-bold text-success">Documentación</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="card-body p-4">
+                                                        <h4 class="card-title h5 fw-bold mb-3">Cómo mejorar la documentación</h4>
+                                                        <p class="card-text mb-4">
+                                                            Ayuda a mejorar la documentación técnica, manuales de usuario, tutoriales o traducciones para hacer el sistema más accesible. Una buena documentación es esencial para que los usuarios aprovechen al máximo el sistema.
+                                                        </p>
+
+                                                        <h5 class="h6 fw-bold mb-2">Áreas de documentación:</h5>
+                                                        <ul class="mb-4">
+                                                            <li>Guías de usuario</li>
+                                                            <li>Documentación técnica</li>
+                                                            <li>Tutoriales y ejemplos</li>
+                                                            <li>Traducciones a otros idiomas</li>
+                                                            <li>Mejoras en la wiki del proyecto</li>
+                                                        </ul>
+
+                                                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                                            <a href="#" class="btn btn-success rounded-pill px-4">
+                                                                <i class="fas fa-book me-2"></i> Ver documentación
+                                                            </a>
+                                                            <a href="#" class="btn btn-outline-success rounded-pill px-4">
+                                                                <i class="fas fa-edit me-2"></i> Editar wiki
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Testing -->
+                                    <div class="tab-pane fade" id="testing-content" role="tabpanel" aria-labelledby="testing-tab">
+                                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                                            <div class="row g-0">
+                                                <div class="col-md-4 bg-info bg-opacity-10 d-flex align-items-center justify-content-center p-4">
+                                                    <div class="text-center">
+                                                        <div class="d-inline-block p-3 rounded-circle bg-white mb-3">
+                                                            <i class="fas fa-bug fa-3x text-info"></i>
+                                                        </div>
+                                                        <h3 class="h4 fw-bold text-info">Pruebas y reportes</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="card-body p-4">
+                                                        <h4 class="card-title h5 fw-bold mb-3">Cómo ayudar con pruebas</h4>
+                                                        <p class="card-text mb-4">
+                                                            Ayuda a identificar y reportar errores, realizar pruebas de usabilidad o sugerir mejoras basadas en tu experiencia con el sistema. Las pruebas son fundamentales para garantizar la calidad y estabilidad del software.
+                                                        </p>
+
+                                                        <h5 class="h6 fw-bold mb-2">Tipos de pruebas:</h5>
+                                                        <div class="row mb-4">
+                                                            <div class="col-md-6">
+                                                                <ul class="mb-0">
+                                                                    <li>Pruebas de usabilidad</li>
+                                                                    <li>Pruebas de rendimiento</li>
+                                                                    <li>Pruebas de compatibilidad</li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <ul class="mb-0">
+                                                                    <li>Pruebas de seguridad</li>
+                                                                    <li>Pruebas de accesibilidad</li>
+                                                                    <li>Pruebas de integración</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                                            <a href="#" class="btn btn-info text-white rounded-pill px-4">
+                                                                <i class="fas fa-clipboard-check me-2"></i> Reportar bug
+                                                            </a>
+                                                            <a href="#" class="btn btn-outline-info rounded-pill px-4">
+                                                                <i class="fas fa-tasks me-2"></i> Ver test plan
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contribution Process -->
+                            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                                <h3 class="h5 fw-bold mb-4">Proceso de contribución</h3>
+
+                                <div class="row">
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="p-3 rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                    <span class="fw-bold">1</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 fw-bold mb-2">Selecciona un issue o propuesta</h4>
+                                                <p class="text-secondary small mb-0">
+                                                    Revisa los issues abiertos en GitHub o propone una nueva funcionalidad. Comenta en el issue para indicar que estás trabajando en él.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="p-3 rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                    <span class="fw-bold">2</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 fw-bold mb-2">Haz un fork del repositorio</h4>
+                                                <p class="text-secondary small mb-0">
+                                                    Crea un fork del repositorio en tu cuenta de GitHub y clona el proyecto en tu máquina local para comenzar a trabajar.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4 mb-lg-0">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="p-3 rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                    <span class="fw-bold">3</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 fw-bold mb-2">Desarrolla tu contribución</h4>
+                                                <p class="text-secondary small mb-0">
+                                                    Trabaja en tu contribución siguiendo las guías de estilo y mejores prácticas del proyecto. Asegúrate de incluir pruebas si es necesario.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="p-3 rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                    <span class="fw-bold">4</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 fw-bold mb-2">Envía un Pull Request</h4>
+                                                <p class="text-secondary small mb-0">
+                                                    Una vez que hayas completado tu contribución, envía un Pull Request al repositorio principal con una descripción clara de los cambios.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contribution Guidelines -->
+                            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                                <h3 class="h5 fw-bold mb-4">Guías de contribución</h3>
+
+                                <div class="accordion" id="contributionGuidelines">
+                                    <div class="accordion-item border-0 mb-3 bg-light rounded">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <i class="fas fa-code me-2 text-primary"></i> Estándares de código
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#contributionGuidelines">
+                                            <div class="accordion-body">
+                                                <p class="text-secondary small mb-0">
+                                                    Todo el código debe seguir las guías de estilo establecidas. Utilizamos ESLint para JavaScript, Checkstyle para Java y Black para Python. Asegúrate de que tu código pase todas las verificaciones de estilo antes de enviar un Pull Request.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item border-0 mb-3 bg-light rounded">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                <i class="fas fa-vial me-2 text-primary"></i> Pruebas
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#contributionGuidelines">
+                                            <div class="accordion-body">
+                                                <p class="text-secondary small mb-0">
+                                                    Todas las contribuciones deben incluir pruebas adecuadas. Mantenemos un mínimo de 80% de cobertura de código. Las pruebas unitarias deben ser independientes y no depender de servicios externos o del estado de la aplicación.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item border-0 mb-3 bg-light rounded">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                <i class="fas fa-book me-2 text-primary"></i> Documentación
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#contributionGuidelines">
+                                            <div class="accordion-body">
+                                                <p class="text-secondary small mb-0">
+                                                    Cualquier nueva funcionalidad o cambio significativo debe estar documentado. Esto incluye comentarios en el código, actualización de la documentación técnica y, si es necesario, actualización de los manuales de usuario.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Community and Support -->
+                            <div class="card border-0 bg-primary bg-opacity-10 rounded-4 p-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h3 class="h5 fw-bold text-primary mb-3">Comunidad y soporte</h3>
+                                        <p class="mb-md-0">
+                                            Únete a nuestra comunidad de desarrolladores para obtener ayuda, compartir ideas y colaborar en el proyecto. Tenemos canales de comunicación activos donde puedes conectar con otros contribuyentes.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                        <div class="d-flex flex-column flex-sm-row gap-2 justify-content-md-end">
+                                            <a href="#" class="btn btn-outline-primary rounded-pill">
+                                                <i class="fab fa-slack me-2"></i> Slack
+                                            </a>
+                                            <a href="#" class="btn btn-outline-primary rounded-pill">
+                                                <i class="fab fa-discord me-2"></i> Discord
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -846,10 +2070,10 @@
                 </div>
                 <div class="col-md-4 mb-3 mb-md-0 text-center">
                     <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <a href="#" class="text-decoration-none text-secondary small">Acerca de</a>
-                        <a href="#" class="text-decoration-none text-secondary small">Políticas</a>
-                        <a href="#" class="text-decoration-none text-secondary small">Contribuir</a>
-                        <a href="#" class="text-decoration-none text-secondary small">Soporte</a>
+                        <a href="about.html" class="text-decoration-none text-secondary small">Acerca de</a>
+                        <a href="policies.html" class="text-decoration-none text-secondary small">Políticas</a>
+                        <a href="contribute.html" class="text-decoration-none text-secondary small">Contribuir</a>
+                        <a href="support.html" class="text-decoration-none text-secondary small">Soporte</a>
                     </div>
                 </div>
                 <div class="col-md-4 text-md-end">
@@ -895,6 +2119,7 @@
 
     <!-- Custom Scripts -->
     <script src="../js/main.js"></script>
+    <script src="../js/solutions.js"></script>
 
     <!-- Inicialización de Toasts -->
     <script>
