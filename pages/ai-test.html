@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Modelos IA - Marduk</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/search.css">
+    
+    <!-- Tema oscuro/claro -->
+    <script>
+      // Verificar preferencia guardada
+      const darkModeEnabled = localStorage.getItem('darkModeEnabled') === 'true';
+      // Verificar preferencia del sistema
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      // Aplicar tema oscuro si está habilitado o preferido por el sistema
+      if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('darkModeEnabled', 'true');
+      }
+    </script>
+    
+    <style>
+        /* Estilos específicos para la página de prueba de IA */
+        .chat-container {
+            height: 60vh;
+            overflow-y: auto;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            max-width: 80%;
+        }
+        
+        .user-message {
+            background-color: rgba(var(--bs-primary-rgb), 0.1);
+            color: var(--text-color);
+            margin-left: auto;
+            border-top-right-radius: 0;
+        }
+        
+        .ai-message {
+            background-color: var(--hover-bg);
+            color: var(--text-color);
+            margin-right: auto;
+            border-top-left-radius: 0;
+        }
+        
+        .message-time {
+            font-size: var(--text-xs);
+            color: var(--text-muted);
+            text-align: right;
+            margin-top: 0.25rem;
+        }
+        
+        .model-selector {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .model-card {
+            cursor: pointer;
+            transition: all var(--transition-fast) ease-in-out;
+            border: 2px solid transparent;
+        }
+        
+        .model-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .model-card.selected {
+            border-color: var(--primary);
+            background-color: rgba(var(--bs-primary-rgb), 0.05);
+        }
+        
+        .model-provider {
+            font-size: var(--text-xs);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-full);
+            background-color: var(--hover-bg);
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .model-specialty {
+            font-size: var(--text-xs);
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        
+        .model-capabilities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+        
+        .capability-badge {
+            font-size: var(--text-xs);
+            padding: 0.125rem 0.375rem;
+            border-radius: var(--radius-full);
+            background-color: rgba(var(--bs-info-rgb), 0.1);
+            color: var(--text-muted);
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: var(--text-muted);
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 3px;
+            animation: typing 1s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar (Same as other pages) -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-gradient sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <i class="fas fa-balance-scale me-2"></i>
+                <span>Marduk</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="solutions.html"><i class="fas fa-tools me-1"></i> Soluciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="community.html"><i class="fas fa-users me-1"></i> Comunidad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="ai-test.html"><i class="fas fa-robot me-1"></i> Prueba IA</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <!-- Search Form -->
+                    <form class="d-flex me-2 search-container">
+                        <div class="position-relative w-100">
+                            <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input class="form-control ps-5" type="search" placeholder="Buscar..." aria-label="Search">
+                        </div>
+                    </form>
+                    <!-- Notifications Dropdown -->
+                    <div class="dropdown me-2">
+                        <button class="btn btn-link text-light position-relative p-1" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0 overflow-hidden" aria-labelledby="notificationsDropdown">
+                            <!-- Notification header -->
+                            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                                <h6 class="mb-0">Notificaciones</h6>
+                                <a href="#" class="text-decoration-none small">Marcar todas como leídas</a>
+                            </div>
+                            <!-- Notification items -->
+                            <div class="notification-list">
+                                <a href="#" class="notification-item d-flex p-3 border-bottom unread">
+                                    <div class="flex-shrink-0">
+                                        <div class="avatar-circle bg-primary text-white">
+                                            <i class="fas fa-gavel"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <p class="mb-0 fw-medium">Nueva actualización en el caso #12345</p>
+                                        <p class="text-muted small mb-0">Se ha añadido un nuevo documento</p>
+                                        <span class="text-muted small">Hace 5 minutos</span>
+                                    </div>
+                                </a>
+                                <!-- More notification items... -->
+                            </div>
+                            <!-- View all link -->
+                            <a href="#" class="dropdown-item text-center p-3 border-top">Ver todas las notificaciones</a>
+                        </div>
+                    </div>
+                    <!-- User Menu -->
+                    <div class="dropdown">
+                        <button class="btn btn-link d-flex align-items-center text-light text-decoration-none dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="avatar-circle avatar-circle-sm bg-primary text-white me-2">
+                                AF
+                            </div>
+                            <span class="d-none d-md-block">Alexander Fadul</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i> Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4"><i class="fas fa-robot text-primary me-2"></i> Prueba de Modelos de IA</h1>
+                <p class="lead mb-4">Esta página te permite probar los diferentes modelos de IA disponibles a través de OpenRouter. Selecciona un modelo, escribe un mensaje y observa cómo responde la IA.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Modelo seleccionado y chat -->
+            <div class="col-lg-8 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <span id="selected-model-name">Modelo seleccionado</span>
+                            <span class="badge bg-primary ms-2" id="selected-model-provider">Proveedor</span>
+                        </h5>
+                        <button class="btn btn-sm btn-outline-secondary" id="clear-chat-btn">
+                            <i class="fas fa-trash-alt me-1"></i> Limpiar chat
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <!-- Chat container -->
+                        <div class="chat-container" id="chat-container">
+                            <div class="message ai-message">
+                                <p>¡Hola! Soy un asistente de IA. Selecciona un modelo y escribe un mensaje para comenzar a conversar.</p>
+                                <div class="message-time">Ahora</div>
+                            </div>
+                            <!-- Los mensajes se añadirán aquí dinámicamente -->
+                        </div>
+                        
+                        <!-- Input area -->
+                        <div class="p-3 border-top">
+                            <form id="chat-form" class="d-flex">
+                                <input type="text" class="form-control me-2" id="user-input" placeholder="Escribe un mensaje..." autocomplete="off">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Selector de modelos -->
+            <div class="col-lg-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">Modelos disponibles</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush model-selector" id="model-selector">
+                            <!-- Los modelos se cargarán dinámicamente aquí -->
+                            <div class="text-center p-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                                <p class="mt-2 mb-0">Cargando modelos disponibles...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Información del modelo -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Información del modelo seleccionado</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="model-info">
+                            <p class="text-muted">Selecciona un modelo para ver su información detallada.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-auto">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Marduk Ecosystem</h5>
+                    <p class="text-muted">Transformando la justicia con tecnología</p>
+                    <div class="social-icons">
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Enlaces rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="../index.html" class="text-muted">Inicio</a></li>
+                        <li><a href="solutions.html" class="text-muted">Soluciones</a></li>
+                        <li><a href="community.html" class="text-muted">Comunidad</a></li>
+                        <li><a href="#" class="text-muted">Recursos</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contacto</h5>
+                    <address class="text-muted">
+                        <i class="fas fa-map-marker-alt me-2"></i> Calle Principal 123, Ciudad<br>
+                        <i class="fas fa-envelope me-2"></i> info@marduk.com<br>
+                        <i class="fas fa-phone me-2"></i> +1 234 567 890
+                    </address>
+                </div>
+            </div>
+            <hr class="my-3 bg-secondary">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <small class="text-muted">&copy; 2023 Marduk Ecosystem. Todos los derechos reservados.</small>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <small class="text-muted">
+                        <a href="#" class="text-muted me-2">Términos de servicio</a>
+                        <a href="#" class="text-muted">Política de privacidad</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+    <!-- Toastify JS -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+    <!-- Marked (para renderizar Markdown) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Highlight.js (para resaltar código) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/styles/github.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.8.0/highlight.min.js"></script>
+    
+    <!-- Configuración de módulos -->
+    <script type="module">
+      // Importar módulos
+      import openRouterService from '../js/openrouter.js';
+      import themeManager from '../js/theme-manager.js';
+      
+      // Hacer disponibles globalmente
+      window.openRouterService = openRouterService;
+      window.themeManager = themeManager;
+    </script>
+    
+    <!-- OpenRouter Integration (para compatibilidad) -->
+    <script src="../js/openrouter.js" type="module"></script>
+    
+    <!-- Theme Manager -->
+    <script src="../js/theme-manager.js" type="module"></script>
+    
+    <!-- Enhanced Navigation -->
+    <script src="../js/navigation.js"></script>
+    
+    <!-- Advanced Search -->
+    <script src="../js/search.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="../js/main.js"></script>
+    
+    <!-- AI Test Page Script -->
+    <script src="../js/ai-test.js"></script>
+    
+    <!-- Inicialización de Toasts -->
+    <script>
+      // Configuración global para Toastify
+      const showToast = (message, type = 'info') => {
+        const bgColors = {
+          success: 'linear-gradient(to right, #00b09b, #96c93d)',
+          error: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+          warning: 'linear-gradient(to right, #f7b733, #fc4a1a)',
+          info: 'linear-gradient(to right, #2193b0, #6dd5ed)'
+        };
+        
+        Toastify({
+          text: message,
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "right",
+          backgroundColor: bgColors[type],
+          stopOnFocus: true,
+          className: `toast-${type}`
+        }).showToast();
+      };
+      
+      // Hacer disponible globalmente
+      window.showToast = showToast;
+    </script>
+</body>
+</html>

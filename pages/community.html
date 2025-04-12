@@ -30,6 +30,7 @@
       // Aplicar tema oscuro si está habilitado o preferido por el sistema
       if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
         document.documentElement.setAttribute('data-theme', 'dark');
+        document.body.classList.add('dark-mode');
         localStorage.setItem('darkModeEnabled', 'true');
       }
     </script>
@@ -1506,13 +1507,18 @@
     <script type="module">
       // Importar módulos
       import openRouterService from '../js/openrouter.js';
+      import themeManager from '../js/theme-manager.js';
 
       // Hacer disponibles globalmente
       window.openRouterService = openRouterService;
+      window.themeManager = themeManager;
     </script>
 
     <!-- OpenRouter Integration (para compatibilidad) -->
     <script src="../js/openrouter.js" type="module"></script>
+
+    <!-- Theme Manager -->
+    <script src="../js/theme-manager.js" type="module"></script>
 
     <!-- Enhanced Navigation -->
     <script src="../js/navigation.js"></script>
