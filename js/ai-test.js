@@ -20,8 +20,7 @@ const selectedModelName = document.getElementById('selected-model-name');
 const selectedModelProvider = document.getElementById('selected-model-provider');
 const modelInfo = document.getElementById('model-info');
 
-// Importar directamente la configuración de modelos
-import OPENROUTER_MODELS_CONFIG from '../js/config/openrouter-models.js';
+// La configuración de modelos se carga desde openrouter-models.js en el HTML
 
 // Inicializar cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', async function() {

@@ -5,15 +5,14 @@
  * con diferentes modelos.
  */
 
-// Importar la configuración de modelos
-import OPENROUTER_MODELS_CONFIG from '../js/config/openrouter-models.js';
-
-console.log('Modelos cargados en direct-test.js:', OPENROUTER_MODELS_CONFIG);
+// Verificar si OPENROUTER_MODELS_CONFIG está definido globalmente
+console.log('Modelos cargados en direct-test.js:', typeof OPENROUTER_MODELS_CONFIG !== 'undefined' ? 'Sí' : 'No');
 
 document.addEventListener('DOMContentLoaded', function() {
     // Elementos del DOM
     const directTestForm = document.getElementById('direct-test-form');
     const directApiKey = document.getElementById('direct-api-key');
+    const directApiKeyContainer = document.getElementById('direct-api-key-container');
     const directModelSelect = document.getElementById('direct-model-select');
     const directModel = document.getElementById('direct-model');
     const directMessage = document.getElementById('direct-message');
@@ -29,13 +28,55 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Cargar modelos desde openrouter-models.js
-    loadModelsFromConfig();
+    // Mostrar indicador de carga en el select
+    directModelSelect.innerHTML = '<option value="" disabled selected>Cargando modelos...</option>';
 
-    // Seleccionar modelo por defecto
-    const defaultModel = OPENROUTER_MODELS_CONFIG.default_model || 'openrouter/optimus-alpha';
-    directModelSelect.value = defaultModel;
-    directModel.value = defaultModel;
+    // Verificar si hay una API key en las variables de entorno
+    let envApiKey = '';
+
+    // Esperar a que se carguen las variables de entorno (si están disponibles)
+    setTimeout(() => {
+        // Verificar si window.ENV existe y contiene OPENROUTER_API_KEY
+        if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+            envApiKey = window.ENV.OPENROUTER_API_KEY;
+            console.log('API key encontrada en variables de entorno');
+
+            // Ocultar el campo de API key si hay una clave válida en .env
+            if (directApiKeyContainer) {
+                directApiKeyContainer.innerHTML = `
+                    <div class="alert alert-success mb-3">
+                        <i class="fas fa-check-circle me-2"></i> API key configurada desde variables de entorno
+                    </div>
+                    <input type="hidden" id="direct-api-key" value="${envApiKey}">
+                `;
+            } else {
+                // Si no se encuentra el contenedor, simplemente establecer el valor
+                directApiKey.value = envApiKey;
+            }
+        } else {
+            console.log('No se encontró API key en variables de entorno');
+        }
+    }, 500); // Esperar 500ms para que se carguen las variables de entorno
+
+    // Verificar si OPENROUTER_MODELS_CONFIG ya está definido
+    if (typeof OPENROUTER_MODELS_CONFIG !== 'undefined') {
+        console.log('OPENROUTER_MODELS_CONFIG ya está definido');
+        // Cargar modelos desde la configuración
+        loadModelsFromConfig(OPENROUTER_MODELS_CONFIG);
+
+        // Seleccionar modelo por defecto
+        const defaultModel = OPENROUTER_MODELS_CONFIG.default_model || 'openrouter/optimus-alpha';
+        directModelSelect.value = defaultModel;
+        directModel.value = defaultModel;
+
+        // Mostrar información del modelo por defecto
+        showModelInfo(defaultModel);
+    } else {
+        console.error('OPENROUTER_MODELS_CONFIG no está definido');
+        // Agregar opción por defecto en caso de error
+        directModelSelect.innerHTML = '<option value="openrouter/optimus-alpha">Optimus Alpha (OpenRouter)</option>';
+        directModel.value = 'openrouter/optimus-alpha';
+    }
 
     // Evento para mostrar/ocultar API key
     toggleDirectApiKey.addEventListener('click', function() {
@@ -65,13 +106,27 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
 
         // Obtener valores
-        const apiKey = directApiKey.value.trim();
+        let apiKey = directApiKey.value.trim();
         const model = directModelSelect.value;
         const message = directMessage.value.trim();
 
+        // Verificar si hay una API key en las variables de entorno
+        if (!apiKey && window.ENV && window.ENV.OPENROUTER_API_KEY) {
+            apiKey = window.ENV.OPENROUTER_API_KEY;
+            console.log('Usando API key de variables de entorno');
+        }
+
         // Validar valores
         if (!apiKey) {
-            showToast('La API key es requerida', 'error');
+            showToast('La API key de OpenRouter es requerida', 'error');
+            directTestResult.style.display = 'block';
+            directTestResponse.innerHTML = `
+                <div class="alert alert-warning mb-0">
+                    <h5><i class="fas fa-exclamation-triangle me-2"></i> API Key Requerida</h5>
+                    <p>Debes ingresar una API key válida de OpenRouter para realizar pruebas directas.</p>
+                    <p>Puedes obtener una API key gratuita en <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a></p>
+                </div>
+            `;
             return;
         }
 
@@ -113,7 +168,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // Verificar si la respuesta es exitosa
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(`Error en la API de OpenRouter: ${response.status} - ${errorData.error?.message || 'Error desconocido'}`);
+                const errorMessage = errorData.error?.message || 'Error desconocido';
+
+                // Manejar error 401 (No autorizado) de forma especial
+                if (response.status === 401) {
+                    throw new Error(`API key inválida o no autorizada. Verifica tu API key de OpenRouter.`);
+                } else {
+                    throw new Error(`Error en la API de OpenRouter: ${response.status} - ${errorMessage}`);
+                }
             }
 
             // Obtener datos de la respuesta
@@ -146,8 +208,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     /**
      * Carga los modelos desde la configuración
+     * @param {Object} config - Configuración de modelos
      */
-    function loadModelsFromConfig() {
+    function loadModelsFromConfig(config) {
         try {
             console.log('Cargando modelos desde configuración...');
 
@@ -155,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
             directModelSelect.innerHTML = '<option value="" disabled>Selecciona un modelo</option>';
 
             // Verificar si hay modelos disponibles
-            if (!OPENROUTER_MODELS_CONFIG || !OPENROUTER_MODELS_CONFIG.models || OPENROUTER_MODELS_CONFIG.models.length === 0) {
+            if (!config || !config.models || config.models.length === 0) {
                 console.error('No hay modelos disponibles en la configuración');
 
                 // Agregar opción por defecto
@@ -166,16 +229,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Agregar modelos al select
-            OPENROUTER_MODELS_CONFIG.models.forEach(model => {
-                const option = document.createElement('option');
-                option.value = model.id;
-                option.text = `${model.name || model.id} (${model.provider || 'Desconocido'})`;
-                directModelSelect.add(option);
-                console.log('Modelo agregado:', model.id);
+            // Agregar modelos al select, agrupados por proveedor
+            const modelsByProvider = {};
+
+            // Agrupar modelos por proveedor
+            config.models.forEach(model => {
+                const provider = model.provider || 'Otros';
+                if (!modelsByProvider[provider]) {
+                    modelsByProvider[provider] = [];
+                }
+                modelsByProvider[provider].push(model);
             });
 
-            console.log('Modelos cargados correctamente. Total:', OPENROUTER_MODELS_CONFIG.models.length);
+            // Crear grupos de opciones por proveedor
+            Object.keys(modelsByProvider).sort().forEach(provider => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = provider;
+
+                // Agregar modelos del proveedor
+                modelsByProvider[provider].forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model.id;
+                    option.text = model.name || model.id;
+                    optgroup.appendChild(option);
+                });
+
+                directModelSelect.appendChild(optgroup);
+            });
+
+            console.log('Modelos cargados correctamente. Total:', config.models.length);
         } catch (error) {
             console.error('Error al cargar modelos:', error);
 
@@ -193,6 +275,12 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function showModelInfo(modelId) {
         try {
+            if (!OPENROUTER_MODELS_CONFIG || !OPENROUTER_MODELS_CONFIG.models) {
+                console.log('Modelo seleccionado (configuración no disponible):', modelId);
+                directModelSelect.setAttribute('title', `Modelo: ${modelId}`);
+                return;
+            }
+
             // Buscar modelo en la configuración
             const model = OPENROUTER_MODELS_CONFIG.models.find(m => m.id === modelId);
 
@@ -200,11 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Modelo seleccionado:', model);
 
                 // Actualizar atributos del select para mostrar información en tooltip
-                directModelSelect.setAttribute('title', `
-                    Proveedor: ${model.provider}
-                    Especialidad: ${model.specialty || 'General'}
-                    Capacidades: ${model.capabilities ? model.capabilities.join(', ') : 'N/A'}
-                `);
+                directModelSelect.setAttribute('title', `Proveedor: ${model.provider} | Especialidad: ${model.specialty || 'General'} | Capacidades: ${model.capabilities ? model.capabilities.join(', ') : 'N/A'}`);
             } else {
                 console.log('Modelo seleccionado (no encontrado en configuración):', modelId);
                 directModelSelect.setAttribute('title', `Modelo: ${modelId}`);

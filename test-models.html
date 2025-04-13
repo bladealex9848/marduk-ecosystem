@@ -5,13 +5,110 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prueba de Modelos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .model-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .model-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .model-provider {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .model-capabilities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .capability-badge {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            border: 1px solid #dee2e6;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1>Prueba de Carga de Modelos</h1>
-        <p>Esta página prueba la carga de modelos desde openrouter-models.js</p>
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1>Modelos de OpenRouter</h1>
+                    <span class="badge bg-primary" id="models-count">0 modelos</span>
+                </div>
+                <p class="lead">Esta página muestra todos los modelos disponibles en <code>openrouter-models.js</code></p>
+                <hr class="my-4">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Filtros</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="provider-filter" class="form-label">Proveedor</label>
+                            <select class="form-select" id="provider-filter">
+                                <option value="all">Todos</option>
+                                <!-- Se cargarán dinámicamente -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="search-filter" class="form-label">Buscar</label>
+                            <input type="text" class="form-control" id="search-filter" placeholder="Buscar modelo...">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label d-block">Capacidades</label>
+                            <div id="capabilities-filters" class="d-flex flex-wrap gap-2">
+                                <!-- Se cargarán dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Lista de Modelos</h5>
+                        <div>
+                            <button class="btn btn-sm btn-light" id="view-toggle">
+                                <i class="fas fa-th-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="models-container" class="row">
+                            <!-- Los modelos se cargarán dinámicamente aquí -->
+                            <div class="col-12 text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                                <p class="mt-3">Cargando modelos...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <script src="js/test-models.js" type="module"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config/openrouter-models.js"></script>
+    <script src="js/test-models.js"></script>
 </body>
 </html>

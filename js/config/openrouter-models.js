@@ -1,6 +1,6 @@
 /**
  * MARDUK ECOSYSTEM - CONFIGURACIÓN DE MODELOS DE OPENROUTER
- * 
+ *
  * Este archivo contiene la configuración de los modelos disponibles en OpenRouter
  * para su uso en la aplicación.
  */
@@ -346,5 +346,17 @@ const OPENROUTER_MODELS_CONFIG = {
   temperature: 0.7
 };
 
-// Exportar la configuración
-export default OPENROUTER_MODELS_CONFIG;
+// Hacer que la configuración esté disponible globalmente
+if (typeof window !== 'undefined') {
+  window.OPENROUTER_MODELS_CONFIG = OPENROUTER_MODELS_CONFIG;
+}
+
+// Exportar la configuración para uso como módulo ES6
+try {
+  if (typeof module !== 'undefined') {
+    module.exports = OPENROUTER_MODELS_CONFIG;
+  }
+} catch (e) {
+  // Ignorar errores en entornos que no soportan module.exports
+  console.log('Modo no-módulo');
+}
