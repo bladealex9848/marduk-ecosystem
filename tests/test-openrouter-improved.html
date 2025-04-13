@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Mejorada de OpenRouter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: #007bff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .model-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4 mb-5">
+        <h1>Prueba Mejorada de OpenRouter</h1>
+        <p class="lead">Esta página prueba la conexión con la API de OpenRouter de forma segura.</p>
+
+        <div class="row mt-4">
+            <div class="col-md-5">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Configuración</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="test-form">
+                            <div class="mb-3">
+                                <label for="api-key" class="form-label">API Key</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="api-key" placeholder="Ingresa tu API key">
+                                    <button class="btn btn-outline-secondary" type="button" id="use-env-key">
+                                        <i class="fas fa-key"></i> Usar de .env
+                                    </button>
+                                </div>
+                                <div id="api-key-status" class="form-text">
+                                    <span class="text-muted">Ingresa una API key o usa la de .env si está disponible.</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="model-select" class="form-label">Modelo</label>
+                                <select class="form-select" id="model-select">
+                                    <option value="" disabled selected>Cargando modelos...</option>
+                                </select>
+                                <div class="form-text">Modelos locales y gratuitos de la API.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="prompt" class="form-label">Prompt</label>
+                                <textarea class="form-control" id="prompt" rows="3">Hola, ¿cómo estás?</textarea>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-2"></i>Enviar Solicitud
+                                </button>
+                                <button type="button" id="demo-mode-btn" class="btn btn-info">
+                                    <i class="fas fa-vial me-2"></i>Modo Demostración
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Resultado</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="result-container">
+                            <p class="text-muted">El resultado se mostrará aquí...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Modelos Disponibles</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="modelsTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="local-tab" data-bs-toggle="tab" data-bs-target="#local" type="button" role="tab">
+                                    Modelos Locales
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="api-tab" data-bs-toggle="tab" data-bs-target="#api" type="button" role="tab">
+                                    Modelos API
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-3" id="modelsTabContent">
+                            <div class="tab-pane fade show active" id="local" role="tabpanel">
+                                <div id="local-models" class="model-list">
+                                    <div class="text-center py-3">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Cargando...</span>
+                                        </div>
+                                        <p class="mt-2">Cargando modelos locales...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="api" role="tabpanel">
+                                <div id="api-models" class="model-list">
+                                    <div class="text-center py-3">
+                                        <p class="text-muted">Los modelos de la API se cargarán cuando proporciones una API key válida.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/env-loader.js"></script>
+    <script src="js/config/openrouter-models.js"></script>
+    <script src="js/openrouter-api-models.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Elementos del DOM
+            const testForm = document.getElementById('test-form');
+            const apiKeyInput = document.getElementById('api-key');
+            const apiKeyStatus = document.getElementById('api-key-status');
+            const useEnvKeyBtn = document.getElementById('use-env-key');
+            const modelSelect = document.getElementById('model-select');
+            const promptInput = document.getElementById('prompt');
+            const resultContainer = document.getElementById('result-container');
+            const demoModeBtn = document.getElementById('demo-mode-btn');
+            const localModelsContainer = document.getElementById('local-models');
+            const apiModelsContainer = document.getElementById('api-models');
+
+            // Variables para almacenar modelos
+            let localModels = [];
+            let apiModels = [];
+            let envApiKey = null;
+
+            // Esperar a que se carguen las variables de entorno
+            await new Promise(resolve => {
+                // Verificar si loadEnvVariables ya se ha ejecutado
+                if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+                    console.log('Variables de entorno ya cargadas');
+                    resolve();
+                    return;
+                }
+
+                // Si no se ha ejecutado, esperar a que se complete
+                if (typeof loadEnvVariables === 'function') {
+                    // Ejecutar manualmente si DOMContentLoaded ya ocurrió
+                    loadEnvVariables().then(() => {
+                        console.log('Variables de entorno cargadas manualmente');
+                        resolve();
+                    }).catch(error => {
+                        console.error('Error al cargar variables de entorno:', error);
+                        resolve(); // Resolver de todos modos para continuar
+                    });
+                } else {
+                    // Esperar a que ENV esté disponible
+                    const checkEnv = () => {
+                        if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+                            console.log('Variables de entorno detectadas');
+                            resolve();
+                        } else {
+                            console.log('Esperando variables de entorno...');
+                            setTimeout(checkEnv, 500);
+                        }
+                    };
+                    checkEnv();
+                }
+            });
+
+            // Verificar si hay una API key en las variables de entorno
+            if (window.ENV && window.ENV.OPENROUTER_API_KEY && window.ENV.OPENROUTER_API_KEY !== 'DEMO_MODE') {
+                envApiKey = window.ENV.OPENROUTER_API_KEY;
+                apiKeyStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle"></i> API key disponible en .env</span>';
+                useEnvKeyBtn.disabled = false;
+            } else {
+                apiKeyStatus.innerHTML = '<span class="text-warning"><i class="fas fa-exclamation-circle"></i> No hay API key válida en .env</span>';
+                useEnvKeyBtn.disabled = true;
+            }
+
+            // Cargar modelos locales
+            if (typeof OPENROUTER_MODELS_CONFIG !== 'undefined' && OPENROUTER_MODELS_CONFIG.models) {
+                localModels = OPENROUTER_MODELS_CONFIG.models.map(model => ({...model, source: 'local'}));
+                renderLocalModels();
+                populateModelSelect();
+            } else {
+                localModelsContainer.innerHTML = '<p class="text-danger">Error al cargar modelos locales</p>';
+            }
+
+            // Evento para usar la API key de .env
+            useEnvKeyBtn.addEventListener('click', async function() {
+                if (envApiKey) {
+                    apiKeyInput.value = '********'; // No mostrar la API key real
+                    apiKeyStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle"></i> Usando API key de .env</span>';
+
+                    // Cargar modelos de la API
+                    await loadApiModels(envApiKey);
+                }
+            });
+
+            // Evento para el cambio de API key
+            apiKeyInput.addEventListener('input', function() {
+                const apiKey = this.value.trim();
+                if (apiKey && apiKey !== '********') {
+                    apiKeyStatus.innerHTML = '<span class="text-info"><i class="fas fa-info-circle"></i> API key ingresada manualmente</span>';
+                } else if (apiKey === '********' && envApiKey) {
+                    apiKeyStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle"></i> Usando API key de .env</span>';
+                } else {
+                    apiKeyStatus.innerHTML = '<span class="text-muted">Ingresa una API key o usa la de .env si está disponible.</span>';
+                }
+            });
+
+            // Evento para el formulario de prueba
+            testForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                // Obtener valores
+                let apiKey = apiKeyInput.value.trim();
+                if (apiKey === '********' && envApiKey) {
+                    apiKey = envApiKey;
+                }
+
+                const modelId = modelSelect.value;
+                const prompt = promptInput.value.trim();
+
+                // Validar valores
+                if (!apiKey) {
+                    showResult('error', 'La API key es requerida');
+                    return;
+                }
+
+                if (!modelId) {
+                    showResult('error', 'Debes seleccionar un modelo');
+                    return;
+                }
+
+                if (!prompt) {
+                    showResult('error', 'El prompt es requerido');
+                    return;
+                }
+
+                // Mostrar indicador de carga
+                showResult('loading', 'Enviando solicitud a OpenRouter...');
+
+                try {
+                    // Enviar solicitud a OpenRouter
+                    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${apiKey}`,
+                            "HTTP-Referer": window.location.origin,
+                            "X-Title": "Marduk Ecosystem",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            model: modelId,
+                            messages: [
+                                {
+                                    role: "user",
+                                    content: prompt
+                                }
+                            ]
+                        })
+                    });
+
+                    // Obtener respuesta
+                    const data = await response.json();
+
+                    // Verificar si hay error
+                    if (!response.ok) {
+                        showResult('error', `Error: ${data.error?.message || 'Error desconocido'}`);
+                        console.error('Error completo:', data);
+                        return;
+                    }
+
+                    // Mostrar respuesta
+                    showResult('success', data.choices[0].message.content, data.model);
+                    console.log('Respuesta completa:', data);
+                } catch (error) {
+                    showResult('error', `Error: ${error.message}`);
+                    console.error('Error:', error);
+                }
+            });
+
+            // Evento para el botón de modo de demostración
+            demoModeBtn.addEventListener('click', function() {
+                // Mostrar indicador de carga
+                showResult('loading', 'Generando respuesta en modo de demostración...');
+
+                // Simular un retraso
+                setTimeout(() => {
+                    const prompt = promptInput.value.trim() || 'Hola, ¿cómo estás?';
+                    const modelId = modelSelect.value || 'demo/model';
+
+                    // Buscar información del modelo
+                    const model = [...localModels, ...apiModels].find(m => m.id === modelId) || {
+                        name: 'Modelo de Demostración',
+                        provider: 'Demo'
+                    };
+
+                    // Generar respuesta simulada
+                    let demoResponse;
+
+                    // Respuestas predefinidas para preguntas comunes
+                    const lowerPrompt = prompt.toLowerCase();
+
+                    if (lowerPrompt.includes('hola')) {
+                        demoResponse = `Hola, soy un asistente virtual basado en ${model.name}. Estoy funcionando en modo de demostración. ¿En qué puedo ayudarte?`;
+                    } else if (lowerPrompt.includes('qué es marduk')) {
+                        demoResponse = `Marduk es un ecosistema de herramientas digitales diseñadas para la transformación judicial. Incluye soluciones para la gestión de casos, análisis de datos jurídicos y asistencia en la toma de decisiones.`;
+                    } else {
+                        demoResponse = `En respuesta a tu consulta: "${prompt}"\n\nComo asistente virtual basado en ${model.name}, puedo proporcionarte información general sobre temas jurídicos y el ecosistema Marduk, pero mis capacidades son limitadas en este modo de demostración.`;
+                    }
+
+                    // Mostrar respuesta simulada
+                    showResult('demo', demoResponse, `${model.provider}/${model.name} (Demo)`);
+                }, 1500);
+            });
+
+            // Función para cargar modelos de la API
+            async function loadApiModels(apiKey) {
+                try {
+                    // Mostrar indicador de carga
+                    apiModelsContainer.innerHTML = `
+                        <div class="text-center py-3">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                            <p class="mt-2">Cargando modelos desde la API...</p>
+                        </div>
+                    `;
+
+                    // Cargar modelos
+                    apiModels = await loadModelsFromOpenRouterAPI(apiKey);
+
+                    // Renderizar modelos
+                    renderApiModels();
+
+                    // Actualizar selector de modelos
+                    populateModelSelect();
+                } catch (error) {
+                    console.error('Error al cargar modelos de la API:', error);
+                    apiModelsContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            Error al cargar modelos de la API: ${error.message}
+                        </div>
+                    `;
+                }
+            }
+
+            // Función para renderizar modelos locales
+            function renderLocalModels() {
+                if (localModels.length === 0) {
+                    localModelsContainer.innerHTML = '<p class="text-muted">No hay modelos locales disponibles</p>';
+                    return;
+                }
+
+                const modelsList = document.createElement('div');
+                modelsList.className = 'list-group';
+
+                localModels.forEach(model => {
+                    const modelItem = document.createElement('a');
+                    modelItem.href = '#';
+                    modelItem.className = 'list-group-item list-group-item-action';
+                    modelItem.innerHTML = `
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">${model.name}</h6>
+                            <small>${model.id.includes(':free') ? '<span class="badge bg-success">Gratis</span>' : ''}</small>
+                        </div>
+                        <small class="text-muted">${model.provider} - ${model.specialty || 'General'}</small>
+                    `;
+
+                    modelItem.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        modelSelect.value = model.id;
+                    });
+
+                    modelsList.appendChild(modelItem);
+                });
+
+                localModelsContainer.innerHTML = '';
+                localModelsContainer.appendChild(modelsList);
+            }
+
+            // Función para renderizar modelos de la API
+            function renderApiModels() {
+                if (apiModels.length === 0) {
+                    apiModelsContainer.innerHTML = '<p class="text-muted">No hay modelos disponibles desde la API</p>';
+                    return;
+                }
+
+                const modelsList = document.createElement('div');
+                modelsList.className = 'list-group';
+
+                apiModels.forEach(model => {
+                    const modelItem = document.createElement('a');
+                    modelItem.href = '#';
+                    modelItem.className = 'list-group-item list-group-item-action';
+
+                    // Determinar si el modelo es gratuito
+                    const isFree = model.id.includes(':free') || (model.context_length_free && model.context_length_free > 0);
+
+                    modelItem.innerHTML = `
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">${model.name}</h6>
+                            <small>${isFree ? '<span class="badge bg-success">Gratis</span>' : ''}</small>
+                        </div>
+                        <small class="text-muted">${model.provider} - ${model.specialty || 'General'}</small>
+                        ${model.context_length ? `<div><small>Contexto: ${model.context_length} tokens</small></div>` : ''}
+                    `;
+
+                    modelItem.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        modelSelect.value = model.id;
+                    });
+
+                    modelsList.appendChild(modelItem);
+                });
+
+                apiModelsContainer.innerHTML = '';
+                apiModelsContainer.appendChild(modelsList);
+            }
+
+            // Función para poblar el selector de modelos
+            function populateModelSelect() {
+                // Combinar modelos locales y de la API
+                const allModels = [...localModels, ...apiModels];
+
+                // Limpiar selector
+                modelSelect.innerHTML = '';
+
+                // Agrupar modelos por proveedor
+                const modelsByProvider = {};
+                allModels.forEach(model => {
+                    const provider = model.provider || 'Otro';
+                    if (!modelsByProvider[provider]) {
+                        modelsByProvider[provider] = [];
+                    }
+                    modelsByProvider[provider].push(model);
+                });
+
+                // Crear grupos de opciones
+                Object.keys(modelsByProvider).sort().forEach(provider => {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = provider;
+
+                    // Ordenar modelos por nombre
+                    modelsByProvider[provider].sort((a, b) => a.name.localeCompare(b.name)).forEach(model => {
+                        const option = document.createElement('option');
+                        option.value = model.id;
+                        option.textContent = `${model.name}${model.id.includes(':free') ? ' (Gratis)' : ''}`;
+                        optgroup.appendChild(option);
+                    });
+
+                    modelSelect.appendChild(optgroup);
+                });
+
+                // Seleccionar el primer modelo
+                if (modelSelect.options.length > 0) {
+                    modelSelect.selectedIndex = 0;
+                }
+            }
+
+            // Función para mostrar resultados
+            function showResult(type, message, modelUsed = null) {
+                let content = '';
+
+                if (type === 'loading') {
+                    content = `
+                        <div class="d-flex align-items-center">
+                            <div class="loading me-2"></div>
+                            <span>${message}</span>
+                        </div>
+                    `;
+                } else if (type === 'error') {
+                    content = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <strong>Error:</strong> ${message}
+                        </div>
+                    `;
+                } else if (type === 'success') {
+                    content = `
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <strong>Respuesta exitosa</strong>
+                            ${modelUsed ? `<div class="mt-1 small">Modelo usado: ${modelUsed}</div>` : ''}
+                        </div>
+                        <pre>${message}</pre>
+                    `;
+                } else if (type === 'demo') {
+                    content = `
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Modo de Demostración</strong>
+                            ${modelUsed ? `<div class="mt-1 small">Modelo simulado: ${modelUsed}</div>` : ''}
+                        </div>
+                        <pre>${message}</pre>
+                    `;
+                }
+
+                resultContainer.innerHTML = content;
+            }
+        });
+    </script>
+</body>
+</html>

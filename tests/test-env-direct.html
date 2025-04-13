@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Directa de .env</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #0069d9;
+        }
+        .log {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log p {
+            margin: 5px 0;
+            font-family: monospace;
+        }
+        .log .info {
+            color: #0c5460;
+        }
+        .log .success {
+            color: #155724;
+        }
+        .log .error {
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>Prueba Directa de .env</h1>
+    <p>Esta página prueba la carga directa del archivo .env desde JavaScript.</p>
+    
+    <div>
+        <button id="load-env">Cargar .env</button>
+        <button id="load-env-test2">Cargar .env.test2</button>
+        <button id="load-env-hardcoded">Usar API Key Hardcoded</button>
+        <button id="clear-log">Limpiar Log</button>
+    </div>
+    
+    <div id="result" class="result">
+        <p>Haz clic en un botón para cargar el archivo .env</p>
+    </div>
+    
+    <div id="log" class="log">
+        <p class="info">Log de operaciones:</p>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultDiv = document.getElementById('result');
+            const logDiv = document.getElementById('log');
+            
+            // Función para agregar mensajes al log
+            function log(message, type = 'info') {
+                const p = document.createElement('p');
+                p.className = type;
+                p.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                logDiv.appendChild(p);
+                logDiv.scrollTop = logDiv.scrollHeight;
+            }
+            
+            // Función para cargar el archivo .env
+            async function loadEnvFile(filePath) {
+                log(`Intentando cargar ${filePath}...`);
+                
+                try {
+                    const response = await fetch(filePath);
+                    
+                    if (response.ok) {
+                        const content = await response.text();
+                        log(`Archivo ${filePath} cargado correctamente. Longitud: ${content.length} caracteres`, 'success');
+                        
+                        // Procesar el contenido
+                        const env = {};
+                        const lines = content.split('\n');
+                        log(`Número de líneas: ${lines.length}`);
+                        
+                        lines.forEach((line, index) => {
+                            // Ignorar líneas vacías o comentarios
+                            if (!line || line.startsWith('#')) {
+                                log(`Línea ${index + 1}: Comentario o vacía`);
+                                return;
+                            }
+                            
+                            // Extraer clave y valor
+                            const match = line.match(/^([^=]+)=(.*)$/);
+                            if (match) {
+                                const [, key, value] = match;
+                                // Eliminar comillas si existen
+                                let cleanValue = value.trim();
+                                
+                                // Eliminar comillas dobles
+                                if (cleanValue.startsWith('"') && cleanValue.endsWith('"')) {
+                                    cleanValue = cleanValue.substring(1, cleanValue.length - 1);
+                                    log(`Línea ${index + 1}: Comillas dobles eliminadas`);
+                                }
+                                
+                                // Eliminar comillas simples
+                                if (cleanValue.startsWith("'") && cleanValue.endsWith("'")) {
+                                    cleanValue = cleanValue.substring(1, cleanValue.length - 1);
+                                    log(`Línea ${index + 1}: Comillas simples eliminadas`);
+                                }
+                                
+                                env[key.trim()] = cleanValue;
+                                log(`Línea ${index + 1}: Variable ${key.trim()} = ${cleanValue.substring(0, 3)}...`, 'success');
+                            } else {
+                                log(`Línea ${index + 1}: Formato inválido`, 'error');
+                            }
+                        });
+                        
+                        // Mostrar resultado
+                        resultDiv.innerHTML = `
+                            <h3>Variables de entorno cargadas:</h3>
+                            <pre>${JSON.stringify(env, null, 2)}</pre>
+                            <p><strong>API Key:</strong> ${env.OPENROUTER_API_KEY ? env.OPENROUTER_API_KEY.substring(0, 10) + '...' : 'No encontrada'}</p>
+                        `;
+                        
+                        return env;
+                    } else {
+                        log(`Error al cargar ${filePath}: ${response.status} ${response.statusText}`, 'error');
+                        resultDiv.innerHTML = `<p>Error al cargar ${filePath}: ${response.status} ${response.statusText}</p>`;
+                        return null;
+                    }
+                } catch (error) {
+                    log(`Error al cargar ${filePath}: ${error.message}`, 'error');
+                    resultDiv.innerHTML = `<p>Error al cargar ${filePath}: ${error.message}</p>`;
+                    return null;
+                }
+            }
+            
+            // Evento para cargar .env
+            document.getElementById('load-env').addEventListener('click', () => {
+                loadEnvFile('.env');
+            });
+            
+            // Evento para cargar .env.test2
+            document.getElementById('load-env-test2').addEventListener('click', () => {
+                loadEnvFile('.env.test2');
+            });
+            
+            // Evento para usar API Key hardcoded
+            document.getElementById('load-env-hardcoded').addEventListener('click', () => {
+                const apiKey = "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";
+                log(`Usando API Key hardcoded: ${apiKey.substring(0, 10)}...`, 'info');
+                
+                resultDiv.innerHTML = `
+                    <h3>API Key Hardcoded:</h3>
+                    <p><strong>API Key:</strong> ${apiKey.substring(0, 10)}...</p>
+                `;
+            });
+            
+            // Evento para limpiar el log
+            document.getElementById('clear-log').addEventListener('click', () => {
+                logDiv.innerHTML = '<p class="info">Log de operaciones:</p>';
+            });
+        });
+    </script>
+</body>
+</html>

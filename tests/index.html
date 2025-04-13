@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pruebas de OpenRouter API</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4 mb-5">
+        <h1>Pruebas de OpenRouter API</h1>
+        <p class="lead">Este directorio contiene varias pruebas para verificar la conexión y funcionalidad de la API de OpenRouter.</p>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Pruebas de Navegador</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Estas pruebas se ejecutan en el navegador y son útiles para verificar la integración con la interfaz de usuario.</p>
+                        
+                        <div class="list-group">
+                            <a href="test-env-access.html" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">Acceso a .env</h5>
+                                    <small><i class="fas fa-file-code"></i></small>
+                                </div>
+                                <p class="mb-1">Prueba si el archivo .env es accesible desde el navegador.</p>
+                            </a>
+                            <a href="test-env-direct.html" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">Carga Directa de .env</h5>
+                                    <small><i class="fas fa-file-code"></i></small>
+                                </div>
+                                <p class="mb-1">Prueba la carga directa del archivo .env desde JavaScript.</p>
+                            </a>
+                            <a href="test-models-improved.html" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">Modelos Mejorados</h5>
+                                    <small><i class="fas fa-list"></i></small>
+                                </div>
+                                <p class="mb-1">Muestra los modelos disponibles en OpenRouter, tanto locales como desde la API.</p>
+                            </a>
+                            <a href="test-openrouter-improved.html" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">OpenRouter Mejorado</h5>
+                                    <small><i class="fas fa-robot"></i></small>
+                                </div>
+                                <p class="mb-1">Prueba mejorada de la API de OpenRouter con interfaz de usuario.</p>
+                            </a>
+                            <a href="test-models.html" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">Modelos (Original)</h5>
+                                    <small><i class="fas fa-list"></i></small>
+                                </div>
+                                <p class="mb-1">Versión original de la lista de modelos.</p>
+                            </a>
+                            <a href="test-openrouter-secure.html" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">OpenRouter Seguro (Original)</h5>
+                                    <small><i class="fas fa-shield-alt"></i></small>
+                                </div>
+                                <p class="mb-1">Versión original de la prueba segura.</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Pruebas de Terminal</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Estas pruebas se ejecutan desde el terminal y son útiles para verificar la conexión con la API de OpenRouter sin necesidad de un navegador.</p>
+                        
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">test-api-terminal.js</h5>
+                                    <small><i class="fas fa-terminal"></i></small>
+                                </div>
+                                <p class="mb-1">Lee la API key directamente del archivo .env en la raíz del proyecto y prueba la conexión con la API de OpenRouter.</p>
+                                <small class="text-muted">Ejecutar: <code>node tests/test-api-terminal.js</code></small>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">test-terminal-final.js</h5>
+                                    <small><i class="fas fa-terminal"></i></small>
+                                </div>
+                                <p class="mb-1">Versión simplificada que prueba la autenticación y las solicitudes de chat.</p>
+                                <small class="text-muted">Ejecutar: <code>node tests/test-terminal-final.js</code></small>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">run-all-tests.js</h5>
+                                    <small><i class="fas fa-play"></i></small>
+                                </div>
+                                <p class="mb-1">Ejecuta todas las pruebas de terminal y muestra un resumen de los resultados.</p>
+                                <small class="text-muted">Ejecutar: <code>node tests/run-all-tests.js</code></small>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">open-browser-tests.js</h5>
+                                    <small><i class="fas fa-globe"></i></small>
+                                </div>
+                                <p class="mb-1">Abre todas las pruebas de navegador en el navegador predeterminado.</p>
+                                <small class="text-muted">Ejecutar: <code>node tests/open-browser-tests.js</code></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Documentación</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Consulta el archivo README.md para obtener más información sobre las pruebas disponibles y cómo ejecutarlas.</p>
+                        
+                        <div class="d-grid">
+                            <a href="https://github.com/bladealex9848/marduk-ecosystem/blob/main/tests/README.md" class="btn btn-info" target="_blank">
+                                <i class="fas fa-book me-2"></i>Ver README.md
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

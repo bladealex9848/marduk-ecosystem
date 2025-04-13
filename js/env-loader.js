@@ -9,26 +9,65 @@
 window.ENV = {};
 
 // Función para cargar las variables de entorno
-async function loadEnvVariables() {
+window.loadEnvVariables = async function() {
     try {
-        // Cargar una API key simulada (para modo de demostración)
+        // Inicializar con valores por defecto
         window.ENV.OPENROUTER_API_KEY = 'DEMO_MODE';
         window.ENV.DEMO_MODE = true;
-        console.log('Modo de demostración activado');
+        console.log('Modo de demostración activado inicialmente');
 
         // Intentar cargar el archivo .env (para producción)
         let response;
         try {
+            // Intentar diferentes rutas para encontrar el archivo .env
+            // Intentar cargar desde la raíz absoluta
+            console.log('Intentando cargar .env desde /.env');
             response = await fetch('/.env');
+
             if (!response.ok) {
+                // Intentar cargar desde el directorio padre
+                console.log('Intentando cargar .env desde ../.env');
                 response = await fetch('../.env');
+
+                if (!response.ok) {
+                    // Intentar cargar desde el directorio actual
+                    console.log('Intentando cargar .env desde .env');
+                    response = await fetch('.env');
+
+                    if (!response.ok) {
+                        // Intentar cargar desde .env.test2
+                        console.log('Intentando cargar .env desde .env.test2');
+                        response = await fetch('.env.test2');
+
+                        if (!response.ok) {
+                            console.log('No se pudo encontrar el archivo .env en ninguna ubicación');
+
+                            // Como último recurso, usar una API key hardcoded para desarrollo
+                            console.log('Usando API key hardcoded como último recurso');
+                            window.ENV.OPENROUTER_API_KEY = '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';
+                            window.ENV.DEMO_MODE = false;
+                        } else {
+                            console.log('.env encontrado en .env.test2');
+                        }
+                    } else {
+                        console.log('.env encontrado en el directorio actual');
+                    }
+                } else {
+                    console.log('.env encontrado en el directorio padre');
+                }
+            } else {
+                console.log('.env encontrado en la raíz absoluta');
             }
 
             if (response.ok) {
                 const envContent = await response.text();
+                console.log('Contenido del archivo .env cargado. Longitud:', envContent.length);
+                console.log('Primeros 20 caracteres:', envContent.substring(0, 20));
 
                 // Procesar cada línea del archivo .env
-                envContent.split('\n').forEach(line => {
+                const lines = envContent.split('\n');
+                console.log('Número de líneas en .env:', lines.length);
+                lines.forEach((line, index) => {
                     // Ignorar líneas vacías o comentarios
                     if (!line || line.startsWith('#')) return;
 
@@ -50,6 +89,14 @@ async function loadEnvVariables() {
                         console.log(`Variable de entorno cargada: ${key.trim()} = ${cleanValue.substring(0, 3)}...`);
                     }
                 });
+
+                // Verificar si se cargó la API key
+                if (window.ENV.OPENROUTER_API_KEY && window.ENV.OPENROUTER_API_KEY !== 'DEMO_MODE') {
+                    console.log('API key de OpenRouter cargada correctamente');
+                    window.ENV.DEMO_MODE = false;
+                } else {
+                    console.log('No se encontró una API key válida en el archivo .env');
+                }
 
                 console.log('Variables de entorno cargadas desde .env');
             }

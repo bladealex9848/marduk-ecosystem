@@ -13,31 +13,31 @@ function loadEnvFromFile(filePath) {
         // Leer el archivo
         const envContent = fs.readFileSync(filePath, 'utf8');
         const env = {};
-        
+
         // Procesar cada línea
         envContent.split('\n').forEach(line => {
             // Ignorar líneas vacías o comentarios
             if (!line || line.startsWith('#')) return;
-            
+
             // Extraer clave y valor
             const match = line.match(/^([^=]+)=(.*)$/);
             if (match) {
                 const [, key, value] = match;
                 // Eliminar comillas si existen
                 let cleanValue = value.trim();
-                
+
                 // Eliminar comillas dobles
                 if (cleanValue.startsWith('"') && cleanValue.endsWith('"')) {
                     cleanValue = cleanValue.substring(1, cleanValue.length - 1);
                 }
-                
+
                 // Eliminar comillas simples
                 if (cleanValue.startsWith("'") && cleanValue.endsWith("'")) {
                     cleanValue = cleanValue.substring(1, cleanValue.length - 1);
                 }
-                
+
                 env[key.trim()] = cleanValue;
-                
+
                 // No mostrar la API key completa por seguridad
                 if (key.trim().includes('API_KEY')) {
                     console.log(`Variable cargada: ${key.trim()} = [OCULTA POR SEGURIDAD]`);
@@ -46,7 +46,7 @@ function loadEnvFromFile(filePath) {
                 }
             }
         });
-        
+
         return env;
     } catch (error) {
         console.error('Error al cargar el archivo:', error);
@@ -55,7 +55,7 @@ function loadEnvFromFile(filePath) {
 }
 
 // Cargar variables de entorno desde .env
-const envPath = path.resolve(__dirname, '.env');
+const envPath = path.resolve(__dirname, '../.env');
 console.log('Cargando variables de entorno desde:', envPath);
 const env = loadEnvFromFile(envPath);
 
@@ -73,11 +73,11 @@ function testApiKey(apiKey) {
 
         const req = https.request(options, (res) => {
             let data = '';
-            
+
             res.on('data', (chunk) => {
                 data += chunk;
             });
-            
+
             res.on('end', () => {
                 try {
                     const responseData = JSON.parse(data);
@@ -91,11 +91,11 @@ function testApiKey(apiKey) {
                 }
             });
         });
-        
+
         req.on('error', (error) => {
             reject(error);
         });
-        
+
         req.end();
     });
 }
@@ -112,7 +112,7 @@ function testChatCompletions(apiKey) {
                 }
             ]
         });
-        
+
         const options = {
             hostname: 'openrouter.ai',
             path: '/api/v1/chat/completions',
@@ -125,14 +125,14 @@ function testChatCompletions(apiKey) {
                 'Content-Length': data.length
             }
         };
-        
+
         const req = https.request(options, (res) => {
             let responseData = '';
-            
+
             res.on('data', (chunk) => {
                 responseData += chunk;
             });
-            
+
             res.on('end', () => {
                 try {
                     const parsedData = JSON.parse(responseData);
@@ -154,11 +154,11 @@ function testChatCompletions(apiKey) {
                 }
             });
         });
-        
+
         req.on('error', (error) => {
             reject(error);
         });
-        
+
         req.write(data);
         req.end();
     });
@@ -172,14 +172,14 @@ async function runTest() {
             console.error('No se encontró una API key en el archivo .env');
             return;
         }
-        
+
         console.log('\nProbando API key con OpenRouter...');
         console.log('Usando API key desde .env [OCULTA POR SEGURIDAD]');
-        
+
         // Probar autenticación
         console.log('\n1. Probando autenticación...');
         const authResult = await testApiKey(env.OPENROUTER_API_KEY);
-        
+
         if (authResult.success) {
             console.log('✅ API key válida!');
             console.log('Detalles:', authResult.data);
@@ -187,20 +187,20 @@ async function runTest() {
             console.log('❌ API key inválida o no autorizada');
             console.log('Código de estado:', authResult.statusCode);
             console.log('Error:', authResult.error);
-            
+
             // Continuar con las pruebas aunque la autenticación falle
             console.log('\nContinuando con las pruebas...');
         }
-        
+
         // Probar chat completions
         console.log('\n2. Probando chat completions...');
         const chatResult = await testChatCompletions(env.OPENROUTER_API_KEY);
-        
+
         // Mostrar resumen de las pruebas
         console.log('\n=== RESUMEN DE PRUEBAS ===');
         console.log('1. Autenticación:', authResult.success ? '✅ EXITOSA' : '❌ FALLIDA');
         console.log('2. Chat Completions:', chatResult.success ? '✅ EXITOSA' : '❌ FALLIDA');
-        
+
         if (authResult.success && chatResult.success) {
             console.log('\n✅ TODAS LAS PRUEBAS EXITOSAS');
             console.log('La API key es válida y funciona correctamente.');
@@ -208,7 +208,7 @@ async function runTest() {
             console.log('\n❌ ALGUNAS PRUEBAS FALLARON');
             console.log('Revisa los detalles anteriores para más información.');
         }
-        
+
     } catch (error) {
         console.error('Error al probar la API key:', error);
     }

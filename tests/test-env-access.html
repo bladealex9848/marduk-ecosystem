@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Acceso a .env</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0069d9;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Prueba de Acceso a .env</h1>
+    <p>Esta página prueba si el archivo .env es accesible desde el servidor web.</p>
+    
+    <div>
+        <button id="test-root">.env en raíz</button>
+        <button id="test-parent">.env en directorio padre</button>
+        <button id="test-current">.env en directorio actual</button>
+        <button id="test-test2">.env.test2</button>
+    </div>
+    
+    <div id="result" class="result">
+        <p>Haz clic en un botón para probar el acceso al archivo .env</p>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultDiv = document.getElementById('result');
+            
+            // Función para probar el acceso a un archivo
+            async function testAccess(url, description) {
+                resultDiv.className = 'result';
+                resultDiv.innerHTML = `<p>Probando acceso a ${description}...</p>`;
+                
+                try {
+                    const response = await fetch(url);
+                    
+                    if (response.ok) {
+                        const content = await response.text();
+                        resultDiv.className = 'result success';
+                        resultDiv.innerHTML = `
+                            <p>✅ El archivo ${description} es accesible!</p>
+                            <p>Código de estado: ${response.status}</p>
+                            <p>Longitud del contenido: ${content.length} caracteres</p>
+                            <p>Primeros 50 caracteres:</p>
+                            <pre>${content.substring(0, 50)}</pre>
+                        `;
+                    } else {
+                        resultDiv.className = 'result error';
+                        resultDiv.innerHTML = `
+                            <p>❌ El archivo ${description} no es accesible.</p>
+                            <p>Código de estado: ${response.status}</p>
+                            <p>Mensaje: ${response.statusText}</p>
+                        `;
+                    }
+                } catch (error) {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <p>❌ Error al acceder al archivo ${description}:</p>
+                        <p>${error.message}</p>
+                    `;
+                }
+            }
+            
+            // Eventos para los botones
+            document.getElementById('test-root').addEventListener('click', () => {
+                testAccess('/.env', '.env en la raíz');
+            });
+            
+            document.getElementById('test-parent').addEventListener('click', () => {
+                testAccess('../.env', '.env en el directorio padre');
+            });
+            
+            document.getElementById('test-current').addEventListener('click', () => {
+                testAccess('.env', '.env en el directorio actual');
+            });
+            
+            document.getElementById('test-test2').addEventListener('click', () => {
+                testAccess('.env.test2', '.env.test2');
+            });
+        });
+    </script>
+</body>
+</html>

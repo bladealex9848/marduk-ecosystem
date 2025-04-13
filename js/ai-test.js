@@ -79,8 +79,22 @@ document.addEventListener('DOMContentLoaded', async function() {
  */
 async function checkApiKey() {
     try {
-        // Obtener API key desde localStorage
-        const apiKey = localStorage.getItem('OPENROUTER_API_KEY');
+        // Esperar a que se carguen las variables de entorno
+        await waitForEnvVariables();
+
+        // Intentar obtener la API key de diferentes fuentes
+        let apiKey;
+
+        // 1. Verificar si hay una API key en las variables de entorno
+        if (window.ENV && window.ENV.OPENROUTER_API_KEY && window.ENV.OPENROUTER_API_KEY !== 'DEMO_MODE') {
+            apiKey = window.ENV.OPENROUTER_API_KEY;
+            console.log('Usando API key de variables de entorno para verificación');
+        }
+        // 2. Verificar si hay una API key en localStorage
+        else if (localStorage.getItem('OPENROUTER_API_KEY')) {
+            apiKey = localStorage.getItem('OPENROUTER_API_KEY');
+            console.log('Usando API key de localStorage para verificación');
+        }
 
         // Verificar si la API key existe y no es la predeterminada
         if (!apiKey || apiKey === 'demo' || apiKey === 'tu-api-key-aquí') {
@@ -102,6 +116,46 @@ async function checkApiKey() {
         console.error('Error al verificar API key:', error);
         return false;
     }
+}
+
+/**
+ * Espera a que se carguen las variables de entorno
+ * @returns {Promise<void>} - Promesa que se resuelve cuando las variables de entorno están cargadas
+ */
+async function waitForEnvVariables() {
+    return new Promise(resolve => {
+        // Verificar si ENV ya está disponible
+        if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+            console.log('Variables de entorno ya cargadas');
+            resolve();
+            return;
+        }
+
+        // Si no está disponible, esperar a que se cargue
+        console.log('Esperando a que se carguen las variables de entorno...');
+
+        // Intentar cargar manualmente si está disponible la función
+        if (typeof window.loadEnvVariables === 'function') {
+            window.loadEnvVariables().then(() => {
+                console.log('Variables de entorno cargadas manualmente');
+                resolve();
+            }).catch(error => {
+                console.error('Error al cargar variables de entorno:', error);
+                resolve(); // Resolver de todos modos para continuar
+            });
+        } else {
+            // Esperar a que ENV esté disponible
+            const checkEnv = () => {
+                if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+                    console.log('Variables de entorno detectadas');
+                    resolve();
+                } else {
+                    setTimeout(checkEnv, 500);
+                }
+            };
+            checkEnv();
+        }
+    });
 }
 
 /**
@@ -169,8 +223,11 @@ async function loadModelsFromService() {
         // Obtener API key desde localStorage o desde .env
         let apiKey = '';
 
+        // Esperar a que se carguen las variables de entorno
+        await waitForEnvVariables();
+
         // 1. Verificar si hay una API key en las variables de entorno
-        if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+        if (window.ENV && window.ENV.OPENROUTER_API_KEY && window.ENV.OPENROUTER_API_KEY !== 'DEMO_MODE') {
             apiKey = window.ENV.OPENROUTER_API_KEY;
             console.log('Usando API key de variables de entorno para el chat');
         }
@@ -229,46 +286,109 @@ async function loadModelsFromService() {
         // Esperar un momento para asegurarnos de que OPENROUTER_MODELS_CONFIG esté cargado
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        let models = [];
+        let localModels = [];
+        let apiModels = [];
 
         // Verificar si OPENROUTER_MODELS_CONFIG está disponible
         if (window.OPENROUTER_MODELS_CONFIG && window.OPENROUTER_MODELS_CONFIG.models) {
             console.log('Cargando modelos desde OPENROUTER_MODELS_CONFIG');
 
             // Filtrar solo modelos gratuitos o los que queremos mostrar
-            models = window.OPENROUTER_MODELS_CONFIG.models.filter(model =>
+            localModels = window.OPENROUTER_MODELS_CONFIG.models.filter(model =>
                 model.id.includes(':free') || // Modelos gratuitos
                 model.id.startsWith('openrouter/') || // Modelos de OpenRouter
                 ['anthropic/claude-3-haiku:beta', 'anthropic/claude-3-sonnet:beta', 'anthropic/claude-3-opus:beta'].includes(model.id) // Modelos específicos
-            );
+            ).map(model => ({...model, source: 'local'}));
+
+            showToast(`${localModels.length} modelos locales cargados`, 'success');
         } else {
             console.log('OPENROUTER_MODELS_CONFIG no disponible, usando modelos predefinidos');
 
             // Lista predefinida de modelos
-            models = [
+            localModels = [
                 {
                     id: "openrouter/optimus-alpha",
                     name: "Optimus Alpha",
                     provider: "OpenRouter",
                     specialty: "general",
-                    capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"]
+                    capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"],
+                    source: "local"
                 },
                 {
                     id: "openrouter/quasar-alpha",
                     name: "Quasar Alpha",
                     provider: "OpenRouter",
                     specialty: "general",
-                    capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"]
+                    capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"],
+                    source: "local"
                 },
                 {
                     id: "anthropic/claude-3-haiku:beta",
                     name: "Claude 3 Haiku",
                     provider: "Anthropic",
                     specialty: "general",
-                    capabilities: ["efficiency", "multi_task", "multilingual_support"]
+                    capabilities: ["efficiency", "multi_task", "multilingual_support"],
+                    source: "local"
                 }
             ];
         }
+
+        // Intentar cargar modelos desde la API si tenemos una API key válida
+        if (apiKey && apiKey !== 'demo' && apiKey !== 'tu-api-key-aquí') {
+            try {
+                console.log('Cargando modelos desde la API de OpenRouter...');
+
+                // Hacer solicitud a la API
+                const response = await fetch('https://openrouter.ai/api/v1/models', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'HTTP-Referer': window.location.origin,
+                        'X-Title': 'Marduk Ecosystem'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    if (data.data && Array.isArray(data.data)) {
+                        // Filtrar modelos gratuitos y de OpenRouter
+                        apiModels = data.data.filter(model => {
+                            // Verificar si el modelo es gratuito
+                            const isFree = model.id.includes(':free') || (model.context_length_free && model.context_length_free > 0);
+
+                            // Verificar si el modelo es de OpenRouter
+                            const isOpenRouter = model.id.startsWith('openrouter/');
+
+                            // Incluir el modelo si es gratuito o de OpenRouter
+                            return isFree || isOpenRouter;
+                        }).map(model => ({
+                            id: model.id,
+                            name: model.name || model.id.split('/').pop(),
+                            provider: model.id.split('/')[0] || 'Desconocido',
+                            specialty: getModelSpecialty(model),
+                            capabilities: getModelCapabilities(model),
+                            context_length: model.context_length,
+                            context_length_free: model.context_length_free,
+                            pricing: {
+                                prompt: model.pricing?.prompt,
+                                completion: model.pricing?.completion
+                            },
+                            source: 'api'
+                        }));
+
+                        showToast(`${apiModels.length} modelos cargados desde la API`, 'success');
+                    }
+                } else {
+                    console.error('Error al cargar modelos desde la API:', response.status);
+                }
+            } catch (error) {
+                console.error('Error al cargar modelos desde la API:', error);
+            }
+        }
+
+        // Combinar modelos locales y de la API
+        const models = [...localModels, ...apiModels];
 
         // Cerrar indicador de carga
         Swal.close();
@@ -581,6 +701,87 @@ function updateModelInfo(model) {
 }
 
 /**
+ * Determina la especialidad del modelo basado en sus características
+ * @param {Object} model - Modelo de la API
+ * @returns {string} - Especialidad del modelo
+ */
+function getModelSpecialty(model) {
+    // Verificar si el modelo admite imágenes
+    if (model.multimodal) {
+        return 'multimodal';
+    }
+
+    // Verificar si el modelo es especializado en código
+    if (model.id.toLowerCase().includes('code') || model.id.toLowerCase().includes('coder')) {
+        return 'coding';
+    }
+
+    // Verificar si el modelo es creativo
+    if (model.id.toLowerCase().includes('creative') || model.id.toLowerCase().includes('story')) {
+        return 'creative';
+    }
+
+    // Por defecto, es un modelo general
+    return 'general';
+}
+
+/**
+ * Determina las capacidades del modelo basado en sus características
+ * @param {Object} model - Modelo de la API
+ * @returns {Array} - Capacidades del modelo
+ */
+function getModelCapabilities(model) {
+    const capabilities = [];
+
+    // Verificar capacidades basadas en características del modelo
+    if (model.multimodal) {
+        capabilities.push('vision_understanding');
+        capabilities.push('image_reasoning');
+    }
+
+    if (model.context_length > 16000) {
+        capabilities.push('large_context');
+    }
+
+    if (model.context_length_free > 0) {
+        capabilities.push('free_tier_available');
+    }
+
+    // Añadir capacidades basadas en el ID del modelo
+    if (model.id.includes('instruct')) {
+        capabilities.push('instruction_optimized');
+    }
+
+    if (model.id.toLowerCase().includes('code') || model.id.toLowerCase().includes('coder')) {
+        capabilities.push('code_generation');
+    }
+
+    // Añadir capacidades basadas en el proveedor
+    if (model.id.startsWith('anthropic/')) {
+        capabilities.push('advanced_reasoning');
+        capabilities.push('multilingual_support');
+    }
+
+    if (model.id.startsWith('google/')) {
+        capabilities.push('multilingual_support');
+    }
+
+    if (model.id.startsWith('openai/')) {
+        capabilities.push('advanced_reasoning');
+    }
+
+    if (model.id.startsWith('meta-llama/')) {
+        capabilities.push('multilingual_support');
+    }
+
+    if (model.id.startsWith('openrouter/')) {
+        capabilities.push('proprietary_architecture');
+    }
+
+    return capabilities;
+}
+
+/**
  * Genera sugerencias de uso basadas en el modelo
  * @param {Object} model - Modelo seleccionado
  * @returns {Array} - Lista de sugerencias
@@ -661,12 +862,15 @@ function setupEventListeners() {
         try {
             let response;
 
-            // Obtener API key desde localStorage
+            // Obtener API key
             // Intentar obtener la API key de diferentes fuentes (en orden de prioridad)
             let apiKey = '';
 
+            // Esperar a que se carguen las variables de entorno
+            await waitForEnvVariables();
+
             // 1. Verificar si hay una API key en las variables de entorno
-            if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+            if (window.ENV && window.ENV.OPENROUTER_API_KEY && window.ENV.OPENROUTER_API_KEY !== 'DEMO_MODE') {
                 apiKey = window.ENV.OPENROUTER_API_KEY;
                 console.log('Usando API key de variables de entorno para el chat');
             }
