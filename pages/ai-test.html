@@ -177,6 +177,33 @@
         option {
             padding: 5px;
         }
+
+        /* Estilos para la lista de modelos */
+        .model-selector {
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .model-selector .list-group-item {
+            border-left: 0;
+            border-right: 0;
+            transition: all 0.2s ease;
+        }
+
+        .model-selector .list-group-item:hover {
+            background-color: var(--bs-light);
+        }
+
+        .model-selector .list-group-item.active {
+            background-color: var(--bs-primary-bg-subtle);
+            color: var(--bs-primary);
+            border-color: var(--bs-border-color);
+        }
+
+        .model-selector .list-group-item.active small {
+            color: var(--bs-primary) !important;
+        }
     </style>
 </head>
 <body>

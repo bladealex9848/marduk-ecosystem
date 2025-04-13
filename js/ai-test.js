@@ -398,56 +398,46 @@ function loadModelsToUI(models) {
         return;
     }
 
-    // Usar DataTables para mostrar los modelos
-    const modelTable = document.createElement('table');
-    modelTable.className = 'table table-hover';
-    modelTable.id = 'models-table';
-    modelSelector.appendChild(modelTable);
+    // Crear una lista simple para mostrar los modelos
+    const modelList = document.createElement('div');
+    modelList.className = 'list-group list-group-flush';
+    modelSelector.appendChild(modelList);
 
-    // Inicializar DataTable
-    $(modelTable).DataTable({
-        data: models,
-        columns: [
-            {
-                title: 'Modelo',
-                data: null,
-                render: function(data) {
-                    return `
-                        <div class="d-flex flex-column">
-                            <strong>${data.name}</strong>
-                            <small class="text-muted">${data.provider}</small>
-                        </div>
-                    `;
-                }
-            },
-            {
-                title: 'Tipo',
-                data: 'specialty',
-                render: function(data) {
-                    return data || 'General';
-                }
-            }
-        ],
-        paging: false,
-        searching: true,
-        info: false,
-        scrollY: '400px',
-        scrollCollapse: true,
-        language: {
-            search: 'Buscar:',
-            zeroRecords: 'No se encontraron modelos',
-            emptyTable: 'No hay modelos disponibles'
-        },
-        createdRow: function(row, data) {
-            // Añadir clase y atributos
-            $(row).addClass('model-row');
-            $(row).attr('data-model-id', data.id);
+    // Agregar modelos a la lista
+    models.forEach(model => {
+        const modelItem = document.createElement('button');
+        modelItem.className = 'list-group-item list-group-item-action d-flex flex-column align-items-start p-3';
+        modelItem.setAttribute('data-model-id', model.id);
 
-            // Añadir evento de clic
-            $(row).on('click', function() {
-                selectModel(data);
+        // Verificar si el modelo es gratuito
+        const isFree = model.id.includes(':free');
+
+        modelItem.innerHTML = `
+            <div class="d-flex w-100 justify-content-between align-items-center">
+                <h6 class="mb-1">${model.name}</h6>
+                ${isFree ? '<span class="badge bg-success">Gratis</span>' : ''}
+            </div>
+            <div class="d-flex w-100 justify-content-between align-items-center mt-1">
+                <small class="text-muted">${model.provider}</small>
+                <small class="text-muted">${model.specialty || 'General'}</small>
+            </div>
+        `;
+
+        // Agregar evento de clic
+        modelItem.addEventListener('click', () => {
+            // Remover clase activa de todos los elementos
+            document.querySelectorAll('.list-group-item').forEach(item => {
+                item.classList.remove('active');
             });
-        }
+
+            // Agregar clase activa al elemento seleccionado
+            modelItem.classList.add('active');
+
+            // Seleccionar modelo
+            selectModel(model);
+        });
+
+        modelList.appendChild(modelItem);
     });
 }
 
@@ -717,7 +707,21 @@ function setupEventListeners() {
                 if (!openRouterResponse.ok) {
                     const errorData = await openRouterResponse.json().catch(() => ({}));
                     console.error('Error de OpenRouter:', errorData);
-                    throw new Error(`Error en la API de OpenRouter: ${openRouterResponse.status} - ${errorData.error?.message || 'Error desconocido'}`);
+
+                    // Manejar error 401 (No autorizado) de forma especial
+                    if (openRouterResponse.status === 401) {
+                        console.log('Error de autenticación. Usando modo de demostración.');
+                        // Usar respuesta simulada
+                        response = "Estoy funcionando en modo de demostración debido a un problema con la API key. Por favor, contacta al administrador para obtener una API key válida. Mientras tanto, puedo simular respuestas básicas.\n\nEn respuesta a tu mensaje: " + message + "\n\nComo asistente virtual de Marduk, puedo proporcionarte información general sobre temas jurídicos, pero recuerda que estoy en modo de demostración y mis capacidades son limitadas.";
+
+                        // Guardar mensaje en el historial
+                        chatHistory.push({ role: 'user', content: message });
+                        chatHistory.push({ role: 'assistant', content: response });
+
+                        return response;
+                    } else {
+                        throw new Error(`Error en la API de OpenRouter: ${openRouterResponse.status} - ${errorData.error?.message || 'Error desconocido'}`);
+                    }
                 }
 
                 const data = await openRouterResponse.json();

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Segura de OpenRouter con Fetch</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: #007bff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Prueba Segura de OpenRouter con Fetch</h1>
+        <p>Esta página prueba la conexión con la API de OpenRouter utilizando fetch de forma segura.</p>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Configuración</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="test-form">
+                            <div class="mb-3">
+                                <label for="api-key" class="form-label">API Key</label>
+                                <input type="password" class="form-control" id="api-key" placeholder="Ingresa tu API key de OpenRouter">
+                                <div class="form-text">Tu API key nunca se almacena ni se envía a ningún servidor excepto a OpenRouter.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="model" class="form-label">Modelo</label>
+                                <select class="form-select" id="model">
+                                    <option value="meta-llama/llama-4-scout:free">meta-llama/llama-4-scout:free</option>
+                                    <option value="openrouter/optimus-alpha">openrouter/optimus-alpha</option>
+                                    <option value="anthropic/claude-3-haiku:beta">anthropic/claude-3-haiku:beta</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="prompt" class="form-label">Prompt</label>
+                                <textarea class="form-control" id="prompt" rows="3">Hola, ¿cómo estás?</textarea>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="use-image">
+                                <label class="form-check-label" for="use-image">Incluir imagen</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Probar API</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Resultado</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="result-container">
+                            <p class="text-muted">El resultado se mostrará aquí...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Modo de Demostración</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Si no tienes una API key válida, puedes probar el modo de demostración:</p>
+                        <button id="demo-mode-btn" class="btn btn-info">Probar Modo de Demostración</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const testForm = document.getElementById('test-form');
+            const apiKeyInput = document.getElementById('api-key');
+            const modelSelect = document.getElementById('model');
+            const promptInput = document.getElementById('prompt');
+            const useImageCheckbox = document.getElementById('use-image');
+            const resultContainer = document.getElementById('result-container');
+            const demoModeBtn = document.getElementById('demo-mode-btn');
+            
+            // Evento para el formulario de prueba
+            testForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Obtener valores
+                const apiKey = apiKeyInput.value.trim();
+                const model = modelSelect.value;
+                const prompt = promptInput.value.trim();
+                const useImage = useImageCheckbox.checked;
+                
+                // Validar valores
+                if (!apiKey) {
+                    showResult('error', 'La API key es requerida');
+                    return;
+                }
+                
+                if (!prompt) {
+                    showResult('error', 'El prompt es requerido');
+                    return;
+                }
+                
+                // Mostrar indicador de carga
+                showResult('loading', 'Enviando solicitud a OpenRouter...');
+                
+                try {
+                    // Preparar mensajes
+                    let messages;
+                    
+                    if (useImage) {
+                        messages = [
+                            {
+                                role: "user",
+                                content: [
+                                    {
+                                        type: "text",
+                                        text: prompt
+                                    },
+                                    {
+                                        type: "image_url",
+                                        image_url: {
+                                            url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
+                                        }
+                                    }
+                                ]
+                            }
+                        ];
+                    } else {
+                        messages = [
+                            {
+                                role: "user",
+                                content: prompt
+                            }
+                        ];
+                    }
+                    
+                    // Enviar solicitud a OpenRouter
+                    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${apiKey}`,
+                            "HTTP-Referer": "https://marduk-ecosystem.com",
+                            "X-Title": "Marduk Ecosystem",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            model: model,
+                            messages: messages
+                        })
+                    });
+                    
+                    // Obtener respuesta
+                    const data = await response.json();
+                    
+                    // Verificar si hay error
+                    if (!response.ok) {
+                        showResult('error', `Error: ${data.error?.message || 'Error desconocido'}`);
+                        console.error('Error completo:', data);
+                        return;
+                    }
+                    
+                    // Mostrar respuesta
+                    showResult('success', data.choices[0].message.content);
+                    console.log('Respuesta completa:', data);
+                } catch (error) {
+                    showResult('error', `Error: ${error.message}`);
+                    console.error('Error:', error);
+                }
+            });
+            
+            // Evento para el botón de modo de demostración
+            demoModeBtn.addEventListener('click', function() {
+                // Mostrar indicador de carga
+                showResult('loading', 'Generando respuesta en modo de demostración...');
+                
+                // Simular un retraso
+                setTimeout(() => {
+                    const prompt = promptInput.value.trim() || 'Hola, ¿cómo estás?';
+                    const model = modelSelect.value;
+                    const useImage = useImageCheckbox.checked;
+                    
+                    // Generar respuesta simulada
+                    let demoResponse;
+                    
+                    if (useImage) {
+                        demoResponse = `Estoy viendo una imagen de un sendero de madera o pasarela que atraviesa un área natural. La pasarela está construida sobre lo que parece ser un humedal o área pantanosa, con vegetación alta a ambos lados. El camino de madera se extiende hacia el horizonte, creando una perspectiva interesante. El cielo es azul con algunas nubes, y la escena general transmite una sensación de tranquilidad y conexión con la naturaleza.
+
+Esta parece ser una típica pasarela de observación natural, diseñada para permitir a los visitantes experimentar un entorno natural sin dañar el ecosistema sensible debajo.
+
+(Nota: Estoy funcionando en modo de demostración. Esta respuesta es simulada ya que no hay una API key válida configurada.)`;
+                    } else {
+                        // Respuestas predefinidas para preguntas comunes
+                        const lowerPrompt = prompt.toLowerCase();
+                        
+                        if (lowerPrompt.includes('hola')) {
+                            demoResponse = `Hola, soy un asistente virtual. Estoy funcionando en modo de demostración. ¿En qué puedo ayudarte?
+
+(Nota: Estoy funcionando en modo de demostración. Esta respuesta es simulada ya que no hay una API key válida configurada.)`;
+                        } else if (lowerPrompt.includes('qué es marduk')) {
+                            demoResponse = `Marduk es un ecosistema de herramientas digitales diseñadas para la transformación judicial. Incluye soluciones para la gestión de casos, análisis de datos jurídicos y asistencia en la toma de decisiones.
+
+(Nota: Estoy funcionando en modo de demostración. Esta respuesta es simulada ya que no hay una API key válida configurada.)`;
+                        } else {
+                            demoResponse = `En respuesta a tu consulta: "${prompt}"
+
+Como asistente virtual, puedo proporcionarte información general sobre temas jurídicos y el ecosistema Marduk, pero mis capacidades son limitadas en este modo de demostración. Para acceder a todas las funcionalidades, por favor configura una API key válida.
+
+(Nota: Estoy funcionando en modo de demostración. Esta respuesta es simulada ya que no hay una API key válida configurada.)`;
+                        }
+                    }
+                    
+                    // Mostrar respuesta simulada
+                    showResult('demo', demoResponse);
+                }, 1500);
+            });
+            
+            function showResult(type, message) {
+                if (type === 'loading') {
+                    resultContainer.innerHTML = `
+                        <div class="d-flex align-items-center">
+                            <div class="loading me-2"></div>
+                            <span>${message}</span>
+                        </div>
+                    `;
+                } else if (type === 'error') {
+                    resultContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong> ${message}
+                        </div>
+                    `;
+                } else if (type === 'success') {
+                    resultContainer.innerHTML = `
+                        <div class="alert alert-success">
+                            <strong>Respuesta:</strong>
+                        </div>
+                        <pre>${message}</pre>
+                    `;
+                } else if (type === 'demo') {
+                    resultContainer.innerHTML = `
+                        <div class="alert alert-info">
+                            <strong>Modo de Demostración:</strong>
+                        </div>
+                        <pre>${message}</pre>
+                    `;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

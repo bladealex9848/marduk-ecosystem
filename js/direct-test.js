@@ -110,6 +110,41 @@ document.addEventListener('DOMContentLoaded', function() {
         const model = directModelSelect.value;
         const message = directMessage.value.trim();
 
+        // Verificar si estamos en modo de demostración
+        if (window.ENV && window.ENV.DEMO_MODE) {
+            console.log('Modo de demostración activado para prueba directa');
+
+            // Simular un retraso para que parezca que está procesando
+            directTestBtn.disabled = true;
+            directTestBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
+
+            // Mostrar resultado
+            directTestResult.style.display = 'block';
+            directTestResponse.innerHTML = '<div class="p-3"><div class="spinner-border text-primary" role="status"></div><p class="mt-2">Generando respuesta en modo de demostración...</p></div>';
+
+            // Simular un retraso
+            setTimeout(() => {
+                // Generar respuesta simulada
+                const demoResponse = generateDemoResponse(message, model);
+
+                // Mostrar respuesta
+                directTestResponse.innerHTML = `
+                    <div class="alert alert-info mb-0">
+                        <h5><i class="fas fa-info-circle me-2"></i> Modo de Demostración</h5>
+                        <p>Esta es una respuesta simulada ya que estamos en modo de demostración.</p>
+                        <hr>
+                        <p class="mb-0">${demoResponse}</p>
+                    </div>
+                `;
+
+                // Restaurar botón
+                directTestBtn.disabled = false;
+                directTestBtn.innerHTML = 'Probar';
+            }, 1500);
+
+            return;
+        }
+
         // Verificar si hay una API key en las variables de entorno
         if (!apiKey && window.ENV && window.ENV.OPENROUTER_API_KEY) {
             apiKey = window.ENV.OPENROUTER_API_KEY;
@@ -172,7 +207,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Manejar error 401 (No autorizado) de forma especial
                 if (response.status === 401) {
-                    throw new Error(`API key inválida o no autorizada. Verifica tu API key de OpenRouter.`);
+                    console.log('Error de autenticación. Usando modo de demostración.');
+                    directTestResponse.innerHTML = `
+                        <div class="alert alert-warning mb-0">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i> Modo de Demostración</h5>
+                            <p>La API key no es válida o no está autorizada. Estamos funcionando en modo de demostración.</p>
+                            <p>Respuesta simulada: <em>"Hola, soy un asistente virtual. Estoy funcionando en modo de demostración debido a un problema con la API key. Por favor, contacta al administrador para obtener una API key válida."</em></p>
+                        </div>
+                    `;
+                    return; // Detener la ejecución para no lanzar el error
                 } else {
                     throw new Error(`Error en la API de OpenRouter: ${response.status} - ${errorMessage}`);
                 }
@@ -205,6 +248,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
+
+    /**
+     * Genera una respuesta simulada para el modo de demostración
+     * @param {string} message - Mensaje del usuario
+     * @param {string} model - ID del modelo
+     * @returns {string} - Respuesta simulada
+     */
+    function generateDemoResponse(message, model) {
+        // Respuestas predefinidas para preguntas comunes
+        const commonResponses = {
+            'hola': 'Hola, soy un asistente virtual. Estoy funcionando en modo de demostración. ¿En qué puedo ayudarte?',
+            'qué es marduk': 'Marduk es un ecosistema de herramientas digitales diseñadas para la transformación judicial. Incluye soluciones para la gestión de casos, análisis de datos jurídicos y asistencia en la toma de decisiones. Actualmente estoy funcionando en modo de demostración.',
+            'ayuda': 'Estoy en modo de demostración, pero puedo proporcionarte información general sobre el ecosistema Marduk. Puedes preguntar sobre las soluciones disponibles, la comunidad judicial o cómo contribuir al proyecto.',
+        };
+
+        // Buscar si hay alguna respuesta predefinida que coincida con el mensaje
+        const lowerMessage = message.toLowerCase();
+        for (const [key, response] of Object.entries(commonResponses)) {
+            if (lowerMessage.includes(key)) {
+                return response;
+            }
+        }
+
+        // Obtener información del modelo
+        let modelInfo = '';
+        if (typeof OPENROUTER_MODELS_CONFIG !== 'undefined' && OPENROUTER_MODELS_CONFIG.models) {
+            const modelData = OPENROUTER_MODELS_CONFIG.models.find(m => m.id === model);
+            if (modelData) {
+                modelInfo = `\n\nEsta respuesta simula el comportamiento del modelo ${modelData.name} (${modelData.provider}).`;
+            }
+        }
+
+        // Si no hay coincidencias, generar una respuesta genérica
+        return `Estoy funcionando en modo de demostración debido a que no hay una API key válida configurada.\n\nEn respuesta a tu mensaje: "${message}"\n\nComo asistente virtual, puedo proporcionarte información general sobre temas jurídicos y el ecosistema Marduk, pero mis capacidades son limitadas en este modo. Para acceder a todas las funcionalidades, por favor contacta al administrador para obtener una API key válida.${modelInfo}`;
+    }
 
     /**
      * Carga los modelos desde la configuración

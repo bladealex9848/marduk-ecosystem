@@ -165,6 +165,33 @@ class OpenRouterService {
    * @param {Object} options - Opciones adicionales
    * @returns {Promise} - Promesa con la respuesta
    */
+  /**
+   * Genera una respuesta simulada para el modo de demostración
+   * @param {string} prompt - Texto de entrada
+   * @param {Object} options - Opciones adicionales
+   * @returns {string} - Respuesta simulada
+   * @private
+   */
+  _generateDemoResponse(prompt, options = {}) {
+    // Respuestas predefinidas para preguntas comunes
+    const commonResponses = {
+      'hola': 'Hola, soy el asistente virtual de Marduk. Estoy funcionando en modo de demostración. ¿En qué puedo ayudarte?',
+      'qué es marduk': 'Marduk es un ecosistema de herramientas digitales diseñadas para la transformación judicial. Incluye soluciones para la gestión de casos, análisis de datos jurídicos y asistencia en la toma de decisiones. Actualmente estoy funcionando en modo de demostración.',
+      'ayuda': 'Estoy en modo de demostración, pero puedo proporcionarte información general sobre el ecosistema Marduk. Puedes preguntar sobre las soluciones disponibles, la comunidad judicial o cómo contribuir al proyecto.',
+    };
+
+    // Buscar si hay alguna respuesta predefinida que coincida con el prompt
+    const lowerPrompt = prompt.toLowerCase();
+    for (const [key, response] of Object.entries(commonResponses)) {
+      if (lowerPrompt.includes(key)) {
+        return response;
+      }
+    }
+
+    // Si no hay coincidencias, generar una respuesta genérica
+    return `Estoy funcionando en modo de demostración debido a que no hay una API key válida configurada. \n\nEn respuesta a tu consulta: "${prompt}"\n\nComo asistente virtual de Marduk, puedo proporcionarte información general sobre temas jurídicos y el ecosistema Marduk, pero mis capacidades son limitadas en este modo. Para acceder a todas las funcionalidades, por favor contacta al administrador para obtener una API key válida.`;
+  }
+
   async generateCompletion(prompt, options = {}) {
     try {
       // Esperar a que el servicio esté inicializado
@@ -180,6 +207,23 @@ class OpenRouterService {
           };
           checkInitialized();
         });
+      }
+
+      // Verificar si estamos en modo de demostración
+      if (window.ENV && window.ENV.DEMO_MODE) {
+        console.log('Generando respuesta en modo de demostración...');
+
+        // Mostrar indicador de carga
+        this._showLoadingIndicator();
+
+        // Simular un retraso para que parezca que está procesando
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Ocultar indicador de carga
+        this._hideLoadingIndicator();
+
+        // Generar una respuesta simulada basada en el prompt
+        return this._generateDemoResponse(prompt, options);
       }
 
       // Mostrar indicador de carga
@@ -220,8 +264,16 @@ class OpenRouterService {
       this._hideLoadingIndicator();
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({}));
         console.error('Error en la solicitud a OpenRouter:', errorData);
+
+        // Manejar errores de autenticación
+        if (response.status === 401) {
+          console.log('Error de autenticación. Usando modo de demostración.');
+          // Devolver una respuesta simulada para modo demo
+          return this._generateDemoResponse(prompt, options);
+        }
+
         throw new Error(`Error en la solicitud a OpenRouter: ${errorData.error?.message || 'Error desconocido'}`);
       }
 
