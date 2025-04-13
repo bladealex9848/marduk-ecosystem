@@ -6,18 +6,17 @@
  * y utilizar sus modelos de IA en diferentes partes de la aplicación.
  */
 
-// Importar configuración de modelos y variables de entorno
-import OPENROUTER_MODELS_CONFIG from './config/openrouter-models.js';
-import envLoader from './config/env.js';
+// La configuración de modelos se carga desde openrouter-models.js en el HTML
+// y las variables de entorno se cargan desde env-loader.js
 
 // Configuración base de OpenRouter
 const OPENROUTER_CONFIG = {
   apiKey: 'demo', // Valor por defecto, se reemplazará con el valor del .env
   baseUrl: 'https://openrouter.ai/api/v1',
-  defaultModel: OPENROUTER_MODELS_CONFIG.default_model,
-  fastModel: OPENROUTER_MODELS_CONFIG.fast_models,
-  availableModels: OPENROUTER_MODELS_CONFIG.models,
-  temperature: OPENROUTER_MODELS_CONFIG.temperature
+  defaultModel: 'openrouter/optimus-alpha',
+  fastModel: 'google/gemini-2.0-flash-thinking-exp:free',
+  availableModels: [],
+  temperature: 0.7
 };
 
 /**
@@ -39,11 +38,11 @@ class OpenRouterService {
    */
   async _initialize() {
     try {
-      // Cargar variables de entorno
-      const env = await envLoader.load();
-
-      // Actualizar API key desde el archivo .env
-      this.config.apiKey = env.OPENROUTER_API_KEY || this.config.apiKey;
+      // Cargar variables de entorno desde window.ENV
+      if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+        this.config.apiKey = window.ENV.OPENROUTER_API_KEY;
+        console.log('API key cargada desde variables de entorno');
+      }
 
       // Verificar si hay un modelo guardado en localStorage
       const savedModel = localStorage.getItem('mardukAIModel');
@@ -79,8 +78,14 @@ class OpenRouterService {
    * @returns {boolean} - true si el modelo es válido
    */
   isValidModel(modelId) {
-    // Verificar en la lista de modelos disponibles
-    return this.config.availableModels.some(model => model.id === modelId);
+    // Si OPENROUTER_MODELS_CONFIG está disponible, verificar en su lista de modelos
+    if (window.OPENROUTER_MODELS_CONFIG && window.OPENROUTER_MODELS_CONFIG.models) {
+      return window.OPENROUTER_MODELS_CONFIG.models.some(model => model.id === modelId);
+    }
+
+    // Si no hay modelos disponibles, aceptar cualquier modelo que comience con un proveedor conocido
+    const knownProviders = ['openrouter/', 'anthropic/', 'google/', 'meta-llama/', 'mistralai/', 'qwen/'];
+    return knownProviders.some(provider => modelId.startsWith(provider));
   }
 
   /**
@@ -89,7 +94,22 @@ class OpenRouterService {
    * @returns {Object|null} - Información del modelo o null si no existe
    */
   getModelInfo(modelId) {
-    return this.config.availableModels.find(model => model.id === modelId) || null;
+    // Si OPENROUTER_MODELS_CONFIG está disponible, buscar en su lista de modelos
+    if (window.OPENROUTER_MODELS_CONFIG && window.OPENROUTER_MODELS_CONFIG.models) {
+      return window.OPENROUTER_MODELS_CONFIG.models.find(model => model.id === modelId) || null;
+    }
+
+    // Si no se encuentra, devolver un objeto básico con la información mínima
+    if (this.isValidModel(modelId)) {
+      const parts = modelId.split('/');
+      return {
+        id: modelId,
+        name: parts[1] || modelId,
+        provider: parts[0] || 'Desconocido'
+      };
+    }
+
+    return null;
   }
 
   /**

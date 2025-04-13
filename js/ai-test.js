@@ -162,17 +162,26 @@ function loadSavedApiKey() {
 }
 
 /**
- * Carga los modelos directamente desde la API de OpenRouter
+ * Carga los modelos desde openrouter-models.js o una lista predefinida
  */
 async function loadModelsFromService() {
     try {
         // Obtener API key desde localStorage o desde .env
-        let apiKey = localStorage.getItem('OPENROUTER_API_KEY');
+        let apiKey = '';
 
-        // Si no hay API key en localStorage, intentar obtenerla del archivo .env
+        // 1. Verificar si hay una API key en las variables de entorno
+        if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+            apiKey = window.ENV.OPENROUTER_API_KEY;
+            console.log('Usando API key de variables de entorno para el chat');
+        }
+        // 2. Verificar si hay una API key en localStorage
+        else if (localStorage.getItem('OPENROUTER_API_KEY')) {
+            apiKey = localStorage.getItem('OPENROUTER_API_KEY');
+            console.log('Usando API key de localStorage para el chat');
+        }
+
+        // Si no hay API key válida, mostrar modal para solicitarla
         if (!apiKey || apiKey === 'demo' || apiKey === 'tu-api-key-aquí') {
-            // Intentar obtener la API key del archivo .env (esto depende de cómo se cargue en el frontend)
-            // Como alternativa, mostrar un modal para solicitar la API key
             const result = await Swal.fire({
                 title: 'API Key Requerida',
                 html: `
@@ -184,7 +193,7 @@ async function loadModelsFromService() {
                 `,
                 showCancelButton: true,
                 confirmButtonText: 'Guardar',
-                cancelButtonText: 'Usar modo simulación',
+                cancelButtonText: 'Usar modelos predefinidos',
                 allowOutsideClick: false,
                 preConfirm: () => {
                     const apiKey = document.getElementById('swal-api-key').value;
@@ -202,7 +211,7 @@ async function loadModelsFromService() {
                 document.getElementById('api-key-input').value = apiKey;
                 showToast('API key guardada correctamente', 'success');
             } else {
-                // Si el usuario cancela, cargar modelos desde la configuración
+                // Si el usuario cancela, cargar modelos predefinidos
                 return loadModelsFromConfig();
             }
         }
@@ -210,55 +219,71 @@ async function loadModelsFromService() {
         // Mostrar indicador de carga
         Swal.fire({
             title: 'Cargando modelos...',
-            text: 'Obteniendo modelos disponibles de OpenRouter',
+            text: 'Obteniendo modelos disponibles',
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading();
             }
         });
 
-        // Obtener modelos directamente de la API
-        const response = await fetch('https://openrouter.ai/api/v1/models', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'HTTP-Referer': window.location.origin,
-                'X-Title': 'Marduk Ecosystem'
-            }
-        });
+        // Esperar un momento para asegurarnos de que OPENROUTER_MODELS_CONFIG esté cargado
+        await new Promise(resolve => setTimeout(resolve, 500));
 
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            console.error('Error de OpenRouter:', errorData);
-            throw new Error(`Error al obtener modelos: ${response.status} - ${errorData.error?.message || 'Error desconocido'}`);
+        let models = [];
+
+        // Verificar si OPENROUTER_MODELS_CONFIG está disponible
+        if (window.OPENROUTER_MODELS_CONFIG && window.OPENROUTER_MODELS_CONFIG.models) {
+            console.log('Cargando modelos desde OPENROUTER_MODELS_CONFIG');
+
+            // Filtrar solo modelos gratuitos o los que queremos mostrar
+            models = window.OPENROUTER_MODELS_CONFIG.models.filter(model =>
+                model.id.includes(':free') || // Modelos gratuitos
+                model.id.startsWith('openrouter/') || // Modelos de OpenRouter
+                ['anthropic/claude-3-haiku:beta', 'anthropic/claude-3-sonnet:beta', 'anthropic/claude-3-opus:beta'].includes(model.id) // Modelos específicos
+            );
+        } else {
+            console.log('OPENROUTER_MODELS_CONFIG no disponible, usando modelos predefinidos');
+
+            // Lista predefinida de modelos
+            models = [
+                {
+                    id: "openrouter/optimus-alpha",
+                    name: "Optimus Alpha",
+                    provider: "OpenRouter",
+                    specialty: "general",
+                    capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"]
+                },
+                {
+                    id: "openrouter/quasar-alpha",
+                    name: "Quasar Alpha",
+                    provider: "OpenRouter",
+                    specialty: "general",
+                    capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"]
+                },
+                {
+                    id: "anthropic/claude-3-haiku:beta",
+                    name: "Claude 3 Haiku",
+                    provider: "Anthropic",
+                    specialty: "general",
+                    capabilities: ["efficiency", "multi_task", "multilingual_support"]
+                }
+            ];
         }
-
-        const data = await response.json();
 
         // Cerrar indicador de carga
         Swal.close();
 
-        // Transformar los datos al formato esperado
-        const models = data.data.map(model => ({
-            id: model.id,
-            name: model.name || model.id.split('/').pop(),
-            provider: model.id.split('/')[0],
-            specialty: getModelSpecialty(model),
-            capabilities: getModelCapabilities(model),
-            context_length: model.context_length,
-            prompt_types: ['general']
-        }));
-
         // Cargar modelos
         loadModelsToUI(models);
 
-        // Seleccionar modelo por defecto (el primero de la lista)
+        // Seleccionar modelo por defecto (el primero de la lista o Optimus Alpha si está disponible)
         if (models.length > 0) {
-            selectModel(models[0]);
+            const defaultModel = models.find(m => m.id === 'openrouter/optimus-alpha') || models[0];
+            selectModel(defaultModel);
         }
 
         // Mostrar notificación de éxito
-        showToast(`Se cargaron ${models.length} modelos desde OpenRouter`, 'success');
+        showToast(`Se cargaron ${models.length} modelos`, 'success');
 
         return models;
     } catch (error) {
@@ -647,7 +672,19 @@ function setupEventListeners() {
             let response;
 
             // Obtener API key desde localStorage
-            const apiKey = localStorage.getItem('OPENROUTER_API_KEY');
+            // Intentar obtener la API key de diferentes fuentes (en orden de prioridad)
+            let apiKey = '';
+
+            // 1. Verificar si hay una API key en las variables de entorno
+            if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+                apiKey = window.ENV.OPENROUTER_API_KEY;
+                console.log('Usando API key de variables de entorno para el chat');
+            }
+            // 2. Verificar si hay una API key en localStorage
+            else if (localStorage.getItem('OPENROUTER_API_KEY')) {
+                apiKey = localStorage.getItem('OPENROUTER_API_KEY');
+                console.log('Usando API key de localStorage para el chat');
+            }
 
             if (apiKey && apiKey !== 'demo' && apiKey !== 'tu-api-key-aquí') {
                 // Usar directamente la API de OpenRouter
