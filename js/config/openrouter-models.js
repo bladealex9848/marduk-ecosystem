@@ -8,21 +8,7 @@
 const OPENROUTER_MODELS_CONFIG = {
   fast_models: "google/gemini-2.0-flash-thinking-exp:free",
   default_model: "openrouter/optimus-alpha",
-  models: [
-    {
-      id: "openrouter/quasar-alpha",
-      name: "Quasar Alpha",
-      provider: "OpenRouter",
-      specialty: "general",
-      capabilities: [
-        "advanced_reasoning",
-        "multi_task",
-        "multilingual_support",
-        "large_scale",
-        "proprietary_architecture"
-      ],
-      prompt_types: ["general", "scientific", "historical", "philosophical", "ethical", "cultural", "political", "economic", "analytical"]
-    },
+  models: [    
     {
       id: "openrouter/optimus-alpha",
       name: "Optimus Alpha",
