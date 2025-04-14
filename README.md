@@ -183,44 +183,6 @@ La plataforma está diseñada para servir a todos los actores del sistema judici
 - **Almacenamiento**: LocalStorage para persistencia de preferencias
 - **Visualización**: FontAwesome para iconografía, Chart.js para gráficos
 
-## 👥 Contribuciones
-
-Las contribuciones son bienvenidas. Para contribuir al desarrollo de Marduk Ecosystem:
-
-1. Realiza un fork del repositorio
-2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`)
-3. Implementa tus cambios
-4. Envía un pull request
-
-Por favor, asegúrate de seguir las convenciones de código existentes y documentar adecuadamente cualquier nueva funcionalidad.
-
-## 📝 Licencia
-
-Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
-
-## 🙏 Agradecimientos
-
-- **OpenRouter** por proporcionar acceso a modelos avanzados de IA
-- **Bootstrap Team** por el framework que facilita el desarrollo responsive
-- **Comunidad de LegalTech** por la inspiración y casos de uso
-- **Contribuidores** que han ayudado a mejorar y expandir el ecosistema
-
-## 👤 Autor
-
-Creado con ❤️ por [Alexander Oviedo Fadul](https://github.com/bladealex9848)
-
-[GitHub](https://github.com/bladealex9848) | [Website](https://www.alexanderoviedofadul.dev/) | [LinkedIn](https://www.linkedin.com/in/alexander-oviedo-fadul/) | [Instagram](https://www.instagram.com/alexander.oviedo.fadul) | [Twitter](https://twitter.com/alexanderofadul) | [Facebook](https://www.facebook.com/alexanderof/) | [WhatsApp](https://api.whatsapp.com/send?phone=573015930519&text=Hola%20!Quiero%20conversar%20contigo!%20)
-
----
-
-## 💼 Mensaje Final
-
-Marduk Ecosystem representa una visión de cómo la tecnología puede transformar el sistema judicial, haciéndolo más eficiente, transparente y accesible. Este proyecto busca inspirar la innovación en el sector legal y fomentar la colaboración entre desarrolladores, juristas y todos los actores del ecosistema judicial.
-
-*"La justicia del futuro será aquella que combine la sabiduría jurídica con el potencial transformador de la tecnología, siempre al servicio del ciudadano y del Estado de Derecho."*
-
----
-
 ## 📂 Estructura del Proyecto
 
 El proyecto Marduk Ecosystem está organizado en una estructura modular que facilita el mantenimiento y la escalabilidad:
@@ -465,6 +427,44 @@ Esta página permite probar la integración con modelos de IA:
 2. **Selección de Modelos**: Muestra modelos disponibles localmente y desde la API.
 3. **Área de Pruebas**: Permite enviar mensajes y ver respuestas.
 4. **Resultados**: Muestra las respuestas con formato markdown.
+
+## 👥 Contribuciones
+
+Las contribuciones son bienvenidas. Para contribuir al desarrollo de Marduk Ecosystem:
+
+1. Realiza un fork del repositorio
+2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`)
+3. Implementa tus cambios
+4. Envía un pull request
+
+Por favor, asegúrate de seguir las convenciones de código existentes y documentar adecuadamente cualquier nueva funcionalidad.
+
+## 📝 Licencia
+
+Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+
+## 🙏 Agradecimientos
+
+- **OpenRouter** por proporcionar acceso a modelos avanzados de IA
+- **Bootstrap Team** por el framework que facilita el desarrollo responsive
+- **Comunidad de LegalTech** por la inspiración y casos de uso
+- **Contribuidores** que han ayudado a mejorar y expandir el ecosistema
+
+## 👤 Autor
+
+Creado con ❤️ por [Alexander Oviedo Fadul](https://github.com/bladealex9848)
+
+[GitHub](https://github.com/bladealex9848) | [Website](https://www.alexanderoviedofadul.dev/) | [LinkedIn](https://www.linkedin.com/in/alexander-oviedo-fadul/) | [Instagram](https://www.instagram.com/alexander.oviedo.fadul) | [Twitter](https://twitter.com/alexanderofadul) | [Facebook](https://www.facebook.com/alexanderof/) | [WhatsApp](https://api.whatsapp.com/send?phone=573015930519&text=Hola%20!Quiero%20conversar%20contigo!%20)
+
+---
+
+## 💼 Mensaje Final
+
+Marduk Ecosystem representa una visión de cómo la tecnología puede transformar el sistema judicial, haciéndolo más eficiente, transparente y accesible. Este proyecto busca inspirar la innovación en el sector legal y fomentar la colaboración entre desarrolladores, juristas y todos los actores del ecosistema judicial.
+
+*"La justicia del futuro será aquella que combine la sabiduría jurídica con el potencial transformador de la tecnología, siempre al servicio del ciudadano y del Estado de Derecho."*
+
+---
 
 ## 🔗 Enlaces
 
