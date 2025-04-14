@@ -32,22 +32,10 @@ async function loadModelsFromOpenRouterAPI(apiKey) {
             throw new Error('Formato de respuesta inesperado');
         }
 
-        // Filtrar solo modelos gratuitos y de OpenRouter
-        const filteredData = data.data.filter(model => {
-            // Verificar si el modelo es gratuito
-            const isFree = model.id.includes(':free') || (model.context_length_free && model.context_length_free > 0);
+        console.log(`Total de modelos disponibles: ${data.data.length}`);
 
-            // Verificar si el modelo es de OpenRouter
-            const isOpenRouter = model.id.startsWith('openrouter/');
-
-            // Incluir el modelo si es gratuito o de OpenRouter
-            return isFree || isOpenRouter;
-        });
-
-        console.log(`Modelos filtrados: ${filteredData.length} de ${data.data.length}`);
-
-        // Procesar los modelos
-        const models = filteredData.map(model => ({
+        // Procesar todos los modelos sin filtrar
+        const models = data.data.map(model => ({
             id: model.id,
             name: model.name || model.id.split('/').pop(),
             provider: model.id.split('/')[0] || 'Desconocido',
@@ -61,7 +49,10 @@ async function loadModelsFromOpenRouterAPI(apiKey) {
             },
             source: 'api',
             isFree: model.id.includes(':free') || (model.context_length_free && model.context_length_free > 0),
-            isOpenRouter: model.id.startsWith('openrouter/')
+            isOpenRouter: model.id.startsWith('openrouter/'),
+            multimodal: model.multimodal || false,
+            version: model.version || null,
+            description: model.description || null
         }));
 
         console.log(`Se cargaron ${models.length} modelos desde la API`);

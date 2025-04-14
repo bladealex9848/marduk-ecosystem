@@ -35,8 +35,12 @@
       // Aplicar tema oscuro si está habilitado o preferido por el sistema
       if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
         document.documentElement.setAttribute('data-theme', 'dark');
-        document.body.classList.add('dark-mode');
         localStorage.setItem('darkModeEnabled', 'true');
+
+        // Esperar a que el documento esté listo para modificar el body
+        document.addEventListener('DOMContentLoaded', function() {
+          if (document.body) document.body.classList.add('dark-mode');
+        });
       }
     </script>
 
@@ -275,10 +279,9 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/api-key-loader.js"></script>
+    <script src="js/api-key-input.js"></script>
     <script src="../js/config/openrouter-models.js"></script>
-    <script src="js/openrouter-api-models.js"></script>
-    <script src="js/env-debug.js"></script>
+    <script src="js/openrouter-api-models-all.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
             // Elementos del DOM
@@ -304,49 +307,21 @@
             let allModels = [];
             let envApiKey = null;
 
-            // Esperar a que se carguen las variables de entorno
-            await new Promise(resolve => {
-                // Verificar si loadEnvVariables ya se ha ejecutado
-                if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
-                    console.log('Variables de entorno ya cargadas');
-                    resolve();
-                    return;
-                }
+            // No esperamos a que se carguen las variables de entorno
+            // ya que ahora requerimos entrada manual de la API key
+            console.log('Usando modo de entrada manual de API key');
 
-                // Si no se ha ejecutado, esperar a que se complete
-                if (typeof loadEnvVariables === 'function') {
-                    // Ejecutar manualmente si DOMContentLoaded ya ocurrió
-                    loadEnvVariables().then(() => {
-                        console.log('Variables de entorno cargadas manualmente');
-                        resolve();
-                    }).catch(error => {
-                        console.error('Error al cargar variables de entorno:', error);
-                        resolve(); // Resolver de todos modos para continuar
-                    });
-                } else {
-                    // Esperar a que ENV esté disponible
-                    const checkEnv = () => {
-                        if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
-                            console.log('Variables de entorno detectadas');
-                            resolve();
-                        } else {
-                            console.log('Esperando variables de entorno...');
-                            setTimeout(checkEnv, 500);
-                        }
-                    };
-                    checkEnv();
-                }
-            });
+            // Configurar el botón para usar la API key del .env como deshabilitado
+            useEnvKeyBtn.disabled = true;
 
-            // Verificar si hay una API key en las variables de entorno
-            if (window.ENV && window.ENV.OPENROUTER_API_KEY && window.ENV.OPENROUTER_API_KEY !== 'DEMO_MODE') {
-                envApiKey = window.ENV.OPENROUTER_API_KEY;
-                apiKeyStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle"></i> API key disponible en .env</span>';
-                useEnvKeyBtn.disabled = false;
-            } else {
-                apiKeyStatus.innerHTML = '<span class="text-warning"><i class="fas fa-exclamation-circle"></i> No hay API key válida en .env</span>';
-                useEnvKeyBtn.disabled = true;
-            }
+            // Agregar botón para cargar modelos de la API
+            const loadApiModelsBtn = document.createElement('button');
+            loadApiModelsBtn.type = 'button';
+            loadApiModelsBtn.className = 'btn btn-primary ms-2';
+            loadApiModelsBtn.innerHTML = '<i class="fas fa-sync-alt me-2"></i>Cargar Modelos de API';
+
+            // Agregar el botón después del botón de usar API key de .env
+            useEnvKeyBtn.parentNode.appendChild(loadApiModelsBtn);
 
             // Cargar modelos locales
             if (typeof OPENROUTER_MODELS_CONFIG !== 'undefined' && OPENROUTER_MODELS_CONFIG.models) {
