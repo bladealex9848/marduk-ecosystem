@@ -272,9 +272,31 @@ async function handleSearch() {
         // Primero buscar en el sitemap
         const results = searchInSitemap(query);
 
-        // Si hay resultados, mostrarlos
+        // Si hay resultados, mostrarlos o navegar directamente
         if (results.length > 0) {
-            showSearchResults(results, query);
+            console.log(`Se encontraron ${results.length} resultados para "${query}"`);
+
+            // Si solo hay un resultado, navegar directamente a él
+            if (results.length === 1) {
+                const result = results[0];
+                console.log('Navegando directamente al único resultado:', result);
+
+                if (result.type === 'solution') {
+                    // Navegar a la solución
+                    const url = `solutions.html?category=${result.categoryId}&id=${result.solution.id}`;
+                    console.log(`Redirigiendo a: ${url}`);
+                    window.location.href = url;
+                } else if (result.type === 'forum') {
+                    // Navegar al foro
+                    const url = `discussions.html?category=${result.categoryId}&id=${result.forum.id}`;
+                    console.log(`Redirigiendo a: ${url}`);
+                    window.location.href = url;
+                }
+            } else {
+                // Si hay más de un resultado, mostrar la lista
+                showSearchResults(results, query);
+            }
+
             hideLoadingIndicator();
             return;
         }
@@ -614,10 +636,32 @@ Asegúrate de que la solución sea relevante para el ámbito judicial y que pued
  */
 function navigateToGeneratedSolution(solutionId, solution) {
     // Guardar la solución en localStorage para recuperarla en la página de destino
-    localStorage.setItem(`ai-solution-${solutionId}`, JSON.stringify(solution));
+    const solutionKey = `ai-solution-${solutionId}`;
+    const solutionJson = JSON.stringify(solution);
+
+    console.log(`Guardando solución en localStorage con clave: ${solutionKey}`);
+    console.log('Contenido de la solución:', solutionJson.substring(0, 100) + '...');
+
+    localStorage.setItem(solutionKey, solutionJson);
+
+    // Verificar que se guardó correctamente
+    const savedSolution = localStorage.getItem(solutionKey);
+    if (!savedSolution) {
+        console.error('Error: No se pudo guardar la solución en localStorage');
+        showToast('Error al guardar la solución generada', 'error');
+        return;
+    }
+
+    console.log('Solución guardada correctamente en localStorage');
 
     // Redirigir a la página de la solución
-    window.location.href = `solutions.html?category=${solution.category}&id=${solutionId}&ai=true`;
+    const url = `solutions.html?category=${encodeURIComponent(solution.category)}&id=${solutionId}&ai=true`;
+    console.log(`Redirigiendo a: ${url}`);
+
+    // Usar setTimeout para asegurar que localStorage se actualice antes de la redirección
+    setTimeout(() => {
+        window.location.href = url;
+    }, 100);
 }
 
 /**

@@ -295,40 +295,100 @@ function showAiGeneratedSolution(solutionId, category) {
 
     // Intentar recuperar la solución del localStorage
     const solutionKey = `ai-solution-${solutionId}`;
+    console.log(`Buscando solución en localStorage con clave: ${solutionKey}`);
+
+    // Listar todas las claves en localStorage para depuración
+    console.log('Claves en localStorage:');
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        console.log(`- ${key}: ${localStorage.getItem(key).substring(0, 30)}...`);
+    }
+
     const solutionData = localStorage.getItem(solutionKey);
 
     if (!solutionData) {
         console.error(`No se encontró la solución generada con ID: ${solutionId}`);
         showToast('No se encontró la solución generada', 'error');
+
+        // Verificar si hay alguna solución generada por IA en localStorage
+        const aiSolutions = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith('ai-solution-')) {
+                try {
+                    const solution = JSON.parse(localStorage.getItem(key));
+                    aiSolutions.push({
+                        key: key,
+                        id: key.replace('ai-solution-', ''),
+                        solution: solution
+                    });
+                } catch (e) {
+                    console.error(`Error al parsear solución ${key}:`, e);
+                }
+            }
+        }
+
+        if (aiSolutions.length > 0) {
+            console.log(`Se encontraron ${aiSolutions.length} soluciones generadas por IA:`, aiSolutions);
+
+            // Usar la solución más reciente
+            const latestSolution = aiSolutions.sort((a, b) => b.id - a.id)[0];
+            console.log('Usando la solución más reciente:', latestSolution);
+
+            // Actualizar la URL
+            const url = new URL(window.location.href);
+            url.searchParams.set('id', latestSolution.id);
+            url.searchParams.set('category', latestSolution.solution.category);
+            url.searchParams.set('ai', 'true');
+            window.history.replaceState({}, '', url);
+
+            // Mostrar la solución
+            displayAiSolution(latestSolution.solution);
+            return;
+        }
+
         return;
     }
 
     try {
         // Parsear los datos de la solución
+        console.log('Datos de la solución encontrados:', solutionData.substring(0, 100) + '...');
         const solution = JSON.parse(solutionData);
 
-        // Ocultar lista de soluciones
-        document.getElementById('solutionsList').classList.add('d-none');
-
-        // Mostrar detalles de la aplicación
-        const appDetailElement = document.getElementById('appDetail');
-        appDetailElement.classList.remove('d-none');
-
-        // Crear contenido HTML para la solución generada
-        appDetailElement.innerHTML = generateAiSolutionHtml(solution);
-
-        // Configurar evento para el botón de volver
-        const backButton = document.querySelector('#appDetail .back-button');
-        if (backButton) {
-            backButton.addEventListener('click', showSolutionsList);
-        }
-
-        // Desplazar al inicio
-        window.scrollTo(0, 0);
+        // Mostrar la solución
+        displayAiSolution(solution);
     } catch (error) {
         console.error('Error al mostrar la solución generada:', error);
         showToast('Error al mostrar la solución generada', 'error');
     }
+}
+
+/**
+ * Muestra una solución generada por IA en la interfaz
+ * @param {Object} solution - Datos de la solución
+ */
+function displayAiSolution(solution) {
+    // Ocultar lista de soluciones
+    document.getElementById('solutionsList').classList.add('d-none');
+
+    // Mostrar detalles de la aplicación
+    const appDetailElement = document.getElementById('appDetail');
+    appDetailElement.classList.remove('d-none');
+
+    // Crear contenido HTML para la solución generada
+    appDetailElement.innerHTML = generateAiSolutionHtml(solution);
+
+    // Configurar evento para el botón de volver
+    const backButton = document.querySelector('#appDetail .back-button');
+    if (backButton) {
+        backButton.addEventListener('click', showSolutionsList);
+    }
+
+    // Desplazar al inicio
+    window.scrollTo(0, 0);
+
+    // Mostrar mensaje de éxito
+    showToast('Solución generada por IA cargada correctamente', 'success');
 }
 
 /**
