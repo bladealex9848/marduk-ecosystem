@@ -65,6 +65,18 @@ function updateProfileByRole(role) {
     // Save selected role to localStorage
     localStorage.setItem('mardukUserRole', role);
 
+    // Destroy existing charts to prevent memory leaks
+    if (window.profileCharts) {
+        window.profileCharts.forEach(chart => {
+            if (chart && typeof chart.destroy === 'function') {
+                chart.destroy();
+            }
+        });
+    }
+
+    // Initialize charts array
+    window.profileCharts = [];
+
     // Define role-specific data
     const profileData = {
         investigador: {
@@ -382,6 +394,9 @@ function updateProfileByRole(role) {
 
     // Update user profile info based on role
     updateUserProfileInfo(role, data);
+
+    // Create role-specific charts
+    createProfileCharts(role, data);
 
     // Update titles for specific roles
     updateRoleSpecificContent(role);
@@ -1055,6 +1070,264 @@ function updateActivityFeed(role) {
 
             activityContainer.appendChild(activityItem);
         });
+    }
+}
+
+/**
+ * Create profile charts based on role
+ * @param {string} role - The user role
+ * @param {Object} data - The profile data
+ */
+function createProfileCharts(role, data) {
+    // Prepare chart containers if they don't exist
+    if (!document.getElementById('chartContainer')) {
+        const chartSection = document.createElement('div');
+        chartSection.className = 'card border-0 shadow-sm mb-4';
+        chartSection.innerHTML = `
+            <div class="card-body p-4">
+                <h2 class="h5 fw-bold mb-4">Análisis de Actividad</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="chart-container" style="position: relative; height: 250px;">
+                            <canvas id="activityChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="chart-container" style="position: relative; height: 250px;">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Insert chart section before the recommended solutions section
+        const recommendedSection = document.querySelector('.card:nth-of-type(4)');
+        if (recommendedSection) {
+            recommendedSection.parentNode.insertBefore(chartSection, recommendedSection);
+        } else {
+            // Fallback: append to main content
+            document.querySelector('main .row:nth-of-type(2) .col-lg-8').appendChild(chartSection);
+        }
+    }
+
+    // Define chart data based on role
+    const chartData = {
+        funcionario: {
+            activity: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Procesos Gestionados',
+                    data: [12, 19, 15, 22, 18, 28],
+                    backgroundColor: 'rgba(13, 110, 253, 0.2)',
+                    borderColor: 'rgba(13, 110, 253, 1)',
+                    borderWidth: 2,
+                    tension: 0.4
+                }]
+            },
+            progress: {
+                labels: ['Audiencias', 'Sentencias', 'Autos', 'Notificaciones'],
+                datasets: [{
+                    data: [65, 40, 35, 50],
+                    backgroundColor: [
+                        'rgba(13, 110, 253, 0.7)',
+                        'rgba(25, 135, 84, 0.7)',
+                        'rgba(13, 202, 240, 0.7)',
+                        'rgba(255, 193, 7, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        },
+        ciudadano: {
+            activity: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Consultas Realizadas',
+                    data: [5, 8, 12, 7, 10, 8],
+                    backgroundColor: 'rgba(25, 135, 84, 0.2)',
+                    borderColor: 'rgba(25, 135, 84, 1)',
+                    borderWidth: 2,
+                    tension: 0.4
+                }]
+            },
+            progress: {
+                labels: ['Consultas', 'Documentos', 'Notificaciones', 'Recursos'],
+                datasets: [{
+                    data: [45, 25, 20, 10],
+                    backgroundColor: [
+                        'rgba(25, 135, 84, 0.7)',
+                        'rgba(13, 110, 253, 0.7)',
+                        'rgba(255, 193, 7, 0.7)',
+                        'rgba(220, 53, 69, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        },
+        administrador: {
+            activity: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Incidentes Resueltos',
+                    data: [8, 5, 12, 7, 3, 9],
+                    backgroundColor: 'rgba(133, 64, 189, 0.2)',
+                    borderColor: 'rgba(133, 64, 189, 1)',
+                    borderWidth: 2,
+                    tension: 0.4
+                }]
+            },
+            progress: {
+                labels: ['Sistemas', 'Usuarios', 'Seguridad', 'Mantenimiento'],
+                datasets: [{
+                    data: [30, 40, 20, 10],
+                    backgroundColor: [
+                        'rgba(133, 64, 189, 0.7)',
+                        'rgba(13, 110, 253, 0.7)',
+                        'rgba(220, 53, 69, 0.7)',
+                        'rgba(25, 135, 84, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        },
+        desarrollador: {
+            activity: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Commits Realizados',
+                    data: [45, 30, 60, 25, 48, 28],
+                    backgroundColor: 'rgba(253, 126, 20, 0.2)',
+                    borderColor: 'rgba(253, 126, 20, 1)',
+                    borderWidth: 2,
+                    tension: 0.4
+                }]
+            },
+            progress: {
+                labels: ['Desarrollo', 'Testing', 'Documentación', 'Despliegue'],
+                datasets: [{
+                    data: [50, 20, 15, 15],
+                    backgroundColor: [
+                        'rgba(253, 126, 20, 0.7)',
+                        'rgba(13, 110, 253, 0.7)',
+                        'rgba(25, 135, 84, 0.7)',
+                        'rgba(220, 53, 69, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        },
+        investigador: {
+            activity: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Análisis Completados',
+                    data: [3, 5, 2, 4, 6, 3],
+                    backgroundColor: 'rgba(133, 64, 189, 0.2)',
+                    borderColor: 'rgba(133, 64, 189, 1)',
+                    borderWidth: 2,
+                    tension: 0.4
+                }]
+            },
+            progress: {
+                labels: ['Investigación', 'Publicaciones', 'Análisis', 'Presentaciones'],
+                datasets: [{
+                    data: [40, 20, 30, 10],
+                    backgroundColor: [
+                        'rgba(133, 64, 189, 0.7)',
+                        'rgba(13, 110, 253, 0.7)',
+                        'rgba(25, 135, 84, 0.7)',
+                        'rgba(255, 193, 7, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        },
+        estudiante: {
+            activity: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Cursos Completados',
+                    data: [1, 2, 1, 3, 2, 3],
+                    backgroundColor: 'rgba(25, 135, 84, 0.2)',
+                    borderColor: 'rgba(25, 135, 84, 1)',
+                    borderWidth: 2,
+                    tension: 0.4
+                }]
+            },
+            progress: {
+                labels: ['Cursos', 'Prácticas', 'Certificaciones', 'Proyectos'],
+                datasets: [{
+                    data: [45, 25, 15, 15],
+                    backgroundColor: [
+                        'rgba(25, 135, 84, 0.7)',
+                        'rgba(13, 110, 253, 0.7)',
+                        'rgba(255, 193, 7, 0.7)',
+                        'rgba(253, 126, 20, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        }
+    };
+
+    // Get chart data for current role
+    const currentChartData = chartData[role] || chartData.funcionario;
+
+    // Create charts if Chart.js is available
+    if (typeof Chart !== 'undefined') {
+        // Activity Chart (Line Chart)
+        const activityCtx = document.getElementById('activityChart');
+        if (activityCtx) {
+            const activityChart = new Chart(activityCtx, {
+                type: 'line',
+                data: currentChartData.activity,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Actividad Mensual'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            window.profileCharts.push(activityChart);
+        }
+
+        // Progress Chart (Doughnut Chart)
+        const progressCtx = document.getElementById('progressChart');
+        if (progressCtx) {
+            const progressChart = new Chart(progressCtx, {
+                type: 'doughnut',
+                data: currentChartData.progress,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distribución de Actividades'
+                        }
+                    }
+                }
+            });
+            window.profileCharts.push(progressChart);
+        }
+    } else {
+        console.warn('Chart.js no está disponible. Los gráficos no se mostrarán.');
     }
 }
 

@@ -5,6 +5,26 @@ Todos los cambios notables en el proyecto Marduk Ecosystem serán documentados e
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto se adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.6.4] - 2025-04-14
+
+### Añadido
+- Gráficos interactivos específicos para cada perfil usando Chart.js
+- Sección de "Análisis de Actividad" con gráficos de línea y circular
+- Estilos inmunes a cambios de modo claro/oscuro para secciones principales
+- Documentación detallada sobre configuración del archivo .env y permisos
+- Guías de uso para cada página principal del sitio
+
+### Cambiado
+- Estructura completa del proyecto en README.md con descripción de cada archivo
+- Mejora en la visibilidad del nivel de usuario con clase profile-level
+- Fechas en CHANGELOG actualizadas según análisis de archivos del proyecto
+- Colores de gráficos adaptados al esquema de color de cada rol
+
+### Corregido
+- Problemas de visibilidad de texto en modo claro
+- Inconsistencias en la presentación de datos entre diferentes roles
+- Errores en la navegación entre perfiles
+
 ## [1.6.3] - 2025-04-14
 
 ### Añadido
@@ -156,20 +176,22 @@ y este proyecto se adhiere a [Versionado Semántico](https://semver.org/lang/es/
 - Inconsistencias en el modo oscuro
 - Errores en la carga de recursos
 
-## [1.1.0] - 2024-08-20
+## [1.1.0] - 2025-04-12
 
 ### Añadido
 - Sección de comunidad con tabs para diferentes categorías
 - Implementación de perfiles de usuario
 - Sistema de valoraciones para soluciones
 - Integración con Bootstrap 5 para mejorar la interfaz de usuario
+- Páginas de soporte y contribución
 
 ### Cambiado
 - Mejora en la visualización de tarjetas de soluciones
 - Optimización del rendimiento en dispositivos móviles
 - Actualización de estilos y componentes visuales
+- Correcciones específicas de CSS en fixes.css
 
-## [1.0.0] - 2024-07-15
+## [1.0.0] - 2025-04-11
 
 ### Añadido
 - Lanzamiento inicial del Marduk Ecosystem
@@ -177,3 +199,5 @@ y este proyecto se adhiere a [Versionado Semántico](https://semver.org/lang/es/
 - Creación de la sección de soluciones judiciales
 - Integración de modo oscuro/claro con persistencia en localStorage
 - Sistema de navegación mejorada con prefetch de páginas
+- Implementación inicial del sistema de gamificación
+- Desarrollo del panel de control (dashboard)

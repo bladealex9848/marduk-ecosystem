@@ -227,20 +227,71 @@ El proyecto Marduk Ecosystem está organizado en una estructura modular que faci
 
 ```
 marduk-ecosystem/
-├── components/         # Componentes reutilizables (header, footer)
-├── css/               # Estilos CSS del proyecto
-├── images/            # Imágenes y recursos gráficos
-├── js/                # Scripts JavaScript
-│   ├── config/        # Archivos de configuración
-│   └── ...             # Scripts específicos por funcionalidad
-├── pages/             # Páginas HTML del sitio
-├── tests/             # Pruebas y demostraciones
-├── .env               # Variables de entorno (no incluido en repositorio)
-├── .gitignore         # Archivos ignorados por Git
-├── CHANGELOG.md       # Registro de cambios del proyecto
-├── LICENSE            # Licencia del proyecto
-├── README.md          # Documentación principal
-└── index.html         # Página principal
+├── components/                # Componentes reutilizables
+│   ├── footer.html           # Pie de página principal
+│   ├── footer-pages.html     # Pie de página para secciones internas
+│   ├── header.html           # Cabecera principal
+│   └── header-pages.html     # Cabecera para secciones internas
+├── css/                      # Estilos CSS del proyecto
+│   ├── app-cards.css         # Estilos para tarjetas de aplicaciones
+│   ├── fixes.css             # Correcciones específicas
+│   ├── search.css            # Estilos para la funcionalidad de búsqueda
+│   └── styles.css            # Estilos principales del sitio
+├── images/                   # Imágenes y recursos gráficos
+│   ├── apps/                 # Imágenes de aplicaciones
+│   ├── backgrounds/          # Fondos y texturas
+│   ├── icons/                # Iconos personalizados
+│   ├── logos/                # Logotipos del proyecto
+│   └── users/                # Imágenes de usuarios
+├── js/                       # Scripts JavaScript
+│   ├── config/               # Archivos de configuración
+│   │   ├── env.js            # Gestión de variables de entorno
+│   │   └── openrouter-models.js # Configuración de modelos de IA
+│   ├── ai-search.js          # Búsqueda con IA
+│   ├── ai-test.js            # Pruebas de integración con IA
+│   ├── community.js          # Funcionalidad de la comunidad
+│   ├── components.js         # Carga dinámica de componentes
+│   ├── dashboard.js          # Funcionalidad del panel principal
+│   ├── direct-test.js        # Pruebas directas de API
+│   ├── env-loader.js         # Cargador seguro de variables de entorno
+│   ├── gamification.js       # Sistema de gamificación
+│   ├── load-openrouter-models.js # Carga de modelos de OpenRouter
+│   ├── main.js               # Funcionalidad principal
+│   ├── navigation.js         # Navegación predictiva
+│   ├── openrouter.js         # Integración con OpenRouter API
+│   ├── openrouter-api-models.js # Gestión de modelos de API
+│   ├── profile.js            # Personalización de perfiles
+│   ├── search.js             # Funcionalidad de búsqueda
+│   ├── solutions.js          # Gestión del catálogo de soluciones
+│   ├── test-api-key.js       # Pruebas de claves API
+│   ├── test-models.js        # Pruebas de modelos de IA
+│   └── theme-manager.js      # Gestión del tema claro/oscuro
+├── pages/                    # Páginas HTML del sitio
+│   ├── about.html            # Acerca del proyecto
+│   ├── ai-test.html          # Pruebas de IA
+│   ├── community.html        # Comunidad judicial
+│   ├── contribute.html       # Cómo contribuir
+│   ├── discussions.html      # Foro de discusiones
+│   ├── policies.html         # Políticas y términos
+│   ├── profile.html          # Perfiles de usuario
+│   ├── solutions.html        # Catálogo de soluciones
+│   └── support.html          # Soporte y ayuda
+├── tests/                    # Pruebas y demostraciones
+│   ├── js/                   # Scripts específicos para pruebas
+│   ├── index.html            # Índice de pruebas
+│   ├── template.html         # Plantilla para pruebas
+│   ├── test-env-access.html  # Prueba de acceso a variables de entorno
+│   ├── test-env-direct.html  # Prueba directa de variables de entorno
+│   ├── test-models-improved.html # Prueba mejorada de modelos
+│   ├── test-openrouter-improved.html # Prueba mejorada de OpenRouter
+│   └── test-openrouter-secure.html # Prueba segura de OpenRouter
+├── .env                      # Variables de entorno (no incluido en repositorio)
+├── .gitignore                # Archivos ignorados por Git
+├── CHANGELOG.md              # Registro de cambios del proyecto
+├── LICENSE                   # Licencia del proyecto
+├── README.md                 # Documentación principal
+├── sitemap.json              # Mapa del sitio para navegación y búsqueda
+└── index.html                # Página principal
 ```
 
 ### Archivos Principales
@@ -331,6 +382,89 @@ A continuación se presenta un glosario de las principales funciones del sistema
 | `formatDate()` | Formatea fechas para visualización | main.js |
 | `calculateRelevance()` | Calcula la relevancia de resultados de búsqueda | ai-search.js |
 | `loadEnvVariables()` | Carga variables de entorno de forma segura | env-loader.js |
+
+## ⚙️ Configuración del Entorno
+
+### Archivo .env
+
+El proyecto utiliza un archivo `.env` para almacenar variables de entorno sensibles. Este archivo no se incluye en el repositorio por razones de seguridad. Debes crear tu propio archivo `.env` en la raíz del proyecto con la siguiente estructura:
+
+```
+# API Keys
+OPENROUTER_API_KEY="tu_clave_api_aqui"
+
+# Configuración de entorno
+ENVIRONMENT="development"
+
+# Otras configuraciones
+DEFAULT_MODEL="meta-llama/llama-4-scout:free"
+MAX_TOKENS=1000
+```
+
+### Permisos Recomendados
+
+Para el archivo `.env`, se recomienda establecer permisos restrictivos para garantizar la seguridad:
+
+- **En desarrollo local**: `chmod 600 .env` (solo lectura/escritura para el propietario)
+- **En servidor de producción**: `chmod 640 .env` (lectura/escritura para el propietario, solo lectura para el grupo)
+
+Además, se recomienda configurar reglas en `.htaccess` para bloquear el acceso directo a este archivo:
+
+```
+<Files .env>
+Order allow,deny
+Deny from all
+</Files>
+```
+
+## 💻 Guías de Uso
+
+### Página Principal (index.html)
+
+La página principal presenta el ecosistema Marduk con las siguientes secciones:
+
+1. **Banner Principal**: Presenta el ecosistema y sus objetivos.
+2. **Soluciones Destacadas**: Muestra las aplicaciones más relevantes.
+3. **Estadísticas**: Datos sobre el impacto del ecosistema.
+4. **Categorías**: Clasificación de soluciones por áreas.
+5. **Testimonios**: Opiniones de usuarios del sistema.
+
+### Catálogo de Soluciones (solutions.html)
+
+El catálogo permite explorar todas las soluciones disponibles:
+
+1. **Filtros**: Permite filtrar por categoría, nivel de madurez o tipo.
+2. **Vistas**: Alterna entre vista de cuadrícula y lista detallada.
+3. **Búsqueda**: Busca soluciones por palabra clave o descripción.
+4. **Búsqueda con IA**: Genera soluciones personalizadas cuando no hay resultados.
+
+### Perfiles de Usuario (profile.html)
+
+La página de perfiles muestra información personalizada según el rol:
+
+1. **Selección de Perfil**: Cambia entre diferentes roles (Funcionario, Ciudadano, etc.).
+2. **Panel Principal**: Muestra métricas relevantes para el rol seleccionado.
+3. **Progreso**: Visualiza nivel, insignias y objetivos personalizados.
+4. **Gráficos**: Muestra análisis de actividad específico para cada rol.
+5. **Soluciones Recomendadas**: Sugiere aplicaciones relevantes para el perfil.
+
+### Comunidad Judicial (community.html)
+
+La sección de comunidad conecta a los diferentes actores del ecosistema:
+
+1. **Comunidad Judicial**: Presenta los miembros destacados.
+2. **Programa de Mentorías**: Conecta expertos con nuevos usuarios.
+3. **Eventos**: Calendario de actividades y formaciones.
+4. **Desarrolladores**: Muestra el equipo técnico y colaboradores.
+
+### Pruebas de IA (ai-test.html)
+
+Esta página permite probar la integración con modelos de IA:
+
+1. **Configuración de API**: Carga la clave API desde .env o permite ingresarla manualmente.
+2. **Selección de Modelos**: Muestra modelos disponibles localmente y desde la API.
+3. **Área de Pruebas**: Permite enviar mensajes y ver respuestas.
+4. **Resultados**: Muestra las respuestas con formato markdown.
 
 ## 🔗 Enlaces
 
