@@ -250,7 +250,7 @@ async function loadModelsFromService() {
                 `,
                 showCancelButton: true,
                 confirmButtonText: 'Guardar',
-                cancelButtonText: 'Usar modelos predefinidos',
+                cancelButtonText: 'Usar modelos locales',
                 allowOutsideClick: false,
                 preConfirm: () => {
                     const apiKey = document.getElementById('swal-api-key').value;
@@ -268,7 +268,8 @@ async function loadModelsFromService() {
                 document.getElementById('api-key-input').value = apiKey;
                 showToast('API key guardada correctamente', 'success');
             } else {
-                // Si el usuario cancela, cargar modelos predefinidos
+                // Si el usuario cancela, cargar modelos locales
+                showToast('Usando modelos locales', 'info');
                 return loadModelsFromConfig();
             }
         }
@@ -289,51 +290,7 @@ async function loadModelsFromService() {
         let localModels = [];
         let apiModels = [];
 
-        // Verificar si OPENROUTER_MODELS_CONFIG está disponible
-        if (window.OPENROUTER_MODELS_CONFIG && window.OPENROUTER_MODELS_CONFIG.models) {
-            console.log('Cargando modelos desde OPENROUTER_MODELS_CONFIG');
-
-            // Filtrar solo modelos gratuitos o los que queremos mostrar
-            localModels = window.OPENROUTER_MODELS_CONFIG.models.filter(model =>
-                model.id.includes(':free') || // Modelos gratuitos
-                model.id.startsWith('openrouter/') || // Modelos de OpenRouter
-                ['anthropic/claude-3-haiku:beta', 'anthropic/claude-3-sonnet:beta', 'anthropic/claude-3-opus:beta'].includes(model.id) // Modelos específicos
-            ).map(model => ({...model, source: 'local'}));
-
-            showToast(`${localModels.length} modelos locales cargados`, 'success');
-        } else {
-            console.log('OPENROUTER_MODELS_CONFIG no disponible, usando modelos predefinidos');
-
-            // Lista predefinida de modelos
-            localModels = [
-                {
-                    id: "openrouter/optimus-alpha",
-                    name: "Optimus Alpha",
-                    provider: "OpenRouter",
-                    specialty: "general",
-                    capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"],
-                    source: "local"
-                },
-                {
-                    id: "openrouter/quasar-alpha",
-                    name: "Quasar Alpha",
-                    provider: "OpenRouter",
-                    specialty: "general",
-                    capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"],
-                    source: "local"
-                },
-                {
-                    id: "anthropic/claude-3-haiku:beta",
-                    name: "Claude 3 Haiku",
-                    provider: "Anthropic",
-                    specialty: "general",
-                    capabilities: ["efficiency", "multi_task", "multilingual_support"],
-                    source: "local"
-                }
-            ];
-        }
-
-        // Intentar cargar modelos desde la API si tenemos una API key válida
+        // Verificar si tenemos una API key válida
         if (apiKey && apiKey !== 'demo' && apiKey !== 'tu-api-key-aquí') {
             try {
                 console.log('Cargando modelos desde la API de OpenRouter...');
@@ -352,17 +309,8 @@ async function loadModelsFromService() {
                     const data = await response.json();
 
                     if (data.data && Array.isArray(data.data)) {
-                        // Filtrar modelos gratuitos y de OpenRouter
-                        apiModels = data.data.filter(model => {
-                            // Verificar si el modelo es gratuito
-                            const isFree = model.id.includes(':free') || (model.context_length_free && model.context_length_free > 0);
-
-                            // Verificar si el modelo es de OpenRouter
-                            const isOpenRouter = model.id.startsWith('openrouter/');
-
-                            // Incluir el modelo si es gratuito o de OpenRouter
-                            return isFree || isOpenRouter;
-                        }).map(model => ({
+                        // Procesar todos los modelos de la API
+                        apiModels = data.data.map(model => ({
                             id: model.id,
                             name: model.name || model.id.split('/').pop(),
                             provider: model.id.split('/')[0] || 'Desconocido',
@@ -374,6 +322,8 @@ async function loadModelsFromService() {
                                 prompt: model.pricing?.prompt,
                                 completion: model.pricing?.completion
                             },
+                            description: model.description || null,
+                            version: model.version || null,
                             source: 'api'
                         }));
 
@@ -381,14 +331,22 @@ async function loadModelsFromService() {
                     }
                 } else {
                     console.error('Error al cargar modelos desde la API:', response.status);
+                    // Si hay un error con la API, cargar modelos locales como fallback
+                    localModels = loadLocalModels();
                 }
             } catch (error) {
                 console.error('Error al cargar modelos desde la API:', error);
+                // Si hay un error con la API, cargar modelos locales como fallback
+                localModels = loadLocalModels();
             }
+        } else {
+            // Si no hay API key válida, cargar modelos locales
+            localModels = loadLocalModels();
         }
 
-        // Combinar modelos locales y de la API
-        const models = [...localModels, ...apiModels];
+        // Si tenemos modelos de la API, usar solo esos
+        // Si no, usar los modelos locales
+        const models = apiModels.length > 0 ? apiModels : localModels;
 
         // Cerrar indicador de carga
         Swal.close();
@@ -415,6 +373,57 @@ async function loadModelsFromService() {
 
         // Cargar modelos desde la configuración como fallback
         return loadModelsFromConfig();
+    }
+}
+
+/**
+ * Carga modelos locales desde la configuración
+ * @returns {Array} - Lista de modelos locales
+ */
+function loadLocalModels() {
+    // Verificar si OPENROUTER_MODELS_CONFIG está disponible
+    if (window.OPENROUTER_MODELS_CONFIG && window.OPENROUTER_MODELS_CONFIG.models) {
+        console.log('Cargando modelos desde OPENROUTER_MODELS_CONFIG');
+
+        // Filtrar solo modelos gratuitos o los que queremos mostrar
+        const localModels = window.OPENROUTER_MODELS_CONFIG.models.filter(model =>
+            model.id.includes(':free') || // Modelos gratuitos
+            model.id.startsWith('openrouter/') || // Modelos de OpenRouter
+            ['anthropic/claude-3-haiku:beta', 'anthropic/claude-3-sonnet:beta', 'anthropic/claude-3-opus:beta'].includes(model.id) // Modelos específicos
+        ).map(model => ({...model, source: 'local'}));
+
+        showToast(`${localModels.length} modelos locales cargados`, 'success');
+        return localModels;
+    } else {
+        console.log('OPENROUTER_MODELS_CONFIG no disponible, usando modelos predefinidos');
+
+        // Lista predefinida de modelos
+        return [
+            {
+                id: "openrouter/optimus-alpha",
+                name: "Optimus Alpha",
+                provider: "OpenRouter",
+                specialty: "general",
+                capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"],
+                source: "local"
+            },
+            {
+                id: "openrouter/quasar-alpha",
+                name: "Quasar Alpha",
+                provider: "OpenRouter",
+                specialty: "general",
+                capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"],
+                source: "local"
+            },
+            {
+                id: "anthropic/claude-3-haiku:beta",
+                name: "Claude 3 Haiku",
+                provider: "Anthropic",
+                specialty: "general",
+                capabilities: ["efficiency", "multi_task", "multilingual_support"],
+                source: "local"
+            }
+        ];
     }
 }
 
@@ -628,45 +637,106 @@ function selectModel(model) {
  * @param {Object} model - Modelo seleccionado
  */
 function updateModelInfo(model) {
+    // Verificar si el modelo es gratuito
+    const isFree = model.id.includes(':free') || (model.context_length_free && model.context_length_free > 0);
+    const isOpenRouter = model.id.startsWith('openrouter/');
+
     let infoHTML = `
         <div class="row">
             <div class="col-md-6">
-                <h5>${model.name}</h5>
-                <p><strong>Proveedor:</strong> ${model.provider}</p>
-                <p><strong>ID:</strong> <code>${model.id}</code></p>
-                <p><strong>Especialidad:</strong> ${model.specialty || 'General'}</p>
+                <div class="card mb-3">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Información General</h5>
+                    </div>
+                    <div class="card-body">
+                        <h5>${model.name}</h5>
+                        <div class="badge-container mb-2">
+                            ${isFree ? '<span class="badge bg-success me-1">Gratis</span>' : ''}
+                            ${isOpenRouter ? '<span class="badge bg-primary me-1">OpenRouter</span>' : ''}
+                            ${model.source === 'local' ? '<span class="badge bg-secondary me-1">Local</span>' : ''}
+                            ${model.source === 'api' ? '<span class="badge bg-info me-1">API</span>' : ''}
+                        </div>
+                        <p><strong>Proveedor:</strong> ${model.provider}</p>
+                        <p><strong>ID:</strong> <code>${model.id}</code></p>
+                        <p><strong>Especialidad:</strong> ${model.specialty || 'General'}</p>
+                        ${model.description ? `<p><strong>Descripción:</strong> ${model.description}</p>` : ''}
+                        ${model.version ? `<p><strong>Versión:</strong> ${model.version}</p>` : ''}
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
-                <h5>Capacidades</h5>
-                <div class="d-flex flex-wrap gap-1 mb-3">
+                <div class="card mb-3">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Capacidades</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap gap-1 mb-3">
     `;
 
     // Añadir capacidades
     if (model.capabilities && model.capabilities.length > 0) {
         model.capabilities.forEach(capability => {
-            infoHTML += `<span class="badge bg-info text-dark">${formatCapability(capability)}</span>`;
+            infoHTML += `<span class="badge bg-info text-dark me-1 mb-1">${formatCapability(capability)}</span>`;
         });
     } else {
         infoHTML += `<span class="text-muted">No hay información de capacidades disponible</span>`;
     }
 
     infoHTML += `
+                        </div>
+                    </div>
                 </div>
+    `;
+
+    // Añadir información de contexto si está disponible
+    if (model.context_length) {
+        infoHTML += `
+                <div class="card mb-3">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">Contexto</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Longitud de contexto:</strong> ${model.context_length.toLocaleString()} tokens</li>
+                        ${model.context_length_free ? `<li class="list-group-item"><strong>Longitud gratuita:</strong> ${model.context_length_free.toLocaleString()} tokens</li>` : ''}
+                    </ul>
+                </div>
+        `;
+    }
+
+    infoHTML += `
             </div>
         </div>
     `;
 
+    // Añadir información de precios si está disponible
+    if (model.pricing && (model.pricing.prompt || model.pricing.completion)) {
+        infoHTML += `
+            <div class="card mb-3">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Precios</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    ${model.pricing.prompt ? `<li class="list-group-item"><strong>Prompt:</strong> $${model.pricing.prompt} por 1M tokens</li>` : ''}
+                    ${model.pricing.completion ? `<li class="list-group-item"><strong>Completion:</strong> $${model.pricing.completion} por 1M tokens</li>` : ''}
+                    ${isFree ? `<li class="list-group-item"><strong>Uso gratuito:</strong> <span class="badge bg-success">Disponible</span></li>` : ''}
+                </ul>
+            </div>
+        `;
+    }
+
     // Añadir tipos de prompt si están disponibles
     if (model.prompt_types && model.prompt_types.length > 0) {
         infoHTML += `
-            <div class="row mt-3">
-                <div class="col-12">
-                    <h5>Tipos de prompt recomendados</h5>
+            <div class="card mb-3">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Tipos de prompt recomendados</h5>
+                </div>
+                <div class="card-body">
                     <div class="d-flex flex-wrap gap-1">
         `;
 
         model.prompt_types.forEach(type => {
-            infoHTML += `<span class="badge bg-secondary">${formatCapability(type)}</span>`;
+            infoHTML += `<span class="badge bg-secondary me-1 mb-1">${formatCapability(type)}</span>`;
         });
 
         infoHTML += `
@@ -678,9 +748,11 @@ function updateModelInfo(model) {
 
     // Añadir sugerencias de uso
     infoHTML += `
-        <div class="row mt-3">
-            <div class="col-12">
-                <h5>Sugerencias de uso</h5>
+        <div class="card mb-3">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Sugerencias de uso</h5>
+            </div>
+            <div class="card-body">
                 <ul class="mb-0">
     `;
 
@@ -692,6 +764,22 @@ function updateModelInfo(model) {
 
     infoHTML += `
                 </ul>
+            </div>
+        </div>
+    `;
+
+    // Añadir información de uso en la API
+    infoHTML += `
+        <div class="card mb-3">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Uso en la API</h5>
+            </div>
+            <div class="card-body">
+                <p>Para usar este modelo en tu aplicación, puedes hacer una solicitud a la API de OpenRouter con el siguiente ID:</p>
+                <div class="bg-light p-2 rounded">
+                    <code>${model.id}</code>
+                </div>
+                <p class="mt-2 mb-0">Consulta la <a href="https://openrouter.ai/docs" target="_blank">documentación de OpenRouter</a> para más información.</p>
             </div>
         </div>
     `;
