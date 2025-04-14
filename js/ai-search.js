@@ -969,83 +969,134 @@ async function makeDirectApiRequest(prompt, apiKey, model) {
 }
 
 /**
- * Genera una solución de demostración personalizada basada en la consulta
+ * Genera una solución personalizada basada en la consulta utilizando el modelo de IA
  * @param {string} query - Consulta del usuario
  * @returns {Object} - Solución generada
  */
-function generateDemoSolution(query) {
-    console.log('Generando solución de demostración personalizada para:', query);
+async function generateDemoSolution(query) {
+    console.log('Generando solución personalizada para:', query);
 
-    // Extraer palabras clave de la consulta
-    const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 2);
+    try {
+        // Intentar usar el servicio global de OpenRouter para generar una solución más personalizada
+        if (window.openRouterService && typeof window.openRouterService.generateCompletion === 'function') {
+            // Crear un prompt más específico para generar una solución coherente
+            const prompt = `
+Actúa como un experto en innovación judicial y tecnología legal. Necesito que diseñes una solución tecnológica detallada y coherente para el siguiente problema o necesidad:
+
+"${query}"
+
+Analiza la consulta en profundidad y genera una solución innovadora y realista que pueda implementarse en el ámbito judicial. Considera aspectos técnicos, legales y prácticos.
+
+Responde en formato JSON con la siguiente estructura:
+{
+  "name": "[Nombre creativo y profesional para la solución, no más de 50 caracteres]",
+  "description": "[Descripción concisa de la solución en 1-2 líneas]",
+  "category": "[Una de estas categorías: case-management, legal-research, document-automation, ai-tools, access-justice, legal-education]",
+  "level": 1,
+  "type": "community",
+  "tags": ["[5 etiquetas relevantes relacionadas con la solución]"],
+  "fullDescription": "[Descripción detallada de la solución en 3-5 párrafos, explicando cómo funciona y qué problemas resuelve]",
+  "features": ["[5 características específicas y detalladas de la solución]"],
+  "benefits": ["[4 beneficios concretos que aporta la solución al sistema judicial]"],
+  "useCases": ["[3 casos de uso específicos donde la solución sería útil]"],
+  "implementation": "[Descripción de cómo se implementaría esta solución en 2-3 párrafos, incluyendo tecnologías específicas y fases de desarrollo]"
+}
+
+Asegúrate de que todos los campos sean coherentes entre sí y estén directamente relacionados con la consulta original. La solución debe ser innovadora pero realista, considerando las tecnologías actuales disponibles.
+`;
+
+            try {
+                console.log('Intentando generar solución personalizada con el servicio de OpenRouter');
+                const completion = await window.openRouterService.generateCompletion(prompt, AI_MODEL);
+
+                // Extraer el JSON de la respuesta
+                const jsonMatch = completion.match(/\{[\s\S]*\}/);
+                if (jsonMatch) {
+                    try {
+                        const solution = JSON.parse(jsonMatch[0]);
+
+                        // Verificar si es una respuesta de plantilla
+                        if (solution.name === 'Nombre de la solución' ||
+                            solution.name.includes('[Nombre') ||
+                            solution.description.includes('[Descripción')) {
+                            console.log('Respuesta de plantilla detectada, usando generación de respaldo');
+                            return generateFallbackSolution(query);
+                        }
+
+                        // Asegurarse de que la categoría sea válida
+                        const validCategories = ['case-management', 'legal-research', 'document-automation', 'ai-tools', 'access-justice', 'legal-education'];
+                        if (!validCategories.includes(solution.category)) {
+                            solution.category = determineCategory(query);
+                        }
+
+                        // Asegurarse de que el nivel sea válido
+                        solution.level = 1; // Siempre nivel 1 (Idea) para soluciones generadas
+
+                        // Limpiar y validar etiquetas
+                        if (!solution.tags || !Array.isArray(solution.tags) || solution.tags.length === 0) {
+                            solution.tags = generateTags(query, solution.category);
+                        } else {
+                            // Eliminar corchetes y comillas si existen
+                            solution.tags = solution.tags.map(tag => {
+                                if (typeof tag === 'string') {
+                                    return tag.replace(/[\[\]"']/g, '').trim();
+                                }
+                                return tag;
+                            }).filter(tag => tag && tag.length > 0);
+                        }
+
+                        console.log('Solución personalizada generada correctamente:', solution);
+                        return solution;
+                    } catch (parseError) {
+                        console.error('Error al parsear JSON de la respuesta:', parseError);
+                    }
+                }
+            } catch (error) {
+                console.error('Error al generar solución personalizada con OpenRouter:', error);
+            }
+        }
+    } catch (error) {
+        console.error('Error en generación de solución personalizada:', error);
+    }
+
+    // Si llegamos aquí, usar la generación de respaldo
+    return generateFallbackSolution(query);
+}
+
+/**
+ * Genera una solución de respaldo cuando no se puede usar el modelo de IA
+ * @param {string} query - Consulta del usuario
+ * @returns {Object} - Solución generada
+ */
+function generateFallbackSolution(query) {
+    console.log('Generando solución de respaldo para:', query);
 
     // Determinar categoría basada en palabras clave
-    let category = 'ai-tools'; // Categoría por defecto
-    if (keywords.some(word => ['caso', 'casos', 'expediente', 'expedientes', 'seguimiento'].includes(word))) {
-        category = 'case-management';
-    } else if (keywords.some(word => ['investigación', 'buscar', 'búsqueda', 'jurídico', 'legal'].includes(word))) {
-        category = 'legal-research';
-    } else if (keywords.some(word => ['documento', 'documentos', 'automatización', 'plantilla'].includes(word))) {
-        category = 'document-automation';
-    } else if (keywords.some(word => ['ia', 'inteligencia', 'artificial', 'machine', 'learning', 'agente', 'agentes', 'orquestación'].includes(word))) {
-        category = 'ai-tools';
-    } else if (keywords.some(word => ['acceso', 'justicia', 'ciudadano', 'ciudadanos', 'público'].includes(word))) {
-        category = 'access-justice';
-    } else if (keywords.some(word => ['educación', 'aprendizaje', 'formación', 'capacitación'].includes(word))) {
-        category = 'legal-education';
-    }
+    const category = determineCategory(query);
 
     // Generar nombre basado en la consulta
-    let name = 'Sistema ';
-    if (query.length > 5) {
-        // Capitalizar primera letra de cada palabra
-        name = query.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-        // Limitar longitud
-        if (name.length > 50) {
-            name = name.substring(0, 47) + '...';
-        }
-    } else {
-        name += 'Judicial Inteligente';
-    }
+    let name = generateName(query);
 
     // Generar descripción basada en la consulta
-    let description = `Solución para ${query}`;
-    if (description.length > 100) {
-        description = description.substring(0, 97) + '...';
-    }
+    let description = generateDescription(query);
 
     // Generar etiquetas basadas en palabras clave
-    const tags = [];
-    keywords.forEach(keyword => {
-        if (keyword.length > 3 && tags.length < 5 && !tags.includes(keyword)) {
-            tags.push(keyword);
-        }
-    });
+    const uniqueTags = generateTags(query, category);
 
-    // Agregar etiquetas adicionales según la categoría
-    switch (category) {
-        case 'case-management':
-            tags.push('gestión', 'casos', 'expedientes');
-            break;
-        case 'legal-research':
-            tags.push('investigación', 'jurídica', 'búsqueda');
-            break;
-        case 'document-automation':
-            tags.push('documentos', 'automatización', 'plantillas');
-            break;
-        case 'ai-tools':
-            tags.push('inteligencia artificial', 'automatización', 'asistencia');
-            break;
-        case 'access-justice':
-            tags.push('acceso', 'justicia', 'ciudadanos');
-            break;
-        case 'legal-education':
-            tags.push('educación', 'formación', 'capacitación');
-            break;
-    }
+    // Generar características basadas en la categoría y la consulta
+    const features = generateFeatures(query, category);
 
-    // Eliminar duplicados y limitar a 5 etiquetas
-    const uniqueTags = [...new Set(tags)].slice(0, 5);
+    // Generar beneficios basados en la categoría
+    const benefits = generateBenefits(category);
+
+    // Generar casos de uso basados en la consulta y categoría
+    const useCases = generateUseCases(query, category);
+
+    // Generar descripción completa
+    const fullDescription = generateFullDescription(query, category);
+
+    // Generar implementación
+    const implementation = generateImplementation(query, category);
 
     return {
         name: name,
@@ -1054,27 +1105,456 @@ function generateDemoSolution(query) {
         level: 1, // Nivel 1: Idea
         type: 'community',
         tags: uniqueTags,
-        fullDescription: `Esta solución responde a la necesidad de ${query}. Proporciona herramientas y funcionalidades adaptadas al contexto judicial, mejorando la eficiencia y calidad del trabajo de los profesionales del derecho. Implementa tecnologías modernas para resolver problemas específicos del ámbito judicial.`,
-        features: [
-            `Funcionalidad principal para ${query}`,
-            'Interfaz intuitiva y fácil de usar',
-            'Integración con sistemas judiciales existentes',
-            'Seguridad y confidencialidad de la información',
-            'Adaptabilidad a diferentes contextos judiciales'
-        ],
-        benefits: [
-            'Mejora de la eficiencia en procesos judiciales',
-            'Reducción de tiempos y costos operativos',
-            'Mayor precisión y calidad en el trabajo judicial',
-            'Acceso más fácil a la información relevante'
-        ],
-        useCases: [
-            `Aplicación en casos de ${query}`,
-            'Uso por parte de profesionales del derecho',
-            'Implementación en juzgados y tribunales'
-        ],
-        implementation: `La implementación de esta solución requiere un análisis detallado de los requisitos específicos relacionados con ${query}. Se recomienda un enfoque iterativo, comenzando con un prototipo funcional que pueda ser evaluado por usuarios finales. La solución puede desarrollarse utilizando tecnologías web modernas para la interfaz de usuario y servicios backend robustos para la lógica de negocio.`
+        fullDescription: fullDescription,
+        features: features,
+        benefits: benefits,
+        useCases: useCases,
+        implementation: implementation
     };
+}
+
+/**
+ * Genera un nombre creativo para la solución basado en la consulta
+ * @param {string} query - Consulta del usuario
+ * @returns {string} - Nombre generado
+ */
+function generateName(query) {
+    console.log('Generando nombre para:', query);
+
+    // Extraer palabras clave de la consulta
+    const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 3);
+
+    // Prefijos según el tipo de solución
+    const prefixes = [
+        'Sistema', 'Plataforma', 'Herramienta', 'Asistente', 'Solución',
+        'LegalTech', 'JurisTech', 'JusticeTech', 'LexTech', 'JudicialTech'
+    ];
+
+    // Sufijos para complementar el nombre
+    const suffixes = [
+        'Judicial', 'Legal', 'Jurídico', 'Inteligente', 'Digital',
+        'Pro', 'Plus', 'AI', 'Smart', 'Connect'
+    ];
+
+    // Si la consulta es muy corta o no tiene palabras clave significativas
+    if (keywords.length < 2 || query.length < 10) {
+        // Generar un nombre genérico pero profesional
+        const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+        const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+        return `${randomPrefix} ${randomSuffix}`;
+    }
+
+    // Intentar extraer sustantivos y verbos importantes (palabras más largas)
+    const importantWords = keywords.filter(word => word.length > 4)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .slice(0, 3); // Tomar hasta 3 palabras importantes
+
+    // Si tenemos palabras importantes, crear un nombre basado en ellas
+    if (importantWords.length > 0) {
+        // Elegir un prefijo aleatorio si hay pocas palabras importantes
+        if (importantWords.length === 1) {
+            const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            return `${randomPrefix} ${importantWords[0]}`;
+        }
+
+        // Combinar palabras importantes
+        const combinedName = importantWords.join(' ');
+
+        // Limitar longitud
+        if (combinedName.length > 40) {
+            return combinedName.substring(0, 37) + '...';
+        }
+
+        return combinedName;
+    }
+
+    // Si no se pudo generar un nombre basado en palabras importantes
+    // Tomar las primeras palabras de la consulta y capitalizarlas
+    const simpleName = query.split(' ')
+        .slice(0, 4) // Tomar hasta 4 palabras
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+
+    // Limitar longitud
+    if (simpleName.length > 40) {
+        return simpleName.substring(0, 37) + '...';
+    }
+
+    return simpleName;
+}
+
+/**
+ * Determina la categoría más adecuada basada en palabras clave
+ * @param {string} query - Consulta del usuario
+ * @returns {string} - Categoría determinada
+ */
+function determineCategory(query) {
+    const queryLower = query.toLowerCase();
+    const keywords = queryLower.split(/\s+/).filter(word => word.length > 2);
+
+    // Mapeo de palabras clave a categorías con pesos
+    const categoryKeywords = {
+        'case-management': ['caso', 'casos', 'expediente', 'expedientes', 'seguimiento', 'gestión', 'administración', 'workflow', 'flujo', 'proceso', 'procesos', 'trámite', 'trámites'],
+        'legal-research': ['investigación', 'buscar', 'búsqueda', 'jurídico', 'legal', 'jurisprudencia', 'doctrina', 'normativa', 'leyes', 'sentencias', 'precedentes', 'análisis'],
+        'document-automation': ['documento', 'documentos', 'automatización', 'plantilla', 'plantillas', 'generación', 'redacción', 'formulario', 'formularios', 'contrato', 'contratos', 'escrito', 'escritos'],
+        'ai-tools': ['ia', 'inteligencia', 'artificial', 'machine', 'learning', 'agente', 'agentes', 'orquestación', 'predicción', 'automático', 'automática', 'algoritmo', 'algoritmos', 'modelo', 'modelos', 'asistente', 'asistentes', 'chatbot', 'robot'],
+        'access-justice': ['acceso', 'justicia', 'ciudadano', 'ciudadanos', 'público', 'transparencia', 'inclusión', 'inclusivo', 'accesible', 'accesibilidad', 'derecho', 'derechos', 'servicio', 'servicios'],
+        'legal-education': ['educación', 'aprendizaje', 'formación', 'capacitación', 'enseñanza', 'curso', 'cursos', 'entrenamiento', 'conocimiento', 'conocimientos', 'habilidad', 'habilidades', 'competencia', 'competencias']
+    };
+
+    // Contar coincidencias por categoría
+    const categoryCounts = {};
+    Object.keys(categoryKeywords).forEach(category => {
+        categoryCounts[category] = 0;
+
+        // Buscar coincidencias exactas de palabras clave
+        keywords.forEach(keyword => {
+            if (categoryKeywords[category].includes(keyword)) {
+                categoryCounts[category] += 2; // Mayor peso para coincidencias exactas
+            }
+        });
+
+        // Buscar coincidencias parciales en la consulta completa
+        categoryKeywords[category].forEach(categoryKeyword => {
+            if (queryLower.includes(categoryKeyword)) {
+                categoryCounts[category] += 1;
+            }
+        });
+    });
+
+    // Encontrar la categoría con más coincidencias
+    let maxCount = 0;
+    let selectedCategory = 'ai-tools'; // Categoría por defecto
+
+    Object.keys(categoryCounts).forEach(category => {
+        if (categoryCounts[category] > maxCount) {
+            maxCount = categoryCounts[category];
+            selectedCategory = category;
+        }
+    });
+
+    console.log('Categoría determinada:', selectedCategory, 'con puntuación:', maxCount);
+    return selectedCategory;
+}
+
+/**
+ * Genera una descripción concisa para la solución
+ * @param {string} query - Consulta del usuario
+ * @returns {string} - Descripción generada
+ */
+function generateDescription(query) {
+    console.log('Generando descripción para:', query);
+
+    // Plantillas de descripciones según el tipo de consulta
+    const templates = [
+        `Solución tecnológica que permite ${query.toLowerCase()}`,
+        `Herramienta judicial diseñada para ${query.toLowerCase()}`,
+        `Sistema inteligente que facilita ${query.toLowerCase()}`,
+        `Plataforma especializada en ${query.toLowerCase()}`,
+        `Asistente digital para ${query.toLowerCase()} en el ámbito judicial`
+    ];
+
+    // Seleccionar una plantilla aleatoria
+    const template = templates[Math.floor(Math.random() * templates.length)];
+
+    // Limitar longitud
+    if (template.length > 100) {
+        return template.substring(0, 97) + '...';
+    }
+
+    return template;
+}
+
+/**
+ * Genera etiquetas relevantes para la solución
+ * @param {string} query - Consulta del usuario
+ * @param {string} category - Categoría de la solución
+ * @returns {Array} - Lista de etiquetas
+ */
+function generateTags(query, category) {
+    console.log('Generando etiquetas para:', query, 'en categoría:', category);
+
+    // Extraer palabras clave de la consulta
+    const keywords = query.toLowerCase()
+        .split(/\s+/)
+        .filter(word => word.length > 3)
+        .filter(word => !['para', 'como', 'donde', 'cuando', 'porque', 'aunque', 'desde', 'hasta', 'entre', 'sobre', 'bajo', 'tras', 'mediante', 'durante', 'según', 'contra', 'hacia'].includes(word));
+
+    // Etiquetas por defecto según la categoría
+    const categoryTags = {
+        'case-management': ['gestión', 'casos', 'expedientes', 'workflow', 'seguimiento'],
+        'legal-research': ['investigación', 'jurídica', 'búsqueda', 'análisis', 'legal'],
+        'document-automation': ['documentos', 'automatización', 'plantillas', 'generación', 'formularios'],
+        'ai-tools': ['inteligencia artificial', 'automatización', 'asistencia', 'predicción', 'análisis'],
+        'access-justice': ['acceso', 'justicia', 'ciudadanos', 'transparencia', 'derechos'],
+        'legal-education': ['educación', 'formación', 'capacitación', 'aprendizaje', 'conocimiento']
+    };
+
+    // Combinar palabras clave de la consulta con etiquetas de la categoría
+    const allTags = [...keywords, ...categoryTags[category] || categoryTags['ai-tools']];
+
+    // Eliminar duplicados y limitar a 5 etiquetas
+    const uniqueTags = [...new Set(allTags)].slice(0, 5);
+
+    return uniqueTags;
+}
+
+/**
+ * Genera características específicas para la solución
+ * @param {string} query - Consulta del usuario
+ * @param {string} category - Categoría de la solución
+ * @returns {Array} - Lista de características
+ */
+function generateFeatures(query, category) {
+    console.log('Generando características para:', query, 'en categoría:', category);
+
+    // Características comunes a todas las soluciones
+    const commonFeatures = [
+        'Interfaz intuitiva y fácil de usar',
+        'Integración con sistemas judiciales existentes',
+        'Seguridad y confidencialidad de la información',
+        'Adaptabilidad a diferentes contextos judiciales',
+        'Actualizaciones automáticas de contenido y funcionalidades'
+    ];
+
+    // Características específicas por categoría
+    const categoryFeatures = {
+        'case-management': [
+            'Seguimiento en tiempo real del estado de los casos',
+            'Gestión integral de expedientes digitales',
+            'Notificaciones automáticas de cambios y plazos',
+            'Calendario integrado de audiencias y vencimientos',
+            'Asignación inteligente de tareas y recursos'
+        ],
+        'legal-research': [
+            'Búsqueda avanzada en bases de datos jurídicas',
+            'Análisis semántico de jurisprudencia y doctrina',
+            'Recomendaciones personalizadas de precedentes relevantes',
+            'Visualización de relaciones entre normativas y casos',
+            'Alertas sobre cambios en la legislación aplicable'
+        ],
+        'document-automation': [
+            'Generación automática de documentos legales',
+            'Plantillas personalizables para diferentes tipos de escritos',
+            'Control de versiones y trazabilidad de cambios',
+            'Firma digital integrada con validez legal',
+            'Extracción inteligente de datos de documentos escaneados'
+        ],
+        'ai-tools': [
+            'Asistente virtual con capacidades de lenguaje natural',
+            'Predicción de resultados basada en casos similares',
+            'Análisis automático de documentos legales complejos',
+            'Detección de patrones y anomalías en grandes volúmenes de datos',
+            'Orquestación de agentes especializados para tareas complejas'
+        ],
+        'access-justice': [
+            'Portal ciudadano para consulta de trámites judiciales',
+            'Asistente virtual para orientación jurídica básica',
+            'Formularios inteligentes para presentaciones sin abogado',
+            'Traducción automática de términos legales a lenguaje sencillo',
+            'Accesibilidad para personas con discapacidad'
+        ],
+        'legal-education': [
+            'Contenido formativo interactivo y multimedia',
+            'Simulaciones de casos prácticos y audiencias virtuales',
+            'Evaluación continua de conocimientos y competencias',
+            'Certificaciones digitales de habilidades adquiridas',
+            'Comunidad de aprendizaje colaborativo'
+        ]
+    };
+
+    // Seleccionar características específicas de la categoría
+    const specificFeatures = categoryFeatures[category] || categoryFeatures['ai-tools'];
+
+    // Crear una característica personalizada basada en la consulta
+    const customFeature = `Funcionalidad especializada para ${query.toLowerCase()}`;
+
+    // Combinar características (1 personalizada, 2 específicas, 2 comunes)
+    const features = [
+        customFeature,
+        ...specificFeatures.slice(0, 2),
+        ...commonFeatures.slice(0, 2)
+    ];
+
+    return features;
+}
+
+/**
+ * Genera beneficios concretos de la solución
+ * @param {string} category - Categoría de la solución
+ * @returns {Array} - Lista de beneficios
+ */
+function generateBenefits(category) {
+    console.log('Generando beneficios para categoría:', category);
+
+    // Beneficios comunes a todas las soluciones
+    const commonBenefits = [
+        'Mejora de la eficiencia en procesos judiciales',
+        'Reducción de tiempos y costos operativos',
+        'Mayor precisión y calidad en el trabajo judicial',
+        'Acceso más fácil a la información relevante'
+    ];
+
+    // Beneficios específicos por categoría
+    const categoryBenefits = {
+        'case-management': [
+            'Reducción del 40% en tiempos de gestión de expedientes',
+            'Eliminación de pérdidas de documentación física',
+            'Mejora en la coordinación entre diferentes órganos judiciales',
+            'Transparencia total en el seguimiento de casos'
+        ],
+        'legal-research': [
+            'Reducción del 60% en tiempo de investigación jurídica',
+            'Mayor exhaustividad en la búsqueda de precedentes',
+            'Fundamentación más sólida de decisiones judiciales',
+            'Actualización constante sobre cambios normativos'
+        ],
+        'document-automation': [
+            'Reducción del 70% en tiempo de redacción de documentos',
+            'Eliminación de errores comunes en escritos judiciales',
+            'Estandarización de formatos y contenidos',
+            'Trazabilidad completa de versiones y modificaciones'
+        ],
+        'ai-tools': [
+            'Capacidad de procesar grandes volúmenes de información',
+            'Identificación de patrones no evidentes para humanos',
+            'Asistencia continua 24/7 sin fatiga ni sesgos',
+            'Mejora continua mediante aprendizaje automático'
+        ],
+        'access-justice': [
+            'Democratización del acceso a servicios judiciales',
+            'Reducción de barreras para poblaciones vulnerables',
+            'Mayor confianza ciudadana en el sistema judicial',
+            'Descongestión de servicios de atención presencial'
+        ],
+        'legal-education': [
+            'Formación práctica basada en casos reales',
+            'Actualización continua de conocimientos jurídicos',
+            'Desarrollo de habilidades prácticas para profesionales',
+            'Estandarización de criterios y buenas prácticas'
+        ]
+    };
+
+    // Seleccionar beneficios específicos de la categoría o usar los comunes si no hay específicos
+    return categoryBenefits[category] || commonBenefits;
+}
+
+/**
+ * Genera casos de uso específicos para la solución
+ * @param {string} query - Consulta del usuario
+ * @param {string} category - Categoría de la solución
+ * @returns {Array} - Lista de casos de uso
+ */
+function generateUseCases(query, category) {
+    console.log('Generando casos de uso para:', query, 'en categoría:', category);
+
+    // Casos de uso genéricos por categoría
+    const categoryCases = {
+        'case-management': [
+            'Gestión integral de expedientes en juzgados civiles',
+            'Seguimiento de causas penales con múltiples imputados',
+            'Coordinación entre diferentes instancias judiciales'
+        ],
+        'legal-research': [
+            'Investigación jurídica para casos complejos de derecho mercantil',
+            'Búsqueda de jurisprudencia en materia constitucional',
+            'Análisis comparativo de normativa internacional'
+        ],
+        'document-automation': [
+            'Generación automática de contratos personalizados',
+            'Creación de escritos judiciales estandarizados',
+            'Digitalización y procesamiento de expedientes históricos'
+        ],
+        'ai-tools': [
+            'Asistencia en la toma de decisiones judiciales complejas',
+            'Predicción de resultados en litigios basada en casos similares',
+            'Análisis automático de grandes volúmenes de evidencia'
+        ],
+        'access-justice': [
+            'Acceso a servicios judiciales para comunidades rurales',
+            'Asistencia jurídica básica para personas sin recursos',
+            'Orientación ciudadana sobre trámites judiciales comunes'
+        ],
+        'legal-education': [
+            'Formación continua para jueces y magistrados',
+            'Capacitación práctica para estudiantes de derecho',
+            'Actualización profesional en nuevas áreas jurídicas'
+        ]
+    };
+
+    // Seleccionar casos de uso de la categoría
+    const genericCases = categoryCases[category] || categoryCases['ai-tools'];
+
+    // Crear un caso de uso personalizado basado en la consulta
+    const customCase = `Aplicación específica para ${query.toLowerCase()}`;
+
+    // Combinar casos de uso (1 personalizado, 2 genéricos)
+    return [customCase, ...genericCases.slice(0, 2)];
+}
+
+/**
+ * Genera una descripción detallada de la solución
+ * @param {string} query - Consulta del usuario
+ * @param {string} category - Categoría de la solución
+ * @returns {string} - Descripción completa
+ */
+function generateFullDescription(query, category) {
+    console.log('Generando descripción completa para:', query, 'en categoría:', category);
+
+    // Plantillas de párrafos iniciales según la categoría
+    const firstParagraphTemplates = {
+        'case-management': `Esta solución ofrece un sistema integral para la gestión y seguimiento de ${query.toLowerCase()} en el ámbito judicial. Permite administrar de manera eficiente todo el ciclo de vida de los expedientes, desde su creación hasta su archivo definitivo, garantizando la trazabilidad y seguridad de la información en todo momento.`,
+        'legal-research': `Esta herramienta especializada facilita la investigación y análisis jurídico relacionado con ${query.toLowerCase()}. Mediante algoritmos avanzados de búsqueda y procesamiento de lenguaje natural, permite acceder rápidamente a jurisprudencia, doctrina y normativa relevante, optimizando significativamente el proceso de investigación legal.`,
+        'document-automation': `Esta plataforma revoluciona la creación y gestión de documentos legales relacionados con ${query.toLowerCase()}. Mediante plantillas inteligentes y sistemas de automatización, permite generar documentos jurídicos precisos y personalizados en una fracción del tiempo que requeriría la redacción manual, manteniendo la calidad y rigor necesarios.`,
+        'ai-tools': `Esta solución basada en inteligencia artificial está diseñada específicamente para ${query.toLowerCase()} en el contexto judicial. Utilizando algoritmos avanzados de machine learning y procesamiento de lenguaje natural, proporciona capacidades analíticas y predictivas que superan las limitaciones de los métodos tradicionales.`,
+        'access-justice': `Esta plataforma democratiza el acceso a la justicia en el ámbito de ${query.toLowerCase()}, eliminando barreras geográficas, económicas y de conocimiento. Mediante una interfaz ciudadana intuitiva y herramientas de asistencia virtual, facilita la interacción con el sistema judicial a personas sin conocimientos jurídicos especializados.`,
+        'legal-education': `Este sistema educativo innovador está enfocado en la formación y capacitación sobre ${query.toLowerCase()} para profesionales del ámbito jurídico. Combinando contenidos teóricos actualizados con ejercicios prácticos y simulaciones realistas, proporciona una experiencia de aprendizaje completa y adaptada a las necesidades actuales.`
+    };
+
+    // Plantillas de párrafos secundarios comunes
+    const secondParagraphTemplates = [
+        `La solución incorpora tecnologías de vanguardia como inteligencia artificial, blockchain y computación en la nube para garantizar un rendimiento óptimo incluso en entornos con grandes volúmenes de información. Su arquitectura modular permite una fácil integración con sistemas existentes y una escalabilidad progresiva según las necesidades de cada organización.`,
+        `Desarrollada con un enfoque centrado en el usuario, esta herramienta prioriza la experiencia de uso intuitiva y la curva de aprendizaje rápida. Cuenta con interfaces adaptativas que se ajustan a diferentes perfiles de usuario, desde especialistas jurídicos hasta personal administrativo o ciudadanos sin formación legal, garantizando que todos puedan aprovechar sus funcionalidades de manera eficiente.`,
+        `La seguridad y confidencialidad de la información son pilares fundamentales de esta solución, implementando estándares internacionales de protección de datos y cumpliendo con normativas como GDPR y regulaciones específicas del sector judicial. Todos los datos son cifrados y se mantiene un registro detallado de accesos y modificaciones para garantizar la integridad de la información.`
+    ];
+
+    // Plantillas de párrafos finales
+    const finalParagraphTemplates = [
+        `En resumen, esta solución representa un avance significativo en la modernización y digitalización del sistema judicial, especialmente en lo relacionado con ${query.toLowerCase()}. Su implementación no solo mejora la eficiencia operativa, sino que contribuye a un sistema de justicia más accesible, transparente y eficaz para todos los actores involucrados.`,
+        `Esta herramienta responde a las crecientes demandas de innovación en el sector judicial, ofreciendo una alternativa tecnológica que optimiza recursos, reduce tiempos y mejora la calidad de los servicios relacionados con ${query.toLowerCase()}. Su diseño flexible permite adaptarse a diferentes contextos y escalas, desde pequeños despachos hasta grandes sistemas judiciales nacionales.`,
+        `Al integrar esta solución en los procesos relacionados con ${query.toLowerCase()}, las instituciones judiciales pueden dar un salto cualitativo en su capacidad operativa y de servicio. Los beneficios se extienden a todos los participantes del ecosistema judicial: profesionales del derecho, personal administrativo, jueces y magistrados, y especialmente a los ciudadanos que interactúan con el sistema de justicia.`
+    ];
+
+    // Seleccionar plantillas aleatorias para cada párrafo
+    const firstParagraph = firstParagraphTemplates[category] || firstParagraphTemplates['ai-tools'];
+    const secondParagraph = secondParagraphTemplates[Math.floor(Math.random() * secondParagraphTemplates.length)];
+    const finalParagraph = finalParagraphTemplates[Math.floor(Math.random() * finalParagraphTemplates.length)];
+
+    // Combinar párrafos en una descripción completa
+    return `${firstParagraph}\n\n${secondParagraph}\n\n${finalParagraph}`;
+}
+
+/**
+ * Genera una descripción de la implementación de la solución
+ * @param {string} query - Consulta del usuario
+ * @param {string} category - Categoría de la solución
+ * @returns {string} - Descripción de implementación
+ */
+function generateImplementation(query, category) {
+    console.log('Generando implementación para:', query, 'en categoría:', category);
+
+    // Plantillas de implementación por categoría
+    const implementationTemplates = {
+        'case-management': `La implementación de esta solución para ${query.toLowerCase()} se realizaría en fases progresivas, comenzando con un análisis detallado de los flujos de trabajo existentes y la identificación de puntos de mejora. Se desarrollaría una arquitectura basada en microservicios utilizando tecnologías como Java o .NET para el backend, bases de datos SQL Server o PostgreSQL para el almacenamiento, y frameworks modernos como React o Angular para la interfaz de usuario.\n\nEl despliegue se realizaría inicialmente en un entorno piloto con un grupo reducido de usuarios para validar funcionalidades y realizar ajustes. Posteriormente, se extendería a toda la organización, acompañado de un programa de capacitación para los diferentes perfiles de usuario. La migración de datos históricos se realizaría de manera progresiva, asegurando la integridad y consistencia de la información.`,
+        'legal-research': `Para implementar esta herramienta de investigación jurídica especializada en ${query.toLowerCase()}, se comenzaría con la construcción de una base de conocimiento estructurada, incorporando fuentes oficiales de jurisprudencia, legislación y doctrina. Se utilizarían tecnologías de procesamiento de lenguaje natural (NLP) como BERT o GPT para el análisis semántico de textos jurídicos, junto con algoritmos de machine learning para mejorar progresivamente la relevancia de los resultados.\n\nLa arquitectura técnica se basaría en servicios cloud como AWS o Azure para garantizar escalabilidad, con Elasticsearch para el motor de búsqueda y Python para los componentes de IA. La interfaz de usuario se desarrollaría como una aplicación web responsive, optimizada tanto para uso en escritorio como en dispositivos móviles, facilitando la consulta desde cualquier ubicación.`,
+        'document-automation': `La implementación de este sistema de automatización documental para ${query.toLowerCase()} comenzaría con el diseño de plantillas inteligentes basadas en el análisis de documentos existentes y requisitos legales. Se utilizarían tecnologías como Python con bibliotecas de procesamiento de texto y machine learning para la extracción y clasificación automática de información, junto con sistemas de generación de documentos como DocxTemplater o similares.\n\nEl sistema se integraría con servicios de firma digital que cumplan con los estándares legales aplicables, y se implementarían APIs para permitir la conexión con sistemas de gestión documental existentes. El despliegue se realizaría preferentemente en la nube para facilitar el acceso desde diferentes ubicaciones, con opciones de instalación on-premise para organizaciones con requisitos específicos de seguridad o privacidad.`,
+        'ai-tools': `Para implementar esta solución de IA enfocada en ${query.toLowerCase()}, se adoptaría un enfoque de desarrollo iterativo basado en metodologías ágiles. La primera fase consistiría en el entrenamiento de modelos de machine learning utilizando datasets curados de información jurídica relevante, empleando frameworks como TensorFlow o PyTorch para el desarrollo de algoritmos de aprendizaje profundo.\n\nLa arquitectura del sistema se basaría en un diseño de microservicios desplegados en contenedores Docker orquestados con Kubernetes, facilitando la escalabilidad y el mantenimiento. Se implementarían interfaces de programación (APIs) RESTful para permitir la integración con sistemas externos, y se desarrollarían dashboards interactivos utilizando bibliotecas como D3.js para la visualización de resultados y análisis.`,
+        'access-justice': `La implementación de esta plataforma de acceso a la justicia para ${query.toLowerCase()} seguiría un enfoque centrado en el usuario, comenzando con investigación de campo para identificar las necesidades reales de los ciudadanos y las barreras existentes. El desarrollo técnico se realizaría con tecnologías web estándar (HTML5, CSS3, JavaScript) priorizando la accesibilidad según pautas WCAG 2.1 y el diseño responsive para funcionar en cualquier dispositivo.\n\nSe implementarían chatbots basados en procesamiento de lenguaje natural para la asistencia inicial, con derivación a profesionales humanos cuando sea necesario. El despliegue se realizaría de manera progresiva, comenzando por regiones piloto y expandiendo gradualmente la cobertura, acompañado de campañas de difusión y capacitación para maximizar su adopción entre la población objetivo.`,
+        'legal-education': `La implementación de esta solución educativa sobre ${query.toLowerCase()} comenzaría con el diseño curricular y la producción de contenidos por parte de expertos en la materia, combinando material teórico con casos prácticos y ejercicios interactivos. Se utilizaría un sistema de gestión de aprendizaje (LMS) como Moodle o Canvas, personalizado para adaptarse a las necesidades específicas de la formación jurídica.\n\nSe desarrollarían simulaciones y juegos de rol utilizando tecnologías de realidad virtual o aumentada para recrear situaciones prácticas como audiencias o negociaciones. La plataforma incorporaría herramientas de evaluación continua y análisis de aprendizaje (learning analytics) para monitorizar el progreso de los estudiantes y personalizar la experiencia educativa según sus necesidades individuales.`
+    };
+
+    // Seleccionar plantilla de implementación según la categoría
+    return implementationTemplates[category] || implementationTemplates['ai-tools'];
 }
 
 /**
