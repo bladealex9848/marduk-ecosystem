@@ -14,10 +14,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
     <!-- Toastify -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css">
     <!-- Custom CSS -->
@@ -35,9 +31,7 @@
       // Aplicar tema oscuro si está habilitado o preferido por el sistema
       if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
         document.documentElement.setAttribute('data-theme', 'dark');
-        document.addEventListener('DOMContentLoaded', function() {
-          if (document.body) document.body.classList.add('dark-mode');
-        });
+        document.body.classList.add('dark-mode');
         localStorage.setItem('darkModeEnabled', 'true');
       }
     </script>
@@ -79,30 +73,37 @@
             border-radius: 5px;
             overflow-x: auto;
         }
-        .dark-mode pre {
-            background-color: #343a40;
-            color: #f8f9fa;
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <!-- Header/Navbar -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-gradient sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand d-flex align-items-center" href="../index.html">
-                <img src="../img/logo-marduk.svg" alt="Marduk Logo" height="30" class="me-2">
-                <span class="fw-bold">Marduk</span>
+                <i class="fas fa-balance-scale me-2"></i>
+                <span>Marduk</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarMain">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i> Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../pages/solutions.html"><i class="fas fa-puzzle-piece me-1"></i> Soluciones</a>
+                        <a class="nav-link" href="../pages/solutions.html"><i class="fas fa-tools me-1"></i> Soluciones</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="../pages/community.html"><i class="fas fa-users me-1"></i> Comunidad</a>
@@ -150,28 +151,27 @@
     <main class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
-                <!-- Botón para volver a la página anterior -->
-                <a href="javascript:history.back()" class="back-link">
-                    <i class="fas fa-arrow-left me-2"></i> Volver
+                <!-- Botón para volver a la página de prueba IA -->
+                <a href="../pages/ai-test.html" class="back-link">
+                    <i class="fas fa-arrow-left me-2"></i> Volver a Prueba IA
                 </a>
 
                 <h1 class="mb-4"><i class="fas fa-key text-primary me-2"></i> Prueba Directa de .env</h1>
-                <p class="lead mb-4">Esta página demuestra diferentes métodos para acceder a las variables de entorno en el archivo .env.</p>
+                <p class="lead mb-4">Esta página demuestra métodos seguros e inseguros para acceder a las variables de entorno.</p>
 
                 <div class="alert alert-warning">
                     <h5><i class="fas fa-exclamation-triangle me-2"></i> Advertencia de Seguridad</h5>
-                    <p>El archivo <code>.env</code> contiene información sensible como API keys y credenciales. <strong>No debe ser accesible directamente desde el navegador</strong>.</p>
-                    <p>Esta página muestra métodos seguros e inseguros para acceder a las variables de entorno. Los métodos inseguros se muestran solo con fines educativos.</p>
+                    <p>El archivo <code>.env</code> contiene información sensible como API keys. <strong>No debe ser accesible directamente desde el navegador</strong>.</p>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-4">
                         <div class="card h-100">
                             <div class="card-header bg-danger text-white">
-                                <h5 class="mb-0"><i class="fas fa-exclamation-circle me-2"></i> Métodos Inseguros (No Recomendados)</h5>
+                                <h5 class="mb-0"><i class="fas fa-exclamation-circle me-2"></i> Métodos Inseguros</h5>
                             </div>
                             <div class="card-body">
-                                <p>Estos métodos intentan acceder directamente al archivo .env, lo que representa un riesgo de seguridad.</p>
+                                <p>Estos métodos intentan acceder directamente al archivo .env.</p>
                                 
                                 <div class="mb-3">
                                     <button id="load-env" class="btn btn-outline-danger me-2 mb-2"><i class="fas fa-file-alt me-1"></i> Cargar .env</button>
@@ -188,10 +188,10 @@
                     <div class="col-md-6 mb-4">
                         <div class="card h-100">
                             <div class="card-header bg-success text-white">
-                                <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i> Métodos Seguros (Recomendados)</h5>
+                                <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i> Métodos Seguros</h5>
                             </div>
                             <div class="card-body">
-                                <p>Estos métodos utilizan técnicas seguras para acceder a las variables de entorno sin exponer el archivo .env.</p>
+                                <p>Estos métodos utilizan técnicas seguras para acceder a las variables de entorno.</p>
                                 
                                 <div class="mb-3">
                                     <button id="load-env-proxy" class="btn btn-success me-2 mb-2"><i class="fas fa-server me-1"></i> Usar Proxy del Servidor</button>
@@ -316,10 +316,7 @@
                         
                         lines.forEach((line, index) => {
                             // Ignorar líneas vacías o comentarios
-                            if (!line || line.startsWith('#')) {
-                                log(`Línea ${index + 1}: Comentario o vacía`);
-                                return;
-                            }
+                            if (!line || line.startsWith('#')) return;
                             
                             // Extraer clave y valor
                             const match = line.match(/^([^=]+)=(.*)$/);
@@ -328,22 +325,14 @@
                                 // Eliminar comillas si existen
                                 let cleanValue = value.trim();
                                 
-                                // Eliminar comillas dobles
-                                if (cleanValue.startsWith('"') && cleanValue.endsWith('"')) {
+                                // Eliminar comillas
+                                if ((cleanValue.startsWith('"') && cleanValue.endsWith('"')) || 
+                                    (cleanValue.startsWith("'") && cleanValue.endsWith("'"))) {
                                     cleanValue = cleanValue.substring(1, cleanValue.length - 1);
-                                    log(`Línea ${index + 1}: Comillas dobles eliminadas`);
-                                }
-                                
-                                // Eliminar comillas simples
-                                if (cleanValue.startsWith("'") && cleanValue.endsWith("'")) {
-                                    cleanValue = cleanValue.substring(1, cleanValue.length - 1);
-                                    log(`Línea ${index + 1}: Comillas simples eliminadas`);
                                 }
                                 
                                 env[key.trim()] = cleanValue;
-                                log(`Línea ${index + 1}: Variable ${key.trim()} = ${cleanValue.substring(0, 3)}...`, 'success');
-                            } else {
-                                log(`Línea ${index + 1}: Formato inválido`, 'error');
+                                log(`Variable ${key.trim()} = ${cleanValue.substring(0, 3)}...`, 'success');
                             }
                         });
                         
@@ -351,18 +340,11 @@
                         resultDiv.innerHTML = `
                             <div class="alert alert-danger">
                                 <h5><i class="fas fa-exclamation-triangle me-2"></i> ¡Advertencia de Seguridad!</h5>
-                                <p>El archivo ${filePath} es accesible públicamente. Esto representa un riesgo de seguridad.</p>
+                                <p>El archivo ${filePath} es accesible públicamente.</p>
                             </div>
                             <h6>Variables de entorno cargadas:</h6>
                             <pre>${JSON.stringify(env, null, 2)}</pre>
                             <p><strong>API Key:</strong> ${env.OPENROUTER_API_KEY ? env.OPENROUTER_API_KEY.substring(0, 10) + '...' : 'No encontrada'}</p>
-                            <div class="mt-3">
-                                <h6>Recomendaciones:</h6>
-                                <ul>
-                                    <li>Cambiar los permisos del archivo a 600 o 640</li>
-                                    <li>Configurar reglas en .htaccess para bloquear el acceso</li>
-                                </ul>
-                            </div>
                         `;
                         
                         return env;
@@ -373,14 +355,12 @@
                                 <h5><i class="fas fa-check-circle me-2"></i> Acceso Bloqueado (Correcto)</h5>
                                 <p>El archivo ${filePath} no es accesible directamente. Esto es lo esperado por seguridad.</p>
                             </div>
-                            <p>Código de estado: ${response.status}</p>
-                            <p>Mensaje: ${response.statusText}</p>
                         `;
                         
                         // Mostrar alerta con SweetAlert2
                         Swal.fire({
                             title: 'Acceso Bloqueado (Correcto)',
-                            text: `El archivo ${filePath} no es accesible directamente. Esto es lo esperado por seguridad.`,
+                            text: `El archivo ${filePath} no es accesible directamente.`,
                             icon: 'success',
                             confirmButtonText: 'Entendido'
                         });
@@ -394,13 +374,12 @@
                             <h5><i class="fas fa-check-circle me-2"></i> Acceso Bloqueado (Correcto)</h5>
                             <p>Error al acceder al archivo ${filePath}. Esto es lo esperado por seguridad.</p>
                         </div>
-                        <p>Error: ${error.message}</p>
                     `;
                     
                     // Mostrar alerta con SweetAlert2
                     Swal.fire({
                         title: 'Acceso Bloqueado (Correcto)',
-                        text: `Error al acceder al archivo ${filePath}. Esto es lo esperado por seguridad.`,
+                        text: `Error al acceder al archivo ${filePath}.`,
                         icon: 'success',
                         confirmButtonText: 'Entendido'
                     });
@@ -418,7 +397,7 @@
                     // Primero, obtener un token de autenticación
                     const tokenResponse = await fetch('/get-auth-token.php');
                     if (!tokenResponse.ok) {
-                        throw new Error(`Error al obtener token: ${tokenResponse.status} ${tokenResponse.statusText}`);
+                        throw new Error(`Error al obtener token: ${tokenResponse.status}`);
                     }
                     
                     const tokenData = await tokenResponse.json();
@@ -437,7 +416,7 @@
                     });
                     
                     if (!apiKeyResponse.ok) {
-                        throw new Error(`Error al obtener API key: ${apiKeyResponse.status} ${apiKeyResponse.statusText}`);
+                        throw new Error(`Error al obtener API key: ${apiKeyResponse.status}`);
                     }
                     
                     const apiKeyData = await apiKeyResponse.json();
@@ -455,15 +434,6 @@
                         </div>
                         <p><strong>API Key Disponible:</strong> ${apiKeyData.data.keyAvailable ? 'Sí' : 'No'}</p>
                         ${apiKeyData.data.key ? `<p><strong>API Key (primeros 10 caracteres):</strong> ${apiKeyData.data.key.substring(0, 10)}...</p>` : ''}
-                        <div class="mt-3">
-                            <h6>Ventajas de este método:</h6>
-                            <ul>
-                                <li>El archivo .env nunca se expone directamente</li>
-                                <li>Se utiliza autenticación mediante tokens</li>
-                                <li>Solo se devuelve la información necesaria</li>
-                                <li>Compatible con permisos restrictivos (600/640) en el archivo .env</li>
-                            </ul>
-                        </div>
                     `;
                     
                     // Mostrar alerta con SweetAlert2
@@ -480,7 +450,6 @@
                             <h5><i class="fas fa-exclamation-circle me-2"></i> Error</h5>
                             <p>No se pudo obtener la API key: ${error.message}</p>
                         </div>
-                        <p>Asegúrate de que los scripts PHP de proxy estén correctamente configurados en el servidor.</p>
                     `;
                     
                     // Mostrar alerta con SweetAlert2
@@ -508,19 +477,6 @@
                         <p>Se ha creado una variable temporal para la API key que solo existe durante esta sesión.</p>
                     </div>
                     <p><strong>Variable Temporal:</strong> ${tempApiKey.substring(0, 15)}...</p>
-                    <div class="mt-3">
-                        <h6>Ventajas de este método:</h6>
-                        <ul>
-                            <li>La API key real nunca se expone en el código fuente</li>
-                            <li>La variable temporal solo existe durante la sesión actual</li>
-                            <li>No se requiere acceso al archivo .env</li>
-                            <li>Útil para pruebas y desarrollo local</li>
-                        </ul>
-                    </div>
-                    <div class="alert alert-warning mt-3">
-                        <h6><i class="fas fa-info-circle me-2"></i> Nota Importante:</h6>
-                        <p>Para aplicaciones en producción, es recomendable usar el método del proxy del servidor para obtener la API key de forma segura.</p>
-                    </div>
                 `;
                 
                 // Mostrar toast con Toastify
@@ -535,27 +491,23 @@
                 }).showToast();
             }
             
-            // Evento para cargar .env (método inseguro)
+            // Eventos para los botones
             document.getElementById('load-env').addEventListener('click', () => {
                 loadEnvFile('.env');
             });
             
-            // Evento para cargar .env.test2 (método inseguro)
             document.getElementById('load-env-test2').addEventListener('click', () => {
                 loadEnvFile('.env.test2');
             });
             
-            // Evento para usar el proxy del servidor (método seguro)
             document.getElementById('load-env-proxy').addEventListener('click', () => {
                 getApiKeyViaProxy();
             });
             
-            // Evento para usar una variable temporal (método seguro)
             document.getElementById('load-env-hardcoded').addEventListener('click', () => {
                 useTemporaryVariable();
             });
             
-            // Evento para limpiar el log
             document.getElementById('clear-log').addEventListener('click', () => {
                 logDiv.innerHTML = '<p class="info">Log de operaciones:</p>';
                 
