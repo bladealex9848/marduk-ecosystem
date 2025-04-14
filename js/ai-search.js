@@ -907,7 +907,9 @@ Asegúrate de que la solución sea relevante para el ámbito judicial y que pued
             // Hacer solicitud directa a la API de OpenRouter
             return await makeDirectApiRequest(prompt, apiKey, AI_MODEL);
         }
-
+    } catch (error) {
+        console.error('Error al generar contenido con IA:', error);
+        throw new Error('Error al generar contenido: ' + error.message);
     }
 }
 
