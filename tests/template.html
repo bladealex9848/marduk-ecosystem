@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba de Acceso a .env - Marduk</title>
+    <title>Prueba - Marduk</title>
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -41,28 +41,15 @@
     </script>
 
     <style>
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        /* Estilos específicos para la página de prueba */
+        .test-container {
+            min-height: 60vh;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            padding: 1.5rem;
         }
-        .success {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-            color: #155724;
-        }
-        .error {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-        }
-        pre {
-            background-color: #f8f9fa;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
+        
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -71,10 +58,12 @@
             text-decoration: none;
             font-weight: 500;
         }
-
+        
         .back-link:hover {
             text-decoration: underline;
         }
+        
+        /* Estilos adicionales específicos para cada prueba se agregarán aquí */
     </style>
 </head>
 <body>
@@ -146,83 +135,14 @@
                 <a href="javascript:history.back()" class="back-link">
                     <i class="fas fa-arrow-left me-2"></i> Volver
                 </a>
-
-                <h1 class="mb-4"><i class="fas fa-key text-primary me-2"></i> Prueba de Acceso a .env</h1>
-                <p class="lead mb-4">Esta página prueba si el archivo .env es accesible desde el servidor web.</p>
-
-                <div class="card">
-                    <div class="card-body">
-
-                        <div class="mb-4">
-                            <button id="test-root" class="btn btn-primary me-2 mb-2">.env en raíz</button>
-                            <button id="test-parent" class="btn btn-info me-2 mb-2">.env en directorio padre</button>
-                            <button id="test-current" class="btn btn-success me-2 mb-2">.env en directorio actual</button>
-                            <button id="test-test2" class="btn btn-warning me-2 mb-2">.env.test2</button>
-                        </div>
-
-                        <div id="result" class="result">
-                            <p>Haz clic en un botón para probar el acceso al archivo .env</p>
-                        </div>
-                    </div>
+                
+                <h1 class="mb-4"><i class="fas fa-vial text-primary me-2"></i> Título de la Prueba</h1>
+                <p class="lead mb-4">Descripción de la prueba.</p>
+                
+                <!-- Contenido específico de la prueba -->
+                <div class="test-container">
+                    <!-- El contenido específico de cada prueba irá aquí -->
                 </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const resultDiv = document.getElementById('result');
-
-            // Función para probar el acceso a un archivo
-            async function testAccess(url, description) {
-                resultDiv.className = 'result';
-                resultDiv.innerHTML = `<p>Probando acceso a ${description}...</p>`;
-
-                try {
-                    const response = await fetch(url);
-
-                    if (response.ok) {
-                        const content = await response.text();
-                        resultDiv.className = 'result success';
-                        resultDiv.innerHTML = `
-                            <p>✅ El archivo ${description} es accesible!</p>
-                            <p>Código de estado: ${response.status}</p>
-                            <p>Longitud del contenido: ${content.length} caracteres</p>
-                            <p>Primeros 50 caracteres:</p>
-                            <pre>${content.substring(0, 50)}</pre>
-                        `;
-                    } else {
-                        resultDiv.className = 'result error';
-                        resultDiv.innerHTML = `
-                            <p>❌ El archivo ${description} no es accesible.</p>
-                            <p>Código de estado: ${response.status}</p>
-                            <p>Mensaje: ${response.statusText}</p>
-                        `;
-                    }
-                } catch (error) {
-                    resultDiv.className = 'result error';
-                    resultDiv.innerHTML = `
-                        <p>❌ Error al acceder al archivo ${description}:</p>
-                        <p>${error.message}</p>
-                    `;
-                }
-            }
-
-            // Eventos para los botones
-            document.getElementById('test-root').addEventListener('click', () => {
-                testAccess('/.env', '.env en la raíz');
-            });
-
-            document.getElementById('test-parent').addEventListener('click', () => {
-                testAccess('../.env', '.env en el directorio padre');
-            });
-
-            document.getElementById('test-current').addEventListener('click', () => {
-                testAccess('.env', '.env en el directorio actual');
-            });
-
-            document.getElementById('test-test2').addEventListener('click', () => {
-                testAccess('.env.test2', '.env.test2');
-            });
-        });
-    </script>
             </div>
         </div>
     </main>
@@ -252,6 +172,45 @@
 
     <!-- Bootstrap 5.3 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+    
+    <!-- Toastify -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+    
+    <!-- Environment Variables Loader -->
+    <script src="../js/env-loader.js"></script>
+    
+    <!-- OpenRouter Models Config -->
+    <script src="../js/config/openrouter-models.js"></script>
+    
+    <!-- Inicialización de Toasts -->
+    <script>
+      // Configuración global para Toastify
+      const showToast = (message, type = 'info') => {
+        const bgColors = {
+          success: 'linear-gradient(to right, #00b09b, #96c93d)',
+          error: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+          warning: 'linear-gradient(to right, #f7b733, #fc4a1a)',
+          info: 'linear-gradient(to right, #2193b0, #6dd5ed)'
+        };
+
+        Toastify({
+          text: message,
+          duration: 3000,
+          close: true,
+          gravity: "top",
+          position: "right",
+          backgroundColor: bgColors[type],
+          stopOnFocus: true,
+          className: `toast-${type}`
+        }).showToast();
+      };
+
+      // Hacer disponible globalmente
+      window.showToast = showToast;
+    </script>
 
     <!-- Inicializar el toggle de tema -->
     <script>
@@ -291,5 +250,7 @@
         }
       });
     </script>
+    
+    <!-- Scripts específicos para cada prueba se agregarán aquí -->
 </body>
 </html>

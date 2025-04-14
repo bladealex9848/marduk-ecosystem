@@ -3,9 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelos de OpenRouter</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Explorador de Modelos - Marduk</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <!-- Toastify -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/fixes.css">
+
+    <!-- Tema oscuro/claro -->
+    <script>
+      // Verificar preferencia guardada
+      const darkModeEnabled = localStorage.getItem('darkModeEnabled') === 'true';
+      // Verificar preferencia del sistema
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // Aplicar tema oscuro si está habilitado o preferido por el sistema
+      if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('darkModeEnabled', 'true');
+      }
+    </script>
+
     <style>
         .model-card {
             height: 100%;
@@ -35,9 +69,79 @@
     </style>
 </head>
 <body>
-    <div class="container mt-4 mb-5">
-        <h1>Modelos de OpenRouter</h1>
-        <p class="lead">Listado de modelos disponibles en OpenRouter, tanto locales como desde la API.</p>
+    <!-- Header/Navbar (Same as other pages) -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-gradient sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="../index.html">
+                <i class="fas fa-balance-scale me-2"></i>
+                <span>Marduk</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/solutions.html"><i class="fas fa-tools me-1"></i> Soluciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/community.html"><i class="fas fa-users me-1"></i> Comunidad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../pages/ai-test.html"><i class="fas fa-robot me-1"></i> Prueba IA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html"><i class="fas fa-vial me-1"></i> Tests</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <!-- Search Form -->
+                    <form class="d-flex me-2 search-container">
+                        <div class="position-relative w-100">
+                            <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input class="form-control ps-5" type="search" placeholder="Buscar..." aria-label="Search">
+                        </div>
+                    </form>
+                    <!-- Theme Toggle -->
+                    <button id="themeToggle" class="btn btn-link text-light me-3">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <!-- User Menu -->
+                    <div class="dropdown">
+                        <button class="btn btn-link d-flex align-items-center text-light text-decoration-none dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="avatar-circle avatar-circle-sm bg-primary text-white me-2">
+                                AF
+                            </div>
+                            <span class="d-none d-md-block">Alexander Fadul</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="../pages/profile.html"><i class="fas fa-user me-2"></i> Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="../pages/settings.html"><i class="fas fa-cog me-2"></i> Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <!-- Botón para volver a la página anterior -->
+                <a href="javascript:history.back()" class="back-link">
+                    <i class="fas fa-arrow-left me-2"></i> Volver
+                </a>
+
+                <h1 class="mb-4"><i class="fas fa-list text-primary me-2"></i> Explorador de Modelos</h1>
+                <p class="lead mb-4">Listado de modelos disponibles en OpenRouter, tanto locales como desde la API.</p>
+            </div>
+        </div>
 
         <div class="row mt-4">
             <div class="col-md-4">
@@ -165,8 +269,8 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/env-loader.js"></script>
-    <script src="js/config/openrouter-models.js"></script>
+    <script src="../js/env-loader.js"></script>
+    <script src="../js/config/openrouter-models.js"></script>
     <script src="js/openrouter-api-models.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
@@ -473,6 +577,68 @@
                 modelDetailsModal.show();
             }
         });
+    </script>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5 border-top">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="h6 fw-bold text-primary">Marduk</h5>
+                    <p class="small text-secondary mb-0">Ecosistema de soluciones para la transformación judicial</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0 text-center">
+                    <div class="d-flex flex-wrap justify-content-center gap-3 footer-links">
+                        <a href="../pages/about.html" class="text-decoration-none text-secondary small">Acerca de</a>
+                        <a href="../pages/policies.html" class="text-decoration-none text-secondary small">Políticas</a>
+                        <a href="../pages/contribute.html" class="text-decoration-none text-secondary small">Contribuir</a>
+                        <a href="../pages/support.html" class="text-decoration-none text-secondary small">Soporte</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <p class="small text-muted mb-0">© 2025 Rama Judicial de Colombia</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Inicializar el toggle de tema -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar el toggle de tema
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+          // Actualizar el icono según el tema actual
+          if (document.body.classList.contains('dark-mode')) {
+            themeToggle.querySelector('i').classList.remove('fa-moon');
+            themeToggle.querySelector('i').classList.add('fa-sun');
+          }
+
+          // Agregar evento de click
+          themeToggle.addEventListener('click', function() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            if (isDarkMode) {
+              document.documentElement.removeAttribute('data-theme');
+              document.body.classList.remove('dark-mode');
+              localStorage.setItem('darkModeEnabled', 'false');
+            } else {
+              document.documentElement.setAttribute('data-theme', 'dark');
+              document.body.classList.add('dark-mode');
+              localStorage.setItem('darkModeEnabled', 'true');
+            }
+
+            // Actualizar el icono
+            const themeIcon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+              themeIcon.classList.remove('fa-moon');
+              themeIcon.classList.add('fa-sun');
+            } else {
+              themeIcon.classList.remove('fa-sun');
+              themeIcon.classList.add('fa-moon');
+            }
+          });
+        }
+      });
     </script>
 </body>
 </html>
