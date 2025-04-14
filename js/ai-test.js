@@ -309,8 +309,17 @@ async function loadModelsFromService() {
                     const data = await response.json();
 
                     if (data.data && Array.isArray(data.data)) {
-                        // Procesar todos los modelos de la API
-                        apiModels = data.data.map(model => ({
+                        // Filtrar solo modelos gratuitos y de OpenRouter
+                        apiModels = data.data.filter(model => {
+                            // Verificar si el modelo es gratuito
+                            const isFree = model.id.includes(':free') || (model.context_length_free && model.context_length_free > 0);
+
+                            // Verificar si el modelo es de OpenRouter
+                            const isOpenRouter = model.id.startsWith('openrouter/');
+
+                            // Incluir el modelo si es gratuito o de OpenRouter
+                            return isFree || isOpenRouter;
+                        }).map(model => ({
                             id: model.id,
                             name: model.name || model.id.split('/').pop(),
                             provider: model.id.split('/')[0] || 'Desconocido',
@@ -327,7 +336,8 @@ async function loadModelsFromService() {
                             source: 'api'
                         }));
 
-                        showToast(`${apiModels.length} modelos cargados desde la API`, 'success');
+                        showToast(`${apiModels.length} modelos gratuitos y de OpenRouter cargados`, 'success');
+                        console.log(`Se filtraron solo modelos gratuitos y de OpenRouter: ${apiModels.length} de ${data.data.length} modelos disponibles`);
                     }
                 } else {
                     console.error('Error al cargar modelos desde la API:', response.status);
@@ -361,7 +371,11 @@ async function loadModelsFromService() {
         }
 
         // Mostrar notificación de éxito
-        showToast(`Se cargaron ${models.length} modelos`, 'success');
+        if (apiModels.length > 0) {
+            showToast(`Se cargaron ${models.length} modelos gratuitos y de OpenRouter`, 'success');
+        } else {
+            showToast(`Se cargaron ${models.length} modelos locales`, 'success');
+        }
 
         return models;
     } catch (error) {
