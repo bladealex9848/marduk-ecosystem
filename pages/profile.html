@@ -781,7 +781,7 @@
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-body p-4 profile-section">
                         <h2 class="h5 fw-bold mb-3">Acerca de mí</h2>
-                        <p class="text-secondary small mb-4" id="userBio">
+                        <p class="text-secondary small mb-4" id="userBio" style="max-height: 80px; overflow-y: auto;">
                             Especializada en procesos civiles con énfasis en derechos reales y contratos. Más de 10 años de experiencia en el sistema judicial colombiano.
                         </p>
 
@@ -993,31 +993,38 @@
     <script src="../js/main.js"></script>
     <script src="../js/profile.js"></script>
 
-    <!-- Inicialización de Toasts -->
+    <!-- Inicialización de IA para mensajes personalizados -->
+    <script src="../js/openrouter.js"></script>
     <script>
-      // Configuración global para Toastify
-      const showToast = (message, type = 'info') => {
-        const bgColors = {
-          success: 'linear-gradient(to right, #00b09b, #96c93d)',
-          error: 'linear-gradient(to right, #ff5f6d, #ffc371)',
-          warning: 'linear-gradient(to right, #f7b733, #fc4a1a)',
-          info: 'linear-gradient(to right, #2193b0, #6dd5ed)'
-        };
+      // Función para generar mensajes de bienvenida con IA
+      async function generateWelcomeMessage(role) {
+        if (typeof callOpenRouterAPI === 'function') {
+          try {
+            const prompt = `Genera un breve mensaje de bienvenida personalizado (máximo 100 caracteres) para un ${role} en un sistema judicial digital. Menciona una tarea pendiente típica de su rol.`;
 
-        Toastify({
-          text: message,
-          duration: 3000,
-          close: true,
-          gravity: "top",
-          position: "right",
-          backgroundColor: bgColors[type],
-          stopOnFocus: true,
-          className: `toast-${type}`
-        }).showToast();
-      };
+            const response = await callOpenRouterAPI(prompt);
+            if (response && response.trim()) {
+              // Usar la función showToast de main.js
+              if (typeof window.showToast === 'function') {
+                window.showToast(response, 'info');
+              }
+            }
+          } catch (error) {
+            console.error('Error al generar mensaje de bienvenida:', error);
+          }
+        }
+      }
 
-      // Hacer disponible globalmente
-      window.showToast = showToast;
+      // Generar mensaje de bienvenida aleatorio (30% de probabilidad)
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+          const shouldShowMessage = Math.random() < 0.3;
+          if (shouldShowMessage) {
+            const currentRole = localStorage.getItem('mardukUserRole') || 'funcionario';
+            generateWelcomeMessage(currentRole);
+          }
+        }, 2000); // Esperar 2 segundos para mostrar el mensaje
+      });
     </script>
 </body>
 </html>

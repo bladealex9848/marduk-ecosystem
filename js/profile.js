@@ -712,10 +712,41 @@ function updateImpactData(impact) {
 }
 
 /**
+ * Clean up previous colored elements
+ */
+function cleanupColoredElements() {
+    // 1. Remove colored borders from bio section
+    const bioSection = document.querySelector('.col-lg-4 .card:first-child');
+    if (bioSection) {
+        bioSection.classList.remove(
+            'border-primary', 'border-success', 'border-info', 'border-warning',
+            'border-purple', 'border-orange', 'border-top'
+        );
+    }
+
+    // 2. Remove colored icons from resources section
+    const resourcesTitle = document.querySelector('.col-lg-4 .card:nth-child(2) h2');
+    if (resourcesTitle && resourcesTitle.innerHTML.includes('fa-bookmark')) {
+        resourcesTitle.textContent = resourcesTitle.textContent.trim();
+    }
+
+    // 3. Remove badges from objectives section
+    const objectivesTitle = document.querySelector('.card-body .h6.fw-medium:first-child');
+    if (objectivesTitle) {
+        const badge = objectivesTitle.querySelector('.badge');
+        if (badge) {
+            objectivesTitle.removeChild(badge);
+        }
+    }
+}
+
+/**
  * Update section colors based on role
  * @param {string} role - The user role
  */
 function updateSectionColors(role) {
+    // Limpiar elementos coloreados previos
+    cleanupColoredElements();
     // Define role-specific colors
     const roleColors = {
         funcionario: {
@@ -856,7 +887,10 @@ function updateSectionColors(role) {
     // 3. Add colored badge to objectives section
     const objectivesTitle = document.querySelector('.card-body .h6.fw-medium:first-child');
     if (objectivesTitle) {
-        objectivesTitle.innerHTML = `${objectivesTitle.textContent} <span class="badge bg-${colors.primaryColor} bg-opacity-10 text-${colors.primaryColor} ms-2 small">Personalizado</span>`;
+        // Verificar si ya tiene el badge para evitar duplicados
+        if (!objectivesTitle.querySelector('.badge')) {
+            objectivesTitle.innerHTML = `${objectivesTitle.textContent} <span class="badge bg-${colors.primaryColor} bg-opacity-10 text-${colors.primaryColor} ms-2 small">Personalizado</span>`;
+        }
     }
 }
 
