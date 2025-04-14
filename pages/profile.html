@@ -778,14 +778,14 @@
             <!-- Right column (1/3) -->
             <div class="col-lg-4">
                 <!-- User Bio -->
-                <div class="card border-0 shadow-sm mb-4" style="max-height: 350px;">
+                <div class="card border-0 shadow-sm mb-4" style="max-height: 400px;">
                     <div class="card-body p-4 profile-section">
                         <h2 class="h5 fw-bold mb-3">Acerca de mí</h2>
-                        <p class="text-secondary small mb-4" id="userBio" style="max-height: 60px; overflow-y: auto; display: block;">
+                        <p class="text-secondary small mb-4" id="userBio" style="max-height: 80px; overflow-y: auto; display: block;">
                             Especializada en procesos civiles con énfasis en derechos reales y contratos. Más de 10 años de experiencia en el sistema judicial colombiano.
                         </p>
 
-                        <div style="max-height: 180px; overflow-y: auto;">
+                        <div style="max-height: 220px; overflow-y: auto;">
                             <div class="d-flex align-items-center mb-3">
                                 <i class="fa-solid fa-building text-secondary me-3"></i>
                                 <div>
@@ -995,8 +995,7 @@
     <script src="../js/main.js"></script>
     <script src="../js/profile.js"></script>
 
-    <!-- Inicialización de IA para mensajes personalizados -->
-    <script src="../js/openrouter.js"></script>
+    <!-- Inicialización de mensajes personalizados -->
     <script>
       // Mensajes de bienvenida predefinidos por rol
       const welcomeMessages = {
@@ -1025,7 +1024,7 @@
             // Esperar un momento para que se actualice el perfil
             setTimeout(() => {
               showWelcomeMessage(role);
-            }, 500);
+            }, 1500);
           }
         }
       });
@@ -1035,7 +1034,7 @@
         setTimeout(() => {
           const currentRole = localStorage.getItem('mardukUserRole') || 'funcionario';
           showWelcomeMessage(currentRole);
-        }, 1000);
+        }, 2000);
       });
     </script>
 </body>
