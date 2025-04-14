@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Toastify -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/search.css">
@@ -155,9 +157,9 @@
                             id="solutionSearch"
                             autocomplete="off"
                         >
-                        <span class="position-absolute top-50 end-0 translate-middle-y me-3 d-lg-none">
-                            <i class="fa-solid fa-filter text-white opacity-70"></i>
-                        </span>
+                        <button class="btn position-absolute top-50 end-0 translate-middle-y me-3 search-button">
+                            <i class="fa-solid fa-search text-white"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2224,6 +2226,9 @@
     <!-- Toastify JS -->
     <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
 
+    <!-- Carga de variables de entorno -->
+    <script src="../js/env-loader.js"></script>
+
     <!-- Configuración de módulos -->
     <script type="module">
       // Importar módulos
@@ -2250,6 +2255,7 @@
     <!-- Custom Scripts -->
     <script src="../js/main.js"></script>
     <script src="../js/solutions.js"></script>
+    <script src="../js/ai-search.js"></script>
 
     <!-- Inicialización de Toasts -->
     <script>
@@ -2268,7 +2274,9 @@
           close: true,
           gravity: "top",
           position: "right",
-          backgroundColor: bgColors[type],
+          style: {
+            background: bgColors[type]
+          },
           stopOnFocus: true,
           className: `toast-${type}`
         }).showToast();

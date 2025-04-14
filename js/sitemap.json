@@ -1,0 +1,436 @@
+{
+  "siteName": "Marduk Ecosystem",
+  "siteDescription": "Plataforma de innovación judicial para la transformación del sistema judicial colombiano",
+  "mainSections": [
+    {
+      "id": "home",
+      "name": "Inicio",
+      "path": "/index.html",
+      "description": "Página principal del ecosistema Marduk con resumen de las principales secciones y actividad reciente"
+    },
+    {
+      "id": "solutions",
+      "name": "Soluciones",
+      "path": "/pages/solutions.html",
+      "description": "Tienda de aplicaciones judiciales con soluciones innovadoras para la administración de justicia",
+      "subsections": [
+        {
+          "id": "case-management",
+          "name": "Gestión de Casos",
+          "path": "/pages/solutions.html?category=case-management",
+          "description": "Herramientas para la gestión eficiente de casos judiciales, seguimiento de expedientes y administración de documentos",
+          "solutions": [
+            {
+              "id": "expediente-digital",
+              "name": "Expediente Digital",
+              "level": 5,
+              "type": "oficial",
+              "description": "Sistema integral para la gestión digital de expedientes judiciales, eliminando el uso de papel",
+              "tags": ["gestión documental", "digitalización", "expedientes", "documentos"]
+            },
+            {
+              "id": "seguimiento-casos",
+              "name": "Seguimiento de Casos",
+              "level": 4,
+              "type": "oficial",
+              "description": "Plataforma para el seguimiento en tiempo real del estado de los casos judiciales",
+              "tags": ["seguimiento", "casos", "notificaciones", "estado procesal"]
+            },
+            {
+              "id": "gestor-audiencias",
+              "name": "Gestor de Audiencias",
+              "level": 4,
+              "type": "community",
+              "description": "Sistema para la programación, gestión y grabación de audiencias judiciales",
+              "tags": ["audiencias", "programación", "grabación", "videoconferencia"]
+            }
+          ]
+        },
+        {
+          "id": "legal-research",
+          "name": "Investigación Jurídica",
+          "path": "/pages/solutions.html?category=legal-research",
+          "description": "Herramientas para la investigación jurídica, búsqueda de jurisprudencia y análisis legal",
+          "solutions": [
+            {
+              "id": "buscador-jurisprudencia",
+              "name": "Buscador de Jurisprudencia",
+              "level": 5,
+              "type": "oficial",
+              "description": "Motor de búsqueda avanzado para encontrar jurisprudencia relevante utilizando IA",
+              "tags": ["jurisprudencia", "búsqueda", "inteligencia artificial", "precedentes"]
+            },
+            {
+              "id": "analisis-sentencias",
+              "name": "Análisis de Sentencias",
+              "level": 3,
+              "type": "community",
+              "description": "Herramienta que utiliza IA para analizar sentencias y extraer información relevante",
+              "tags": ["análisis", "sentencias", "inteligencia artificial", "extracción de información"]
+            },
+            {
+              "id": "biblioteca-juridica",
+              "name": "Biblioteca Jurídica Digital",
+              "level": 4,
+              "type": "oficial",
+              "description": "Repositorio digital de documentos jurídicos, leyes, decretos y jurisprudencia",
+              "tags": ["biblioteca", "documentos", "leyes", "decretos", "jurisprudencia"]
+            }
+          ]
+        },
+        {
+          "id": "document-automation",
+          "name": "Automatización de Documentos",
+          "path": "/pages/solutions.html?category=document-automation",
+          "description": "Herramientas para la automatización en la creación y gestión de documentos legales",
+          "solutions": [
+            {
+              "id": "generador-documentos",
+              "name": "Generador de Documentos",
+              "level": 4,
+              "type": "oficial",
+              "description": "Sistema para la generación automática de documentos legales a partir de plantillas",
+              "tags": ["documentos", "automatización", "plantillas", "generación"]
+            },
+            {
+              "id": "firma-digital",
+              "name": "Firma Digital Judicial",
+              "level": 5,
+              "type": "oficial",
+              "description": "Plataforma para la firma digital de documentos judiciales con validez legal",
+              "tags": ["firma digital", "documentos", "validación", "seguridad"]
+            },
+            {
+              "id": "extractor-datos",
+              "name": "Extractor de Datos Legales",
+              "level": 3,
+              "type": "community",
+              "description": "Herramienta que utiliza IA para extraer datos relevantes de documentos legales",
+              "tags": ["extracción", "datos", "documentos", "inteligencia artificial"]
+            }
+          ]
+        },
+        {
+          "id": "ai-tools",
+          "name": "Herramientas de IA",
+          "path": "/pages/solutions.html?category=ai-tools",
+          "description": "Soluciones basadas en inteligencia artificial para el sector judicial",
+          "solutions": [
+            {
+              "id": "asistente-judicial",
+              "name": "Asistente Judicial IA",
+              "level": 3,
+              "type": "oficial",
+              "description": "Asistente virtual basado en IA para responder consultas jurídicas básicas",
+              "tags": ["asistente", "inteligencia artificial", "consultas", "virtual"]
+            },
+            {
+              "id": "predictor-sentencias",
+              "name": "Predictor de Sentencias",
+              "level": 2,
+              "type": "community",
+              "description": "Sistema que utiliza IA para predecir posibles resultados de casos basados en jurisprudencia",
+              "tags": ["predicción", "sentencias", "inteligencia artificial", "análisis"]
+            },
+            {
+              "id": "anonimizador",
+              "name": "Anonimizador de Documentos",
+              "level": 4,
+              "type": "oficial",
+              "description": "Herramienta que utiliza IA para anonimizar información sensible en documentos judiciales",
+              "tags": ["anonimización", "privacidad", "documentos", "inteligencia artificial"]
+            }
+          ]
+        },
+        {
+          "id": "access-justice",
+          "name": "Acceso a la Justicia",
+          "path": "/pages/solutions.html?category=access-justice",
+          "description": "Soluciones para mejorar el acceso a la justicia para todos los ciudadanos",
+          "solutions": [
+            {
+              "id": "portal-ciudadano",
+              "name": "Portal Ciudadano de Justicia",
+              "level": 5,
+              "type": "oficial",
+              "description": "Portal web para que los ciudadanos accedan a servicios judiciales y consulten sus casos",
+              "tags": ["portal", "ciudadanos", "acceso", "servicios", "consulta"]
+            },
+            {
+              "id": "consulta-procesos",
+              "name": "Consulta de Procesos",
+              "level": 4,
+              "type": "oficial",
+              "description": "Aplicación para consultar el estado de procesos judiciales en tiempo real",
+              "tags": ["consulta", "procesos", "estado", "seguimiento"]
+            },
+            {
+              "id": "justicia-inclusiva",
+              "name": "Justicia Inclusiva",
+              "level": 3,
+              "type": "community",
+              "description": "Plataforma con herramientas de accesibilidad para personas con discapacidad",
+              "tags": ["inclusión", "accesibilidad", "discapacidad", "herramientas"]
+            }
+          ]
+        },
+        {
+          "id": "legal-education",
+          "name": "Educación Jurídica",
+          "path": "/pages/solutions.html?category=legal-education",
+          "description": "Recursos educativos y de formación para profesionales del derecho",
+          "solutions": [
+            {
+              "id": "campus-virtual",
+              "name": "Campus Virtual Judicial",
+              "level": 4,
+              "type": "oficial",
+              "description": "Plataforma de e-learning para la formación continua de funcionarios judiciales",
+              "tags": ["formación", "e-learning", "cursos", "capacitación"]
+            },
+            {
+              "id": "simulador-juicios",
+              "name": "Simulador de Juicios",
+              "level": 2,
+              "type": "community",
+              "description": "Entorno virtual para la simulación de juicios y prácticas procesales",
+              "tags": ["simulación", "juicios", "prácticas", "virtual"]
+            },
+            {
+              "id": "biblioteca-formacion",
+              "name": "Biblioteca de Formación",
+              "level": 3,
+              "type": "oficial",
+              "description": "Repositorio de recursos educativos para la formación jurídica",
+              "tags": ["biblioteca", "recursos", "formación", "educación"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "community",
+      "name": "Comunidad",
+      "path": "/pages/community.html",
+      "description": "Espacio de colaboración para profesionales del sector judicial",
+      "subsections": [
+        {
+          "id": "forums",
+          "name": "Foros de Discusión",
+          "path": "/pages/community.html#forosTab",
+          "description": "Foros temáticos para discusiones sobre diversos aspectos del sistema judicial",
+          "categories": [
+            {
+              "id": "general",
+              "name": "General",
+              "description": "Discusiones generales sobre el ecosistema Marduk",
+              "forums": [
+                {
+                  "id": "announcements",
+                  "name": "Anuncios oficiales",
+                  "description": "Comunicados y anuncios importantes del equipo Marduk"
+                },
+                {
+                  "id": "welcome",
+                  "name": "Bienvenida a nuevos miembros",
+                  "description": "Presentaciones y orientación para nuevos usuarios"
+                },
+                {
+                  "id": "feedback",
+                  "name": "Feedback y sugerencias",
+                  "description": "Comparte tu opinión y sugiere mejoras"
+                }
+              ]
+            },
+            {
+              "id": "solutions",
+              "name": "Soluciones",
+              "description": "Discusiones específicas sobre soluciones del ecosistema",
+              "forums": [
+                {
+                  "id": "case-management-forum",
+                  "name": "Gestión de Casos",
+                  "description": "Discusiones sobre herramientas de gestión de casos judiciales"
+                },
+                {
+                  "id": "legal-research-forum",
+                  "name": "Investigación Jurídica",
+                  "description": "Debates sobre herramientas de investigación y análisis legal"
+                },
+                {
+                  "id": "ai-tools-forum",
+                  "name": "Herramientas de IA",
+                  "description": "Conversaciones sobre aplicaciones de IA en el ámbito judicial"
+                }
+              ]
+            },
+            {
+              "id": "development",
+              "name": "Desarrollo",
+              "description": "Recursos para desarrolladores y colaboradores",
+              "forums": [
+                {
+                  "id": "dev-announcements",
+                  "name": "Anuncios para desarrolladores",
+                  "description": "Actualizaciones importantes para la comunidad de desarrollo"
+                },
+                {
+                  "id": "technical-support",
+                  "name": "Soporte técnico",
+                  "description": "Ayuda con problemas técnicos y de implementación"
+                },
+                {
+                  "id": "api-integration",
+                  "name": "Integración de APIs",
+                  "description": "Discusiones sobre integración con las APIs de Marduk"
+                }
+              ]
+            },
+            {
+              "id": "legal",
+              "name": "Legal",
+              "description": "Discusiones sobre aspectos legales y normativos",
+              "forums": [
+                {
+                  "id": "legislation",
+                  "name": "Legislación y normativa",
+                  "description": "Análisis de leyes y normativas relevantes"
+                },
+                {
+                  "id": "jurisprudence",
+                  "name": "Jurisprudencia",
+                  "description": "Discusiones sobre jurisprudencia y precedentes"
+                },
+                {
+                  "id": "legal-tech",
+                  "name": "Legal Tech",
+                  "description": "Tendencias y novedades en tecnología legal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "events",
+          "name": "Eventos",
+          "path": "/pages/community.html#eventosTab",
+          "description": "Calendario de eventos, webinars y actividades de la comunidad",
+          "eventTypes": [
+            {
+              "id": "webinars",
+              "name": "Webinars",
+              "description": "Seminarios web sobre temas de interés para la comunidad judicial"
+            },
+            {
+              "id": "workshops",
+              "name": "Talleres",
+              "description": "Sesiones prácticas para el desarrollo de habilidades específicas"
+            },
+            {
+              "id": "conferences",
+              "name": "Conferencias",
+              "description": "Eventos de mayor escala con múltiples ponentes y temáticas"
+            },
+            {
+              "id": "hackathons",
+              "name": "Hackathons",
+              "description": "Eventos de desarrollo colaborativo para crear soluciones innovadoras"
+            }
+          ]
+        },
+        {
+          "id": "mentorship",
+          "name": "Programa de Mentorías",
+          "path": "/pages/community.html#mentoriasTab",
+          "description": "Programa de mentorías para el desarrollo profesional en el ámbito judicial",
+          "mentorshipAreas": [
+            {
+              "id": "legal-tech",
+              "name": "Legal Tech",
+              "description": "Mentorías en tecnología aplicada al ámbito legal"
+            },
+            {
+              "id": "judicial-innovation",
+              "name": "Innovación Judicial",
+              "description": "Mentorías en procesos de innovación dentro del sistema judicial"
+            },
+            {
+              "id": "development",
+              "name": "Desarrollo de Soluciones",
+              "description": "Mentorías técnicas para el desarrollo de aplicaciones judiciales"
+            },
+            {
+              "id": "legal-research",
+              "name": "Investigación Jurídica",
+              "description": "Mentorías en metodologías de investigación jurídica"
+            }
+          ]
+        },
+        {
+          "id": "resources",
+          "name": "Recursos",
+          "path": "/pages/community.html#recursosTab",
+          "description": "Recursos compartidos por la comunidad para el desarrollo profesional",
+          "resourceTypes": [
+            {
+              "id": "documentation",
+              "name": "Documentación",
+              "description": "Guías, manuales y documentación técnica"
+            },
+            {
+              "id": "templates",
+              "name": "Plantillas",
+              "description": "Plantillas para documentos legales y técnicos"
+            },
+            {
+              "id": "libraries",
+              "name": "Bibliotecas",
+              "description": "Bibliotecas de código y componentes reutilizables"
+            },
+            {
+              "id": "research",
+              "name": "Investigación",
+              "description": "Artículos y papers de investigación"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "profile",
+      "name": "Perfil",
+      "path": "/pages/profile.html",
+      "description": "Perfil de usuario con información personal, actividad y contribuciones"
+    },
+    {
+      "id": "about",
+      "name": "Acerca de",
+      "path": "/pages/about.html",
+      "description": "Información sobre el proyecto Marduk, su misión, visión y equipo"
+    },
+    {
+      "id": "contribute",
+      "name": "Contribuir",
+      "path": "/pages/contribute.html",
+      "description": "Información sobre cómo contribuir al desarrollo del ecosistema Marduk"
+    },
+    {
+      "id": "policies",
+      "name": "Políticas",
+      "path": "/pages/policies.html",
+      "description": "Políticas de uso, privacidad y términos de servicio"
+    },
+    {
+      "id": "support",
+      "name": "Soporte",
+      "path": "/pages/support.html",
+      "description": "Centro de ayuda y soporte para usuarios del ecosistema Marduk"
+    },
+    {
+      "id": "ai-test",
+      "name": "Prueba de IA",
+      "path": "/pages/ai-test.html",
+      "description": "Página para probar los modelos de IA integrados en el ecosistema Marduk"
+    }
+  ]
+}
