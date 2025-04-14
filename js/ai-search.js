@@ -1121,8 +1121,16 @@ function generateFallbackSolution(query) {
 function generateName(query) {
     console.log('Generando nombre para:', query);
 
-    // Extraer palabras clave de la consulta
-    const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 3);
+    // Palabras a filtrar (artículos, preposiciones, verbos auxiliares, etc.)
+    const wordsToFilter = ['quiero', 'una', 'que', 'para', 'como', 'donde', 'cuando', 'porque', 'aunque', 'desde', 'hasta', 'entre', 'sobre', 'bajo', 'tras', 'mediante', 'durante', 'según', 'contra', 'hacia', 'los', 'las', 'del', 'con', 'por', 'sin', 'forma', 'manera'];
+
+    // Extraer palabras clave de la consulta, filtrando palabras comunes
+    const keywords = query.toLowerCase()
+        .split(/\s+/)
+        .filter(word => word.length > 3)
+        .filter(word => !wordsToFilter.includes(word));
+
+    console.log('Palabras clave filtradas:', keywords);
 
     // Prefijos según el tipo de solución
     const prefixes = [
@@ -1136,25 +1144,51 @@ function generateName(query) {
         'Pro', 'Plus', 'AI', 'Smart', 'Connect'
     ];
 
-    // Si la consulta es muy corta o no tiene palabras clave significativas
-    if (keywords.length < 2 || query.length < 10) {
+    // Palabras clave específicas del dominio judicial que deberían tener prioridad
+    const legalKeywords = ['tutela', 'acción', 'acciones', 'revisiones', 'revisión', 'sentencia', 'sentencias', 'expediente', 'expedientes', 'caso', 'casos', 'jurisprudencia', 'legal', 'judicial', 'automática', 'automatización', 'documento', 'documentos'];
+
+    // Filtrar palabras clave del dominio legal
+    const legalTerms = keywords.filter(word => legalKeywords.includes(word));
+    console.log('Términos legales encontrados:', legalTerms);
+
+    // Si no hay suficientes palabras clave o son muy cortas
+    if (keywords.length < 2 || (keywords.length === 0 && query.length < 10)) {
         // Generar un nombre genérico pero profesional
         const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
         const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
         return `${randomPrefix} ${randomSuffix}`;
     }
 
-    // Intentar extraer sustantivos y verbos importantes (palabras más largas)
-    const importantWords = keywords.filter(word => word.length > 4)
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .slice(0, 3); // Tomar hasta 3 palabras importantes
+    // Priorizar términos legales si existen
+    let importantWords = [];
+    if (legalTerms.length > 0) {
+        importantWords = legalTerms
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .slice(0, 3); // Tomar hasta 3 términos legales
+    } else {
+        // Si no hay términos legales, usar palabras más largas
+        importantWords = keywords
+            .filter(word => word.length > 4)
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .slice(0, 3); // Tomar hasta 3 palabras importantes
+    }
+
+    console.log('Palabras importantes seleccionadas:', importantWords);
 
     // Si tenemos palabras importantes, crear un nombre basado en ellas
     if (importantWords.length > 0) {
         // Elegir un prefijo aleatorio si hay pocas palabras importantes
         if (importantWords.length === 1) {
             const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-            return `${randomPrefix} ${importantWords[0]}`;
+            return `${randomPrefix} de ${importantWords[0]}`;
+        }
+
+        // Si hay términos legales específicos, crear un nombre más descriptivo
+        if (legalTerms.length > 0) {
+            const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            // Combinar los términos legales
+            const legalPhrase = importantWords.join(' ');
+            return `${randomPrefix} de ${legalPhrase}`;
         }
 
         // Combinar palabras importantes
@@ -1168,19 +1202,10 @@ function generateName(query) {
         return combinedName;
     }
 
-    // Si no se pudo generar un nombre basado en palabras importantes
-    // Tomar las primeras palabras de la consulta y capitalizarlas
-    const simpleName = query.split(' ')
-        .slice(0, 4) // Tomar hasta 4 palabras
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-
-    // Limitar longitud
-    if (simpleName.length > 40) {
-        return simpleName.substring(0, 37) + '...';
-    }
-
-    return simpleName;
+    // Si llegamos aquí, no se pudieron extraer palabras importantes
+    // Usar un nombre genérico relacionado con automatización judicial
+    const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+    return `${randomPrefix} de Automatización Judicial`;
 }
 
 /**
@@ -1192,15 +1217,73 @@ function determineCategory(query) {
     const queryLower = query.toLowerCase();
     const keywords = queryLower.split(/\s+/).filter(word => word.length > 2);
 
+    console.log('Palabras clave para determinar categoría:', keywords);
+
     // Mapeo de palabras clave a categorías con pesos
     const categoryKeywords = {
-        'case-management': ['caso', 'casos', 'expediente', 'expedientes', 'seguimiento', 'gestión', 'administración', 'workflow', 'flujo', 'proceso', 'procesos', 'trámite', 'trámites'],
-        'legal-research': ['investigación', 'buscar', 'búsqueda', 'jurídico', 'legal', 'jurisprudencia', 'doctrina', 'normativa', 'leyes', 'sentencias', 'precedentes', 'análisis'],
-        'document-automation': ['documento', 'documentos', 'automatización', 'plantilla', 'plantillas', 'generación', 'redacción', 'formulario', 'formularios', 'contrato', 'contratos', 'escrito', 'escritos'],
+        'case-management': ['caso', 'casos', 'expediente', 'expedientes', 'seguimiento', 'gestión', 'administración', 'workflow', 'flujo', 'proceso', 'procesos', 'trámite', 'trámites', 'tutela', 'tutelas'],
+        'legal-research': ['investigación', 'buscar', 'búsqueda', 'jurídico', 'legal', 'jurisprudencia', 'doctrina', 'normativa', 'leyes', 'sentencias', 'precedentes', 'análisis', 'revisión', 'revisiones'],
+        'document-automation': ['documento', 'documentos', 'automatización', 'plantilla', 'plantillas', 'generación', 'redacción', 'formulario', 'formularios', 'contrato', 'contratos', 'escrito', 'escritos', 'generar', 'genere', 'automática', 'automático'],
         'ai-tools': ['ia', 'inteligencia', 'artificial', 'machine', 'learning', 'agente', 'agentes', 'orquestación', 'predicción', 'automático', 'automática', 'algoritmo', 'algoritmos', 'modelo', 'modelos', 'asistente', 'asistentes', 'chatbot', 'robot'],
-        'access-justice': ['acceso', 'justicia', 'ciudadano', 'ciudadanos', 'público', 'transparencia', 'inclusión', 'inclusivo', 'accesible', 'accesibilidad', 'derecho', 'derechos', 'servicio', 'servicios'],
+        'access-justice': ['acceso', 'justicia', 'ciudadano', 'ciudadanos', 'público', 'transparencia', 'inclusión', 'inclusivo', 'accesible', 'accesibilidad', 'derecho', 'derechos', 'servicio', 'servicios', 'acción', 'acciones'],
         'legal-education': ['educación', 'aprendizaje', 'formación', 'capacitación', 'enseñanza', 'curso', 'cursos', 'entrenamiento', 'conocimiento', 'conocimientos', 'habilidad', 'habilidades', 'competencia', 'competencias']
     };
+
+    // Patrones de consulta que indican categorías específicas
+    const categoryPatterns = {
+        'document-automation': [
+            /generar\s+(?:.*?)\s+(?:documento|documentos|formulario|formularios|escrito|escritos)/i,
+            /automatizar\s+(?:.*?)\s+(?:documento|documentos|formulario|formularios|escrito|escritos)/i,
+            /(?:generar|crear|producir)\s+(?:.*?)\s+(?:autom[aá]tica|autom[aá]ticamente)/i,
+            /(?:revisi[oó]n|revisiones)\s+(?:.*?)\s+(?:autom[aá]tica|autom[aá]ticamente)/i,
+            /(?:autom[aá]tica|autom[aá]ticamente)\s+(?:.*?)\s+(?:generar|crear|producir)/i
+        ],
+        'case-management': [
+            /(?:gesti[oó]n|administraci[oó]n)\s+(?:.*?)\s+(?:caso|casos|expediente|expedientes|tutela|tutelas)/i,
+            /(?:seguimiento|monitoreo)\s+(?:.*?)\s+(?:caso|casos|expediente|expedientes|tutela|tutelas)/i
+        ],
+        'legal-research': [
+            /(?:buscar|encontrar|investigar)\s+(?:.*?)\s+(?:jurisprudencia|sentencias|normativa|leyes)/i,
+            /(?:revisi[oó]n|revisiones)\s+(?:.*?)\s+(?:legal|jur[ií]dica|sentencias)/i
+        ]
+    };
+
+    // Verificar patrones específicos primero
+    for (const [category, patterns] of Object.entries(categoryPatterns)) {
+        for (const pattern of patterns) {
+            if (pattern.test(queryLower)) {
+                console.log(`Patrón detectado para categoría ${category}: ${pattern}`);
+                return category;
+            }
+        }
+    }
+
+    // Palabras clave que indican fuertemente una categoría específica
+    const strongIndicators = {
+        'document-automation': ['generar', 'genere', 'automatización', 'automática', 'automáticamente'],
+        'case-management': ['tutela', 'tutelas', 'expediente', 'expedientes'],
+        'legal-research': ['revisión', 'revisiones', 'jurisprudencia'],
+        'access-justice': ['acción', 'acciones']
+    };
+
+    // Verificar indicadores fuertes
+    for (const [category, indicators] of Object.entries(strongIndicators)) {
+        for (const indicator of indicators) {
+            if (queryLower.includes(indicator)) {
+                console.log(`Indicador fuerte detectado para categoría ${category}: ${indicator}`);
+                // Si encontramos "generar" y "revisión" o "revisiones" junto con "tutela" o "acciones", es document-automation
+                if (indicator === 'generar' || indicator === 'genere' || indicator === 'automática') {
+                    if (queryLower.includes('revisión') || queryLower.includes('revisiones')) {
+                        if (queryLower.includes('tutela') || queryLower.includes('acciones')) {
+                            console.log('Combinación especial detectada: generación automática de revisiones de tutelas');
+                            return 'document-automation';
+                        }
+                    }
+                }
+                return category;
+            }
+        }
+    }
 
     // Contar coincidencias por categoría
     const categoryCounts = {};
@@ -1224,7 +1307,7 @@ function determineCategory(query) {
 
     // Encontrar la categoría con más coincidencias
     let maxCount = 0;
-    let selectedCategory = 'ai-tools'; // Categoría por defecto
+    let selectedCategory = 'document-automation'; // Categoría por defecto cambiada a document-automation
 
     Object.keys(categoryCounts).forEach(category => {
         if (categoryCounts[category] > maxCount) {
@@ -1232,6 +1315,13 @@ function determineCategory(query) {
             selectedCategory = category;
         }
     });
+
+    // Si la consulta menciona "generar" o "automatizar" y no hay una categoría clara, usar document-automation
+    if (maxCount < 3 && (queryLower.includes('generar') || queryLower.includes('genere') ||
+                         queryLower.includes('automática') || queryLower.includes('automatizar'))) {
+        console.log('Categoría por defecto seleccionada: document-automation');
+        return 'document-automation';
+    }
 
     console.log('Categoría determinada:', selectedCategory, 'con puntuación:', maxCount);
     return selectedCategory;

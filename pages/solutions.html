@@ -3422,7 +3422,50 @@
             }
 
             // Setup view toggles
-            setupViewToggles();
+            // Usar la función correcta setupViewToggle (sin 's' al final)
+            if (typeof setupViewToggle === 'function') {
+                setupViewToggle();
+            } else {
+                console.warn('La función setupViewToggle no está definida. Usando alternativa.');
+                // Alternativa en caso de que la función no esté disponible
+                const gridViewBtn = document.getElementById('gridViewBtn');
+                const listViewBtn = document.getElementById('listViewBtn');
+                const gridView = document.getElementById('gridView');
+                const listView = document.getElementById('listView');
+
+                if (gridViewBtn && listViewBtn && gridView && listView) {
+                    // Establecer vista inicial basada en localStorage o por defecto grid
+                    const savedView = localStorage.getItem('mardukViewMode') || 'grid';
+                    if (savedView === 'list') {
+                        gridView.classList.add('d-none');
+                        listView.classList.remove('d-none');
+                        gridViewBtn.classList.remove('active');
+                        listViewBtn.classList.add('active');
+                    } else {
+                        gridView.classList.remove('d-none');
+                        listView.classList.add('d-none');
+                        gridViewBtn.classList.add('active');
+                        listViewBtn.classList.remove('active');
+                    }
+
+                    // Configurar eventos
+                    gridViewBtn.addEventListener('click', function() {
+                        gridView.classList.remove('d-none');
+                        listView.classList.add('d-none');
+                        gridViewBtn.classList.add('active');
+                        listViewBtn.classList.remove('active');
+                        localStorage.setItem('mardukViewMode', 'grid');
+                    });
+
+                    listViewBtn.addEventListener('click', function() {
+                        gridView.classList.add('d-none');
+                        listView.classList.remove('d-none');
+                        gridViewBtn.classList.remove('active');
+                        listViewBtn.classList.add('active');
+                        localStorage.setItem('mardukViewMode', 'list');
+                    });
+                }
+            }
             // Setup search functionality
             setupSearch();
             // Check URL for app detail parameter
