@@ -37,12 +37,17 @@
 
         /* Estilos inmunes a cambios de modo claro/oscuro */
         .profile-section,
-        .card-header,
         .card-body,
         .list-group-item,
         .border-top {
             color: #fff !important;
             background-color: #343a40 !important;
+        }
+
+        /* Permitir colores específicos para ciertas áreas */
+        .profile-banner,
+        .progress-header {
+            color: #fff !important;
         }
 
         .profile-section h2,
@@ -429,7 +434,7 @@
     <!-- Main Content -->
     <main class="container py-4">
         <!-- Profile Banner -->
-        <div class="card border-0 bg-gradient mb-4 rounded-3 dashboard-banner profile-section" id="profileBanner">
+        <div class="card border-0 bg-gradient mb-4 rounded-3 dashboard-banner profile-banner" id="profileBanner">
             <div class="card-body text-white p-4">
                 <h1 class="h3 fw-bold" id="profileTitle">Panel de Funcionario Judicial</h1>
                 <p class="mb-3 opacity-90">Soluciones personalizadas para su rol en el sistema judicial</p>
@@ -509,7 +514,7 @@
             <div class="col-lg-8">
                 <!-- Gamification Progress -->
                 <div class="card border-0 shadow-sm mb-4 overflow-hidden">
-                    <div class="card-header bg-gradient-primary p-4 text-white border-0 profile-section">
+                    <div class="card-header bg-gradient-primary p-4 text-white border-0 progress-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <h2 class="h5 fw-bold mb-0">Mi Progreso Judicial</h2>
                             <span class="profile-level px-3 py-1 rounded-pill small" id="userLevel">

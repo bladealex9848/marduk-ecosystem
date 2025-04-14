@@ -380,6 +380,9 @@ function updateProfileByRole(role) {
     // Update user bio
     updateUserBio(data.bio);
 
+    // Update bio based on role
+    updateProfileBioByRole(role);
+
     // Update resources
     updateResources(data.resources);
 
@@ -497,6 +500,28 @@ function updateUserStats(stats) {
  */
 function updateUserBio(bio) {
     document.getElementById('userBio').textContent = bio;
+}
+
+/**
+ * Update profile bio and info based on role
+ * @param {string} role - The user role
+ */
+function updateProfileBioByRole(role) {
+    // Define role-specific bios
+    const bios = {
+        funcionario: "Especializada en procesos civiles con énfasis en derechos reales y contratos. Más de 10 años de experiencia en el sistema judicial colombiano.",
+        ciudadano: "Abogado litigante con experiencia en derecho laboral y seguridad social. Especialista en representación de trabajadores en procesos de reclamación de prestaciones sociales.",
+        administrador: "Especialista en administración de sistemas judiciales con certificaciones en seguridad informática y gestión de infraestructura tecnológica para entidades públicas.",
+        desarrollador: "Ingeniero de software con experiencia en desarrollo de aplicaciones judiciales. Especialista en arquitectura de sistemas, APIs y bases de datos para el sector justicia.",
+        investigador: "Investigadora especializada en análisis de jurisprudencia y tendencias legales con enfoque en derecho constitucional y derechos humanos.",
+        estudiante: "Estudiante de noveno semestre de Derecho con interés en nuevas tecnologías aplicadas al ámbito jurídico. Participante activo en semilleros de investigación."
+    };
+
+    // Update bio
+    const bioElement = document.getElementById('userBio');
+    if (bioElement) {
+        bioElement.textContent = bios[role] || bios.funcionario;
+    }
 }
 
 /**
@@ -697,46 +722,70 @@ function updateSectionColors(role) {
             gradientClass: 'bg-gradient-blue',
             primaryColor: 'primary',
             secondaryColor: 'info',
-            accentColor: 'blue'
+            accentColor: 'blue',
+            bannerClass: 'bg-gradient-blue',
+            headerClass: 'bg-gradient-primary'
         },
         ciudadano: {
             gradientClass: 'bg-gradient-green',
             primaryColor: 'success',
             secondaryColor: 'teal',
-            accentColor: 'green'
+            accentColor: 'green',
+            bannerClass: 'bg-gradient-green',
+            headerClass: 'bg-gradient-success'
         },
         administrador: {
             gradientClass: 'bg-gradient-purple',
             primaryColor: 'purple',
             secondaryColor: 'indigo',
-            accentColor: 'purple'
+            accentColor: 'purple',
+            bannerClass: 'bg-gradient-purple',
+            headerClass: 'bg-gradient-purple'
         },
         desarrollador: {
             gradientClass: 'bg-gradient-orange',
             primaryColor: 'orange',
             secondaryColor: 'warning',
-            accentColor: 'orange'
+            accentColor: 'orange',
+            bannerClass: 'bg-gradient-orange',
+            headerClass: 'bg-gradient-orange'
         },
         investigador: {
             gradientClass: 'bg-gradient-purple',
             primaryColor: 'purple',
             secondaryColor: 'indigo',
-            accentColor: 'purple'
+            accentColor: 'purple',
+            bannerClass: 'bg-gradient-purple',
+            headerClass: 'bg-gradient-purple'
         },
         estudiante: {
             gradientClass: 'bg-gradient-green',
             primaryColor: 'success',
             secondaryColor: 'teal',
-            accentColor: 'green'
+            accentColor: 'green',
+            bannerClass: 'bg-gradient-green',
+            headerClass: 'bg-gradient-success'
         }
     };
 
     const colors = roleColors[role] || roleColors.funcionario;
 
+    // Update profile banner
+    const profileBanner = document.querySelector('.profile-banner');
+    if (profileBanner) {
+        // Remove all possible gradient classes
+        profileBanner.classList.remove('bg-gradient-blue', 'bg-gradient-green', 'bg-gradient-purple', 'bg-gradient-orange');
+        // Add the role-specific gradient class
+        profileBanner.classList.add(colors.bannerClass);
+    }
+
     // Update progress section header
-    const progressHeader = document.querySelector('.card-header.bg-gradient-primary');
+    const progressHeader = document.querySelector('.progress-header');
     if (progressHeader) {
-        progressHeader.className = progressHeader.className.replace('bg-gradient-primary', `bg-gradient-${colors.primaryColor}`);
+        // Remove all possible gradient classes
+        progressHeader.classList.remove('bg-gradient-primary', 'bg-gradient-success', 'bg-gradient-purple', 'bg-gradient-orange');
+        // Add the role-specific gradient class
+        progressHeader.classList.add(colors.headerClass);
     }
 
     // Update progress bar
@@ -789,6 +838,25 @@ function updateSectionColors(role) {
     const editProfileBtn = document.querySelector('.card:last-child .btn-primary');
     if (editProfileBtn) {
         editProfileBtn.className = editProfileBtn.className.replace('btn-primary', `btn-${colors.primaryColor}`);
+    }
+
+    // Add colored accents to various sections
+    // 1. Add colored border to user bio section
+    const bioSection = document.querySelector('.col-lg-4 .card:first-child');
+    if (bioSection) {
+        bioSection.classList.add(`border-${colors.primaryColor}`, 'border-top');
+    }
+
+    // 2. Add colored icon to resources section
+    const resourcesTitle = document.querySelector('.col-lg-4 .card:nth-child(2) h2');
+    if (resourcesTitle) {
+        resourcesTitle.innerHTML = `<i class="fa-solid fa-bookmark text-${colors.primaryColor} me-2"></i> ${resourcesTitle.textContent}`;
+    }
+
+    // 3. Add colored badge to objectives section
+    const objectivesTitle = document.querySelector('.card-body .h6.fw-medium:first-child');
+    if (objectivesTitle) {
+        objectivesTitle.innerHTML = `${objectivesTitle.textContent} <span class="badge bg-${colors.primaryColor} bg-opacity-10 text-${colors.primaryColor} ms-2 small">Personalizado</span>`;
     }
 }
 
