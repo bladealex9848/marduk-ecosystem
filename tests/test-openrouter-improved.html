@@ -823,6 +823,24 @@
                 let content = '';
 
                 if (type === 'loading') {
+                    // Mostrar toast para loading
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: 'info',
+                        title: message
+                    });
+
                     content = `
                         <div class="d-flex align-items-center">
                             <div class="loading me-2"></div>
@@ -845,6 +863,24 @@
                         </div>
                     `;
                 } else if (type === 'success') {
+                    // Mostrar éxito con SweetAlert
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: `Respuesta recibida de ${modelUsed || 'modelo'}`
+                    });
+
                     content = `
                         <div class="alert alert-success">
                             <i class="fas fa-check-circle me-2"></i>
@@ -854,6 +890,24 @@
                         <div class="markdown-content">${parseMarkdown(message)}</div>
                     `;
                 } else if (type === 'demo') {
+                    // Mostrar demo con SweetAlert
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: 'info',
+                        title: `Respuesta de demostración generada`
+                    });
+
                     content = `
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle me-2"></i>
