@@ -1,6 +1,6 @@
 /**
  * Script para manejar la entrada manual de la API key
- * Intenta cargar la API key desde .env si estamos en un servidor web
+ * Intenta cargar la API key desde el servidor si estamos en un entorno web
  */
 
 // Inicializar el objeto ENV
@@ -12,38 +12,69 @@ function isWebServer() {
     return window.location.protocol === 'http:' || window.location.protocol === 'https:';
 }
 
-// Función para intentar cargar la API key desde .env
-async function tryLoadApiKeyFromEnv() {
+// Función para obtener un token de autenticación del servidor
+async function getAuthToken() {
+    try {
+        // Determinar la ruta base
+        const baseUrl = window.location.origin;
+        const tokenUrl = `${baseUrl}/get-auth-token.php`;
+        
+        // Solicitar el token
+        const response = await fetch(tokenUrl);
+        if (!response.ok) {
+            throw new Error(`Error al obtener token: ${response.status} ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        if (!data.success || !data.data || !data.data.token) {
+            throw new Error('Formato de respuesta inválido');
+        }
+        
+        return data.data.token;
+    } catch (error) {
+        console.error('Error al obtener token de autenticación:', error);
+        return null;
+    }
+}
+
+// Función para intentar cargar la API key desde el servidor
+async function tryLoadApiKeyFromServer() {
     if (!isWebServer()) {
-        console.log('No estamos en un servidor web, no se puede cargar .env');
+        console.log('No estamos en un servidor web, no se puede cargar la API key');
         return null;
     }
     
     try {
-        // Intentar cargar desde diferentes ubicaciones
-        const locations = ['/.env', '../.env', '.env'];
-        
-        for (const location of locations) {
-            try {
-                console.log(`Intentando cargar .env desde ${location}`);
-                const response = await fetch(location);
-                if (response.ok) {
-                    const content = await response.text();
-                    const match = content.match(/OPENROUTER_API_KEY=[\"']?([^\"'\n]+)[\"']?/);
-                    
-                    if (match && match[1]) {
-                        console.log('API key cargada desde .env');
-                        return match[1];
-                    }
-                }
-            } catch (e) {
-                console.log(`No se pudo cargar .env desde ${location}`);
-            }
+        // Obtener token de autenticación
+        const token = await getAuthToken();
+        if (!token) {
+            throw new Error('No se pudo obtener token de autenticación');
         }
         
-        return null;
+        // Determinar la ruta base
+        const baseUrl = window.location.origin;
+        const apiKeyUrl = `${baseUrl}/get-api-key.php`;
+        
+        // Solicitar la API key
+        const response = await fetch(apiKeyUrl, {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error al obtener API key: ${response.status} ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        if (!data.success || !data.data || !data.data.keyAvailable) {
+            throw new Error('API key no disponible');
+        }
+        
+        console.log('API key cargada desde el servidor');
+        return data.data.key;
     } catch (error) {
-        console.error('Error al cargar API key desde .env:', error);
+        console.error('Error al cargar API key desde el servidor:', error);
         return null;
     }
 }
@@ -54,14 +85,14 @@ async function updateApiKeyUI() {
     const apiKeyInput = document.getElementById('api-key');
     const useEnvKeyBtn = document.getElementById('use-env-key');
     
-    // Si estamos en un servidor web, intentar cargar la API key desde .env
+    // Si estamos en un servidor web, intentar cargar la API key desde el servidor
     if (isWebServer()) {
-        const apiKey = await tryLoadApiKeyFromEnv();
+        const apiKey = await tryLoadApiKeyFromServer();
         if (apiKey) {
             window.ENV.OPENROUTER_API_KEY = apiKey;
             
             if (apiKeyStatus) {
-                apiKeyStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle"></i> API key cargada desde .env</span>';
+                apiKeyStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle"></i> API key cargada desde el servidor</span>';
             }
             
             if (apiKeyInput) {
@@ -72,7 +103,7 @@ async function updateApiKeyUI() {
                 useEnvKeyBtn.disabled = false;
             }
             
-            console.log('API key cargada desde .env: ********');
+            console.log('API key cargada desde el servidor: ********');
             return;
         }
     }
@@ -93,13 +124,13 @@ async function updateApiKeyUI() {
     if (isWebServer()) {
         apiKeyInfo.innerHTML = `
             <h6><i class="fas fa-info-circle"></i> Información importante:</h6>
-            <p>No se pudo cargar la API key desde el archivo .env. Por favor, ingresa tu API key de OpenRouter manualmente.</p>
+            <p>No se pudo cargar la API key desde el servidor. Por favor, ingresa tu API key de OpenRouter manualmente.</p>
             <p class="mb-0"><small>Nota: Tu API key nunca se almacena en el código y solo se utiliza para esta sesión.</small></p>
         `;
     } else {
         apiKeyInfo.innerHTML = `
             <h6><i class="fas fa-info-circle"></i> Información importante:</h6>
-            <p>Debido a restricciones de seguridad del navegador, no es posible cargar automáticamente la API key desde el archivo .env cuando se accede a través de file://.</p>
+            <p>Debido a restricciones de seguridad del navegador, no es posible cargar automáticamente la API key cuando se accede a través de file://.</p>
             <p>Por favor, ingresa tu API key de OpenRouter manualmente en el campo de arriba.</p>
             <p class="mb-0"><small>Nota: Tu API key nunca se almacena en el código y solo se utiliza para esta sesión.</small></p>
         `;

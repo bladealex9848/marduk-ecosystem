@@ -1,0 +1,34 @@
+# Proteger archivos sensibles
+<Files ~ "^\.env">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Proteger archivos que comienzan con punto
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Permitir acceso a los scripts PHP específicos
+<Files "api-key-proxy.php">
+    Order allow,deny
+    Allow from all
+</Files>
+
+<Files "get-api-key.php">
+    Order allow,deny
+    Allow from all
+</Files>
+
+<Files "get-auth-token.php">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Configuración de seguridad adicional
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
