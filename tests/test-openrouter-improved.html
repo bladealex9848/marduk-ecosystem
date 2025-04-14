@@ -52,6 +52,71 @@
             max-height: 400px;
             overflow-y: auto;
         }
+
+        /* Estilos para modo oscuro */
+        .dark-mode pre {
+            background-color: #343a40;
+            color: #f8f9fa;
+        }
+
+        .dark-mode .result-container {
+            background-color: #343a40 !important;
+            color: #f8f9fa !important;
+        }
+
+        .dark-mode .card {
+            background-color: #2c3034;
+            color: #f8f9fa;
+        }
+
+        .dark-mode .card-header {
+            background-color: #212529;
+        }
+
+        .dark-mode .list-group-item {
+            background-color: #2c3034;
+            color: #f8f9fa;
+            border-color: #495057;
+        }
+
+        /* Estilos para el contenido Markdown */
+        .markdown-content {
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .dark-mode .markdown-content {
+            background-color: #343a40;
+            color: #f8f9fa;
+        }
+
+        .markdown-content code {
+            background-color: #e9ecef;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+
+        .dark-mode .markdown-content code {
+            background-color: #212529;
+            color: #f8f9fa;
+        }
+
+        .markdown-content .code-block {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .dark-mode .markdown-content .code-block {
+            background-color: #212529;
+            color: #f8f9fa;
+        }
         .loading {
             display: inline-block;
             width: 20px;
@@ -263,6 +328,7 @@
     <script src="js/api-key-input.js"></script>
     <script src="../js/config/openrouter-models.js"></script>
     <script src="js/openrouter-api-models.js"></script>
+    <script src="js/markdown-parser.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
             // Elementos del DOM
@@ -694,7 +760,7 @@
                             <strong>Respuesta exitosa</strong>
                             ${modelUsed ? `<div class="mt-1 small">Modelo usado: ${modelUsed}</div>` : ''}
                         </div>
-                        <pre>${message}</pre>
+                        <div class="markdown-content">${parseMarkdown(message)}</div>
                     `;
                 } else if (type === 'demo') {
                     content = `
@@ -703,7 +769,7 @@
                             <strong>Modo de Demostración</strong>
                             ${modelUsed ? `<div class="mt-1 small">Modelo simulado: ${modelUsed}</div>` : ''}
                         </div>
-                        <pre>${message}</pre>
+                        <div class="markdown-content">${parseMarkdown(message)}</div>
                     `;
                 }
 

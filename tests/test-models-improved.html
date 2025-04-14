@@ -314,14 +314,20 @@
             // Configurar el botón para usar la API key del .env como deshabilitado
             useEnvKeyBtn.disabled = true;
 
-            // Agregar botón para cargar modelos de la API
-            const loadApiModelsBtn = document.createElement('button');
-            loadApiModelsBtn.type = 'button';
-            loadApiModelsBtn.className = 'btn btn-primary ms-2';
-            loadApiModelsBtn.innerHTML = '<i class="fas fa-sync-alt me-2"></i>Cargar Modelos de API';
+            // Verificar si ya existe el botón para cargar modelos de la API
+            let loadApiModelsBtn = document.querySelector('#load-api-models-btn');
 
-            // Agregar el botón después del botón de usar API key de .env
-            useEnvKeyBtn.parentNode.appendChild(loadApiModelsBtn);
+            // Si no existe, crearlo
+            if (!loadApiModelsBtn) {
+                loadApiModelsBtn = document.createElement('button');
+                loadApiModelsBtn.id = 'load-api-models-btn';
+                loadApiModelsBtn.type = 'button';
+                loadApiModelsBtn.className = 'btn btn-primary ms-2';
+                loadApiModelsBtn.innerHTML = '<i class="fas fa-sync-alt me-2"></i>Cargar Modelos de API';
+
+                // Agregar el botón después del botón de usar API key de .env
+                useEnvKeyBtn.parentNode.appendChild(loadApiModelsBtn);
+            }
 
             // Cargar modelos locales
             if (typeof OPENROUTER_MODELS_CONFIG !== 'undefined' && OPENROUTER_MODELS_CONFIG.models) {
