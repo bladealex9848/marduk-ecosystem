@@ -405,106 +405,198 @@ function generateAiSolutionHtml(solution) {
     // Generar HTML para las características
     let featuresHtml = '';
     if (solution.features && solution.features.length > 0) {
-        featuresHtml = solution.features.map(feature => `<li class="mb-2">${feature}</li>`).join('');
+        featuresHtml = solution.features.map(feature =>
+            `<div class="d-flex align-items-start mb-3">
+                <div class="feature-icon bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                    <i class="fas fa-check text-primary"></i>
+                </div>
+                <div>
+                    <p class="mb-0">${feature}</p>
+                </div>
+            </div>`
+        ).join('');
     }
 
     // Generar HTML para los beneficios
     let benefitsHtml = '';
     if (solution.benefits && solution.benefits.length > 0) {
-        benefitsHtml = solution.benefits.map(benefit => `<li class="mb-2">${benefit}</li>`).join('');
+        benefitsHtml = solution.benefits.map(benefit =>
+            `<div class="d-flex align-items-start mb-3">
+                <div class="feature-icon bg-success bg-opacity-10 rounded-circle p-2 me-3">
+                    <i class="fas fa-plus text-success"></i>
+                </div>
+                <div>
+                    <p class="mb-0">${benefit}</p>
+                </div>
+            </div>`
+        ).join('');
     }
 
     // Generar HTML para los casos de uso
     let useCasesHtml = '';
     if (solution.useCases && solution.useCases.length > 0) {
-        useCasesHtml = solution.useCases.map(useCase => `<li class="mb-2">${useCase}</li>`).join('');
+        useCasesHtml = solution.useCases.map(useCase =>
+            `<div class="d-flex align-items-start mb-3">
+                <div class="feature-icon bg-info bg-opacity-10 rounded-circle p-2 me-3">
+                    <i class="fas fa-user-check text-info"></i>
+                </div>
+                <div>
+                    <p class="mb-0">${useCase}</p>
+                </div>
+            </div>`
+        ).join('');
     }
 
     // Generar HTML para las etiquetas
     let tagsHtml = '';
     if (solution.tags && solution.tags.length > 0) {
-        tagsHtml = solution.tags.map(tag => `<span class="badge bg-light text-dark me-2 mb-2">${tag}</span>`).join('');
+        tagsHtml = solution.tags.map(tag =>
+            `<span class="badge bg-light text-dark me-2 mb-2 py-2 px-3 rounded-pill">
+                <i class="fas fa-tag me-1 text-primary opacity-75"></i>${tag}
+            </span>`
+        ).join('');
     }
+
+    // Generar HTML para el proceso de evolución
+    const evolutionHtml = generateEvolutionTimeline(level);
+
+    // Generar HTML para recomendado para
+    const recommendedForHtml = `
+        <div class="d-flex flex-wrap gap-3">
+            <div class="d-flex align-items-center bg-primary bg-opacity-10 rounded-pill px-4 py-2">
+                <i class="fas fa-user-tie text-primary me-2"></i>
+                <span class="fw-medium">Funcionarios Judiciales</span>
+            </div>
+            <div class="d-flex align-items-center bg-primary bg-opacity-10 rounded-pill px-4 py-2">
+                <i class="fas fa-user-cog text-primary me-2"></i>
+                <span class="fw-medium">Administradores</span>
+            </div>
+        </div>
+    `;
+
+    // Generar HTML para los tabs
+    const tabsHtml = `
+        <ul class="nav nav-tabs" id="appTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">
+                    <i class="fas fa-info-circle me-2"></i>Descripción general
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="features-tab" data-bs-toggle="tab" data-bs-target="#features" type="button" role="tab" aria-controls="features" aria-selected="false">
+                    <i class="fas fa-list-check me-2"></i>Características
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="implementation-tab" data-bs-toggle="tab" data-bs-target="#implementation" type="button" role="tab" aria-controls="implementation" aria-selected="false">
+                    <i class="fas fa-code me-2"></i>Implementación
+                </button>
+            </li>
+        </ul>
+    `;
 
     return `
     <div class="container py-4">
         <!-- Botón de volver -->
         <div class="mb-4">
-            <button class="btn btn-outline-primary back-button">
+            <button class="btn btn-outline-primary back-button rounded-pill px-4">
                 <i class="fas fa-arrow-left me-2"></i>Volver a soluciones
             </button>
         </div>
 
         <!-- Encabezado de la aplicación -->
-        <div class="card border-0 bg-gradient mb-4 rounded-3 dashboard-banner">
-            <div class="card-body text-white p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <span class="badge ${levelClass} me-2">${levelText}</span>
-                    <span class="badge bg-info me-2">Generado por IA</span>
-                    <span class="badge bg-secondary">${solution.type || 'community'}</span>
+        <div class="card border-0 shadow-sm mb-4 rounded-4 overflow-hidden">
+            <div class="card-body p-0">
+                <div class="bg-gradient-primary text-white p-4 pb-5">
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="badge ${levelClass} me-2 rounded-pill px-3">${levelText}</span>
+                        <span class="badge bg-info me-2 rounded-pill px-3">Generado por IA</span>
+                        <span class="badge bg-secondary rounded-pill px-3">${solution.type || 'community'}</span>
+                    </div>
+                    <h1 class="h3 fw-bold">${solution.name}</h1>
+                    <p class="mb-0 opacity-90">${solution.description}</p>
                 </div>
-                <h1 class="h3 fw-bold">${solution.name}</h1>
-                <p class="mb-0 opacity-90">${solution.description}</p>
+
+                <div class="bg-white px-4 py-3">
+                    ${tabsHtml}
+                </div>
             </div>
         </div>
 
         <!-- Contenido principal -->
-        <div class="row">
+        <div class="row g-4">
             <!-- Columna principal -->
             <div class="col-lg-8">
-                <!-- Descripción completa -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Descripción</h5>
-                    </div>
-                    <div class="card-body">
-                        <p>${solution.fullDescription || solution.description}</p>
-                    </div>
-                </div>
+                <div class="tab-content" id="appTabsContent">
+                    <!-- Tab: Descripción general -->
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                        <!-- Descripción completa -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                            <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                                <i class="fas fa-info-circle text-primary me-2"></i>
+                                Descripción detallada
+                            </h3>
+                            <div class="mb-4">
+                                <p class="text-secondary">${solution.fullDescription || solution.description}</p>
+                            </div>
+                        </div>
 
-                <!-- Características -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Características</h5>
-                    </div>
-                    <div class="card-body">
-                        <ul class="feature-list">
-                            ${featuresHtml}
-                        </ul>
-                    </div>
-                </div>
+                        <!-- Beneficios -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                            <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                                <i class="fas fa-star text-warning me-2"></i>
+                                Beneficios principales
+                            </h3>
+                            <div class="benefits-list">
+                                ${benefitsHtml}
+                            </div>
+                        </div>
 
-                <!-- Beneficios -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Beneficios</h5>
-                    </div>
-                    <div class="card-body">
-                        <ul class="benefits-list">
-                            ${benefitsHtml}
-                        </ul>
-                    </div>
-                </div>
+                        <!-- Casos de uso -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                            <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                                <i class="fas fa-user-check text-info me-2"></i>
+                                Casos de uso
+                            </h3>
+                            <div class="use-cases-list">
+                                ${useCasesHtml}
+                            </div>
+                        </div>
 
-                <!-- Casos de uso -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Casos de uso</h5>
+                        <!-- Recomendado para -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                            <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                                <i class="fas fa-users text-success me-2"></i>
+                                Recomendado para
+                            </h3>
+                            ${recommendedForHtml}
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <ul class="use-cases-list">
-                            ${useCasesHtml}
-                        </ul>
-                    </div>
-                </div>
 
-                <!-- Implementación -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Implementación</h5>
+                    <!-- Tab: Características -->
+                    <div class="tab-pane fade" id="features" role="tabpanel" aria-labelledby="features-tab">
+                        <!-- Características -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                            <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                                <i class="fas fa-list-check text-primary me-2"></i>
+                                Características principales
+                            </h3>
+                            <div class="feature-list">
+                                ${featuresHtml}
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p>${solution.implementation || 'No hay información de implementación disponible.'}</p>
+
+                    <!-- Tab: Implementación -->
+                    <div class="tab-pane fade" id="implementation" role="tabpanel" aria-labelledby="implementation-tab">
+                        <!-- Implementación -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                            <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                                <i class="fas fa-code text-primary me-2"></i>
+                                Detalles de implementación
+                            </h3>
+                            <p class="text-secondary">${solution.implementation || 'No hay información de implementación disponible.'}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -512,44 +604,87 @@ function generateAiSolutionHtml(solution) {
             <!-- Columna lateral -->
             <div class="col-lg-4">
                 <!-- Información general -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Información general</h5>
+                <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                    <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                        <i class="fas fa-circle-info text-primary me-2"></i>
+                        Información general
+                    </h3>
+                    <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                        <div class="icon-box bg-primary bg-opacity-10 rounded-3 p-3 me-3">
+                            <i class="fas fa-folder text-primary"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted small mb-0">Categoría</p>
+                            <p class="fw-medium mb-0">${getCategoryName(solution.category)}</p>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p><strong>Categoría:</strong> ${getCategoryName(solution.category)}</p>
-                        <p><strong>Nivel de madurez:</strong> ${levelText}</p>
-                        <p><strong>Tipo:</strong> ${solution.type || 'Community'}</p>
-                        <p><strong>Generado por:</strong> Inteligencia Artificial</p>
+                    <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                        <div class="icon-box bg-success bg-opacity-10 rounded-3 p-3 me-3">
+                            <i class="fas fa-chart-line text-success"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted small mb-0">Nivel de madurez</p>
+                            <p class="fw-medium mb-0">${levelText}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                        <div class="icon-box bg-info bg-opacity-10 rounded-3 p-3 me-3">
+                            <i class="fas fa-code-branch text-info"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted small mb-0">Tipo</p>
+                            <p class="fw-medium mb-0">${solution.type || 'Community'}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="icon-box bg-warning bg-opacity-10 rounded-3 p-3 me-3">
+                            <i class="fas fa-robot text-warning"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted small mb-0">Generado por</p>
+                            <p class="fw-medium mb-0">Inteligencia Artificial</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Proceso de evolución -->
+                <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                    <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                        <i class="fas fa-chart-line text-success me-2"></i>
+                        Proceso de evolución
+                    </h3>
+                    <div class="position-relative evolution-timeline">
+                        ${evolutionHtml}
                     </div>
                 </div>
 
                 <!-- Etiquetas -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Etiquetas</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex flex-wrap">
-                            ${tagsHtml}
-                        </div>
+                <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                    <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                        <i class="fas fa-tags text-primary me-2"></i>
+                        Etiquetas
+                    </h3>
+                    <div class="d-flex flex-wrap">
+                        ${tagsHtml}
                     </div>
                 </div>
 
                 <!-- Acciones -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Acciones</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-primary">
-                                <i class="fas fa-star me-2"></i>Guardar como favorito
-                            </button>
-                            <button class="btn btn-outline-primary">
-                                <i class="fas fa-share-alt me-2"></i>Compartir
-                            </button>
-                        </div>
+                <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                    <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                        <i class="fas fa-bolt text-warning me-2"></i>
+                        Acciones rápidas
+                    </h3>
+                    <div class="d-grid gap-3">
+                        <button class="btn btn-primary rounded-pill py-2 px-4">
+                            <i class="fas fa-star me-2"></i>Guardar como favorito
+                        </button>
+                        <button class="btn btn-outline-primary rounded-pill py-2 px-4">
+                            <i class="fas fa-share-alt me-2"></i>Compartir solución
+                        </button>
+                        <button class="btn btn-outline-success rounded-pill py-2 px-4">
+                            <i class="fas fa-download me-2"></i>Descargar información
+                        </button>
                     </div>
                 </div>
             </div>
@@ -608,6 +743,81 @@ function getLevelText(level) {
     };
 
     return levelTexts[level] || 'Nivel desconocido';
+}
+
+/**
+ * Genera el HTML para la línea de tiempo de evolución
+ * @param {number} currentLevel - Nivel actual de la solución
+ * @returns {string} - HTML generado
+ */
+function generateEvolutionTimeline(currentLevel) {
+    // Definir las etapas de evolución
+    const stages = [
+        {
+            level: 1,
+            name: 'Idea',
+            icon: 'lightbulb',
+            description: 'Fase inicial: Conceptualización de la herramienta',
+            date: 'Enero 2023'
+        },
+        {
+            level: 2,
+            name: 'Prototipo',
+            icon: 'code',
+            description: 'Desarrollo del primer prototipo funcional',
+            date: 'Pendiente'
+        },
+        {
+            level: 3,
+            name: 'Beta',
+            icon: 'flask',
+            description: 'Pruebas con usuarios reales',
+            date: 'Pendiente'
+        },
+        {
+            level: 4,
+            name: 'Producción',
+            icon: 'rocket',
+            description: 'Lanzamiento oficial y despliegue',
+            date: 'Pendiente'
+        },
+        {
+            level: 5,
+            name: 'Consolidada',
+            icon: 'check-circle',
+            description: 'Adopción generalizada y mejora continua',
+            date: 'Pendiente'
+        }
+    ];
+
+    // Línea de tiempo vertical
+    let timelineHtml = `<div class="position-absolute start-0 top-0 bottom-0 ms-5" style="width: 2px; background-color: #e9ecef;"></div>`;
+
+    // Generar HTML para cada etapa
+    stages.forEach(stage => {
+        const isCompleted = stage.level <= currentLevel;
+        const statusClass = isCompleted ? 'bg-success' : 'bg-secondary';
+        const statusText = isCompleted ? 'Completado' : 'Pendiente';
+        const date = stage.level === 1 ? stage.date : (isCompleted ? 'Completado' : 'Pendiente');
+
+        timelineHtml += `
+        <div class="timeline-item d-flex mb-4 position-relative">
+            <div class="timeline-icon ${statusClass} text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; z-index: 1;">
+                <i class="fas fa-${stage.icon}"></i>
+            </div>
+            <div class="timeline-content ms-4 ps-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="h6 fw-bold mb-1">${stage.name}</h4>
+                    <span class="badge ${statusClass} rounded-pill">${statusText}</span>
+                </div>
+                <p class="text-secondary mb-1">${stage.description}</p>
+                <p class="small text-muted">${date}</p>
+            </div>
+        </div>
+        `;
+    });
+
+    return timelineHtml;
 }
 
 // Exportar funciones para uso global
