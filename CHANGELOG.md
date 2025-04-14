@@ -5,6 +5,26 @@ Todos los cambios notables en el proyecto Marduk Ecosystem serán documentados e
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto se adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.6.3] - 2025-04-14
+
+### Añadido
+- Personalización completa de perfiles por rol (Funcionario, Ciudadano, Administrador, Desarrollador, Investigador, Estudiante)
+- Fotos aleatorias de perfil usando randomuser.me
+- Fichas interactivas para cambiar entre diferentes perfiles
+- Sección de soluciones recomendadas específicas para cada rol
+- Actividad reciente personalizada según el tipo de usuario
+
+### Cambiado
+- Colores y estilos adaptados a cada rol en todas las secciones del perfil
+- Mejora en la presentación de métricas de impacto con colores específicos
+- Objetivos y recursos personalizados para cada tipo de usuario
+- Estructura del proyecto documentada en README.md con glosario de funciones
+
+### Corregido
+- Problemas de visualización en la sección de perfil en modo oscuro
+- Inconsistencias en la presentación de datos entre diferentes roles
+- Errores en la navegación entre perfiles
+
 ## [1.6.2] - 2025-04-14
 
 ### Añadido

@@ -62,6 +62,9 @@ function initializeTooltips() {
 function updateProfileByRole(role) {
     console.log('Updating profile for role:', role);
 
+    // Save selected role to localStorage
+    localStorage.setItem('mardukUserRole', role);
+
     // Define role-specific data
     const profileData = {
         investigador: {
@@ -371,6 +374,15 @@ function updateProfileByRole(role) {
     // Update gamification
     updateGamification(data.gamification);
 
+    // Update section colors based on role
+    updateSectionColors(role);
+
+    // Update recommended solutions based on role
+    updateRecommendedSolutions(role);
+
+    // Update user profile info based on role
+    updateUserProfileInfo(role, data);
+
     // Update titles for specific roles
     updateRoleSpecificContent(role);
 }
@@ -622,15 +634,435 @@ function updateImpactData(impact) {
 }
 
 /**
+ * Update section colors based on role
+ * @param {string} role - The user role
+ */
+function updateSectionColors(role) {
+    // Define role-specific colors
+    const roleColors = {
+        funcionario: {
+            gradientClass: 'bg-gradient-blue',
+            primaryColor: 'primary',
+            secondaryColor: 'info',
+            accentColor: 'blue'
+        },
+        ciudadano: {
+            gradientClass: 'bg-gradient-green',
+            primaryColor: 'success',
+            secondaryColor: 'teal',
+            accentColor: 'green'
+        },
+        administrador: {
+            gradientClass: 'bg-gradient-purple',
+            primaryColor: 'purple',
+            secondaryColor: 'indigo',
+            accentColor: 'purple'
+        },
+        desarrollador: {
+            gradientClass: 'bg-gradient-orange',
+            primaryColor: 'orange',
+            secondaryColor: 'warning',
+            accentColor: 'orange'
+        },
+        investigador: {
+            gradientClass: 'bg-gradient-purple',
+            primaryColor: 'purple',
+            secondaryColor: 'indigo',
+            accentColor: 'purple'
+        },
+        estudiante: {
+            gradientClass: 'bg-gradient-green',
+            primaryColor: 'success',
+            secondaryColor: 'teal',
+            accentColor: 'green'
+        }
+    };
+
+    const colors = roleColors[role] || roleColors.funcionario;
+
+    // Update progress section header
+    const progressHeader = document.querySelector('.card-header.bg-gradient-primary');
+    if (progressHeader) {
+        progressHeader.className = progressHeader.className.replace('bg-gradient-primary', `bg-gradient-${colors.primaryColor}`);
+    }
+
+    // Update progress bar
+    const progressBar = document.querySelector('.progress-bar.bg-info');
+    if (progressBar) {
+        progressBar.className = progressBar.className.replace('bg-info', `bg-${colors.secondaryColor}`);
+    }
+
+    // Update objective progress bars
+    document.querySelectorAll('.progress-bar.bg-primary').forEach(bar => {
+        bar.className = bar.className.replace('bg-primary', `bg-${colors.primaryColor}`);
+    });
+
+    // Update objective icons
+    document.querySelectorAll('.bg-primary.bg-opacity-10.text-primary').forEach(icon => {
+        icon.className = icon.className.replace('bg-primary', `bg-${colors.primaryColor}`)
+                                      .replace('text-primary', `text-${colors.primaryColor}`);
+    });
+
+    // Update impact boxes
+    const impactColors = ['primary', 'success', 'info', 'warning'];
+    const newColors = [colors.primaryColor, colors.secondaryColor, colors.primaryColor, colors.secondaryColor];
+
+    document.querySelectorAll('.border-top .row .border').forEach((box, index) => {
+        const oldColor = impactColors[index % impactColors.length];
+        const newColor = newColors[index % newColors.length];
+
+        // Update border
+        box.className = box.className.replace(`border-${oldColor}`, `border-${newColor}`);
+
+        // Update text color of heading
+        const heading = box.querySelector('.h6');
+        if (heading) {
+            heading.className = heading.className.replace(`text-${oldColor}`, `text-${newColor}`);
+        }
+
+        // Update text color of value
+        const value = box.querySelector('.h4');
+        if (value) {
+            value.className = value.className.replace(`text-${oldColor}`, `text-${newColor}`);
+        }
+    });
+
+    // Update resource buttons
+    document.querySelectorAll('#resourcesList .btn-outline-primary').forEach(btn => {
+        btn.className = btn.className.replace('btn-outline-primary', `btn-outline-${colors.primaryColor}`);
+    });
+
+    // Update edit profile button
+    const editProfileBtn = document.querySelector('.card:last-child .btn-primary');
+    if (editProfileBtn) {
+        editProfileBtn.className = editProfileBtn.className.replace('btn-primary', `btn-${colors.primaryColor}`);
+    }
+}
+
+/**
+ * Update recommended solutions based on role
+ * @param {string} role - The user role
+ */
+function updateRecommendedSolutions(role) {
+    // Define role-specific recommended solutions
+    const recommendedSolutions = {
+        funcionario: [
+            {
+                title: 'Sistema de Gestión de Expedientes',
+                icon: 'file-lines',
+                description: 'Sistema integral para la gestión digital de expedientes judiciales, facilitando el acceso, búsqueda y seguimiento de información.',
+                level: 'Consolidada',
+                rating: 4.8,
+                id: 1,
+                iconClass: 'bg-gradient-blue'
+            },
+            {
+                title: 'JudiCalc',
+                icon: 'calculator',
+                description: 'Calculadora judicial para términos procesales, plazos, prescripciones y caducidades con integración al calendario oficial.',
+                level: 'Producción',
+                rating: 4.5,
+                id: 2,
+                iconClass: 'bg-gradient-green'
+            }
+        ],
+        ciudadano: [
+            {
+                title: 'Portal de Consulta Procesal',
+                icon: 'search',
+                description: 'Plataforma para consulta de estado de procesos judiciales, notificaciones y presentación de documentos electrónicos.',
+                level: 'Consolidada',
+                rating: 4.7,
+                id: 3,
+                iconClass: 'bg-gradient-green'
+            },
+            {
+                title: 'Asistente Virtual Judicial',
+                icon: 'robot',
+                description: 'Asistente virtual para orientación sobre trámites judiciales, requisitos y procedimientos básicos.',
+                level: 'Beta',
+                rating: 4.2,
+                id: 4,
+                iconClass: 'bg-gradient-purple'
+            }
+        ],
+        administrador: [
+            {
+                title: 'Panel de Administración Judicial',
+                icon: 'server',
+                description: 'Herramienta de administración centralizada para gestión de usuarios, permisos y monitoreo de sistemas judiciales.',
+                level: 'Producción',
+                rating: 4.6,
+                id: 5,
+                iconClass: 'bg-gradient-purple'
+            },
+            {
+                title: 'JudiSecure',
+                icon: 'shield-alt',
+                description: 'Sistema de seguridad y auditoría para protección de información judicial sensible y cumplimiento normativo.',
+                level: 'Consolidada',
+                rating: 4.9,
+                id: 6,
+                iconClass: 'bg-gradient-blue'
+            }
+        ],
+        desarrollador: [
+            {
+                title: 'JudiAPI',
+                icon: 'code',
+                description: 'API completa para integración con sistemas judiciales, con documentación interactiva y entorno de pruebas.',
+                level: 'Producción',
+                rating: 4.7,
+                id: 7,
+                iconClass: 'bg-gradient-orange'
+            },
+            {
+                title: 'DevJudicial',
+                icon: 'laptop-code',
+                description: 'Entorno de desarrollo para creación de aplicaciones judiciales con componentes predefinidos y plantillas.',
+                level: 'Beta',
+                rating: 4.3,
+                id: 8,
+                iconClass: 'bg-gradient-purple'
+            }
+        ],
+        investigador: [
+            {
+                title: 'JurisAnalytics',
+                icon: 'chart-bar',
+                description: 'Plataforma de análisis jurisprudencial con herramientas de minería de texto y visualización de tendencias legales.',
+                level: 'Producción',
+                rating: 4.8,
+                id: 9,
+                iconClass: 'bg-gradient-purple'
+            },
+            {
+                title: 'LegalResearch Pro',
+                icon: 'search',
+                description: 'Motor de búsqueda avanzada para investigación jurídica con filtros especializados y análisis semántico.',
+                level: 'Consolidada',
+                rating: 4.9,
+                id: 10,
+                iconClass: 'bg-gradient-blue'
+            }
+        ],
+        estudiante: [
+            {
+                title: 'Campus Judicial Virtual',
+                icon: 'graduation-cap',
+                description: 'Plataforma educativa con cursos, simulaciones y casos prácticos para estudiantes de derecho.',
+                level: 'Producción',
+                rating: 4.6,
+                id: 11,
+                iconClass: 'bg-gradient-green'
+            },
+            {
+                title: 'LegalQuiz',
+                icon: 'question-circle',
+                description: 'Aplicación de preparación para exámenes con miles de preguntas y explicaciones detalladas sobre temas jurídicos.',
+                level: 'Beta',
+                rating: 4.4,
+                id: 12,
+                iconClass: 'bg-gradient-orange'
+            }
+        ]
+    };
+
+    const solutions = recommendedSolutions[role] || recommendedSolutions.funcionario;
+    const solutionsContainer = document.getElementById('recommendedSolutions');
+
+    if (solutionsContainer) {
+        solutionsContainer.innerHTML = '';
+
+        solutions.forEach(solution => {
+            const solutionCard = document.createElement('div');
+            solutionCard.className = 'col-md-6';
+            solutionCard.innerHTML = `
+                <div class="card h-100 border hover-shadow-sm transition-all cursor-pointer" onclick="location.href='solutions.html?app=${solution.id}'">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="solution-icon ${solution.iconClass} me-3">
+                                <i class="fa-solid fa-${solution.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="card-title h6 fw-semibold mb-0 text-truncate">${solution.title}</h3>
+                                <div class="d-flex align-items-center small mt-1">
+                                    <span class="badge bg-teal-soft text-teal">${solution.level}</span>
+                                    <span class="ms-2 d-flex align-items-center text-primary small">
+                                        <i class="fa-solid fa-shield-alt me-1 small"></i>Oficial
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="card-text small text-secondary mb-3 two-lines">
+                            ${solution.description}
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <i class="fa-solid fa-star text-warning me-1"></i>
+                                <span class="small fw-medium">${solution.rating}</span>
+                            </div>
+                            <button class="btn btn-link text-primary btn-sm p-0">Ver detalles</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            solutionsContainer.appendChild(solutionCard);
+        });
+    }
+}
+
+/**
+ * Update user profile info based on role
+ * @param {string} role - The user role
+ * @param {Object} data - The profile data
+ */
+function updateUserProfileInfo(role, data) {
+    // Define role-specific profile info
+    const profileInfo = {
+        funcionario: [
+            { icon: 'building', label: 'Juzgado', value: 'Juzgado Civil Municipal No. 12' },
+            { icon: 'graduation-cap', label: 'Educación', value: 'Universidad Nacional de Colombia' },
+            { icon: 'briefcase', label: 'Experiencia', value: '10+ años en administración de justicia' }
+        ],
+        ciudadano: [
+            { icon: 'university', label: 'Despacho', value: 'Rodríguez & Asociados' },
+            { icon: 'graduation-cap', label: 'Educación', value: 'Universidad de Antioquia' },
+            { icon: 'gavel', label: 'Especialidad', value: 'Derecho Laboral y Seguridad Social' }
+        ],
+        administrador: [
+            { icon: 'server', label: 'Departamento', value: 'Dirección de Tecnología Judicial' },
+            { icon: 'certificate', label: 'Certificaciones', value: 'CISSP, ITIL, PMP' },
+            { icon: 'shield-alt', label: 'Responsabilidad', value: 'Seguridad y Disponibilidad de Sistemas' }
+        ],
+        desarrollador: [
+            { icon: 'code-branch', label: 'Especialidad', value: 'Arquitectura de Sistemas Judiciales' },
+            { icon: 'laptop-code', label: 'Tecnologías', value: 'Java, Python, React, AWS' },
+            { icon: 'project-diagram', label: 'Proyectos', value: '12+ aplicaciones judiciales implementadas' }
+        ],
+        investigador: [
+            { icon: 'university', label: 'Institución', value: 'Centro de Estudios Jurídicos Avanzados' },
+            { icon: 'book', label: 'Publicaciones', value: '8 artículos en revistas indexadas' },
+            { icon: 'search', label: 'Líneas de Investigación', value: 'Jurisprudencia Constitucional, Derechos Humanos' }
+        ],
+        estudiante: [
+            { icon: 'university', label: 'Universidad', value: 'Universidad de Medellín' },
+            { icon: 'graduation-cap', label: 'Semestre', value: '9° Semestre de Derecho' },
+            { icon: 'award', label: 'Distinciones', value: 'Beca de Excelencia Académica 2024' }
+        ]
+    };
+
+    const info = profileInfo[role] || profileInfo.funcionario;
+    const infoContainer = document.querySelector('.card:nth-of-type(3) .card-body');
+
+    if (infoContainer) {
+        // Keep the title and bio
+        const title = infoContainer.querySelector('h2');
+        const bio = infoContainer.querySelector('p');
+
+        // Clear the rest
+        infoContainer.innerHTML = '';
+
+        // Add back title and bio
+        infoContainer.appendChild(title);
+        infoContainer.appendChild(bio);
+
+        // Add role-specific info
+        info.forEach(item => {
+            const infoItem = document.createElement('div');
+            infoItem.className = 'd-flex align-items-center mb-3';
+            infoItem.innerHTML = `
+                <i class="fa-solid fa-${item.icon} text-secondary me-3"></i>
+                <div>
+                    <p class="small text-muted mb-0">${item.label}</p>
+                    <p class="small fw-medium mb-0">${item.value}</p>
+                </div>
+            `;
+
+            infoContainer.appendChild(infoItem);
+        });
+    }
+
+    // Update activity feed based on role
+    updateActivityFeed(role);
+}
+
+/**
+ * Update activity feed based on role
+ * @param {string} role - The user role
+ */
+function updateActivityFeed(role) {
+    // Define role-specific activity feed
+    const activityFeed = {
+        funcionario: [
+            { icon: 'file-alt', bgClass: 'bg-blue-soft', iconClass: 'text-primary', title: 'Expediente actualizado', time: 'Hace 1 día', description: 'Actualizaste el <strong>Expediente 2024-0127</strong> con nueva documentación.' },
+            { icon: 'calendar', bgClass: 'bg-green-soft', iconClass: 'text-success', title: 'Audiencia programada', time: 'Hace 2 días', description: 'Programaste una <strong>Audiencia de Conciliación</strong> para el 18 de abril.' },
+            { icon: 'gavel', bgClass: 'bg-purple-soft', iconClass: 'text-purple', title: 'Sentencia emitida', time: 'Hace 5 días', description: 'Emitiste <strong>Sentencia</strong> en el proceso 2023-0458.' }
+        ],
+        ciudadano: [
+            { icon: 'file-upload', bgClass: 'bg-blue-soft', iconClass: 'text-primary', title: 'Documento presentado', time: 'Hace 1 día', description: 'Presentaste <strong>Recurso de Apelación</strong> en el proceso 2024-0089.' },
+            { icon: 'search', bgClass: 'bg-green-soft', iconClass: 'text-success', title: 'Consulta realizada', time: 'Hace 3 días', description: 'Consultaste el estado del <strong>Proceso 2023-0345</strong>.' },
+            { icon: 'bell', bgClass: 'bg-amber-soft', iconClass: 'text-amber', title: 'Notificación recibida', time: 'Hace 4 días', description: 'Recibiste <strong>Notificación Judicial</strong> sobre audiencia programada.' }
+        ],
+        administrador: [
+            { icon: 'server', bgClass: 'bg-purple-soft', iconClass: 'text-purple', title: 'Sistema actualizado', time: 'Hace 12 horas', description: 'Actualizaste <strong>Servidor Principal</strong> a la versión 4.2.1.' },
+            { icon: 'user-plus', bgClass: 'bg-blue-soft', iconClass: 'text-primary', title: 'Usuarios creados', time: 'Hace 2 días', description: 'Creaste <strong>15 nuevas cuentas</strong> para el Juzgado Civil del Circuito.' },
+            { icon: 'shield-alt', bgClass: 'bg-red-soft', iconClass: 'text-danger', title: 'Alerta de seguridad', time: 'Hace 3 días', description: 'Resolviste <strong>Incidente de Seguridad</strong> en el sistema de notificaciones.' }
+        ],
+        desarrollador: [
+            { icon: 'code-branch', bgClass: 'bg-orange-soft', iconClass: 'text-orange', title: 'Código actualizado', time: 'Hace 6 horas', description: 'Realizaste <strong>28 commits</strong> en la rama feature/expedientes-digitales.' },
+            { icon: 'bug', bgClass: 'bg-red-soft', iconClass: 'text-danger', title: 'Error corregido', time: 'Hace 1 día', description: 'Solucionaste <strong>Bug #4582</strong> en el módulo de búsqueda avanzada.' },
+            { icon: 'code', bgClass: 'bg-blue-soft', iconClass: 'text-primary', title: 'API actualizada', time: 'Hace 3 días', description: 'Implementaste <strong>Nuevos Endpoints</strong> para la API de consulta procesal.' }
+        ],
+        investigador: [
+            { icon: 'chart-bar', bgClass: 'bg-purple-soft', iconClass: 'text-purple', title: 'Análisis completado', time: 'Hace 2 días', description: 'Completaste <strong>Análisis Jurisprudencial</strong> sobre sentencias de tutela 2023.' },
+            { icon: 'file-alt', bgClass: 'bg-blue-soft', iconClass: 'text-primary', title: 'Artículo enviado', time: 'Hace 5 días', description: 'Enviaste <strong>Artículo de Investigación</strong> a la Revista de Derecho Constitucional.' },
+            { icon: 'search', bgClass: 'bg-green-soft', iconClass: 'text-success', title: 'Investigación iniciada', time: 'Hace 1 semana', description: 'Iniciaste <strong>Nueva Investigación</strong> sobre tendencias en derecho ambiental.' }
+        ],
+        estudiante: [
+            { icon: 'graduation-cap', bgClass: 'bg-green-soft', iconClass: 'text-success', title: 'Curso completado', time: 'Hace 3 días', description: 'Completaste el curso <strong>Introducción al Derecho Digital</strong> con calificación 4.8/5.0.' },
+            { icon: 'book', bgClass: 'bg-blue-soft', iconClass: 'text-primary', title: 'Caso práctico enviado', time: 'Hace 5 días', description: 'Enviaste solución al <strong>Caso Práctico #12</strong> de Derecho Procesal.' },
+            { icon: 'certificate', bgClass: 'bg-amber-soft', iconClass: 'text-amber', title: 'Certificación obtenida', time: 'Hace 2 semanas', description: 'Obtuviste <strong>Certificación en LegalTech</strong> con distinción.' }
+        ]
+    };
+
+    const activities = activityFeed[role] || activityFeed.funcionario;
+    const activityContainer = document.querySelector('.card:nth-of-type(2) .list-group');
+
+    if (activityContainer) {
+        activityContainer.innerHTML = '';
+
+        activities.forEach(activity => {
+            const activityItem = document.createElement('div');
+            activityItem.className = 'list-group-item border-0 ps-0';
+            activityItem.innerHTML = `
+                <div class="d-flex">
+                    <div class="${activity.bgClass} p-2 rounded me-3">
+                        <i class="fa-solid fa-${activity.icon} ${activity.iconClass}"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="h6 fw-medium mb-0">${activity.title}</h3>
+                            <span class="text-muted small">${activity.time}</span>
+                        </div>
+                        <p class="text-secondary small mb-0">${activity.description}</p>
+                    </div>
+                </div>
+            `;
+
+            activityContainer.appendChild(activityItem);
+        });
+    }
+}
+
+/**
  * Update role specific content
  * @param {string} role - The user role
  */
 function updateRoleSpecificContent(role) {
-    // Here you can implement role-specific UI changes that aren't covered by the other functions
-    // For example, showing/hiding certain sections based on role
-
-    console.log('Applying role-specific UI changes for:', role);
-
     // Define role-specific colors
     const roleColors = {
         funcionario: {

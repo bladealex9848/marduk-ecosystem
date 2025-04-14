@@ -221,6 +221,117 @@ Marduk Ecosystem representa una visión de cómo la tecnología puede transforma
 
 ---
 
+## 📂 Estructura del Proyecto
+
+El proyecto Marduk Ecosystem está organizado en una estructura modular que facilita el mantenimiento y la escalabilidad:
+
+```
+marduk-ecosystem/
+├── components/         # Componentes reutilizables (header, footer)
+├── css/               # Estilos CSS del proyecto
+├── images/            # Imágenes y recursos gráficos
+├── js/                # Scripts JavaScript
+│   ├── config/        # Archivos de configuración
+│   └── ...             # Scripts específicos por funcionalidad
+├── pages/             # Páginas HTML del sitio
+├── tests/             # Pruebas y demostraciones
+├── .env               # Variables de entorno (no incluido en repositorio)
+├── .gitignore         # Archivos ignorados por Git
+├── CHANGELOG.md       # Registro de cambios del proyecto
+├── LICENSE            # Licencia del proyecto
+├── README.md          # Documentación principal
+└── index.html         # Página principal
+```
+
+### Archivos Principales
+
+#### Páginas HTML
+- **index.html**: Página principal con presentación del ecosistema
+- **pages/solutions.html**: Catálogo de soluciones judiciales
+- **pages/profile.html**: Perfiles de usuario personalizados
+- **pages/community.html**: Comunidad judicial y desarrolladores
+- **pages/ai-test.html**: Pruebas de integración con IA
+- **pages/discussions.html**: Foro de discusiones temáticas
+- **pages/about.html**, **policies.html**, **contribute.html**, **support.html**: Páginas informativas
+
+#### JavaScript
+- **js/main.js**: Funcionalidad principal y inicialización
+- **js/solutions.js**: Gestión del catálogo de soluciones
+- **js/profile.js**: Personalización de perfiles por rol
+- **js/ai-search.js**: Búsqueda inteligente con IA
+- **js/openrouter.js**: Integración con OpenRouter API
+- **js/theme-manager.js**: Gestión del tema claro/oscuro
+- **js/navigation.js**: Navegación predictiva y optimizada
+- **js/components.js**: Carga dinámica de componentes
+- **js/env-loader.js**: Carga segura de variables de entorno
+
+#### CSS
+- **css/styles.css**: Estilos principales del sitio
+- **css/app-cards.css**: Estilos para tarjetas de soluciones
+- **css/search.css**: Estilos para la funcionalidad de búsqueda
+- **css/fixes.css**: Correcciones y ajustes específicos
+
+#### Configuración
+- **js/config/openrouter-models.js**: Configuración de modelos de IA
+- **js/config/env.js**: Gestión de variables de entorno
+
+## 📖 Glosario de Funciones
+
+A continuación se presenta un glosario de las principales funciones del sistema, organizadas por archivo y funcionalidad:
+
+### Funciones de Soluciones (solutions.js)
+
+| Función | Descripción | Archivo |
+|---------|-------------|--------|
+| `initializeSolutions()` | Inicializa la página de soluciones | solutions.js |
+| `setupViewToggles()` | Configura los botones para cambiar entre vista de cuadrícula y lista | solutions.js |
+| `setupFilters()` | Configura los filtros de categoría y nivel | solutions.js |
+| `generateSolutionContent()` | Genera contenido para soluciones personalizadas con IA | solutions.js |
+| `generateEvolutionTimeline()` | Crea la línea de tiempo de evolución de una solución | solutions.js |
+| `getLevelText()` | Obtiene el texto descriptivo para un nivel de madurez | solutions.js |
+
+### Funciones de Perfil (profile.js)
+
+| Función | Descripción | Archivo |
+|---------|-------------|--------|
+| `initializeProfile()` | Inicializa la página de perfil | profile.js |
+| `updateProfileByRole()` | Actualiza el perfil según el rol seleccionado | profile.js |
+| `updateProfileBanner()` | Actualiza el banner del perfil con datos del usuario | profile.js |
+| `updateProfileMetrics()` | Actualiza las métricas específicas del perfil | profile.js |
+| `updateSectionColors()` | Actualiza los colores de las secciones según el rol | profile.js |
+| `updateRecommendedSolutions()` | Actualiza las soluciones recomendadas para el rol | profile.js |
+| `updateActivityFeed()` | Actualiza el feed de actividad reciente | profile.js |
+| `createProfileCards()` | Crea las tarjetas para cambiar entre perfiles | profile.js |
+
+### Funciones de IA (ai-search.js, openrouter.js)
+
+| Función | Descripción | Archivo |
+|---------|-------------|--------|
+| `searchSolutions()` | Realiza búsqueda inteligente de soluciones | ai-search.js |
+| `generateWithAI()` | Genera contenido personalizado con IA | ai-search.js |
+| `loadApiKey()` | Carga la API key desde variables de entorno | openrouter.js |
+| `callOpenRouterAPI()` | Realiza llamadas a la API de OpenRouter | openrouter.js |
+| `loadModels()` | Carga los modelos disponibles desde la API | openrouter-api-models.js |
+
+### Funciones de Interfaz (theme-manager.js, navigation.js)
+
+| Función | Descripción | Archivo |
+|---------|-------------|--------|
+| `initTheme()` | Inicializa el tema según preferencias del usuario | theme-manager.js |
+| `toggleTheme()` | Cambia entre tema claro y oscuro | theme-manager.js |
+| `setupPredictiveNavigation()` | Configura la navegación predictiva | navigation.js |
+| `prefetchPage()` | Precarga páginas para mejorar la velocidad | navigation.js |
+| `loadComponent()` | Carga componentes HTML dinámicamente | components.js |
+
+### Funciones de Utilidad
+
+| Función | Descripción | Archivo |
+|---------|-------------|--------|
+| `showToast()` | Muestra notificaciones toast | main.js |
+| `formatDate()` | Formatea fechas para visualización | main.js |
+| `calculateRelevance()` | Calcula la relevancia de resultados de búsqueda | ai-search.js |
+| `loadEnvVariables()` | Carga variables de entorno de forma segura | env-loader.js |
+
 ## 🔗 Enlaces
 
 - [Sitio Web](https://marduk-ecosystem.enki.care/)
