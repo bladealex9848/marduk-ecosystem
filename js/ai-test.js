@@ -580,7 +580,7 @@ function loadModelsToUI(modelsData) {
 
     // Crear una lista simple para mostrar los modelos
     const modelList = document.createElement('div');
-    modelList.className = 'list-group list-group-flush';
+    modelList.className = 'list-group list-group-flush flex-grow-1 overflow-auto';
     modelSelector.appendChild(modelList);
 
     // Agregar modelos a la lista
@@ -590,12 +590,20 @@ function loadModelsToUI(modelsData) {
         modelItem.setAttribute('data-model-id', model.id);
 
         // Verificar si el modelo es gratuito
-        const isFree = model.id.includes(':free');
+        const isFree = model.id.includes(':free') || (model.context_length_free && model.context_length_free > 0);
+        // Verificar si el modelo es de OpenRouter
+        const isOpenRouter = model.id.startsWith('openrouter/');
+        // Verificar si el modelo es de la API
+        const isApi = model.source === 'api';
 
         modelItem.innerHTML = `
             <div class="d-flex w-100 justify-content-between align-items-center">
                 <h6 class="mb-1">${model.name}</h6>
-                ${isFree ? '<span class="badge bg-success">Gratis</span>' : ''}
+                <div>
+                    ${isFree ? '<span class="badge bg-success me-1">Gratis</span>' : ''}
+                    ${isOpenRouter ? '<span class="badge bg-primary me-1">OpenRouter</span>' : ''}
+                    ${isApi ? '<span class="badge bg-info me-1">API</span>' : ''}
+                </div>
             </div>
             <div class="d-flex w-100 justify-content-between align-items-center mt-1">
                 <small class="text-muted">${model.provider}</small>

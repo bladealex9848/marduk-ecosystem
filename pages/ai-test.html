@@ -58,6 +58,32 @@
             margin-bottom: 1rem;
         }
 
+        /* Estilos para que la lista de modelos ocupe toda la altura disponible */
+        .model-selector {
+            height: calc(100% - 56px); /* Altura total menos la altura del header */
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Estilos para los elementos de la lista de modelos */
+        .list-group-item {
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .list-group-item:hover {
+            background-color: var(--hover-bg);
+            border-left: 3px solid var(--bs-primary);
+        }
+
+        .list-group-item.active {
+            background-color: rgba(var(--bs-primary-rgb), 0.1);
+            color: var(--text-color);
+            border-left: 3px solid var(--bs-primary);
+            font-weight: 500;
+        }
+
         .message {
             margin-bottom: 1rem;
             padding: 1rem;
@@ -391,13 +417,13 @@
             </div>
 
             <!-- Selector de modelos -->
-            <div class="col-lg-4 mb-4">
-                <div class="card shadow-sm h-100">
+            <div class="col-lg-4 mb-4 d-flex flex-column">
+                <div class="card shadow-sm h-100 flex-grow-1">
                     <div class="card-header">
                         <h5 class="mb-0">Modelos disponibles</h5>
                     </div>
-                    <div class="card-body p-0">
-                        <div class="list-group list-group-flush model-selector" id="model-selector">
+                    <div class="card-body p-0 d-flex flex-column flex-grow-1">
+                        <div class="list-group list-group-flush model-selector flex-grow-1" id="model-selector">
                             <!-- Los modelos se cargarán dinámicamente aquí -->
                             <div class="text-center p-4">
                                 <div class="spinner-border text-primary" role="status">
