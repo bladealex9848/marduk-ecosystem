@@ -594,7 +594,9 @@
           close: true,
           gravity: "top",
           position: "right",
-          backgroundColor: bgColors[type],
+          style: {
+            background: bgColors[type]
+          },
           stopOnFocus: true,
           className: `toast-${type}`
         }).showToast();

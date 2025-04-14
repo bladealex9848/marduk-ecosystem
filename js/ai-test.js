@@ -673,7 +673,12 @@ function selectModel(model) {
 
     // Cambiar modelo en OpenRouter si está disponible
     if (window.openRouterService && typeof window.openRouterService.setModel === 'function') {
-        window.openRouterService.setModel(model.id);
+        try {
+            window.openRouterService.setModel(model.id);
+        } catch (error) {
+            console.warn(`No se pudo establecer el modelo ${model.id} en OpenRouter:`, error.message);
+            // Continuar de todos modos, ya que el modelo aún se puede mostrar en la UI
+        }
     }
 
     // Añadir mensaje de sistema
