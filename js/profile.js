@@ -6,10 +6,27 @@
 // Initialize profile elements when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     initializeProfile();
-    
+
     // Listen for role changes to update profile
     document.addEventListener('userRoleChanged', function(event) {
         updateProfileByRole(event.detail.role);
+    });
+
+    // Create profile cards
+    createProfileCards();
+
+    // Add event listeners to profile cards
+    document.querySelectorAll('.profile-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const role = this.getAttribute('data-role');
+            updateProfileByRole(role);
+
+            // Scroll to top of the page
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Show success toast
+            showToast(`Perfil de ${role} cargado correctamente`, 'success');
+        });
     });
 });
 
@@ -19,10 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeProfile() {
     // Get current role from localStorage
     const currentRole = localStorage.getItem('mardukUserRole') || 'funcionario';
-    
+
     // Update profile based on role
     updateProfileByRole(currentRole);
-    
+
     // Initialize achievement tooltips
     initializeTooltips();
 }
@@ -44,7 +61,7 @@ function initializeTooltips() {
  */
 function updateProfileByRole(role) {
     console.log('Updating profile for role:', role);
-    
+
     // Define role-specific data
     const profileData = {
         funcionario: {
@@ -235,28 +252,28 @@ function updateProfileByRole(role) {
             bannerClass: "bg-gradient-orange"
         }
     };
-    
+
     // Get profile data for current role
     const data = profileData[role] || profileData.funcionario;
-    
+
     // Update profile banner
     updateProfileBanner(data);
-    
+
     // Update profile metrics
     updateProfileMetrics(data.metrics);
-    
+
     // Update user stats
     updateUserStats(data.stats);
-    
+
     // Update user bio
     updateUserBio(data.bio);
-    
+
     // Update resources
     updateResources(data.resources);
-    
+
     // Update gamification
     updateGamification(data.gamification);
-    
+
     // Update titles for specific roles
     updateRoleSpecificContent(role);
 }
@@ -271,7 +288,7 @@ function updateProfileBanner(data) {
     if (profileBanner) {
         profileBanner.className = `card border-0 ${data.bannerClass} mb-4 rounded-3`;
     }
-    
+
     // Update profile title
     const profileTitle = document.getElementById('profileTitle');
     if (profileTitle) {
@@ -283,13 +300,22 @@ function updateProfileBanner(data) {
         };
         profileTitle.textContent = titles[data.role.toLowerCase()] || "Mi Perfil";
     }
-    
-    // Update profile name, role, location, specialty and avatar
+
+    // Update profile name, role, location, specialty
     document.getElementById('profileName').textContent = data.name;
     document.getElementById('profileRole').textContent = data.role;
     document.getElementById('profileLocation').textContent = data.location;
     document.getElementById('profileSpecialty').textContent = data.specialty;
-    document.getElementById('profileAvatar').textContent = data.avatar;
+
+    // Update profile avatar with random image
+    const profileAvatarImg = document.getElementById('profileAvatar');
+    if (profileAvatarImg) {
+        // Generate random number for avatar
+        const gender = data.gender || (Math.random() > 0.5 ? 'men' : 'women');
+        const randomNum = Math.floor(Math.random() * 99) + 1;
+        profileAvatarImg.src = `https://randomuser.me/api/portraits/${gender}/${randomNum}.jpg`;
+        profileAvatarImg.alt = data.name;
+    }
 }
 
 /**
@@ -302,15 +328,15 @@ function updateProfileMetrics(metrics) {
         if (metricElement) {
             metricElement.textContent = metric.value;
         }
-        
+
         // Update label and icon if needed
         const labelElement = metricElement.previousElementSibling;
         const iconElement = labelElement.parentElement.previousElementSibling.querySelector('i');
-        
+
         if (labelElement) {
             labelElement.textContent = metric.label;
         }
-        
+
         if (iconElement) {
             iconElement.className = `fa-solid ${metric.icon}`;
         }
@@ -342,17 +368,17 @@ function updateUserBio(bio) {
 function updateResources(resources) {
     const resourcesList = document.getElementById('resourcesList');
     if (!resourcesList) return;
-    
+
     // Clear existing resources
     resourcesList.innerHTML = '';
-    
+
     // Add new resources
     resources.forEach(resource => {
         const resourceItem = document.createElement('div');
         resourceItem.className = 'list-group-item px-0 py-3 d-flex align-items-center border-0';
-        
+
         const sizeInfo = resource.size ? `${resource.type} • ${resource.size}` : resource.type;
-        
+
         resourceItem.innerHTML = `
             <div class="p-3 rounded ${resource.bgClass} ${resource.iconClass} me-3">
                 <i class="fa-solid ${resource.icon}"></i>
@@ -363,7 +389,7 @@ function updateResources(resources) {
             </div>
             <a href="#" class="btn btn-outline-primary btn-sm">Acceder</a>
         `;
-        
+
         resourcesList.appendChild(resourceItem);
     });
 }
@@ -375,30 +401,30 @@ function updateResources(resources) {
 function updateGamification(gamification) {
     // Update level and title
     document.getElementById('userLevel').textContent = `Nivel ${gamification.level}: ${gamification.title}`;
-    
+
     // Update XP progress
     const xpProgressElement = document.getElementById('xpProgress');
     if (xpProgressElement) {
         xpProgressElement.querySelector('span:first-child').textContent = `${gamification.xp} XP`;
         xpProgressElement.querySelector('span:last-child').textContent = `${gamification.xpToNextLevel} XP`;
     }
-    
+
     // Update progress bar
     const progressBar = document.getElementById('xpProgressBar');
     if (progressBar) {
         progressBar.style.width = `${gamification.progressPercent}%`;
         progressBar.setAttribute('aria-valuenow', gamification.progressPercent);
     }
-    
+
     // Update XP needed text
     document.getElementById('xpToNextLevel').textContent = `${gamification.xpToNextLevel - gamification.xp} XP para el siguiente nivel`;
-    
+
     // Update badges
     updateBadges(gamification.badges);
-    
+
     // Update objectives
     updateObjectives(gamification.objectives);
-    
+
     // Update impact data
     updateImpactData(gamification.impact);
 }
@@ -410,11 +436,11 @@ function updateGamification(gamification) {
 function updateBadges(badges) {
     const badgesContainer = document.getElementById('badgesContainer');
     if (!badgesContainer) return;
-    
+
     // Remove existing badges (except the "More" badge)
     const moreBadge = badgesContainer.querySelector('.badge-item-unlock');
     badgesContainer.innerHTML = '';
-    
+
     // Add badges
     badges.forEach(badge => {
         const badgeElement = document.createElement('div');
@@ -426,7 +452,7 @@ function updateBadges(badges) {
         `;
         badgesContainer.appendChild(badgeElement);
     });
-    
+
     // Add "More" badge
     if (moreBadge) {
         badgesContainer.appendChild(moreBadge);
@@ -440,7 +466,7 @@ function updateBadges(badges) {
         `;
         badgesContainer.appendChild(newMoreBadge);
     }
-    
+
     // Re-initialize tooltips
     initializeTooltips();
 }
@@ -452,17 +478,17 @@ function updateBadges(badges) {
 function updateObjectives(objectives) {
     const objectivesContainer = document.getElementById('objectivesContainer');
     if (!objectivesContainer) return;
-    
+
     // Clear existing objectives
     objectivesContainer.innerHTML = '';
-    
+
     // Add new objectives
     objectives.forEach((objective, index) => {
         const objectiveElement = document.createElement('div');
         objectiveElement.className = index < objectives.length - 1 ? 'd-flex mb-3' : 'd-flex';
-        
+
         const progressPercent = (objective.progress / objective.total) * 100;
-        
+
         objectiveElement.innerHTML = `
             <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3 text-primary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                 <i class="fa-solid ${objective.icon}"></i>
@@ -470,7 +496,7 @@ function updateObjectives(objectives) {
             <div class="flex-grow-1">
                 <h4 class="small fw-medium">${objective.name}</h4>
                 <div class="progress mt-1" style="height: 6px;">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: ${progressPercent}%;" 
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: ${progressPercent}%;"
                         aria-valuenow="${progressPercent}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
                 <div class="d-flex justify-content-between small text-muted mt-1">
@@ -479,7 +505,7 @@ function updateObjectives(objectives) {
                 </div>
             </div>
         `;
-        
+
         objectivesContainer.appendChild(objectiveElement);
     });
 }
@@ -505,7 +531,163 @@ function updateImpactData(impact) {
 function updateRoleSpecificContent(role) {
     // Here you can implement role-specific UI changes that aren't covered by the other functions
     // For example, showing/hiding certain sections based on role
-    
+
     // This function is a placeholder for future extensions
     console.log('Applying role-specific UI changes for:', role);
+
+    // Highlight the selected profile card
+    document.querySelectorAll('.profile-card').forEach(card => {
+        if (card.getAttribute('data-role') === role) {
+            card.classList.add('border-primary');
+            card.classList.add('shadow');
+        } else {
+            card.classList.remove('border-primary');
+            card.classList.remove('shadow');
+        }
+    });
+}
+
+/**
+ * Show a toast notification
+ * @param {string} message - The message to display
+ * @param {string} type - The type of toast (success, error, warning, info)
+ */
+function showToast(message, type = 'info') {
+    // Check if SweetAlert2 is available
+    if (typeof Swal !== 'undefined') {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+
+        Toast.fire({
+            icon: type,
+            title: message
+        });
+    } else {
+        // Fallback to alert if SweetAlert2 is not available
+        console.log(`${type.toUpperCase()}: ${message}`);
+    }
+}
+
+/**
+ * Create profile cards for different user roles
+ */
+function createProfileCards() {
+    // Define profile data for cards
+    const profileData = {
+        funcionario: {
+            name: "Ana María González",
+            role: "Juez Civil Municipal",
+            gender: "women",
+            description: "Especializada en procesos civiles con énfasis en derechos reales y contratos."
+        },
+        ciudadano: {
+            name: "Carlos Rodríguez",
+            role: "Abogado Litigante",
+            gender: "men",
+            description: "Abogado especializado en derecho laboral y seguridad social con experiencia en litigio."
+        },
+        administrador: {
+            name: "Mónica Valencia",
+            role: "Administrador de Sistemas",
+            gender: "women",
+            description: "Especialista en administración de sistemas y seguridad informática para la Rama Judicial."
+        },
+        desarrollador: {
+            name: "Javier Moreno",
+            role: "Desarrollador Senior",
+            gender: "men",
+            description: "Ingeniero de software especializado en arquitecturas cloud y sistemas distribuidos."
+        },
+        investigador: {
+            name: "Laura Mendoza",
+            role: "Investigadora Jurídica",
+            gender: "women",
+            description: "Investigadora especializada en análisis de jurisprudencia y tendencias legales."
+        },
+        estudiante: {
+            name: "Daniel Ospina",
+            role: "Estudiante de Derecho",
+            gender: "men",
+            description: "Estudiante de último año de derecho con interés en tecnología jurídica e innovación."
+        }
+    };
+
+    // Get or create the container for profile cards
+    let profileCardsContainer = document.getElementById('profileCardsContainer');
+
+    if (!profileCardsContainer) {
+        // Create the section if it doesn't exist
+        const mainContent = document.querySelector('main');
+
+        if (mainContent) {
+            // Create section title
+            const sectionTitle = document.createElement('h2');
+            sectionTitle.className = 'h4 fw-bold mb-4 mt-5';
+            sectionTitle.textContent = 'Cambiar a otro perfil';
+            mainContent.appendChild(sectionTitle);
+
+            // Create container
+            profileCardsContainer = document.createElement('div');
+            profileCardsContainer.id = 'profileCardsContainer';
+            profileCardsContainer.className = 'row g-4 mb-5';
+            mainContent.appendChild(profileCardsContainer);
+        } else {
+            console.error('Main content container not found');
+            return;
+        }
+    }
+
+    // Clear existing cards
+    profileCardsContainer.innerHTML = '';
+
+    // Create cards for each profile
+    Object.keys(profileData).forEach(role => {
+        const profile = profileData[role];
+        const randomNum = Math.floor(Math.random() * 99) + 1;
+
+        const cardCol = document.createElement('div');
+        cardCol.className = 'col-md-4 col-lg-4 mb-4';
+
+        const card = document.createElement('div');
+        card.className = 'card h-100 profile-card cursor-pointer transition-all';
+        card.setAttribute('data-role', role);
+
+        // Highlight current role
+        const currentRole = localStorage.getItem('mardukUserRole') || 'funcionario';
+        if (role === currentRole) {
+            card.classList.add('border-primary');
+            card.classList.add('shadow');
+        }
+
+        card.innerHTML = `
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="me-3">
+                        <img src="https://randomuser.me/api/portraits/${profile.gender}/${randomNum}.jpg"
+                             alt="${profile.name}"
+                             class="rounded-circle"
+                             width="60" height="60">
+                    </div>
+                    <div>
+                        <h3 class="h5 fw-semibold mb-0">${profile.name}</h3>
+                        <p class="text-muted small mb-0">${profile.role}</p>
+                    </div>
+                </div>
+                <p class="text-secondary small mb-3">${profile.description}</p>
+                <button class="btn btn-sm btn-outline-primary w-100">Ver perfil</button>
+            </div>
+        `;
+
+        cardCol.appendChild(card);
+        profileCardsContainer.appendChild(cardCol);
+    });
 }
