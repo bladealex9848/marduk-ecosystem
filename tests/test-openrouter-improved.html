@@ -381,9 +381,25 @@
 
             // Evento para usar la API key de .env
             useEnvKeyBtn.addEventListener('click', async function() {
-                if (envApiKey) {
+                // Intentar obtener la API key de window.ENV
+                if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+                    envApiKey = window.ENV.OPENROUTER_API_KEY;
                     apiKeyInput.value = '********'; // No mostrar la API key real
                     apiKeyStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle"></i> Usando API key de .env</span>';
+
+                    console.log('API key de .env cargada (longitud):', envApiKey.length);
+                    console.log('API key de .env cargada (primeros 5 caracteres):', envApiKey.substring(0, 5) + '...');
+
+                    // Cargar modelos de la API usando el botón
+                    if (loadApiModelsBtn) {
+                        loadApiModelsBtn.click();
+                    }
+                } else if (envApiKey) {
+                    apiKeyInput.value = '********'; // No mostrar la API key real
+                    apiKeyStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle"></i> Usando API key de .env</span>';
+
+                    console.log('API key de .env cargada (longitud):', envApiKey.length);
+                    console.log('API key de .env cargada (primeros 5 caracteres):', envApiKey.substring(0, 5) + '...');
 
                     // Cargar modelos de la API usando el botón
                     if (loadApiModelsBtn) {
@@ -490,8 +506,8 @@
                     apiKey = envApiKey;
                 }
 
-                // Si no hay API key, usar la de window.ENV
-                if (!apiKey && window.ENV && window.ENV.OPENROUTER_API_KEY) {
+                // Si no hay API key o es '********', usar la de window.ENV
+                if ((!apiKey || apiKey === '********') && window.ENV && window.ENV.OPENROUTER_API_KEY) {
                     apiKey = window.ENV.OPENROUTER_API_KEY;
                     console.log('Usando API key de window.ENV');
                 }
@@ -548,8 +564,22 @@
                     // Mostrar información de depuración
                     console.log('Enviando solicitud con los siguientes datos:');
                     console.log('- Modelo:', modelId);
-                    console.log('- API key: ********');
+                    console.log('- API key (longitud):', apiKey ? apiKey.length : 0);
+                    console.log('- API key (primeros 5 caracteres):', apiKey ? apiKey.substring(0, 5) + '...' : 'N/A');
                     console.log('- Prompt:', prompt);
+
+                    // Verificar si la API key es válida
+                    if (apiKey === '********') {
+                        console.warn('ADVERTENCIA: La API key parece ser el placeholder "********"');
+
+                        // Intentar obtener la API key de window.ENV nuevamente
+                        if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+                            apiKey = window.ENV.OPENROUTER_API_KEY;
+                            console.log('Usando API key de window.ENV (recuperada)');
+                            console.log('- API key recuperada (longitud):', apiKey.length);
+                            console.log('- API key recuperada (primeros 5 caracteres):', apiKey.substring(0, 5) + '...');
+                        }
+                    }
 
                     // Preparar headers
                     const headers = {
@@ -662,11 +692,18 @@
             async function loadApiModels(apiKey) {
                 try {
                     // Verificar que la API key sea válida
-                    if (!apiKey || apiKey === 'demo' || apiKey === 'tu-api-key-aquí') {
-                        throw new Error('API key no válida o no encontrada');
+                    if (!apiKey || apiKey === 'demo' || apiKey === 'tu-api-key-aquí' || apiKey === '********') {
+                        // Si la API key es '********', intentar obtenerla de window.ENV
+                        if (apiKey === '********' && window.ENV && window.ENV.OPENROUTER_API_KEY) {
+                            apiKey = window.ENV.OPENROUTER_API_KEY;
+                            console.log('Usando API key de window.ENV para cargar modelos');
+                        } else {
+                            throw new Error('API key no válida o no encontrada');
+                        }
                     }
 
-                    console.log('Cargando modelos con API key: ********');
+                    console.log('Cargando modelos con API key (longitud):', apiKey.length);
+                    console.log('Cargando modelos con API key (primeros 5 caracteres):', apiKey.substring(0, 5) + '...');
 
                     // Mostrar indicador de carga
                     apiModelsContainer.innerHTML = `
