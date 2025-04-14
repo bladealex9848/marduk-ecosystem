@@ -307,12 +307,15 @@
             let allModels = [];
             let envApiKey = null;
 
-            // No esperamos a que se carguen las variables de entorno
-            // ya que ahora requerimos entrada manual de la API key
-            console.log('Usando modo de entrada manual de API key');
-
-            // Configurar el botón para usar la API key del .env como deshabilitado
-            useEnvKeyBtn.disabled = true;
+            // Verificar si tenemos una API key en window.ENV
+            if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+                envApiKey = window.ENV.OPENROUTER_API_KEY;
+                console.log('API key disponible en window.ENV');
+                useEnvKeyBtn.disabled = false;
+            } else {
+                console.log('No hay API key disponible en window.ENV');
+                useEnvKeyBtn.disabled = true;
+            }
 
             // Si no existe el botón para cargar modelos de la API, crearlo
             if (!loadApiModelsBtn) {
@@ -341,6 +344,11 @@
                 if (envApiKey) {
                     apiKeyInput.value = '********'; // No mostrar la API key real
                     apiKeyStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle"></i> Usando API key de .env</span>';
+
+                    // Cargar modelos de la API automáticamente
+                    if (loadApiModelsBtn) {
+                        loadApiModelsBtn.click();
+                    }
                 }
             });
 
