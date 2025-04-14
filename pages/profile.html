@@ -778,34 +778,36 @@
             <!-- Right column (1/3) -->
             <div class="col-lg-4">
                 <!-- User Bio -->
-                <div class="card border-0 shadow-sm mb-4">
+                <div class="card border-0 shadow-sm mb-4" style="max-height: 350px;">
                     <div class="card-body p-4 profile-section">
                         <h2 class="h5 fw-bold mb-3">Acerca de mí</h2>
-                        <p class="text-secondary small mb-4" id="userBio" style="max-height: 80px; overflow-y: auto;">
+                        <p class="text-secondary small mb-4" id="userBio" style="max-height: 60px; overflow-y: auto; display: block;">
                             Especializada en procesos civiles con énfasis en derechos reales y contratos. Más de 10 años de experiencia en el sistema judicial colombiano.
                         </p>
 
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="fa-solid fa-building text-secondary me-3"></i>
-                            <div>
-                                <p class="small text-muted mb-0">Juzgado</p>
-                                <p class="small fw-medium mb-0">Juzgado Civil Municipal No. 12</p>
+                        <div style="max-height: 180px; overflow-y: auto;">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fa-solid fa-building text-secondary me-3"></i>
+                                <div>
+                                    <p class="small text-muted mb-0">Juzgado</p>
+                                    <p class="small fw-medium mb-0">Juzgado Civil Municipal No. 12</p>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="fa-solid fa-graduation-cap text-secondary me-3"></i>
-                            <div>
-                                <p class="small text-muted mb-0">Educación</p>
-                                <p class="small fw-medium mb-0">Universidad Nacional de Colombia</p>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fa-solid fa-graduation-cap text-secondary me-3"></i>
+                                <div>
+                                    <p class="small text-muted mb-0">Educación</p>
+                                    <p class="small fw-medium mb-0">Universidad Nacional de Colombia</p>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="d-flex align-items-center">
-                            <i class="fa-solid fa-briefcase text-secondary me-3"></i>
-                            <div>
-                                <p class="small text-muted mb-0">Experiencia</p>
-                                <p class="small fw-medium mb-0">10+ años en administración de justicia</p>
+                            <div class="d-flex align-items-center mb-0">
+                                <i class="fa-solid fa-briefcase text-secondary me-3"></i>
+                                <div>
+                                    <p class="small text-muted mb-0">Experiencia</p>
+                                    <p class="small fw-medium mb-0">10+ años en administración de justicia</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -996,34 +998,44 @@
     <!-- Inicialización de IA para mensajes personalizados -->
     <script src="../js/openrouter.js"></script>
     <script>
-      // Función para generar mensajes de bienvenida con IA
-      async function generateWelcomeMessage(role) {
-        if (typeof callOpenRouterAPI === 'function') {
-          try {
-            const prompt = `Genera un breve mensaje de bienvenida personalizado (máximo 100 caracteres) para un ${role} en un sistema judicial digital. Menciona una tarea pendiente típica de su rol.`;
+      // Mensajes de bienvenida predefinidos por rol
+      const welcomeMessages = {
+        funcionario: "Bienvenido, Funcionario Judicial. Tiene 3 audiencias pendientes para hoy y 5 expedientes por revisar.",
+        ciudadano: "Bienvenido, Abogado. Tiene 2 escritos pendientes de presentación y una audiencia mañana a las 10:00 AM.",
+        administrador: "Bienvenido, Administrador. Hay 3 incidentes de seguridad pendientes y 2 actualizaciones críticas por aplicar.",
+        desarrollador: "Bienvenido, Desarrollador. Tiene 5 pull requests pendientes de revisión y 3 bugs prioritarios asignados.",
+        investigador: "Bienvenido, Investigador. Tiene 2 análisis pendientes y una publicación en revisión final.",
+        estudiante: "Bienvenido, Estudiante. Tiene 3 casos prácticos pendientes y un examen programado para la próxima semana."
+      };
 
-            const response = await callOpenRouterAPI(prompt);
-            if (response && response.trim()) {
-              // Usar la función showToast de main.js
-              if (typeof window.showToast === 'function') {
-                window.showToast(response, 'info');
-              }
-            }
-          } catch (error) {
-            console.error('Error al generar mensaje de bienvenida:', error);
-          }
+      // Función para mostrar mensaje de bienvenida
+      function showWelcomeMessage(role) {
+        const message = welcomeMessages[role] || welcomeMessages.funcionario;
+        if (typeof window.showToast === 'function') {
+          window.showToast(message, 'info');
         }
       }
 
-      // Generar mensaje de bienvenida aleatorio (30% de probabilidad)
+      // Mostrar mensaje de bienvenida al cambiar de perfil
+      document.addEventListener('click', function(event) {
+        const profileCard = event.target.closest('.profile-card');
+        if (profileCard) {
+          const role = profileCard.getAttribute('data-role');
+          if (role) {
+            // Esperar un momento para que se actualice el perfil
+            setTimeout(() => {
+              showWelcomeMessage(role);
+            }, 500);
+          }
+        }
+      });
+
+      // Mostrar mensaje inicial
       document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
-          const shouldShowMessage = Math.random() < 0.3;
-          if (shouldShowMessage) {
-            const currentRole = localStorage.getItem('mardukUserRole') || 'funcionario';
-            generateWelcomeMessage(currentRole);
-          }
-        }, 2000); // Esperar 2 segundos para mostrar el mensaje
+          const currentRole = localStorage.getItem('mardukUserRole') || 'funcionario';
+          showWelcomeMessage(currentRole);
+        }, 1000);
       });
     </script>
 </body>

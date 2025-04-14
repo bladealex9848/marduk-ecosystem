@@ -763,7 +763,7 @@ function updateSectionColors(role) {
             secondaryColor: 'teal',
             accentColor: 'green',
             bannerClass: 'bg-gradient-green',
-            headerClass: 'bg-gradient-success'
+            headerClass: 'bg-gradient-primary'
         },
         administrador: {
             gradientClass: 'bg-gradient-purple',
@@ -795,7 +795,7 @@ function updateSectionColors(role) {
             secondaryColor: 'teal',
             accentColor: 'green',
             bannerClass: 'bg-gradient-green',
-            headerClass: 'bg-gradient-success'
+            headerClass: 'bg-gradient-primary'
         }
     };
 

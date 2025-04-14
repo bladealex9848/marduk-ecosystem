@@ -498,8 +498,5 @@ class OpenRouterService {
 // Crear una instancia global del servicio
 const openRouterService = new OpenRouterService();
 
-// Exportar la instancia para uso en otros archivos
-export default openRouterService;
-
-// También hacer disponible globalmente para compatibilidad con código existente
+// Hacer disponible globalmente para compatibilidad con código existente
 window.openRouterService = openRouterService;
