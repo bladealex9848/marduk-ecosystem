@@ -275,14 +275,14 @@
                                         window.location.hostname === '';
 
                     // Determinar la ruta base correcta
-                    // Para localhost, usamos una ruta relativa a la raíz del servidor
-                    const baseUrl = isLocalhost ? '' : '';
+                    // Para localhost, usamos una ruta relativa a la raíz del proyecto
+                    const baseUrl = '../';
 
                     console.log('Hostname:', window.location.hostname);
                     console.log('Ruta base:', baseUrl);
 
                     // Primero, intentar obtener un token de autenticación
-                    const tokenUrl = baseUrl + '/get-auth-token.php';
+                    const tokenUrl = baseUrl + 'get-auth-token.php';
                     console.log('Intentando conectar con:', tokenUrl);
 
                     const tokenResponse = await fetch(tokenUrl, {
@@ -303,7 +303,7 @@
                     console.log('Token obtenido correctamente');
 
                     // Luego, usar el token para obtener la API key
-                    const apiKeyUrl = baseUrl + '/get-api-key.php';
+                    const apiKeyUrl = baseUrl + 'get-api-key.php';
                     console.log('Intentando conectar con:', apiKeyUrl);
 
                     const apiKeyResponse = await fetch(apiKeyUrl, {

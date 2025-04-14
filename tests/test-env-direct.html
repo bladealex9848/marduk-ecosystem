@@ -400,11 +400,12 @@
                                         window.location.hostname === '';
 
                     // Determinar la ruta base correcta
-                    const baseUrl = isLocalhost ? '' : '';
+                    // Para localhost, usamos una ruta relativa a la raíz del proyecto
+                    const baseUrl = '../';
 
                     // Primero, intentar obtener un token de autenticación
-                    log('Intentando conectar con: ' + baseUrl + '/get-auth-token.php', 'info');
-                    const tokenResponse = await fetch(baseUrl + '/get-auth-token.php', {
+                    log('Intentando conectar con: ' + baseUrl + 'get-auth-token.php', 'info');
+                    const tokenResponse = await fetch(baseUrl + 'get-auth-token.php', {
                         // Agregar un timeout para evitar esperas largas
                         signal: AbortSignal.timeout(5000) // 5 segundos de timeout
                     });
@@ -422,8 +423,8 @@
                     const token = tokenData.data.token;
 
                     // Luego, usar el token para obtener la API key
-                    log('Intentando conectar con: ' + baseUrl + '/get-api-key.php', 'info');
-                    const apiKeyResponse = await fetch(baseUrl + '/get-api-key.php', {
+                    log('Intentando conectar con: ' + baseUrl + 'get-api-key.php', 'info');
+                    const apiKeyResponse = await fetch(baseUrl + 'get-api-key.php', {
                         headers: {
                             'X-Auth-Token': token
                         },
