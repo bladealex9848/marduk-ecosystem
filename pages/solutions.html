@@ -3745,15 +3745,26 @@
     <!-- Inicializar la página de soluciones -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        // Generar vistas de soluciones dinámicamente
-        generateSolutionViews();
+        console.log('Initializing solutions page...');
 
-        // Inicializar filtros y búsqueda
-        setupViewToggles();
-        setupSearch();
+        // Generar vistas de soluciones dinámicamente
+        if (typeof generateSolutionViews === 'function') {
+          generateSolutionViews();
+        }
+
+        // Inicializar filtros y búsqueda si las funciones existen
+        if (typeof setupViewToggles === 'function') {
+          setupViewToggles();
+        }
+
+        if (typeof setupSearch === 'function') {
+          setupSearch();
+        }
 
         // Verificar parámetros de URL
-        checkUrlForAppDetail();
+        if (typeof checkUrlForAppDetail === 'function') {
+          checkUrlForAppDetail();
+        }
       });
     </script>
 

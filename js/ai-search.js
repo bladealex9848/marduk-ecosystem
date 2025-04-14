@@ -24,16 +24,16 @@ const AI_MODEL = "meta-llama/llama-4-scout:free";
  */
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('Inicializando búsqueda inteligente con IA...');
-    
+
     // Inicializar elementos del DOM
     initializeElements();
-    
+
     // Cargar el sitemap
     await loadSitemap();
-    
+
     // Verificar API key y habilitar búsqueda con IA
     await checkApiKeyAndEnableAI();
-    
+
     // Configurar eventos
     setupEventListeners();
 });
@@ -45,7 +45,7 @@ function initializeElements() {
     // Elementos principales
     searchInput = document.getElementById('solutionSearch');
     searchButton = document.querySelector('.search-button');
-    
+
     // Crear contenedor de resultados si no existe
     if (!document.getElementById('searchResults')) {
         searchResults = document.createElement('div');
@@ -55,7 +55,7 @@ function initializeElements() {
     } else {
         searchResults = document.getElementById('searchResults');
     }
-    
+
     // Crear indicador de estado de IA
     if (!document.getElementById('aiStatusIndicator')) {
         const searchContainer = document.querySelector('.position-relative');
@@ -65,7 +65,7 @@ function initializeElements() {
         aiStatusIndicator.innerHTML = '<i class="fas fa-robot"></i>';
         aiStatusIndicator.title = 'Búsqueda con IA no disponible';
         searchContainer.appendChild(aiStatusIndicator);
-        
+
         // Agregar estilos para el indicador
         const style = document.createElement('style');
         style.textContent = `
@@ -101,7 +101,7 @@ async function loadSitemap() {
         if (!response.ok) {
             throw new Error(`Error al cargar el sitemap: ${response.status}`);
         }
-        
+
         sitemapData = await response.json();
         console.log('Sitemap cargado correctamente:', sitemapData.siteName);
     } catch (error) {
@@ -117,24 +117,30 @@ async function checkApiKeyAndEnableAI() {
     try {
         // Esperar a que se carguen las variables de entorno
         await waitForEnvVariables();
-        
+
         // Verificar si hay una API key en las variables de entorno
-        if (window.ENV && window.ENV.OPENROUTER_API_KEY && 
-            window.ENV.OPENROUTER_API_KEY !== 'DEMO_MODE' && 
-            window.ENV.OPENROUTER_API_KEY !== 'demo' && 
+        if (window.ENV && window.ENV.OPENROUTER_API_KEY &&
+            window.ENV.OPENROUTER_API_KEY !== 'DEMO_MODE' &&
+            window.ENV.OPENROUTER_API_KEY !== 'demo' &&
             window.ENV.OPENROUTER_API_KEY !== 'tu-api-key-aquí') {
-            
+
             apiKey = window.ENV.OPENROUTER_API_KEY;
             console.log('API key encontrada en variables de entorno');
             enableAISearch();
         }
         // Verificar si hay una API key en localStorage
-        else if (localStorage.getItem('OPENROUTER_API_KEY') && 
-                 localStorage.getItem('OPENROUTER_API_KEY') !== 'demo' && 
+        else if (localStorage.getItem('OPENROUTER_API_KEY') &&
+                 localStorage.getItem('OPENROUTER_API_KEY') !== 'demo' &&
                  localStorage.getItem('OPENROUTER_API_KEY') !== 'tu-api-key-aquí') {
-            
+
             apiKey = localStorage.getItem('OPENROUTER_API_KEY');
             console.log('API key encontrada en localStorage');
+            enableAISearch();
+        }
+        // Verificar si el servicio global de OpenRouter está disponible
+        else if (window.openRouterService && window.openRouterService.isConfigured()) {
+            console.log('Servicio global de OpenRouter disponible');
+            apiKey = 'using-global-service'; // Valor especial para indicar que usamos el servicio global
             enableAISearch();
         }
         // Si no hay API key, mostrar botón para configurarla
@@ -159,10 +165,10 @@ async function waitForEnvVariables() {
             resolve();
             return;
         }
-        
+
         // Si no está disponible, esperar a que se cargue
         console.log('Esperando a que se carguen las variables de entorno...');
-        
+
         // Intentar cargar manualmente si está disponible la función
         if (typeof window.loadEnvVariables === 'function') {
             window.loadEnvVariables().then(() => {
@@ -176,10 +182,10 @@ async function waitForEnvVariables() {
             // Esperar a que ENV esté disponible (máximo 5 segundos)
             let attempts = 0;
             const maxAttempts = 10; // 10 intentos * 500ms = 5 segundos
-            
+
             const checkEnv = () => {
                 attempts++;
-                
+
                 if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
                     console.log(`Variables de entorno detectadas (intento ${attempts})`);
                     resolve();
@@ -227,7 +233,7 @@ function setupEventListeners() {
     if (searchButton) {
         searchButton.addEventListener('click', handleSearch);
     }
-    
+
     // Evento de búsqueda al presionar Enter en el input
     if (searchInput) {
         searchInput.addEventListener('keypress', function(e) {
@@ -236,7 +242,7 @@ function setupEventListeners() {
             }
         });
     }
-    
+
     // Evento para configurar API key al hacer clic en el indicador
     if (aiStatusIndicator) {
         aiStatusIndicator.addEventListener('click', function() {
@@ -252,27 +258,27 @@ function setupEventListeners() {
  */
 async function handleSearch() {
     const query = searchInput.value.trim();
-    
+
     if (!query) {
         return;
     }
-    
+
     console.log(`Realizando búsqueda: "${query}"`);
-    
+
     // Mostrar indicador de carga
     showLoadingIndicator();
-    
+
     try {
         // Primero buscar en el sitemap
         const results = searchInSitemap(query);
-        
+
         // Si hay resultados, mostrarlos
         if (results.length > 0) {
             showSearchResults(results, query);
             hideLoadingIndicator();
             return;
         }
-        
+
         // Si no hay resultados y la búsqueda con IA está habilitada, generar solución con IA
         if (aiSearchEnabled) {
             console.log('No se encontraron resultados en el sitemap, generando solución con IA...');
@@ -298,10 +304,10 @@ function searchInSitemap(query) {
     if (!sitemapData) {
         return [];
     }
-    
+
     const results = [];
     const queryLower = query.toLowerCase();
-    
+
     // Buscar en las soluciones
     const solutionsSection = sitemapData.mainSections.find(section => section.id === 'solutions');
     if (solutionsSection && solutionsSection.subsections) {
@@ -309,10 +315,10 @@ function searchInSitemap(query) {
             if (category.solutions) {
                 category.solutions.forEach(solution => {
                     // Verificar si la solución coincide con la consulta
-                    if (solution.name.toLowerCase().includes(queryLower) || 
+                    if (solution.name.toLowerCase().includes(queryLower) ||
                         solution.description.toLowerCase().includes(queryLower) ||
                         (solution.tags && solution.tags.some(tag => tag.toLowerCase().includes(queryLower)))) {
-                        
+
                         results.push({
                             type: 'solution',
                             category: category.name,
@@ -324,7 +330,7 @@ function searchInSitemap(query) {
             }
         });
     }
-    
+
     // Buscar en la comunidad (foros relacionados)
     const communitySection = sitemapData.mainSections.find(section => section.id === 'community');
     if (communitySection && communitySection.subsections) {
@@ -333,9 +339,9 @@ function searchInSitemap(query) {
             forumsSection.categories.forEach(category => {
                 if (category.forums) {
                     category.forums.forEach(forum => {
-                        if (forum.name.toLowerCase().includes(queryLower) || 
+                        if (forum.name.toLowerCase().includes(queryLower) ||
                             forum.description.toLowerCase().includes(queryLower)) {
-                            
+
                             results.push({
                                 type: 'forum',
                                 category: category.name,
@@ -348,7 +354,7 @@ function searchInSitemap(query) {
             });
         }
     }
-    
+
     return results;
 }
 
@@ -360,7 +366,7 @@ function searchInSitemap(query) {
 function showSearchResults(results, query) {
     searchResults.innerHTML = '';
     searchResults.classList.remove('d-none');
-    
+
     // Crear encabezado de resultados
     const header = document.createElement('div');
     header.className = 'search-results-header p-3 border-bottom';
@@ -371,36 +377,36 @@ function showSearchResults(results, query) {
         </div>
     `;
     searchResults.appendChild(header);
-    
+
     // Agregar evento para cerrar resultados
     header.querySelector('.btn-close').addEventListener('click', function() {
         searchResults.classList.add('d-none');
     });
-    
+
     // Crear lista de resultados
     const resultsList = document.createElement('div');
     resultsList.className = 'search-results-list';
-    
+
     // Agrupar resultados por tipo
     const solutionResults = results.filter(result => result.type === 'solution');
     const forumResults = results.filter(result => result.type === 'forum');
-    
+
     // Mostrar soluciones
     if (solutionResults.length > 0) {
         const solutionsHeader = document.createElement('div');
         solutionsHeader.className = 'search-results-group-header p-2 bg-light';
         solutionsHeader.innerHTML = '<h6 class="mb-0">Soluciones</h6>';
         resultsList.appendChild(solutionsHeader);
-        
+
         solutionResults.forEach(result => {
             const resultItem = document.createElement('a');
             resultItem.className = 'search-result-item p-3 border-bottom d-block text-decoration-none';
             resultItem.href = `solutions.html?category=${result.categoryId}&id=${result.solution.id}`;
-            
+
             // Determinar el nivel de la solución
             const levelClass = getLevelClass(result.solution.level);
             const levelText = getLevelText(result.solution.level);
-            
+
             resultItem.innerHTML = `
                 <div class="d-flex align-items-start">
                     <div class="flex-shrink-0 me-3">
@@ -416,23 +422,23 @@ function showSearchResults(results, query) {
                     </div>
                 </div>
             `;
-            
+
             resultsList.appendChild(resultItem);
         });
     }
-    
+
     // Mostrar foros
     if (forumResults.length > 0) {
         const forumsHeader = document.createElement('div');
         forumsHeader.className = 'search-results-group-header p-2 bg-light';
         forumsHeader.innerHTML = '<h6 class="mb-0">Foros de discusión</h6>';
         resultsList.appendChild(forumsHeader);
-        
+
         forumResults.forEach(result => {
             const resultItem = document.createElement('a');
             resultItem.className = 'search-result-item p-3 border-bottom d-block text-decoration-none';
             resultItem.href = `discussions.html?category=${result.categoryId}&id=${result.forum.id}`;
-            
+
             resultItem.innerHTML = `
                 <div class="d-flex align-items-start">
                     <div class="flex-shrink-0 me-3">
@@ -445,11 +451,11 @@ function showSearchResults(results, query) {
                     </div>
                 </div>
             `;
-            
+
             resultsList.appendChild(resultItem);
         });
     }
-    
+
     searchResults.appendChild(resultsList);
 }
 
@@ -459,15 +465,39 @@ function showSearchResults(results, query) {
  */
 async function generateSolutionWithAI(query) {
     try {
+        // Verificar si la búsqueda con IA está habilitada
+        if (!aiSearchEnabled) {
+            console.log('La búsqueda con IA no está habilitada');
+            showToast('La búsqueda con IA no está habilitada', 'warning');
+            showNoResultsMessage(query);
+            return;
+        }
+
+        // Verificar si tenemos una API key o el servicio global
+        if (!apiKey) {
+            console.log('No hay una API key configurada');
+            showToast('No hay una API key configurada', 'error');
+            showApiKeyConfigModal();
+            return;
+        }
+
         // Mostrar mensaje de generación
         showToast('Generando solución con IA...', 'info');
-        
+
         // Generar solución con IA
         const solution = await generateSolutionContent(query);
-        
+
+        // Verificar si la solución es válida
+        if (!solution || !solution.name || !solution.description) {
+            throw new Error('La solución generada no es válida');
+        }
+
         // Crear ID único para la solución
         const solutionId = 'ai-' + Date.now();
-        
+
+        // Mostrar mensaje de éxito
+        showToast('Solución generada correctamente', 'success');
+
         // Redirigir a la página de la solución generada
         navigateToGeneratedSolution(solutionId, solution);
     } catch (error) {
@@ -487,7 +517,9 @@ async function generateSolutionContent(query) {
     if (!apiKey) {
         throw new Error('No hay una API key configurada');
     }
-    
+
+    console.log('Generando solución con API key:', apiKey.substring(0, 5) + '...');
+
     try {
         // Crear prompt para la IA
         const prompt = `
@@ -514,39 +546,61 @@ Utiliza el siguiente formato JSON para tu respuesta:
 Asegúrate de que la solución sea relevante para el ámbito judicial y que pueda ser implementada con tecnología actual. La solución debe ser innovadora y aportar valor al sistema judicial.
 `;
 
-        // Hacer solicitud a la API de OpenRouter
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`,
-                'HTTP-Referer': window.location.origin,
-                'X-Title': 'Marduk Ecosystem'
-            },
-            body: JSON.stringify({
-                model: AI_MODEL,
-                messages: [
-                    { role: 'user', content: prompt }
-                ]
-            })
-        });
+        // Verificar si estamos usando el servicio de OpenRouter global
+        if (window.openRouterService && typeof window.openRouterService.generateCompletion === 'function') {
+            console.log('Usando servicio global de OpenRouter');
+            try {
+                const completion = await window.openRouterService.generateCompletion(prompt, AI_MODEL);
+                console.log('Respuesta recibida del servicio global de OpenRouter');
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(`Error en la API de OpenRouter: ${errorData.error?.message || response.statusText}`);
-        }
+                // Extraer el JSON de la respuesta
+                const jsonMatch = completion.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) {
+                    throw new Error('No se pudo extraer el JSON de la respuesta');
+                }
 
-        const data = await response.json();
-        const content = data.choices[0].message.content;
-        
-        // Extraer el JSON de la respuesta
-        const jsonMatch = content.match(/\{[\s\S]*\}/);
-        if (!jsonMatch) {
-            throw new Error('No se pudo extraer el JSON de la respuesta');
+                const solution = JSON.parse(jsonMatch[0]);
+                return solution;
+            } catch (error) {
+                console.error('Error al usar el servicio global de OpenRouter:', error);
+                throw new Error('Error al generar contenido: ' + error.message);
+            }
+        } else {
+            console.log('Usando solicitud directa a la API de OpenRouter');
+            // Hacer solicitud directa a la API de OpenRouter
+            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`,
+                    'HTTP-Referer': window.location.origin,
+                    'X-Title': 'Marduk Ecosystem'
+                },
+                body: JSON.stringify({
+                    model: AI_MODEL,
+                    messages: [
+                        { role: 'user', content: prompt }
+                    ]
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Error en la API de OpenRouter: ${errorData.error?.message || response.statusText}`);
+            }
+
+            const data = await response.json();
+            const content = data.choices[0].message.content;
+
+            // Extraer el JSON de la respuesta
+            const jsonMatch = content.match(/\{[\s\S]*\}/);
+            if (!jsonMatch) {
+                throw new Error('No se pudo extraer el JSON de la respuesta');
+            }
+
+            const solution = JSON.parse(jsonMatch[0]);
+            return solution;
         }
-        
-        const solution = JSON.parse(jsonMatch[0]);
-        return solution;
     } catch (error) {
         console.error('Error al generar contenido con IA:', error);
         throw new Error('Error al generar contenido: ' + error.message);
@@ -561,7 +615,7 @@ Asegúrate de que la solución sea relevante para el ámbito judicial y que pued
 function navigateToGeneratedSolution(solutionId, solution) {
     // Guardar la solución en localStorage para recuperarla en la página de destino
     localStorage.setItem(`ai-solution-${solutionId}`, JSON.stringify(solution));
-    
+
     // Redirigir a la página de la solución
     window.location.href = `solutions.html?category=${solution.category}&id=${solutionId}&ai=true`;
 }
@@ -573,7 +627,7 @@ function navigateToGeneratedSolution(solutionId, solution) {
 function showNoResultsMessage(query) {
     searchResults.innerHTML = '';
     searchResults.classList.remove('d-none');
-    
+
     // Crear encabezado de resultados
     const header = document.createElement('div');
     header.className = 'search-results-header p-3 border-bottom';
@@ -584,16 +638,16 @@ function showNoResultsMessage(query) {
         </div>
     `;
     searchResults.appendChild(header);
-    
+
     // Agregar evento para cerrar resultados
     header.querySelector('.btn-close').addEventListener('click', function() {
         searchResults.classList.add('d-none');
     });
-    
+
     // Crear mensaje de no resultados
     const noResults = document.createElement('div');
     noResults.className = 'p-4 text-center';
-    
+
     if (aiSearchEnabled) {
         noResults.innerHTML = `
             <i class="fas fa-search fa-3x text-muted mb-3"></i>
@@ -603,7 +657,7 @@ function showNoResultsMessage(query) {
                 <i class="fas fa-robot me-2"></i>Generar solución con IA
             </button>
         `;
-        
+
         // Agregar evento para generar solución con IA
         setTimeout(() => {
             const generateButton = document.getElementById('generateAiSolution');
@@ -621,7 +675,7 @@ function showNoResultsMessage(query) {
                 <i class="fas fa-cog me-2"></i>Configurar búsqueda con IA
             </button>
         `;
-        
+
         // Agregar evento para configurar búsqueda con IA
         setTimeout(() => {
             const configButton = document.getElementById('configureAiSearch');
@@ -630,7 +684,7 @@ function showNoResultsMessage(query) {
             }
         }, 100);
     }
-    
+
     searchResults.appendChild(noResults);
 }
 
@@ -661,10 +715,10 @@ function showApiKeyConfigModal() {
             // Guardar API key
             apiKey = result.value;
             localStorage.setItem('OPENROUTER_API_KEY', apiKey);
-            
+
             // Habilitar búsqueda con IA
             enableAISearch();
-            
+
             showToast('API key guardada correctamente', 'success');
         }
     });
@@ -705,7 +759,7 @@ function getLevelClass(level) {
         4: 'bg-success',
         5: 'bg-warning text-dark'
     };
-    
+
     return levelClasses[level] || 'bg-secondary';
 }
 
@@ -722,6 +776,6 @@ function getLevelText(level) {
         4: 'Nivel 4: Producción',
         5: 'Nivel 5: Consolidada'
     };
-    
+
     return levelTexts[level] || 'Nivel desconocido';
 }
