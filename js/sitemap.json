@@ -21,28 +21,80 @@
           "description": "Herramientas para la gestión eficiente de casos judiciales, seguimiento de expedientes y administración de documentos",
           "solutions": [
             {
-              "id": "expediente-digital",
-              "name": "Expediente Digital",
+              "id": 1,
+              "name": "Sistema de Gestión de Expedientes Electrónicos",
+              "shortName": "SGEJ",
               "level": 5,
+              "maturityLevel": 5,
+              "maturityName": "Consolidada",
               "type": "oficial",
-              "description": "Sistema integral para la gestión digital de expedientes judiciales, eliminando el uso de papel",
-              "tags": ["gestión documental", "digitalización", "expedientes", "documentos"]
+              "category": "case-management",
+              "description": "Sistema integral para la gestión digital de expedientes judiciales, eliminando el uso de papel y optimizando los procesos",
+              "fullDescription": "El Sistema de Gestión de Expedientes Judiciales (SGEJ) es una solución completa para la digitalización y gestión de expedientes en el ámbito judicial. Permite la creación, almacenamiento, búsqueda y seguimiento de expedientes judiciales en formato digital, eliminando la necesidad de papel y agilizando todos los procesos relacionados. Incluye funcionalidades avanzadas como firma digital, control de versiones, trazabilidad de acciones y notificaciones automáticas.",
+              "developer": "Equipo SGEJ",
+              "rating": 4.8,
+              "reviews": 245,
+              "downloads": 12500,
+              "lastUpdate": "2023-11-15",
+              "features": [
+                "Gestión completa de expedientes digitales",
+                "Firma electrónica avanzada",
+                "Búsqueda inteligente de documentos",
+                "Notificaciones automáticas",
+                "Integración con otros sistemas judiciales"
+              ],
+              "tags": ["gestión documental", "digitalización", "expedientes", "documentos", "firma digital", "notificaciones", "trazabilidad"]
             },
             {
-              "id": "seguimiento-casos",
-              "name": "Seguimiento de Casos",
+              "id": 2,
+              "name": "Plataforma de Seguimiento de Casos Judiciales",
+              "shortName": "PSCJ",
               "level": 4,
+              "maturityLevel": 4,
+              "maturityName": "Producción",
               "type": "oficial",
-              "description": "Plataforma para el seguimiento en tiempo real del estado de los casos judiciales",
-              "tags": ["seguimiento", "casos", "notificaciones", "estado procesal"]
+              "category": "case-management",
+              "description": "Plataforma para el seguimiento en tiempo real del estado de los casos judiciales con notificaciones automáticas",
+              "fullDescription": "La Plataforma de Seguimiento de Casos Judiciales (PSCJ) permite a jueces, abogados y ciudadanos monitorear el estado actual de los procesos judiciales en tiempo real. Ofrece una vista unificada del historial del caso, próximas audiencias, plazos importantes y actuaciones procesales. El sistema envía notificaciones automáticas sobre cambios en el estado del caso y recordatorios de fechas clave, mejorando significativamente la transparencia y eficiencia del proceso judicial.",
+              "developer": "Dirección de Tecnología Judicial",
+              "rating": 4.6,
+              "reviews": 189,
+              "downloads": 9800,
+              "lastUpdate": "2023-09-22",
+              "features": [
+                "Seguimiento en tiempo real de casos",
+                "Notificaciones automáticas de cambios",
+                "Calendario de audiencias y plazos",
+                "Historial completo de actuaciones",
+                "Acceso diferenciado por tipo de usuario"
+              ],
+              "tags": ["seguimiento", "casos", "notificaciones", "estado procesal", "tiempo real", "audiencias", "plazos"]
             },
             {
-              "id": "gestor-audiencias",
-              "name": "Gestor de Audiencias",
+              "id": 3,
+              "name": "Sistema de Gestión de Audiencias Virtuales",
+              "shortName": "SGAV",
               "level": 4,
+              "maturityLevel": 4,
+              "maturityName": "Producción",
               "type": "community",
-              "description": "Sistema para la programación, gestión y grabación de audiencias judiciales",
-              "tags": ["audiencias", "programación", "grabación", "videoconferencia"]
+              "category": "case-management",
+              "description": "Sistema integral para la programación, gestión, grabación y transmisión de audiencias judiciales virtuales",
+              "fullDescription": "El Sistema de Gestión de Audiencias Virtuales (SGAV) es una herramienta completa para la administración de audiencias judiciales en entornos virtuales. Permite la programación automática considerando disponibilidad de salas y participantes, envío de notificaciones, grabación en alta calidad, transcripción automática mediante IA y transmisión en vivo cuando sea requerido. El sistema garantiza la seguridad y confidencialidad de las sesiones, manteniendo un registro completo de todas las audiencias realizadas.",
+              "developer": "Comunidad Judicial Marduk",
+              "rating": 4.7,
+              "reviews": 156,
+              "downloads": 7200,
+              "lastUpdate": "2023-10-05",
+              "features": [
+                "Programación inteligente de audiencias",
+                "Videoconferencias seguras y estables",
+                "Grabación en alta calidad",
+                "Transcripción automática con IA",
+                "Transmisión en vivo para audiencias públicas",
+                "Integración con expediente digital"
+              ],
+              "tags": ["audiencias", "programación", "grabación", "videoconferencia", "virtual", "transcripción", "transmisión"]
             }
           ]
         },
@@ -117,12 +169,55 @@
           "description": "Soluciones basadas en inteligencia artificial para el sector judicial",
           "solutions": [
             {
-              "id": "asistente-judicial",
-              "name": "Asistente Judicial IA",
+              "id": 10,
+              "name": "Plataforma de Orquestación de Agentes Judiciales",
+              "shortName": "POAJ",
               "level": 3,
+              "maturityLevel": 3,
+              "maturityName": "Beta",
               "type": "oficial",
-              "description": "Asistente virtual basado en IA para responder consultas jurídicas básicas",
-              "tags": ["asistente", "inteligencia artificial", "consultas", "virtual"]
+              "category": "ai-tools",
+              "description": "Sistema avanzado para la orquestación de agentes de IA especializados en tareas judiciales",
+              "fullDescription": "La Plataforma de Orquestación de Agentes Judiciales (POAJ) es un sistema innovador que coordina múltiples agentes de inteligencia artificial especializados en diferentes áreas del derecho y procesos judiciales. La plataforma permite la colaboración entre agentes para resolver tareas complejas, como análisis de casos, búsqueda de jurisprudencia, redacción de documentos y asistencia en la toma de decisiones. Cada agente está entrenado en un dominio específico y la plataforma coordina su interacción para proporcionar resultados integrales y precisos.",
+              "developer": "Laboratorio de IA Judicial",
+              "rating": 4.5,
+              "reviews": 87,
+              "downloads": 3200,
+              "lastUpdate": "2023-12-10",
+              "features": [
+                "Orquestación inteligente de agentes especializados",
+                "Coordinación de tareas complejas entre agentes",
+                "Agentes especializados en diferentes áreas del derecho",
+                "Aprendizaje continuo y mejora de resultados",
+                "Interfaz unificada para interactuar con múltiples agentes",
+                "Trazabilidad de decisiones y razonamiento"
+              ],
+              "tags": ["orquestación", "agentes", "inteligencia artificial", "colaboración", "automatización", "asistencia judicial"]
+            },
+            {
+              "id": 11,
+              "name": "Asistente Judicial IA",
+              "shortName": "AJIA",
+              "level": 3,
+              "maturityLevel": 3,
+              "maturityName": "Beta",
+              "type": "oficial",
+              "category": "ai-tools",
+              "description": "Asistente virtual basado en IA para responder consultas jurídicas básicas y guiar en procesos judiciales",
+              "fullDescription": "El Asistente Judicial IA (AJIA) es un sistema conversacional avanzado diseñado para proporcionar información jurídica precisa y actualizada a ciudadanos, abogados y funcionarios judiciales. Utilizando modelos de lenguaje de última generación, el asistente puede responder consultas sobre procedimientos legales, plazos, requisitos documentales y normativa aplicable. Además, puede guiar a los usuarios a través de procesos judiciales complejos, explicando cada paso de manera clara y accesible.",
+              "developer": "Dirección de Tecnología Judicial",
+              "rating": 4.3,
+              "reviews": 112,
+              "downloads": 5600,
+              "lastUpdate": "2023-08-15",
+              "features": [
+                "Respuestas precisas a consultas jurídicas",
+                "Guía paso a paso en procesos judiciales",
+                "Información actualizada sobre normativa",
+                "Interfaz conversacional intuitiva",
+                "Disponible 24/7 para consultas"
+              ],
+              "tags": ["asistente", "inteligencia artificial", "consultas", "virtual", "conversacional", "guía judicial"]
             },
             {
               "id": "predictor-sentencias",

@@ -429,16 +429,55 @@ function searchInSitemap(query) {
             if (category.solutions) {
                 category.solutions.forEach(solution => {
                     // Verificar si la solución coincide con la consulta
-                    if (solution.name.toLowerCase().includes(queryLower) ||
-                        solution.description.toLowerCase().includes(queryLower) ||
-                        (solution.tags && solution.tags.some(tag => tag.toLowerCase().includes(queryLower)))) {
+                    let matchFound = false;
+                    let matchScore = 0;
+                    let matchDetails = [];
 
-                        console.log(`Coincidencia parcial encontrada: ${solution.name}`);
+                    // Buscar en el nombre (mayor prioridad)
+                    if (solution.name.toLowerCase().includes(queryLower)) {
+                        matchFound = true;
+                        matchScore += 10;
+                        matchDetails.push('nombre');
+                    }
+
+                    // Buscar en la descripción corta
+                    if (solution.description.toLowerCase().includes(queryLower)) {
+                        matchFound = true;
+                        matchScore += 5;
+                        matchDetails.push('descripción');
+                    }
+
+                    // Buscar en la descripción completa (si existe)
+                    if (solution.fullDescription && solution.fullDescription.toLowerCase().includes(queryLower)) {
+                        matchFound = true;
+                        matchScore += 8;
+                        matchDetails.push('descripción completa');
+                    }
+
+                    // Buscar en las características (si existen)
+                    if (solution.features && solution.features.some(feature => feature.toLowerCase().includes(queryLower))) {
+                        matchFound = true;
+                        matchScore += 7;
+                        matchDetails.push('características');
+                    }
+
+                    // Buscar en las etiquetas (si existen)
+                    if (solution.tags && solution.tags.some(tag => tag.toLowerCase().includes(queryLower))) {
+                        matchFound = true;
+                        matchScore += 6;
+                        matchDetails.push('etiquetas');
+                    }
+
+                    // Si se encontró alguna coincidencia, agregar a los resultados
+                    if (matchFound) {
+                        console.log(`Coincidencia parcial encontrada en ${solution.name} (puntuación: ${matchScore}, detalles: ${matchDetails.join(', ')})`);
                         results.push({
                             type: 'solution',
                             category: category.name,
                             categoryId: category.id,
-                            solution: solution
+                            solution: solution,
+                            matchScore: matchScore,
+                            matchDetails: matchDetails
                         });
                     }
                 });
@@ -469,6 +508,21 @@ function searchInSitemap(query) {
             });
         }
     }
+
+    // Ordenar resultados por puntuación de coincidencia (de mayor a menor)
+    results.sort((a, b) => {
+        // Si ambos tienen puntuación, ordenar por puntuación
+        if (a.matchScore && b.matchScore) {
+            return b.matchScore - a.matchScore;
+        }
+        // Si solo uno tiene puntuación, ese va primero
+        if (a.matchScore) return -1;
+        if (b.matchScore) return 1;
+        // Si ninguno tiene puntuación, mantener el orden original
+        return 0;
+    });
+
+    console.log(`Se encontraron ${results.length} resultados ordenados por relevancia`);
 
     return results;
 }
@@ -516,24 +570,37 @@ function showSearchResults(results, query) {
         solutionResults.forEach(result => {
             const resultItem = document.createElement('a');
             resultItem.className = 'search-result-item p-3 border-bottom d-block text-decoration-none';
-            resultItem.href = `solutions.html?category=${result.categoryId}&id=${result.solution.id}`;
+            // Usar el formato correcto de URL para las soluciones
+            resultItem.href = `solutions.html?app=${result.solution.id}`;
 
             // Determinar el nivel de la solución
             const levelClass = getLevelClass(result.solution.level);
             const levelText = getLevelText(result.solution.level);
+
+            // Preparar información de coincidencia si existe
+            let matchInfo = '';
+            if (result.matchScore && result.matchDetails) {
+                matchInfo = `
+                    <div class="match-info mt-1">
+                        <small class="text-success">Coincidencia en: ${result.matchDetails.join(', ')}</small>
+                    </div>
+                `;
+            }
 
             resultItem.innerHTML = `
                 <div class="d-flex align-items-start">
                     <div class="flex-shrink-0 me-3">
                         <span class="badge ${levelClass}">${levelText}</span>
                     </div>
-                    <div>
+                    <div class="flex-grow-1">
                         <h6 class="mb-1">${result.solution.name}</h6>
                         <p class="mb-1 small text-muted">${result.solution.description}</p>
                         <div class="d-flex align-items-center small">
                             <span class="text-muted me-2">${result.category}</span>
-                            <span class="badge bg-secondary">${result.solution.type}</span>
+                            <span class="badge bg-secondary me-2">${result.solution.type}</span>
+                            ${result.matchScore ? `<span class="badge bg-success">Relevancia: ${Math.min(100, result.matchScore * 10)}%</span>` : ''}
                         </div>
+                        ${matchInfo}
                     </div>
                 </div>
             `;
