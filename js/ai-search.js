@@ -333,9 +333,19 @@ async function handleSearch() {
 
                 if (result.type === 'solution') {
                     // Navegar a la solución
-                    const url = `solutions.html?category=${result.categoryId}&id=${result.solution.id}`;
-                    console.log(`Redirigiendo a: ${url}`);
-                    window.location.href = url;
+                    const appId = result.solution.id;
+                    console.log(`Navegando a la solución con ID: ${appId}`);
+
+                    // Usar la función global showAppDetail si está disponible
+                    if (window.showAppDetail && typeof window.showAppDetail === 'function') {
+                        console.log('Usando función global showAppDetail');
+                        window.showAppDetail(appId);
+                    } else {
+                        // Redirigir a la página de la solución
+                        const url = `solutions.html?app=${appId}`;
+                        console.log(`Redirigiendo a: ${url}`);
+                        window.location.href = url;
+                    }
                 } else if (result.type === 'forum') {
                     // Navegar al foro
                     const url = `discussions.html?category=${result.categoryId}&id=${result.forum.id}`;
@@ -374,15 +384,47 @@ async function handleSearch() {
  */
 function searchInSitemap(query) {
     if (!sitemapData) {
+        console.warn('No hay datos de sitemap disponibles para la búsqueda');
         return [];
     }
 
     const results = [];
     const queryLower = query.toLowerCase();
+    console.log(`Buscando "${queryLower}" en el sitemap...`);
 
     // Buscar en las soluciones
     const solutionsSection = sitemapData.mainSections.find(section => section.id === 'solutions');
     if (solutionsSection && solutionsSection.subsections) {
+        console.log(`Buscando en ${solutionsSection.subsections.length} categorías de soluciones`);
+
+        // Primero buscar coincidencias exactas en el nombre
+        const exactMatches = [];
+
+        solutionsSection.subsections.forEach(category => {
+            if (category.solutions) {
+                category.solutions.forEach(solution => {
+                    // Verificar si hay una coincidencia exacta en el nombre
+                    if (solution.name.toLowerCase() === queryLower) {
+                        console.log(`Coincidencia exacta encontrada: ${solution.name}`);
+                        exactMatches.push({
+                            type: 'solution',
+                            category: category.name,
+                            categoryId: category.id,
+                            solution: solution,
+                            exactMatch: true
+                        });
+                    }
+                });
+            }
+        });
+
+        // Si hay coincidencias exactas, devolver solo esas
+        if (exactMatches.length > 0) {
+            console.log(`Se encontraron ${exactMatches.length} coincidencias exactas`);
+            return exactMatches;
+        }
+
+        // Si no hay coincidencias exactas, buscar coincidencias parciales
         solutionsSection.subsections.forEach(category => {
             if (category.solutions) {
                 category.solutions.forEach(solution => {
@@ -391,6 +433,7 @@ function searchInSitemap(query) {
                         solution.description.toLowerCase().includes(queryLower) ||
                         (solution.tags && solution.tags.some(tag => tag.toLowerCase().includes(queryLower)))) {
 
+                        console.log(`Coincidencia parcial encontrada: ${solution.name}`);
                         results.push({
                             type: 'solution',
                             category: category.name,
@@ -526,6 +569,35 @@ function showSearchResults(results, query) {
 
             resultsList.appendChild(resultItem);
         });
+    }
+
+    // Si no hay resultados, mostrar opción para generar con IA
+    if (solutionResults.length === 0 && forumResults.length === 0) {
+        const noResultsDiv = document.createElement('div');
+        noResultsDiv.className = 'no-results p-4 text-center';
+        noResultsDiv.innerHTML = `
+            <p class="mb-3">No se encontraron resultados para "${query}"</p>
+        `;
+        resultsList.appendChild(noResultsDiv);
+
+        // Si la búsqueda con IA está habilitada, mostrar botón para generar solución
+        if (aiSearchEnabled) {
+            const aiSuggestion = document.createElement('div');
+            aiSuggestion.className = 'ai-suggestion p-3 border rounded mt-3 mb-3';
+            aiSuggestion.innerHTML = `
+                <h6 class="mb-2"><i class="fas fa-robot me-2"></i>Generar solución con IA</h6>
+                <p class="small mb-3">No encontramos soluciones existentes. ¿Quieres generar una nueva solución con IA?</p>
+                <button class="btn btn-primary generate-solution-btn">Generar solución</button>
+            `;
+
+            // Agregar evento de clic
+            aiSuggestion.querySelector('.generate-solution-btn').addEventListener('click', function() {
+                searchResults.classList.add('d-none');
+                generateSolutionWithAI(query);
+            });
+
+            resultsList.appendChild(aiSuggestion);
+        }
     }
 
     searchResults.appendChild(resultsList);
@@ -879,6 +951,9 @@ function hideLoadingIndicator() {
  * @returns {string} - Clase CSS
  */
 function getLevelClass(level) {
+    // Convertir a número si es string
+    const levelNum = parseInt(level) || 1;
+
     const levelClasses = {
         1: 'bg-secondary',
         2: 'bg-info',
@@ -887,7 +962,7 @@ function getLevelClass(level) {
         5: 'bg-warning text-dark'
     };
 
-    return levelClasses[level] || 'bg-secondary';
+    return levelClasses[levelNum] || 'bg-secondary';
 }
 
 /**
@@ -896,6 +971,9 @@ function getLevelClass(level) {
  * @returns {string} - Texto descriptivo
  */
 function getLevelText(level) {
+    // Convertir a número si es string
+    const levelNum = parseInt(level) || 1;
+
     const levelTexts = {
         1: 'Nivel 1: Idea',
         2: 'Nivel 2: Prototipo',
@@ -904,5 +982,9 @@ function getLevelText(level) {
         5: 'Nivel 5: Consolidada'
     };
 
-    return levelTexts[level] || 'Nivel desconocido';
+    return levelTexts[levelNum] || 'Nivel desconocido';
 }
+
+// Exportar funciones para uso global
+window.getLevelClass = getLevelClass;
+window.getLevelText = getLevelText;
