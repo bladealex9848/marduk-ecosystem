@@ -25,6 +25,8 @@ const modelInfo = document.getElementById('model-info');
 // Inicializar cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', async function() {
     try {
+        console.log('Inicializando página de prueba de IA...');
+
         // Configurar eventos primero para que el formulario de API key funcione
         setupEventListeners();
 
@@ -41,20 +43,47 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
         });
 
-        // Verificar si hay una API key válida
-        const apiKeyValid = await checkApiKey();
+        // Esperar a que se carguen las variables de entorno
+        await waitForEnvVariables();
+
+        // Verificar si hay una API key válida en .env o localStorage
+        let apiKeyValid = false;
+
+        // Verificar en .env
+        if (window.ENV && window.ENV.OPENROUTER_API_KEY &&
+            window.ENV.OPENROUTER_API_KEY !== 'DEMO_MODE' &&
+            window.ENV.OPENROUTER_API_KEY !== 'demo' &&
+            window.ENV.OPENROUTER_API_KEY !== 'tu-api-key-aquí') {
+            console.log('API key válida encontrada en .env');
+            apiKeyValid = true;
+        }
+        // Verificar en localStorage
+        else if (localStorage.getItem('OPENROUTER_API_KEY') &&
+                 localStorage.getItem('OPENROUTER_API_KEY') !== 'demo' &&
+                 localStorage.getItem('OPENROUTER_API_KEY') !== 'tu-api-key-aquí') {
+            console.log('API key válida encontrada en localStorage');
+            apiKeyValid = true;
+        }
 
         // Cerrar mensaje de carga
         Swal.close();
 
-        // Cargar modelos desde OpenRouter (esta función ya maneja el caso de API key no válida)
-        const models = await loadModelsFromService();
-
-        // Mostrar mensaje solo si no se pudieron cargar modelos desde la API
-        if (models.source === 'local') {
-            showApiKeyMissingMessage();
-        } else {
+        if (apiKeyValid) {
+            // Si hay una API key válida, mostrar mensaje y cargar modelos desde la API
+            showApiKeyFoundMessage();
             showToast('Conectado a OpenRouter', 'success');
+            const result = await loadModelsFromAPI();
+            if (!result || !result.models || result.models.length === 0) {
+                // Si no se pudieron cargar modelos desde la API, cargar modelos locales
+                console.log('No se pudieron cargar modelos desde la API, usando modelos locales');
+                showApiKeyMissingMessage();
+                loadModelsFromConfig();
+            }
+        } else {
+            // Si no hay API key válida, mostrar mensaje y cargar modelos locales
+            console.log('No se encontró API key válida, cargando modelos locales');
+            showApiKeyMissingMessage();
+            loadModelsFromConfig();
         }
 
         // Mostrar mensaje de bienvenida
@@ -269,159 +298,132 @@ function loadSavedApiKey() {
 }
 
 /**
- * Carga los modelos desde openrouter-models.js o una lista predefinida
+ * Carga los modelos desde la API de OpenRouter
+ * @returns {Promise<Object>} - Promesa que se resuelve con los modelos cargados
  */
-async function loadModelsFromService() {
+async function loadModelsFromAPI() {
     try {
         // Obtener API key desde localStorage o desde .env
         let apiKey = '';
 
-        // Esperar a que se carguen las variables de entorno
-        await waitForEnvVariables();
-
         // 1. Verificar si hay una API key en las variables de entorno
-        if (window.ENV && window.ENV.OPENROUTER_API_KEY && window.ENV.OPENROUTER_API_KEY !== 'DEMO_MODE') {
+        if (window.ENV && window.ENV.OPENROUTER_API_KEY &&
+            window.ENV.OPENROUTER_API_KEY !== 'DEMO_MODE' &&
+            window.ENV.OPENROUTER_API_KEY !== 'demo' &&
+            window.ENV.OPENROUTER_API_KEY !== 'tu-api-key-aquí') {
             apiKey = window.ENV.OPENROUTER_API_KEY;
-            console.log('Usando API key de variables de entorno para el chat');
+            console.log('Usando API key de variables de entorno para cargar modelos');
         }
         // 2. Verificar si hay una API key en localStorage
-        else if (localStorage.getItem('OPENROUTER_API_KEY')) {
+        else if (localStorage.getItem('OPENROUTER_API_KEY') &&
+                 localStorage.getItem('OPENROUTER_API_KEY') !== 'demo' &&
+                 localStorage.getItem('OPENROUTER_API_KEY') !== 'tu-api-key-aquí') {
             apiKey = localStorage.getItem('OPENROUTER_API_KEY');
-            console.log('Usando API key de localStorage para el chat');
+            console.log('Usando API key de localStorage para cargar modelos');
         }
 
-        // Si no hay API key válida, cargar modelos locales directamente
+        // Si no hay API key válida, retornar error
         if (!apiKey || apiKey === 'demo' || apiKey === 'tu-api-key-aquí') {
-            console.log('No se encontró API key válida, cargando modelos locales');
-            showToast('Usando modelos locales', 'info');
-            const localModelsResult = loadModelsFromConfig();
-            return { models: localModelsResult, source: 'local' };
+            console.log('No se encontró API key válida para cargar modelos desde la API');
+            return { models: [], source: 'error' };
         }
 
         // Mostrar indicador de carga
         Swal.fire({
             title: 'Cargando modelos...',
-            text: 'Obteniendo modelos disponibles',
+            text: 'Obteniendo modelos desde OpenRouter',
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading();
             }
         });
 
-        // Esperar un momento para asegurarnos de que OPENROUTER_MODELS_CONFIG esté cargado
-        await new Promise(resolve => setTimeout(resolve, 500));
+        try {
+            console.log('Haciendo solicitud a la API de OpenRouter...');
 
-        let localModels = [];
-        let apiModels = [];
+            // Hacer solicitud a la API
+            const response = await fetch('https://openrouter.ai/api/v1/models', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'HTTP-Referer': window.location.origin,
+                    'X-Title': 'Marduk Ecosystem'
+                }
+            });
 
-        // Verificar si tenemos una API key válida
-        if (apiKey && apiKey !== 'demo' && apiKey !== 'tu-api-key-aquí') {
-            try {
-                console.log('Cargando modelos desde la API de OpenRouter...');
+            if (response.ok) {
+                const data = await response.json();
 
-                // Hacer solicitud a la API
-                const response = await fetch('https://openrouter.ai/api/v1/models', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'HTTP-Referer': window.location.origin,
-                        'X-Title': 'Marduk Ecosystem'
-                    }
-                });
+                if (data.data && Array.isArray(data.data)) {
+                    // Filtrar solo modelos gratuitos y de OpenRouter
+                    const apiModels = data.data.filter(model => {
+                        // Verificar si el modelo es gratuito
+                        const isFree = model.id.includes(':free') || (model.context_length_free && model.context_length_free > 0);
 
-                if (response.ok) {
-                    const data = await response.json();
+                        // Verificar si el modelo es de OpenRouter
+                        const isOpenRouter = model.id.startsWith('openrouter/');
 
-                    if (data.data && Array.isArray(data.data)) {
-                        // Filtrar solo modelos gratuitos y de OpenRouter
-                        apiModels = data.data.filter(model => {
-                            // Verificar si el modelo es gratuito
-                            const isFree = model.id.includes(':free') || (model.context_length_free && model.context_length_free > 0);
+                        // Incluir el modelo si es gratuito o de OpenRouter
+                        return isFree || isOpenRouter;
+                    }).map(model => ({
+                        id: model.id,
+                        name: model.name || model.id.split('/').pop(),
+                        provider: model.id.split('/')[0] || 'Desconocido',
+                        specialty: getModelSpecialty(model),
+                        capabilities: getModelCapabilities(model),
+                        context_length: model.context_length,
+                        context_length_free: model.context_length_free,
+                        pricing: {
+                            prompt: model.pricing?.prompt,
+                            completion: model.pricing?.completion
+                        },
+                        description: model.description || null,
+                        version: model.version || null,
+                        source: 'api'
+                    }));
 
-                            // Verificar si el modelo es de OpenRouter
-                            const isOpenRouter = model.id.startsWith('openrouter/');
+                    // Cerrar indicador de carga
+                    Swal.close();
 
-                            // Incluir el modelo si es gratuito o de OpenRouter
-                            return isFree || isOpenRouter;
-                        }).map(model => ({
-                            id: model.id,
-                            name: model.name || model.id.split('/').pop(),
-                            provider: model.id.split('/')[0] || 'Desconocido',
-                            specialty: getModelSpecialty(model),
-                            capabilities: getModelCapabilities(model),
-                            context_length: model.context_length,
-                            context_length_free: model.context_length_free,
-                            pricing: {
-                                prompt: model.pricing?.prompt,
-                                completion: model.pricing?.completion
-                            },
-                            description: model.description || null,
-                            version: model.version || null,
-                            source: 'api'
-                        }));
-
+                    if (apiModels.length > 0) {
+                        console.log(`Se cargaron ${apiModels.length} modelos desde la API`);
                         showToast(`${apiModels.length} modelos gratuitos y de OpenRouter cargados`, 'success');
-                        console.log(`Se filtraron solo modelos gratuitos y de OpenRouter: ${apiModels.length} de ${data.data.length} modelos disponibles`);
+
+                        // Cargar modelos en la UI
+                        loadModelsToUI(apiModels);
+
+                        // Seleccionar modelo por defecto
+                        const defaultModel = apiModels.find(m => m.id === 'openrouter/optimus-alpha') || apiModels[0];
+                        selectModel(defaultModel);
+
+                        return { models: apiModels, source: 'api' };
+                    } else {
+                        console.log('No se encontraron modelos gratuitos o de OpenRouter');
+                        showToast('No se encontraron modelos gratuitos o de OpenRouter', 'warning');
+                        return { models: [], source: 'error' };
                     }
                 } else {
-                    console.error('Error al cargar modelos desde la API:', response.status);
-                    // Si hay un error con la API, cargar modelos locales como fallback
-                    localModels = loadLocalModels();
+                    console.error('Formato de respuesta inválido:', data);
+                    showToast('Formato de respuesta inválido', 'error');
+                    return { models: [], source: 'error' };
                 }
-            } catch (error) {
-                console.error('Error al cargar modelos desde la API:', error);
-                // Si hay un error con la API, cargar modelos locales como fallback
-                localModels = loadLocalModels();
+            } else {
+                console.error('Error al cargar modelos desde la API:', response.status);
+                showToast(`Error al cargar modelos: ${response.status}`, 'error');
+                return { models: [], source: 'error' };
             }
-        } else {
-            // Si no hay API key válida, cargar modelos locales
-            localModels = loadLocalModels();
+        } catch (error) {
+            console.error('Error al cargar modelos desde la API:', error);
+            showToast('Error al cargar modelos: ' + error.message, 'error');
+            return { models: [], source: 'error' };
+        } finally {
+            // Asegurarse de cerrar el indicador de carga
+            Swal.close();
         }
-
-        // Si tenemos modelos de la API, usar solo esos
-        // Si no, usar los modelos locales
-        let models;
-        let source;
-
-        if (apiModels.length > 0) {
-            models = apiModels;
-            source = 'api';
-        } else {
-            models = localModels;
-            source = 'local';
-        }
-
-        // Cerrar indicador de carga
-        Swal.close();
-
-        // Cargar modelos
-        loadModelsToUI(models);
-
-        // Seleccionar modelo por defecto (el primero de la lista o Optimus Alpha si está disponible)
-        if (models.length > 0) {
-            const defaultModel = models.find(m => m.id === 'openrouter/optimus-alpha') || models[0];
-            selectModel(defaultModel);
-        }
-
-        // Mostrar notificación de éxito
-        if (source === 'api') {
-            showToast(`Se cargaron ${models.length} modelos gratuitos y de OpenRouter`, 'success');
-        } else {
-            showToast(`Se cargaron ${models.length} modelos locales`, 'success');
-        }
-
-        // Devolver los modelos con información sobre su fuente
-        return { models, source };
     } catch (error) {
-        console.error('Error al cargar modelos desde OpenRouter:', error);
+        console.error('Error general al cargar modelos desde la API:', error);
         showToast('Error al cargar modelos: ' + error.message, 'error');
-
-        // Cerrar indicador de carga si está abierto
-        Swal.close();
-
-        // Cargar modelos desde la configuración como fallback
-        const models = loadModelsFromConfig();
-        return { models, source: 'local' };
+        return { models: [], source: 'error' };
     }
 }
 

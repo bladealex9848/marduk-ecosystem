@@ -38,8 +38,11 @@
       // Aplicar tema oscuro si está habilitado o preferido por el sistema
       if (darkModeEnabled || (prefersDarkMode && darkModeEnabled !== 'false')) {
         document.documentElement.setAttribute('data-theme', 'dark');
-        document.body.classList.add('dark-mode');
         localStorage.setItem('darkModeEnabled', 'true');
+        // Agregar la clase al body cuando esté disponible
+        document.addEventListener('DOMContentLoaded', function() {
+          document.body.classList.add('dark-mode');
+        });
       }
     </script>
 
