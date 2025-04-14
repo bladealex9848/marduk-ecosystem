@@ -5,6 +5,26 @@ Todos los cambios notables en el proyecto Marduk Ecosystem serán documentados e
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto se adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.6.5] - 2025-04-15
+
+### Añadido
+- Mensajes de bienvenida personalizados para cada tipo de perfil
+- Notificaciones toast con tareas pendientes específicas para cada rol
+- Elementos visuales con colores específicos para cada perfil (bordes, iconos, badges)
+- Información de "Acerca de mí" coherente y personalizada para cada rol
+
+### Cambiado
+- Mejora en la presentación de las áreas "Mi Perfil" y "Mi Progreso Judicial" con colores específicos
+- Optimización del espacio en la sección de perfil para evitar barras de desplazamiento innecesarias
+- Ajuste de altura en las cajas de impacto para mantener un tamaño uniforme
+- Limpieza de elementos coloreados previos para evitar duplicados
+
+### Corregido
+- Error de importación en openrouter.js que causaba fallos en la consola
+- Problema de duplicación de badges "Personalizado" en objetivos
+- Problemas de visibilidad en los colores de perfiles de ciudadano y estudiante
+- Extensión excesiva de la sección "Acerca de mí" que desplazaba el contenido
+
 ## [1.6.4] - 2025-04-14
 
 ### Añadido
