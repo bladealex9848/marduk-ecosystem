@@ -36,8 +36,13 @@
         }
 
         /* Estilos inmunes a cambios de modo claro/oscuro */
-        .profile-section {
+        .profile-section,
+        .card-header,
+        .card-body,
+        .list-group-item,
+        .border-top {
             color: #fff !important;
+            background-color: #343a40 !important;
         }
 
         .profile-section h2,
@@ -46,11 +51,28 @@
         .profile-section p,
         .profile-section span,
         .profile-section .text-muted,
-        .profile-section .text-secondary {
+        .profile-section .text-secondary,
+        .card-header h2,
+        .card-header h3,
+        .card-body h2,
+        .card-body h3,
+        .card-body h4,
+        .card-body p,
+        .card-body span,
+        .card-body .text-muted,
+        .card-body .text-secondary,
+        .list-group-item h2,
+        .list-group-item h3,
+        .list-group-item h4,
+        .list-group-item p,
+        .list-group-item span,
+        .list-group-item .text-muted,
+        .list-group-item .text-secondary {
             color: #fff !important;
         }
 
-        .profile-section .progress {
+        .profile-section .progress,
+        .card-body .progress {
             background-color: rgba(255, 255, 255, 0.2) !important;
         }
 
@@ -62,6 +84,22 @@
             font-weight: 600;
             display: inline-block;
             margin-bottom: 10px;
+        }
+
+        /* Asegurar que las tarjetas de perfil sean inmunes */
+        .card {
+            background-color: #343a40 !important;
+            border-color: #495057 !important;
+        }
+
+        /* Asegurar que los botones sean visibles */
+        .btn-outline-primary,
+        .btn-outline-success,
+        .btn-outline-info,
+        .btn-outline-warning,
+        .btn-outline-purple,
+        .btn-outline-orange {
+            color: #fff !important;
         }
 
         .avatar-img-container {
@@ -268,6 +306,13 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            background-color: #343a40 !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        .impact-box h4,
+        .impact-box p {
+            color: #fff !important;
         }
     </style>
 
@@ -504,7 +549,7 @@
                         </div>
                     </div>
 
-                    <div class="card-body p-4">
+                    <div class="card-body p-4 profile-section">
                         <h3 class="h6 fw-medium mb-3">Objetivos actuales</h3>
                         <div class="mb-4" id="objectivesContainer">
                             <div class="d-flex mb-3">
@@ -593,7 +638,7 @@
 
                 <!-- Recommended Solutions Section -->
                 <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body p-4">
+                    <div class="card-body p-4 profile-section">
                         <h2 class="h5 fw-bold mb-4">Soluciones Recomendadas para Ti</h2>
                         <div class="row g-4" id="recommendedSolutions">
                             <!-- SGEJ Solution Card -->
@@ -673,7 +718,7 @@
 
                 <!-- Recent Activity -->
                 <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body p-4">
+                    <div class="card-body p-4 profile-section">
                         <h2 class="h5 fw-bold mb-4">Actividad Reciente</h2>
                         <div class="list-group list-group-flush">
                             <div class="list-group-item border-0 ps-0">
@@ -729,7 +774,7 @@
             <div class="col-lg-4">
                 <!-- User Bio -->
                 <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body p-4">
+                    <div class="card-body p-4 profile-section">
                         <h2 class="h5 fw-bold mb-3">Acerca de mí</h2>
                         <p class="text-secondary small mb-4" id="userBio">
                             Especializada en procesos civiles con énfasis en derechos reales y contratos. Más de 10 años de experiencia en el sistema judicial colombiano.
@@ -763,7 +808,7 @@
 
                 <!-- Resources -->
                 <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-body p-4">
+                    <div class="card-body p-4 profile-section">
                         <h2 class="h5 fw-bold mb-4">Recursos</h2>
 
                         <div class="list-group list-group-flush" id="resourcesList">
@@ -805,7 +850,7 @@
 
                 <!-- Profile Settings -->
                 <div class="card border-0 shadow-sm">
-                    <div class="card-body p-4">
+                    <div class="card-body p-4 profile-section">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h2 class="h5 fw-bold mb-0">Configuración del Perfil</h2>
                             <button class="btn btn-sm btn-primary">

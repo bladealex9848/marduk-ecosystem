@@ -676,9 +676,9 @@ function updateImpactData(impact) {
         const impactBox = document.createElement('div');
         impactBox.className = 'col-md-3';
         impactBox.innerHTML = `
-            <div class="border border-${metric.color} border-opacity-25 rounded p-3 text-center impact-box">
-                <h4 class="h6 fw-medium text-${metric.color} mb-2">${metric.label}</h4>
-                <p class="h4 fw-bold text-${metric.color} mb-0">${metric.value}</p>
+            <div class="border rounded p-3 text-center impact-box">
+                <h4 class="h6 fw-medium mb-2">${metric.label}</h4>
+                <p class="h4 fw-bold mb-0">${metric.value}</p>
             </div>
         `;
 
