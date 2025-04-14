@@ -325,6 +325,7 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/api-key-input.js"></script>
     <script src="../js/config/openrouter-models.js"></script>
     <script src="js/openrouter-api-models.js"></script>
@@ -348,12 +349,17 @@
             let apiModels = [];
             let envApiKey = null;
 
-            // No esperamos a que se carguen las variables de entorno
-            // ya que ahora requerimos entrada manual de la API key
-            console.log('Usando modo de entrada manual de API key');
-
-            // Configurar el botón para usar la API key del .env como deshabilitado
-            useEnvKeyBtn.disabled = true;
+            // Verificar si tenemos una API key en window.ENV
+            if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
+                envApiKey = window.ENV.OPENROUTER_API_KEY;
+                console.log('API key disponible en window.ENV');
+                apiKeyStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle"></i> API key cargada desde .env</span>';
+                apiKeyInput.value = '********';
+                useEnvKeyBtn.disabled = false;
+            } else {
+                console.log('No hay API key disponible en window.ENV');
+                useEnvKeyBtn.disabled = true;
+            }
 
             // Cargar modelos locales
             if (typeof OPENROUTER_MODELS_CONFIG !== 'undefined' && OPENROUTER_MODELS_CONFIG.models) {
@@ -379,8 +385,18 @@
                     apiKeyInput.value = '********'; // No mostrar la API key real
                     apiKeyStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle"></i> Usando API key de .env</span>';
 
-                    // Cargar modelos de la API
-                    await loadApiModels(envApiKey);
+                    // Cargar modelos de la API usando el botón
+                    if (loadApiModelsBtn) {
+                        loadApiModelsBtn.click();
+                    }
+                } else {
+                    // Usar SweetAlert para mostrar mensaje de error
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No hay API key disponible en .env',
+                        icon: 'warning',
+                        confirmButtonText: 'Entendido'
+                    });
                 }
             });
 
@@ -402,22 +418,61 @@
             loadApiModelsBtn.className = 'btn btn-primary mt-2';
             loadApiModelsBtn.innerHTML = '<i class="fas fa-sync"></i> Cargar modelos de la API';
             loadApiModelsBtn.onclick = async function() {
-                const apiKey = apiKeyInput.value.trim();
-                if (apiKey && apiKey !== '********') {
-                    // Mostrar indicador de carga
-                    apiModelsContainer.innerHTML = `
-                        <div class="text-center py-3">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Cargando...</span>
-                            </div>
-                            <p class="mt-2">Cargando modelos desde la API...</p>
-                        </div>
-                    `;
+                let apiKey = apiKeyInput.value.trim();
 
+                // Si está usando la API key de .env
+                if (apiKey === '********' && envApiKey) {
+                    apiKey = envApiKey;
+                }
+
+                if (!apiKey) {
+                    // Usar SweetAlert para mostrar mensaje de error
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Por favor, ingresa una API key válida',
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    });
+                    return;
+                }
+
+                // Mostrar indicador de carga
+                apiModelsContainer.innerHTML = `
+                    <div class="text-center py-3">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2">Cargando modelos desde la API...</p>
+                    </div>
+                `;
+
+                try {
                     // Cargar modelos de la API
                     await loadApiModels(apiKey);
-                } else {
-                    alert('Por favor, ingresa una API key válida');
+
+                    // Mostrar mensaje de éxito con SweetAlert
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: `Se cargaron ${apiModels.length} modelos desde la API`,
+                        icon: 'success',
+                        confirmButtonText: 'Genial'
+                    });
+                } catch (error) {
+                    // Mostrar mensaje de error con SweetAlert
+                    Swal.fire({
+                        title: 'Error',
+                        text: `Error al cargar modelos: ${error.message}`,
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    });
+
+                    // Restaurar mensaje informativo
+                    apiModelsContainer.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h6><i class="fas fa-exclamation-circle"></i> Error al cargar modelos</h6>
+                            <p>${error.message}</p>
+                        </div>
+                    `;
                 }
             };
 
@@ -446,7 +501,13 @@
 
                 // Validar valores
                 if (!apiKey) {
-                    showResult('error', 'La API key es requerida. Por favor, ingresa una API key o asegúrate de que esté disponible en .env');
+                    // Usar SweetAlert para mostrar mensaje de error
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'La API key es requerida. Por favor, ingresa una API key o asegúrate de que esté disponible en .env',
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    });
                     console.error('No se encontró una API key válida');
                     return;
                 }
@@ -454,12 +515,24 @@
                 console.log('API key disponible: ********');
 
                 if (!modelId) {
-                    showResult('error', 'Debes seleccionar un modelo');
+                    // Usar SweetAlert para mostrar mensaje de error
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Debes seleccionar un modelo',
+                        icon: 'warning',
+                        confirmButtonText: 'Entendido'
+                    });
                     return;
                 }
 
                 if (!prompt) {
-                    showResult('error', 'El prompt es requerido');
+                    // Usar SweetAlert para mostrar mensaje de error
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'El prompt es requerido',
+                        icon: 'warning',
+                        confirmButtonText: 'Entendido'
+                    });
                     return;
                 }
 
@@ -588,6 +661,13 @@
             // Función para cargar modelos de la API
             async function loadApiModels(apiKey) {
                 try {
+                    // Verificar que la API key sea válida
+                    if (!apiKey || apiKey === 'demo' || apiKey === 'tu-api-key-aquí') {
+                        throw new Error('API key no válida o no encontrada');
+                    }
+
+                    console.log('Cargando modelos con API key: ********');
+
                     // Mostrar indicador de carga
                     apiModelsContainer.innerHTML = `
                         <div class="text-center py-3">
@@ -606,6 +686,8 @@
 
                     // Actualizar selector de modelos
                     populateModelSelect();
+
+                    return apiModels; // Devolver los modelos para uso posterior
                 } catch (error) {
                     console.error('Error al cargar modelos de la API:', error);
                     apiModelsContainer.innerHTML = `
@@ -614,6 +696,7 @@
                             Error al cargar modelos de la API: ${error.message}
                         </div>
                     `;
+                    throw error; // Re-lanzar el error para manejarlo en el llamador
                 }
             }
 
@@ -747,6 +830,14 @@
                         </div>
                     `;
                 } else if (type === 'error') {
+                    // Mostrar error con SweetAlert
+                    Swal.fire({
+                        title: 'Error',
+                        html: message,
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    });
+
                     content = `
                         <div class="alert alert-danger">
                             <i class="fas fa-exclamation-circle me-2"></i>
