@@ -666,7 +666,7 @@ function showSearchResults(results, query) {
                         <div class="d-flex align-items-center small">
                             <span class="text-muted me-2">${result.category}</span>
                             <span class="badge bg-secondary me-2">${result.solution.type}</span>
-                            ${result.matchScore ? `<span class="badge bg-success">Relevancia: ${Math.min(100, result.matchScore * 10)}%</span>` : ''}
+                            ${result.matchScore ? `<span class="badge bg-success">Relevancia: ${Math.round(Math.min(100, result.matchScore * 10))}%</span>` : ''}
                         </div>
                         ${matchInfo}
                     </div>
@@ -706,7 +706,7 @@ function showSearchResults(results, query) {
         });
     }
 
-    // Si no hay resultados, mostrar opción para generar con IA
+    // Si no hay resultados, mostrar mensaje
     if (solutionResults.length === 0 && forumResults.length === 0) {
         const noResultsDiv = document.createElement('div');
         noResultsDiv.className = 'no-results p-4 text-center';
@@ -714,25 +714,31 @@ function showSearchResults(results, query) {
             <p class="mb-3">No se encontraron resultados para "${query}"</p>
         `;
         resultsList.appendChild(noResultsDiv);
+    }
 
-        // Si la búsqueda con IA está habilitada, mostrar botón para generar solución
-        if (aiSearchEnabled) {
-            const aiSuggestion = document.createElement('div');
-            aiSuggestion.className = 'ai-suggestion p-3 border rounded mt-3 mb-3';
-            aiSuggestion.innerHTML = `
-                <h6 class="mb-2"><i class="fas fa-robot me-2"></i>Generar solución con IA</h6>
-                <p class="small mb-3">No encontramos soluciones existentes. ¿Quieres generar una nueva solución con IA?</p>
-                <button class="btn btn-primary generate-solution-btn">Generar solución</button>
-            `;
+    // Siempre mostrar opción para generar con IA si está habilitada
+    if (aiSearchEnabled) {
+        const aiSuggestion = document.createElement('div');
+        aiSuggestion.className = 'ai-suggestion p-3 border rounded mt-3 mb-3';
 
-            // Agregar evento de clic
-            aiSuggestion.querySelector('.generate-solution-btn').addEventListener('click', function() {
-                searchResults.classList.add('d-none');
-                generateSolutionWithAI(query);
-            });
+        // Personalizar mensaje según si hay resultados o no
+        const message = (solutionResults.length === 0 && forumResults.length === 0) ?
+            `No encontramos soluciones existentes. ¿Quieres generar una nueva solución con IA?` :
+            `¿No encuentras lo que buscas? Puedes generar una nueva solución personalizada con IA.`;
 
-            resultsList.appendChild(aiSuggestion);
-        }
+        aiSuggestion.innerHTML = `
+            <h6 class="mb-2"><i class="fas fa-robot me-2"></i>Generar solución con IA</h6>
+            <p class="small mb-3">${message}</p>
+            <button class="btn btn-primary generate-solution-btn">Generar solución personalizada</button>
+        `;
+
+        // Agregar evento de clic
+        aiSuggestion.querySelector('.generate-solution-btn').addEventListener('click', function() {
+            searchResults.classList.add('d-none');
+            generateSolutionWithAI(query);
+        });
+
+        resultsList.appendChild(aiSuggestion);
     }
 
     searchResults.appendChild(resultsList);
