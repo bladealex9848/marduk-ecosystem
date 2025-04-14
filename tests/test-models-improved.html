@@ -288,7 +288,7 @@
             const apiKeyInput = document.getElementById('api-key');
             const apiKeyStatus = document.getElementById('api-key-status');
             const useEnvKeyBtn = document.getElementById('use-env-key');
-            const loadApiModelsBtn = document.getElementById('load-api-models-btn');
+            let loadApiModelsBtn = document.getElementById('load-api-models-btn');
             const modelsContainer = document.getElementById('models-container');
             const modelsCount = document.getElementById('models-count');
             const filterLocal = document.getElementById('filter-local');
@@ -314,10 +314,7 @@
             // Configurar el botón para usar la API key del .env como deshabilitado
             useEnvKeyBtn.disabled = true;
 
-            // Verificar si ya existe el botón para cargar modelos de la API
-            let loadApiModelsBtn = document.querySelector('#load-api-models-btn');
-
-            // Si no existe, crearlo
+            // Si no existe el botón para cargar modelos de la API, crearlo
             if (!loadApiModelsBtn) {
                 loadApiModelsBtn = document.createElement('button');
                 loadApiModelsBtn.id = 'load-api-models-btn';
