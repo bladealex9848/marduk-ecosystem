@@ -64,10 +64,58 @@ function updateProfileByRole(role) {
 
     // Define role-specific data
     const profileData = {
+        investigador: {
+            name: "Laura Mendoza",
+            role: "Investigadora Jurídica",
+            gender: "women",
+            location: "Barranquilla",
+            specialty: "Análisis Jurisprudencial",
+            bio: "Investigadora especializada en análisis de jurisprudencia y tendencias legales con enfoque en derecho constitucional y derechos humanos.",
+            metrics: [
+                { label: "Investigaciones", value: 14, icon: "fa-search" },
+                { label: "Publicaciones", value: 8, icon: "fa-file-alt" },
+                { label: "Citas académicas", value: 47, icon: "fa-quote-right" }
+            ],
+            stats: {
+                favorites: 15,
+                contributions: 12,
+                notifications: 3
+            },
+            resources: [
+                { title: "Base de Datos Jurisprudencial", type: "Herramienta", size: "", icon: "fa-database", iconClass: "text-primary", bgClass: "bg-blue-soft" },
+                { title: "Metodología de Investigación", type: "PDF", size: "2.8 MB", icon: "fa-file-alt", iconClass: "text-purple", bgClass: "bg-purple-soft" },
+                { title: "Tendencias Constitucionales", type: "Informe", size: "4.2 MB", icon: "fa-chart-line", iconClass: "text-success", bgClass: "bg-green-soft" }
+            ],
+            gamification: {
+                level: 4,
+                title: "Analista Experto",
+                xp: 780,
+                xpToNextLevel: 1000,
+                progressPercent: 78,
+                badges: [
+                    { id: 1, name: "Investigador Destacado", icon: "fa-search", description: "Completar 10+ investigaciones jurídicas" },
+                    { id: 2, name: "Publicador Activo", icon: "fa-file-alt", description: "Publicar 5+ artículos de investigación" },
+                    { id: 3, name: "Analista de Datos", icon: "fa-chart-bar", description: "Uso avanzado de herramientas de análisis jurídico" }
+                ],
+                objectives: [
+                    { id: 1, name: "Publicar 2 artículos", icon: "fa-file-alt", progress: 1, total: 2, xpReward: 150 },
+                    { id: 2, name: "Analizar 20 sentencias", icon: "fa-gavel", progress: 15, total: 20, xpReward: 120 },
+                    { id: 3, name: "Compartir 5 hallazgos", icon: "fa-share-alt", progress: 3, total: 5, xpReward: 100 }
+                ],
+                impact: {
+                    timesSaved: "86h",
+                    docsDigitized: 215,
+                    processesOptimized: 24,
+                    efficiency: "+42%"
+                }
+            },
+            bannerClass: "bg-gradient-purple"
+        },
         funcionario: {
             name: "Ana María González",
             role: "Juez Civil Municipal",
             avatar: "AG",
+            gender: "women",
             location: "Bogotá",
             specialty: "Derecho Civil",
             bio: "Especializada en procesos civiles con énfasis en derechos reales y contratos. Más de 10 años de experiencia en el sistema judicial colombiano.",
@@ -115,6 +163,7 @@ function updateProfileByRole(role) {
             name: "Carlos Rodríguez",
             role: "Abogado Litigante",
             avatar: "CR",
+            gender: "men",
             location: "Medellín",
             specialty: "Derecho Laboral",
             bio: "Abogado especializado en derecho laboral y seguridad social con más de 8 años de experiencia representando a empleados y empleadores.",
@@ -160,6 +209,7 @@ function updateProfileByRole(role) {
             name: "Mónica Valencia",
             role: "Administrador de Sistemas",
             avatar: "MV",
+            gender: "women",
             location: "Cali",
             specialty: "Infraestructura Digital",
             bio: "Especialista en administración de sistemas y seguridad informática para la Rama Judicial con experiencia en implementación de soluciones escalables.",
@@ -195,7 +245,7 @@ function updateProfileByRole(role) {
                     { id: 2, name: "Optimizar 3 sistemas", icon: "fa-bolt", progress: 2, total: 3, xpReward: 200 }
                 ],
                 impact: {
-                    timesSaved: "78",
+                    timesSaved: "78h",
                     docsDigitized: 34,
                     processesOptimized: 99.8,
                     efficiency: "+65%"
@@ -207,6 +257,7 @@ function updateProfileByRole(role) {
             name: "Javier Moreno",
             role: "Desarrollador Senior",
             avatar: "JM",
+            gender: "men",
             location: "Bogotá",
             specialty: "Desarrollo Backend",
             bio: "Ingeniero de software especializado en arquitecturas cloud y sistemas distribuidos con enfoque en soluciones judiciales de alta disponibilidad.",
@@ -250,6 +301,52 @@ function updateProfileByRole(role) {
                 }
             },
             bannerClass: "bg-gradient-orange"
+        },
+        estudiante: {
+            name: "Daniel Ospina",
+            role: "Estudiante de Derecho",
+            gender: "men",
+            location: "Medellín",
+            specialty: "Derecho Tecnológico",
+            bio: "Estudiante de último año de derecho con interés en tecnología jurídica, innovación legal y derecho digital. Participante activo en clínicas jurídicas.",
+            metrics: [
+                { label: "Cursos completados", value: 12, icon: "fa-graduation-cap" },
+                { label: "Casos prácticos", value: 5, icon: "fa-user-tie" },
+                { label: "Certificaciones", value: 3, icon: "fa-certificate" }
+            ],
+            stats: {
+                favorites: 9,
+                contributions: 2,
+                notifications: 6
+            },
+            resources: [
+                { title: "Biblioteca Digital", type: "Recurso", size: "", icon: "fa-book", iconClass: "text-primary", bgClass: "bg-blue-soft" },
+                { title: "Curso LegalTech", type: "Video", size: "8 horas", icon: "fa-video", iconClass: "text-success", bgClass: "bg-green-soft" },
+                { title: "Glosario Jurídico", type: "PDF", size: "1.5 MB", icon: "fa-file-alt", iconClass: "text-orange", bgClass: "bg-orange-soft" }
+            ],
+            gamification: {
+                level: 2,
+                title: "Aprendiz Digital",
+                xp: 180,
+                xpToNextLevel: 300,
+                progressPercent: 60,
+                badges: [
+                    { id: 1, name: "Estudiante Aplicado", icon: "fa-book", description: "Completar 10+ cursos en la plataforma" },
+                    { id: 2, name: "Investigador Novel", icon: "fa-search", description: "Realizar 5+ investigaciones jurídicas" }
+                ],
+                objectives: [
+                    { id: 1, name: "Completar 3 cursos", icon: "fa-graduation-cap", progress: 2, total: 3, xpReward: 50 },
+                    { id: 2, name: "Participar en 2 foros", icon: "fa-comments", progress: 1, total: 2, xpReward: 30 },
+                    { id: 3, name: "Crear 1 documento", icon: "fa-file-alt", progress: 0, total: 1, xpReward: 40 }
+                ],
+                impact: {
+                    timesSaved: "24h",
+                    docsDigitized: 15,
+                    processesOptimized: 3,
+                    efficiency: "+18%"
+                }
+            },
+            bannerClass: "bg-gradient-green"
         }
     };
 
@@ -532,19 +629,64 @@ function updateRoleSpecificContent(role) {
     // Here you can implement role-specific UI changes that aren't covered by the other functions
     // For example, showing/hiding certain sections based on role
 
-    // This function is a placeholder for future extensions
     console.log('Applying role-specific UI changes for:', role);
 
-    // Highlight the selected profile card
+    // Define role-specific colors
+    const roleColors = {
+        funcionario: {
+            borderClass: 'border-primary',
+            shadowClass: 'shadow-primary'
+        },
+        ciudadano: {
+            borderClass: 'border-success',
+            shadowClass: 'shadow-success'
+        },
+        administrador: {
+            borderClass: 'border-purple',
+            shadowClass: 'shadow-purple'
+        },
+        desarrollador: {
+            borderClass: 'border-orange',
+            shadowClass: 'shadow-orange'
+        },
+        investigador: {
+            borderClass: 'border-purple',
+            shadowClass: 'shadow-purple'
+        },
+        estudiante: {
+            borderClass: 'border-success',
+            shadowClass: 'shadow-success'
+        }
+    };
+
+    // Highlight the selected profile card with role-specific colors
     document.querySelectorAll('.profile-card').forEach(card => {
-        if (card.getAttribute('data-role') === role) {
-            card.classList.add('border-primary');
+        const cardRole = card.getAttribute('data-role');
+
+        // Remove all possible border classes
+        card.classList.remove('border-primary', 'border-success', 'border-purple', 'border-orange');
+        card.classList.remove('shadow');
+
+        if (cardRole === role) {
+            const colors = roleColors[role] || roleColors.funcionario;
+            card.classList.add(colors.borderClass);
             card.classList.add('shadow');
-        } else {
-            card.classList.remove('border-primary');
-            card.classList.remove('shadow');
         }
     });
+
+    // Update page title based on role
+    const pageTitle = document.querySelector('title');
+    if (pageTitle) {
+        const titles = {
+            funcionario: "Panel de Funcionario - Marduk",
+            ciudadano: "Portal Ciudadano - Marduk",
+            administrador: "Centro de Administración - Marduk",
+            desarrollador: "Hub de Desarrollo - Marduk",
+            investigador: "Centro de Investigación - Marduk",
+            estudiante: "Portal Educativo - Marduk"
+        };
+        pageTitle.textContent = titles[role] || "Mi Perfil - Marduk";
+    }
 }
 
 /**
@@ -575,6 +717,24 @@ function showToast(message, type = 'info') {
         // Fallback to alert if SweetAlert2 is not available
         console.log(`${type.toUpperCase()}: ${message}`);
     }
+}
+
+/**
+ * Get an appropriate icon for each role
+ * @param {string} role - The user role
+ * @returns {string} - Icon class name
+ */
+function getRoleIcon(role) {
+    const roleIcons = {
+        funcionario: 'gavel',
+        ciudadano: 'user-tie',
+        administrador: 'server',
+        desarrollador: 'code',
+        investigador: 'search',
+        estudiante: 'graduation-cap'
+    };
+
+    return roleIcons[role] || 'user';
 }
 
 /**
@@ -668,14 +828,58 @@ function createProfileCards() {
             card.classList.add('shadow');
         }
 
+        // Determine card color based on role
+        const roleColors = {
+            funcionario: {
+                btnClass: 'btn-outline-primary',
+                borderClass: 'border-primary',
+                badgeClass: 'bg-primary'
+            },
+            ciudadano: {
+                btnClass: 'btn-outline-success',
+                borderClass: 'border-success',
+                badgeClass: 'bg-success'
+            },
+            administrador: {
+                btnClass: 'btn-outline-purple',
+                borderClass: 'border-purple',
+                badgeClass: 'bg-purple'
+            },
+            desarrollador: {
+                btnClass: 'btn-outline-orange',
+                borderClass: 'border-orange',
+                badgeClass: 'bg-orange'
+            },
+            investigador: {
+                btnClass: 'btn-outline-purple',
+                borderClass: 'border-purple',
+                badgeClass: 'bg-purple'
+            },
+            estudiante: {
+                btnClass: 'btn-outline-success',
+                borderClass: 'border-success',
+                badgeClass: 'bg-success'
+            }
+        };
+
+        const colors = roleColors[role] || roleColors.funcionario;
+
+        // Get role-specific data for the card
+        const roleData = profileData[role] || {};
+        const level = roleData.gamification ? roleData.gamification.level : 1;
+
         card.innerHTML = `
             <div class="card-body p-4">
                 <div class="d-flex align-items-center mb-3">
-                    <div class="me-3">
+                    <div class="me-3 position-relative">
                         <img src="https://randomuser.me/api/portraits/${profile.gender}/${randomNum}.jpg"
                              alt="${profile.name}"
                              class="rounded-circle"
                              width="60" height="60">
+                        <span class="position-absolute bottom-0 end-0 ${colors.badgeClass} rounded-circle d-flex align-items-center justify-content-center"
+                              style="width: 22px; height: 22px; font-size: 10px; border: 2px solid white;">
+                            ${level}
+                        </span>
                     </div>
                     <div>
                         <h3 class="h5 fw-semibold mb-0">${profile.name}</h3>
@@ -683,7 +887,11 @@ function createProfileCards() {
                     </div>
                 </div>
                 <p class="text-secondary small mb-3">${profile.description}</p>
-                <button class="btn btn-sm btn-outline-primary w-100">Ver perfil</button>
+                <div class="d-flex justify-content-between align-items-center small text-muted mb-3">
+                    <span><i class="fas fa-map-marker-alt me-1"></i> ${profile.location || 'Colombia'}</span>
+                    <span><i class="fas fa-${getRoleIcon(role)} me-1"></i> ${profile.specialty || 'Especialista'}</span>
+                </div>
+                <button class="btn btn-sm ${colors.btnClass} w-100">Ver perfil</button>
             </div>
         `;
 
