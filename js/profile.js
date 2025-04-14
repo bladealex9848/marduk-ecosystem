@@ -383,6 +383,20 @@ function updateProfileByRole(role) {
     // Update resources
     updateResources(data.resources);
 
+    // Update impact data
+    if (data.gamification && data.gamification.impact) {
+        // Convert impact object to metrics array format
+        const impactMetrics = {
+            metrics: [
+                { label: 'Tiempo ahorrado', value: data.gamification.impact.timesSaved, color: 'primary' },
+                { label: 'Docs. digitalizados', value: data.gamification.impact.docsDigitized.toString(), color: 'success' },
+                { label: 'Procesos optimizados', value: data.gamification.impact.processesOptimized.toString(), color: 'info' },
+                { label: 'Eficiencia', value: data.gamification.impact.efficiency, color: 'warning' }
+            ]
+        };
+        updateImpactData(impactMetrics);
+    }
+
     // Update gamification
     updateGamification(data.gamification);
 
@@ -639,13 +653,37 @@ function updateObjectives(objectives) {
  * @param {Object} impact - The impact data
  */
 function updateImpactData(impact) {
-    const impactElements = document.querySelectorAll('.border-top.pt-4 .row .h4');
-    if (impactElements.length >= 4) {
-        impactElements[0].textContent = impact.timesSaved;
-        impactElements[1].textContent = impact.docsDigitized;
-        impactElements[2].textContent = impact.processesOptimized;
-        impactElements[3].textContent = impact.efficiency;
+    // Clear existing impact boxes
+    const impactContainer = document.getElementById('impactBoxes');
+    if (!impactContainer) return;
+
+    impactContainer.innerHTML = '';
+
+    if (!impact || !impact.metrics || impact.metrics.length === 0) {
+        // Default metrics if none provided
+        impact = {
+            metrics: [
+                { label: 'Tiempo ahorrado', value: '42h', color: 'primary' },
+                { label: 'Docs. digitalizados', value: '184', color: 'success' },
+                { label: 'Procesos optimizados', value: '16', color: 'info' },
+                { label: 'Eficiencia', value: '+35%', color: 'warning' }
+            ]
+        };
     }
+
+    // Create new impact boxes with consistent styling
+    impact.metrics.forEach((metric) => {
+        const impactBox = document.createElement('div');
+        impactBox.className = 'col-md-3';
+        impactBox.innerHTML = `
+            <div class="border border-${metric.color} border-opacity-25 rounded p-3 text-center impact-box">
+                <h4 class="h6 fw-medium text-${metric.color} mb-2">${metric.label}</h4>
+                <p class="h4 fw-bold text-${metric.color} mb-0">${metric.value}</p>
+            </div>
+        `;
+
+        impactContainer.appendChild(impactBox);
+    });
 }
 
 /**
@@ -1079,36 +1117,51 @@ function updateActivityFeed(role) {
  * @param {Object} data - The profile data
  */
 function createProfileCharts(role, data) {
-    // Prepare chart containers if they don't exist
-    if (!document.getElementById('chartContainer')) {
-        const chartSection = document.createElement('div');
-        chartSection.className = 'card border-0 shadow-sm mb-4';
-        chartSection.innerHTML = `
-            <div class="card-body p-4">
-                <h2 class="h5 fw-bold mb-4">Análisis de Actividad</h2>
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="chart-container" style="position: relative; height: 250px;">
-                            <canvas id="activityChart"></canvas>
-                        </div>
+    // Remove existing chart section if it exists to prevent duplicates
+    const existingChartSection = document.getElementById('chartSection');
+    if (existingChartSection) {
+        existingChartSection.remove();
+    }
+
+    // Create new chart section
+    const chartSection = document.createElement('div');
+    chartSection.id = 'chartSection';
+    chartSection.className = 'card border-0 shadow-sm mb-4';
+    chartSection.innerHTML = `
+        <div class="card-body p-4 profile-section">
+            <h2 class="h5 fw-bold mb-4">Análisis de Actividad</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="activityChart"></canvas>
                     </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="chart-container" style="position: relative; height: 250px;">
-                            <canvas id="progressChart"></canvas>
-                        </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="chart-container" style="position: relative; height: 250px;">
+                        <canvas id="progressChart"></canvas>
                     </div>
                 </div>
             </div>
-        `;
+        </div>
+    `;
 
-        // Insert chart section before the recommended solutions section
-        const recommendedSection = document.querySelector('.card:nth-of-type(4)');
-        if (recommendedSection) {
-            recommendedSection.parentNode.insertBefore(chartSection, recommendedSection);
-        } else {
-            // Fallback: append to main content
-            document.querySelector('main .row:nth-of-type(2) .col-lg-8').appendChild(chartSection);
+    // Insert chart section before the recommended solutions section
+    const recommendedSections = document.querySelectorAll('.card-body h2.h5.fw-bold');
+    let recommendedSection = null;
+
+    // Find the section with "Soluciones Recomendadas"
+    for (const section of recommendedSections) {
+        if (section.textContent.includes('Soluciones Recomendadas')) {
+            recommendedSection = section.closest('.card');
+            break;
         }
+    }
+
+    if (recommendedSection) {
+        recommendedSection.parentNode.insertBefore(chartSection, recommendedSection);
+    } else {
+        // Fallback: append to main content
+        document.querySelector('main .row:nth-of-type(2) .col-lg-8').appendChild(chartSection);
     }
 
     // Define chart data based on role
@@ -1274,6 +1327,65 @@ function createProfileCharts(role, data) {
     // Get chart data for current role
     const currentChartData = chartData[role] || chartData.funcionario;
 
+    // Get role-specific colors
+    const roleColors = {
+        funcionario: {
+            primary: 'rgba(13, 110, 253, 1)',  // Blue
+            secondary: 'rgba(13, 202, 240, 1)', // Info
+            bgPrimary: 'rgba(13, 110, 253, 0.2)',
+            bgSecondary: 'rgba(13, 202, 240, 0.2)'
+        },
+        ciudadano: {
+            primary: 'rgba(25, 135, 84, 1)',    // Green
+            secondary: 'rgba(32, 201, 151, 1)',  // Teal
+            bgPrimary: 'rgba(25, 135, 84, 0.2)',
+            bgSecondary: 'rgba(32, 201, 151, 0.2)'
+        },
+        administrador: {
+            primary: 'rgba(133, 64, 189, 1)',    // Purple
+            secondary: 'rgba(102, 16, 242, 1)',  // Indigo
+            bgPrimary: 'rgba(133, 64, 189, 0.2)',
+            bgSecondary: 'rgba(102, 16, 242, 0.2)'
+        },
+        desarrollador: {
+            primary: 'rgba(253, 126, 20, 1)',    // Orange
+            secondary: 'rgba(255, 193, 7, 1)',   // Warning
+            bgPrimary: 'rgba(253, 126, 20, 0.2)',
+            bgSecondary: 'rgba(255, 193, 7, 0.2)'
+        },
+        investigador: {
+            primary: 'rgba(133, 64, 189, 1)',    // Purple
+            secondary: 'rgba(102, 16, 242, 1)',  // Indigo
+            bgPrimary: 'rgba(133, 64, 189, 0.2)',
+            bgSecondary: 'rgba(102, 16, 242, 0.2)'
+        },
+        estudiante: {
+            primary: 'rgba(25, 135, 84, 1)',    // Green
+            secondary: 'rgba(32, 201, 151, 1)',  // Teal
+            bgPrimary: 'rgba(25, 135, 84, 0.2)',
+            bgSecondary: 'rgba(32, 201, 151, 0.2)'
+        }
+    };
+
+    // Get colors for current role
+    const colors = roleColors[role] || roleColors.funcionario;
+
+    // Update chart data with role-specific colors
+    if (currentChartData.activity && currentChartData.activity.datasets && currentChartData.activity.datasets.length > 0) {
+        currentChartData.activity.datasets[0].borderColor = colors.primary;
+        currentChartData.activity.datasets[0].backgroundColor = colors.bgPrimary;
+    }
+
+    if (currentChartData.progress && currentChartData.progress.datasets && currentChartData.progress.datasets.length > 0) {
+        // Create a gradient of colors based on the role's primary and secondary colors
+        currentChartData.progress.datasets[0].backgroundColor = [
+            colors.primary,
+            colors.secondary,
+            colors.bgPrimary,
+            colors.bgSecondary
+        ];
+    }
+
     // Create charts if Chart.js is available
     if (typeof Chart !== 'undefined') {
         // Activity Chart (Line Chart)
@@ -1291,12 +1403,27 @@ function createProfileCharts(role, data) {
                         },
                         title: {
                             display: true,
-                            text: 'Actividad Mensual'
+                            text: 'Actividad Mensual',
+                            color: '#fff'
                         }
                     },
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#fff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#fff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
                         }
                     }
                 }
@@ -1316,10 +1443,14 @@ function createProfileCharts(role, data) {
                     plugins: {
                         legend: {
                             position: 'right',
+                            labels: {
+                                color: '#fff'
+                            }
                         },
                         title: {
                             display: true,
-                            text: 'Distribución de Actividades'
+                            text: 'Distribución de Actividades',
+                            color: '#fff'
                         }
                     }
                 }
