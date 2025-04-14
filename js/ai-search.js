@@ -42,16 +42,40 @@ document.addEventListener('DOMContentLoaded', async function() {
  * Inicializa los elementos del DOM necesarios para la búsqueda
  */
 function initializeElements() {
+    console.log('Inicializando elementos del DOM para la búsqueda inteligente');
+
     // Elementos principales
     searchInput = document.getElementById('solutionSearch');
     searchButton = document.querySelector('.search-button');
 
+    console.log('Elementos principales:');
+    console.log('- searchInput:', searchInput ? 'encontrado' : 'no encontrado');
+    console.log('- searchButton:', searchButton ? 'encontrado' : 'no encontrado');
+
+    // Si no se encuentra el botón de búsqueda, crearlo
+    if (!searchButton && searchInput) {
+        console.log('Creando botón de búsqueda');
+        searchButton = document.createElement('button');
+        searchButton.className = 'btn position-absolute top-50 end-0 translate-middle-y me-3 search-button';
+        searchButton.innerHTML = '<i class="fa-solid fa-search text-white"></i>';
+        searchInput.parentNode.appendChild(searchButton);
+    }
+
     // Crear contenedor de resultados si no existe
     if (!document.getElementById('searchResults')) {
+        console.log('Creando contenedor de resultados');
         searchResults = document.createElement('div');
         searchResults.id = 'searchResults';
-        searchResults.className = 'search-results-container d-none';
-        searchInput.parentNode.appendChild(searchResults);
+        searchResults.className = 'search-results-container mt-3';
+
+        if (searchInput && searchInput.parentNode) {
+            const parentDiv = searchInput.parentNode.parentNode;
+            parentDiv.appendChild(searchResults);
+        } else {
+            // Si no se encuentra el input, insertar al principio de la página
+            const mainContent = document.querySelector('main') || document.body;
+            mainContent.insertBefore(searchResults, mainContent.firstChild);
+        }
     } else {
         searchResults = document.getElementById('searchResults');
     }
@@ -229,28 +253,54 @@ function disableAISearch() {
  * Configura los eventos para la búsqueda
  */
 function setupEventListeners() {
+    console.log('Configurando eventos para la búsqueda inteligente');
+
     // Evento de búsqueda al hacer clic en el botón
     if (searchButton) {
-        searchButton.addEventListener('click', handleSearch);
+        console.log('Botón de búsqueda encontrado, configurando evento de clic');
+        searchButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Botón de búsqueda clickeado');
+            handleSearch();
+        });
+    } else {
+        console.warn('Botón de búsqueda no encontrado');
     }
 
     // Evento de búsqueda al presionar Enter en el input
     if (searchInput) {
+        console.log('Input de búsqueda encontrado, configurando evento de tecla');
         searchInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
+                e.preventDefault();
+                console.log('Tecla Enter presionada en el input de búsqueda');
                 handleSearch();
             }
         });
+    } else {
+        console.warn('Input de búsqueda no encontrado');
     }
 
     // Evento para configurar API key al hacer clic en el indicador
     if (aiStatusIndicator) {
+        console.log('Indicador de estado de IA encontrado, configurando evento de clic');
         aiStatusIndicator.addEventListener('click', function() {
             if (!aiSearchEnabled) {
                 showApiKeyConfigModal();
             }
         });
+    } else {
+        console.warn('Indicador de estado de IA no encontrado');
     }
+
+    // Agregar evento global para la búsqueda
+    console.log('Configurando evento global para la búsqueda');
+    window.performAiSearch = function(query) {
+        if (searchInput) {
+            searchInput.value = query;
+        }
+        handleSearch();
+    };
 }
 
 /**
@@ -507,21 +557,54 @@ async function generateSolutionWithAI(query) {
         showToast('Generando solución con IA...', 'info');
 
         // Generar solución con IA
+        console.log('Generando solución para la consulta:', query);
         const solution = await generateSolutionContent(query);
 
         // Verificar si la solución es válida
         if (!solution || !solution.name || !solution.description) {
+            console.error('La solución generada no es válida:', solution);
             throw new Error('La solución generada no es válida');
+        }
+
+        console.log('Solución generada correctamente:', solution);
+
+        // Asegurarse de que la categoría sea válida
+        if (!solution.category || solution.category.includes('Una de estas categorías:')) {
+            console.log('Corrigiendo categoría inválida:', solution.category);
+            solution.category = 'ai-tools'; // Categoría por defecto
         }
 
         // Crear ID único para la solución
         const solutionId = 'ai-' + Date.now();
 
+        // Guardar la solución en localStorage
+        const solutionKey = `ai-solution-${solutionId}`;
+        const solutionJson = JSON.stringify(solution);
+
+        console.log(`Guardando solución en localStorage con clave: ${solutionKey}`);
+        localStorage.setItem(solutionKey, solutionJson);
+
+        // Verificar que se guardó correctamente
+        const savedSolution = localStorage.getItem(solutionKey);
+        if (!savedSolution) {
+            console.error('Error: No se pudo guardar la solución en localStorage');
+            throw new Error('No se pudo guardar la solución generada');
+        }
+
         // Mostrar mensaje de éxito
         showToast('Solución generada correctamente', 'success');
 
         // Redirigir a la página de la solución generada
-        navigateToGeneratedSolution(solutionId, solution);
+        console.log('Redirigiendo a la página de la solución generada...');
+
+        // Usar la función global de solutions.js si está disponible
+        if (window.showAiGeneratedSolution) {
+            console.log('Usando función global showAiGeneratedSolution');
+            window.showAiGeneratedSolution(solutionId);
+        } else {
+            // Redirigir a la página de la solución generada
+            navigateToGeneratedSolution(solutionId, solution);
+        }
     } catch (error) {
         console.error('Error al generar solución con IA:', error);
         showToast('Error al generar solución: ' + error.message, 'error');

@@ -614,3 +614,12 @@ function getLevelText(level) {
 window.showAppDetail = showAppDetail;
 window.showSolutionsList = showSolutionsList;
 window.checkUrlForAppDetail = checkUrlForAppDetail;
+window.showAiGeneratedSolution = showAiGeneratedSolution;
+
+// Inicializar la página cuando el DOM esté cargado
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Inicializando página de soluciones...');
+
+    // Verificar parámetros de URL para mostrar detalles de una aplicación
+    checkUrlForAppDetail();
+});
