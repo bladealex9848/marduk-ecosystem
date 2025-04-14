@@ -47,14 +47,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         // Cerrar mensaje de carga
         Swal.close();
 
-        if (apiKeyValid) {
-            // Si hay una API key válida, cargar modelos desde OpenRouter
-            await loadModelsFromService();
-            showToast('Conectado a OpenRouter', 'success');
-        } else {
-            // Si no hay API key válida, cargar modelos desde la configuración estática
-            loadModelsFromConfig();
+        // Cargar modelos desde OpenRouter (esta función ya maneja el caso de API key no válida)
+        const models = await loadModelsFromService();
+
+        // Mostrar mensaje solo si no se pudieron cargar modelos desde la API
+        if (models.source === 'local') {
             showApiKeyMissingMessage();
+        } else {
+            showToast('Conectado a OpenRouter', 'success');
         }
 
         // Mostrar mensaje de bienvenida
@@ -356,7 +356,16 @@ async function loadModelsFromService() {
 
         // Si tenemos modelos de la API, usar solo esos
         // Si no, usar los modelos locales
-        const models = apiModels.length > 0 ? apiModels : localModels;
+        let models;
+        let source;
+
+        if (apiModels.length > 0) {
+            models = apiModels;
+            source = 'api';
+        } else {
+            models = localModels;
+            source = 'local';
+        }
 
         // Cerrar indicador de carga
         Swal.close();
@@ -371,13 +380,14 @@ async function loadModelsFromService() {
         }
 
         // Mostrar notificación de éxito
-        if (apiModels.length > 0) {
+        if (source === 'api') {
             showToast(`Se cargaron ${models.length} modelos gratuitos y de OpenRouter`, 'success');
         } else {
             showToast(`Se cargaron ${models.length} modelos locales`, 'success');
         }
 
-        return models;
+        // Devolver los modelos con información sobre su fuente
+        return { models, source };
     } catch (error) {
         console.error('Error al cargar modelos desde OpenRouter:', error);
         showToast('Error al cargar modelos: ' + error.message, 'error');
@@ -386,7 +396,8 @@ async function loadModelsFromService() {
         Swal.close();
 
         // Cargar modelos desde la configuración como fallback
-        return loadModelsFromConfig();
+        const models = loadModelsFromConfig();
+        return { models, source: 'local' };
     }
 }
 
@@ -499,9 +510,6 @@ function getModelCapabilities(model) {
  */
 function loadModelsFromConfig() {
     try {
-        // Mostrar mensaje de modo simulación
-        showApiKeyMissingMessage();
-
         // Obtener modelos de la configuración
         const models = OPENROUTER_MODELS_CONFIG.models;
 
@@ -529,9 +537,12 @@ function loadModelsFromConfig() {
 
 /**
  * Carga los modelos en la interfaz de usuario
- * @param {Array} models - Lista de modelos
+ * @param {Array|Object} modelsData - Lista de modelos o objeto con modelos y fuente
  */
-function loadModelsToUI(models) {
+function loadModelsToUI(modelsData) {
+    // Manejar tanto arrays como objetos con { models, source }
+    const models = Array.isArray(modelsData) ? modelsData : modelsData.models;
+
     // Limpiar selector
     modelSelector.innerHTML = '';
 
