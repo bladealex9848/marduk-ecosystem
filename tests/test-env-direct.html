@@ -172,19 +172,19 @@
                             </div>
                             <div class="card-body">
                                 <p>Estos métodos intentan acceder directamente al archivo .env.</p>
-                                
+
                                 <div class="mb-3">
                                     <button id="load-env" class="btn btn-outline-danger me-2 mb-2"><i class="fas fa-file-alt me-1"></i> Cargar .env</button>
                                     <button id="load-env-test2" class="btn btn-outline-danger me-2 mb-2"><i class="fas fa-file-code me-1"></i> Cargar .env.test2</button>
                                 </div>
-                                
+
                                 <div id="result" class="result">
                                     <p>Haz clic en un botón para intentar cargar el archivo .env</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-6 mb-4">
                         <div class="card h-100">
                             <div class="card-header bg-success text-white">
@@ -192,12 +192,12 @@
                             </div>
                             <div class="card-body">
                                 <p>Estos métodos utilizan técnicas seguras para acceder a las variables de entorno.</p>
-                                
+
                                 <div class="mb-3">
                                     <button id="load-env-proxy" class="btn btn-success me-2 mb-2"><i class="fas fa-server me-1"></i> Usar Proxy del Servidor</button>
                                     <button id="load-env-hardcoded" class="btn btn-outline-secondary me-2 mb-2"><i class="fas fa-code me-1"></i> Usar Variable Temporal</button>
                                 </div>
-                                
+
                                 <div id="secure-result" class="result">
                                     <p>Haz clic en un botón para obtener la API key de forma segura</p>
                                 </div>
@@ -205,7 +205,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card mb-4">
                     <div class="card-header bg-info text-white">
                         <h5 class="mb-0"><i class="fas fa-terminal me-2"></i> Log de Operaciones</h5>
@@ -258,7 +258,7 @@
             const resultDiv = document.getElementById('result');
             const secureResultDiv = document.getElementById('secure-result');
             const logDiv = document.getElementById('log');
-            
+
             // Configurar el botón de cambio de tema
             const themeToggle = document.getElementById('themeToggle');
             themeToggle.addEventListener('click', function() {
@@ -275,12 +275,12 @@
                     themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
                 }
             });
-            
+
             // Actualizar el ícono del botón de tema según el modo actual
             if (document.body.classList.contains('dark-mode')) {
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             }
-            
+
             // Función para agregar mensajes al log
             function log(message, type = 'info') {
                 const p = document.createElement('p');
@@ -289,18 +289,18 @@
                 logDiv.appendChild(p);
                 logDiv.scrollTop = logDiv.scrollHeight;
             }
-            
+
             // Función para cargar el archivo .env (método inseguro)
             async function loadEnvFile(filePath) {
                 log(`Intentando cargar ${filePath}...`);
-                
+
                 try {
                     const response = await fetch(filePath);
-                    
+
                     if (response.ok) {
                         const content = await response.text();
                         log(`Archivo ${filePath} cargado correctamente. Longitud: ${content.length} caracteres`, 'success');
-                        
+
                         // Mostrar alerta con SweetAlert2
                         Swal.fire({
                             title: '¡Advertencia de Seguridad!',
@@ -308,34 +308,34 @@
                             icon: 'warning',
                             confirmButtonText: 'Entendido'
                         });
-                        
+
                         // Procesar el contenido
                         const env = {};
                         const lines = content.split('\n');
                         log(`Número de líneas: ${lines.length}`);
-                        
+
                         lines.forEach((line, index) => {
                             // Ignorar líneas vacías o comentarios
                             if (!line || line.startsWith('#')) return;
-                            
+
                             // Extraer clave y valor
                             const match = line.match(/^([^=]+)=(.*)$/);
                             if (match) {
                                 const [, key, value] = match;
                                 // Eliminar comillas si existen
                                 let cleanValue = value.trim();
-                                
+
                                 // Eliminar comillas
-                                if ((cleanValue.startsWith('"') && cleanValue.endsWith('"')) || 
+                                if ((cleanValue.startsWith('"') && cleanValue.endsWith('"')) ||
                                     (cleanValue.startsWith("'") && cleanValue.endsWith("'"))) {
                                     cleanValue = cleanValue.substring(1, cleanValue.length - 1);
                                 }
-                                
+
                                 env[key.trim()] = cleanValue;
                                 log(`Variable ${key.trim()} = ${cleanValue.substring(0, 3)}...`, 'success');
                             }
                         });
-                        
+
                         // Mostrar resultado
                         resultDiv.innerHTML = `
                             <div class="alert alert-danger">
@@ -346,7 +346,7 @@
                             <pre>${JSON.stringify(env, null, 2)}</pre>
                             <p><strong>API Key:</strong> ${env.OPENROUTER_API_KEY ? env.OPENROUTER_API_KEY.substring(0, 10) + '...' : 'No encontrada'}</p>
                         `;
-                        
+
                         return env;
                     } else {
                         log(`Error al cargar ${filePath}: ${response.status} ${response.statusText}`, 'error');
@@ -356,7 +356,7 @@
                                 <p>El archivo ${filePath} no es accesible directamente. Esto es lo esperado por seguridad.</p>
                             </div>
                         `;
-                        
+
                         // Mostrar alerta con SweetAlert2
                         Swal.fire({
                             title: 'Acceso Bloqueado (Correcto)',
@@ -364,7 +364,7 @@
                             icon: 'success',
                             confirmButtonText: 'Entendido'
                         });
-                        
+
                         return null;
                     }
                 } catch (error) {
@@ -375,7 +375,7 @@
                             <p>Error al acceder al archivo ${filePath}. Esto es lo esperado por seguridad.</p>
                         </div>
                     `;
-                    
+
                     // Mostrar alerta con SweetAlert2
                     Swal.fire({
                         title: 'Acceso Bloqueado (Correcto)',
@@ -383,49 +383,65 @@
                         icon: 'success',
                         confirmButtonText: 'Entendido'
                     });
-                    
+
                     return null;
                 }
             }
-            
+
             // Función para obtener la API key de forma segura vía proxy
             async function getApiKeyViaProxy() {
                 log('Obteniendo API key vía proxy del servidor...', 'info');
                 secureResultDiv.innerHTML = `<p>Obteniendo API key vía proxy...</p>`;
-                
+
                 try {
-                    // Primero, obtener un token de autenticación
-                    const tokenResponse = await fetch('/get-auth-token.php');
+                    // Verificar si estamos en un entorno de desarrollo local
+                    const isLocalhost = window.location.hostname === 'localhost' ||
+                                        window.location.hostname === '127.0.0.1' ||
+                                        window.location.hostname === '';
+
+                    // Determinar la ruta base correcta
+                    const baseUrl = isLocalhost ? '' : '';
+
+                    // Primero, intentar obtener un token de autenticación
+                    log('Intentando conectar con: ' + baseUrl + '/get-auth-token.php', 'info');
+                    const tokenResponse = await fetch(baseUrl + '/get-auth-token.php', {
+                        // Agregar un timeout para evitar esperas largas
+                        signal: AbortSignal.timeout(5000) // 5 segundos de timeout
+                    });
+
                     if (!tokenResponse.ok) {
                         throw new Error(`Error al obtener token: ${tokenResponse.status}`);
                     }
-                    
+
                     const tokenData = await tokenResponse.json();
                     if (!tokenData.success || !tokenData.data || !tokenData.data.token) {
                         throw new Error('Formato de respuesta de token inválido');
                     }
-                    
+
                     log('Token de autenticación obtenido correctamente', 'success');
                     const token = tokenData.data.token;
-                    
+
                     // Luego, usar el token para obtener la API key
-                    const apiKeyResponse = await fetch('/get-api-key.php', {
+                    log('Intentando conectar con: ' + baseUrl + '/get-api-key.php', 'info');
+                    const apiKeyResponse = await fetch(baseUrl + '/get-api-key.php', {
                         headers: {
                             'X-Auth-Token': token
-                        }
+                        },
+                        // Agregar un timeout para evitar esperas largas
+                        signal: AbortSignal.timeout(5000) // 5 segundos de timeout
                     });
-                    
+
                     if (!apiKeyResponse.ok) {
                         throw new Error(`Error al obtener API key: ${apiKeyResponse.status}`);
                     }
-                    
+
                     const apiKeyData = await apiKeyResponse.json();
                     if (!apiKeyData.success) {
                         throw new Error(apiKeyData.message || 'Error desconocido');
                     }
-                    
+
                     log('API key obtenida correctamente vía proxy', 'success');
-                    
+
                     // Mostrar resultado
                     secureResultDiv.innerHTML = `
                         <div class="alert alert-success">
@@ -435,7 +451,7 @@
                         <p><strong>API Key Disponible:</strong> ${apiKeyData.data.keyAvailable ? 'Sí' : 'No'}</p>
                         ${apiKeyData.data.key ? `<p><strong>API Key (primeros 10 caracteres):</strong> ${apiKeyData.data.key.substring(0, 10)}...</p>` : ''}
                     `;
-                    
+
                     // Mostrar alerta con SweetAlert2
                     Swal.fire({
                         title: 'Éxito',
@@ -445,31 +461,61 @@
                     });
                 } catch (error) {
                     log(`Error al obtener API key vía proxy: ${error.message}`, 'error');
-                    secureResultDiv.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h5><i class="fas fa-exclamation-circle me-2"></i> Error</h5>
-                            <p>No se pudo obtener la API key: ${error.message}</p>
-                        </div>
-                    `;
-                    
-                    // Mostrar alerta con SweetAlert2
-                    Swal.fire({
-                        title: 'Error',
-                        text: `No se pudo obtener la API key: ${error.message}`,
-                        icon: 'error',
-                        confirmButtonText: 'Entendido'
-                    });
+
+                    // Verificar si el error es por falta de archivos PHP
+                    if (error.message.includes('Failed to fetch') || error.message.includes('timeout')) {
+                        log('Los archivos PHP de proxy no están disponibles o configurados correctamente', 'error');
+
+                        // Mostrar mensaje explicativo
+                        secureResultDiv.innerHTML = `
+                            <div class="alert alert-warning">
+                                <h5><i class="fas fa-info-circle me-2"></i> Archivos PHP no disponibles</h5>
+                                <p>Los archivos PHP necesarios para el proxy seguro no están disponibles o configurados correctamente.</p>
+                                <p>Para que este método funcione, necesitas:</p>
+                                <ol>
+                                    <li>Asegurarte de que los archivos <code>get-auth-token.php</code> y <code>get-api-key.php</code> existan en la raíz del servidor.</li>
+                                    <li>Verificar que el servidor web pueda ejecutar PHP.</li>
+                                    <li>Comprobar que el archivo <code>.env</code> sea accesible por PHP pero no directamente desde el navegador.</li>
+                                </ol>
+                                <p class="mt-3">Mientras tanto, puedes usar el método de "Variable Temporal" como alternativa segura.</p>
+                            </div>
+                        `;
+
+                        // Mostrar alerta con SweetAlert2
+                        Swal.fire({
+                            title: 'Archivos PHP no disponibles',
+                            html: 'Los archivos PHP necesarios para el proxy seguro no están disponibles.<br><br>Puedes usar el método de "Variable Temporal" como alternativa.',
+                            icon: 'warning',
+                            confirmButtonText: 'Entendido'
+                        });
+                    } else {
+                        // Otro tipo de error
+                        secureResultDiv.innerHTML = `
+                            <div class="alert alert-danger">
+                                <h5><i class="fas fa-exclamation-circle me-2"></i> Error</h5>
+                                <p>No se pudo obtener la API key: ${error.message}</p>
+                            </div>
+                        `;
+
+                        // Mostrar alerta con SweetAlert2
+                        Swal.fire({
+                            title: 'Error',
+                            text: `No se pudo obtener la API key: ${error.message}`,
+                            icon: 'error',
+                            confirmButtonText: 'Entendido'
+                        });
+                    }
                 }
             }
-            
+
             // Función para usar una variable temporal (método seguro)
             function useTemporaryVariable() {
                 log('Usando variable temporal para la API key...', 'info');
-                
+
                 // Crear una variable temporal que solo existe durante la sesión
                 const tempApiKey = "API_KEY_TEMPORAL_" + Math.random().toString(36).substring(2, 15);
                 log('Variable temporal creada correctamente', 'success');
-                
+
                 // Mostrar resultado
                 secureResultDiv.innerHTML = `
                     <div class="alert alert-success">
@@ -478,7 +524,7 @@
                     </div>
                     <p><strong>Variable Temporal:</strong> ${tempApiKey.substring(0, 15)}...</p>
                 `;
-                
+
                 // Mostrar toast con Toastify
                 Toastify({
                     text: "Variable temporal creada correctamente",
@@ -490,27 +536,27 @@
                     stopOnFocus: true
                 }).showToast();
             }
-            
+
             // Eventos para los botones
             document.getElementById('load-env').addEventListener('click', () => {
                 loadEnvFile('.env');
             });
-            
+
             document.getElementById('load-env-test2').addEventListener('click', () => {
                 loadEnvFile('.env.test2');
             });
-            
+
             document.getElementById('load-env-proxy').addEventListener('click', () => {
                 getApiKeyViaProxy();
             });
-            
+
             document.getElementById('load-env-hardcoded').addEventListener('click', () => {
                 useTemporaryVariable();
             });
-            
+
             document.getElementById('clear-log').addEventListener('click', () => {
                 logDiv.innerHTML = '<p class="info">Log de operaciones:</p>';
-                
+
                 // Mostrar toast con Toastify
                 Toastify({
                     text: "Log limpiado correctamente",

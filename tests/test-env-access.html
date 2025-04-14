@@ -269,8 +269,27 @@
                 proxyResultDiv.innerHTML = `<p>Obteniendo API key vía proxy...</p>`;
 
                 try {
-                    // Primero, obtener un token de autenticación
-                    const tokenResponse = await fetch('/get-auth-token.php');
+                    // Verificar si estamos en un entorno de desarrollo local
+                    const isLocalhost = window.location.hostname === 'localhost' ||
+                                        window.location.hostname === '127.0.0.1' ||
+                                        window.location.hostname === '';
+
+                    // Determinar la ruta base correcta
+                    // Para localhost, usamos una ruta relativa a la raíz del servidor
+                    const baseUrl = isLocalhost ? '' : '';
+
+                    console.log('Hostname:', window.location.hostname);
+                    console.log('Ruta base:', baseUrl);
+
+                    // Primero, intentar obtener un token de autenticación
+                    const tokenUrl = baseUrl + '/get-auth-token.php';
+                    console.log('Intentando conectar con:', tokenUrl);
+
+                    const tokenResponse = await fetch(tokenUrl, {
+                        // Agregar un timeout para evitar esperas largas
+                        signal: AbortSignal.timeout(5000) // 5 segundos de timeout
+                    });
+
                     if (!tokenResponse.ok) {
                         throw new Error(`Error al obtener token: ${tokenResponse.status} ${tokenResponse.statusText}`);
                     }
@@ -281,12 +300,18 @@
                     }
 
                     const token = tokenData.data.token;
+                    console.log('Token obtenido correctamente');
 
                     // Luego, usar el token para obtener la API key
-                    const apiKeyResponse = await fetch('/get-api-key.php', {
+                    const apiKeyUrl = baseUrl + '/get-api-key.php';
+                    console.log('Intentando conectar con:', apiKeyUrl);
+
+                    const apiKeyResponse = await fetch(apiKeyUrl, {
                         headers: {
                             'X-Auth-Token': token
-                        }
+                        },
+                        // Agregar un timeout para evitar esperas largas
+                        signal: AbortSignal.timeout(5000) // 5 segundos de timeout
                     });
 
                     if (!apiKeyResponse.ok) {
@@ -326,22 +351,53 @@
                         confirmButtonText: 'Genial'
                     });
                 } catch (error) {
+                    console.error('Error completo:', error);
                     proxyResultDiv.className = 'result error';
-                    proxyResultDiv.innerHTML = `
-                        <div class="alert alert-danger">
-                            <h5><i class="fas fa-exclamation-circle me-2"></i> Error</h5>
-                            <p>No se pudo obtener la API key: ${error.message}</p>
-                        </div>
-                        <p>Asegúrate de que los scripts PHP de proxy estén correctamente configurados en el servidor.</p>
-                    `;
 
-                    // Mostrar alerta con SweetAlert2
-                    Swal.fire({
-                        title: 'Error',
-                        text: `No se pudo obtener la API key: ${error.message}`,
-                        icon: 'error',
-                        confirmButtonText: 'Entendido'
-                    });
+                    // Verificar si el error es por falta de archivos PHP
+                    if (error.message.includes('Failed to fetch') || error.message.includes('timeout')) {
+                        console.log('Los archivos PHP de proxy no están disponibles o configurados correctamente');
+
+                        // Mostrar mensaje explicativo
+                        proxyResultDiv.innerHTML = `
+                            <div class="alert alert-warning">
+                                <h5><i class="fas fa-info-circle me-2"></i> Archivos PHP no disponibles</h5>
+                                <p>Los archivos PHP necesarios para el proxy seguro no están disponibles o configurados correctamente.</p>
+                                <p>Para que este método funcione, necesitas:</p>
+                                <ol>
+                                    <li>Asegurarte de que los archivos <code>get-auth-token.php</code> y <code>get-api-key.php</code> existan en la raíz del servidor.</li>
+                                    <li>Verificar que el servidor web pueda ejecutar PHP.</li>
+                                    <li>Comprobar que el archivo <code>.env</code> sea accesible por PHP pero no directamente desde el navegador.</li>
+                                </ol>
+                                <p class="mt-3">Puedes encontrar estos archivos en el repositorio del proyecto.</p>
+                            </div>
+                        `;
+
+                        // Mostrar alerta con SweetAlert2
+                        Swal.fire({
+                            title: 'Archivos PHP no disponibles',
+                            html: 'Los archivos PHP necesarios para el proxy seguro no están disponibles.<br><br>Verifica que los archivos <code>get-auth-token.php</code> y <code>get-api-key.php</code> existan en la raíz del servidor.',
+                            icon: 'warning',
+                            confirmButtonText: 'Entendido'
+                        });
+                    } else {
+                        // Otro tipo de error
+                        proxyResultDiv.innerHTML = `
+                            <div class="alert alert-danger">
+                                <h5><i class="fas fa-exclamation-circle me-2"></i> Error</h5>
+                                <p>No se pudo obtener la API key: ${error.message}</p>
+                            </div>
+                            <p>Asegúrate de que los scripts PHP de proxy estén correctamente configurados en el servidor.</p>
+                        `;
+
+                        // Mostrar alerta con SweetAlert2
+                        Swal.fire({
+                            title: 'Error',
+                            text: `No se pudo obtener la API key: ${error.message}`,
+                            icon: 'error',
+                            confirmButtonText: 'Entendido'
+                        });
+                    }
                 }
             }
 
