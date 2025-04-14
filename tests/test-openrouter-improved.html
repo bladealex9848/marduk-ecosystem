@@ -256,7 +256,7 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/env-loader.js"></script>
+    <script src="js/api-key-loader.js"></script>
     <script src="../js/config/openrouter-models.js"></script>
     <script src="js/openrouter-api-models.js"></script>
     <script>
@@ -364,14 +364,23 @@
                     apiKey = envApiKey;
                 }
 
+                // Si no hay API key, usar la de window.ENV
+                if (!apiKey && window.ENV && window.ENV.OPENROUTER_API_KEY) {
+                    apiKey = window.ENV.OPENROUTER_API_KEY;
+                    console.log('Usando API key de window.ENV');
+                }
+
                 const modelId = modelSelect.value;
                 const prompt = promptInput.value.trim();
 
                 // Validar valores
                 if (!apiKey) {
-                    showResult('error', 'La API key es requerida');
+                    showResult('error', 'La API key es requerida. Por favor, ingresa una API key o asegúrate de que esté disponible en .env');
+                    console.error('No se encontró una API key válida');
                     return;
                 }
+
+                console.log('API key disponible:', apiKey.substring(0, 10) + '...');
 
                 if (!modelId) {
                     showResult('error', 'Debes seleccionar un modelo');

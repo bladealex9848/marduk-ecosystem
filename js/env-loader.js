@@ -42,10 +42,31 @@ window.loadEnvVariables = async function() {
                         if (!response.ok) {
                             console.log('No se pudo encontrar el archivo .env en ninguna ubicación');
 
-                            // Como último recurso, usar una API key hardcoded para desarrollo
-                            console.log('Usando API key hardcoded como último recurso');
-                            window.ENV.OPENROUTER_API_KEY = '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';
-                            window.ENV.DEMO_MODE = false;
+                            // Como último recurso, intentar cargar desde el proxy PHP
+                            console.log('Intentando cargar .env desde el proxy PHP');
+
+                            // Determinar la ruta base del proyecto
+                            const baseUrl = window.location.origin;
+                            const envUrl = `${baseUrl}/env-proxy.php`;
+
+                            try {
+                                const rootResponse = await fetch(envUrl);
+                                if (rootResponse.ok) {
+                                    console.log('.env encontrado a través del proxy PHP');
+                                    response = rootResponse;
+                                } else {
+                                    // Como último recurso, usar una API key hardcoded para desarrollo
+                                    console.log('Usando API key hardcoded como último recurso');
+                                    window.ENV.OPENROUTER_API_KEY = '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';
+                                    window.ENV.DEMO_MODE = false;
+                                }
+                            } catch (error) {
+                                console.error('Error al cargar .env desde la raíz del proyecto:', error);
+                                // Como último recurso, usar una API key hardcoded para desarrollo
+                                console.log('Usando API key hardcoded como último recurso');
+                                window.ENV.OPENROUTER_API_KEY = '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';
+                                window.ENV.DEMO_MODE = false;
+                            }
                         } else {
                             console.log('.env encontrado en .env.test2');
                         }
