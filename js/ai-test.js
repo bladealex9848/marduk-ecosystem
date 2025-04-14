@@ -124,9 +124,12 @@ async function checkApiKey() {
  */
 async function waitForEnvVariables() {
     return new Promise(resolve => {
-        // Verificar si ENV ya está disponible
-        if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
-            console.log('Variables de entorno ya cargadas');
+        // Verificar si ENV ya está disponible y tiene una API key válida
+        if (window.ENV && window.ENV.OPENROUTER_API_KEY &&
+            window.ENV.OPENROUTER_API_KEY !== 'demo' &&
+            window.ENV.OPENROUTER_API_KEY !== 'tu-api-key-aquí') {
+            console.log('Variables de entorno ya cargadas con API key válida');
+            showApiKeyFoundMessage();
             resolve();
             return;
         }
@@ -137,19 +140,38 @@ async function waitForEnvVariables() {
         // Intentar cargar manualmente si está disponible la función
         if (typeof window.loadEnvVariables === 'function') {
             window.loadEnvVariables().then(() => {
-                console.log('Variables de entorno cargadas manualmente');
+                if (window.ENV && window.ENV.OPENROUTER_API_KEY &&
+                    window.ENV.OPENROUTER_API_KEY !== 'demo' &&
+                    window.ENV.OPENROUTER_API_KEY !== 'tu-api-key-aquí') {
+                    console.log('Variables de entorno cargadas manualmente con API key válida');
+                    showApiKeyFoundMessage();
+                } else {
+                    console.log('Variables de entorno cargadas manualmente, pero sin API key válida');
+                }
                 resolve();
             }).catch(error => {
                 console.error('Error al cargar variables de entorno:', error);
                 resolve(); // Resolver de todos modos para continuar
             });
         } else {
-            // Esperar a que ENV esté disponible
+            // Esperar a que ENV esté disponible (máximo 5 segundos)
+            let attempts = 0;
+            const maxAttempts = 10; // 10 intentos * 500ms = 5 segundos
+
             const checkEnv = () => {
-                if (window.ENV && window.ENV.OPENROUTER_API_KEY) {
-                    console.log('Variables de entorno detectadas');
+                attempts++;
+
+                if (window.ENV && window.ENV.OPENROUTER_API_KEY &&
+                    window.ENV.OPENROUTER_API_KEY !== 'demo' &&
+                    window.ENV.OPENROUTER_API_KEY !== 'tu-api-key-aquí') {
+                    console.log(`Variables de entorno detectadas con API key válida (intento ${attempts})`);
+                    showApiKeyFoundMessage();
+                    resolve();
+                } else if (attempts >= maxAttempts) {
+                    console.log(`Tiempo de espera agotado después de ${attempts} intentos. Continuando sin API key válida.`);
                     resolve();
                 } else {
+                    console.log(`Esperando variables de entorno... (intento ${attempts}/${maxAttempts})`);
                     setTimeout(checkEnv, 500);
                 }
             };
@@ -162,12 +184,43 @@ async function waitForEnvVariables() {
  * Muestra un mensaje indicando que la API key no está configurada
  */
 function showApiKeyMissingMessage() {
+    // Eliminar mensaje anterior si existe
+    const existingMessage = document.querySelector('.api-key-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+
     const apiKeyMessage = document.createElement('div');
-    apiKeyMessage.className = 'alert alert-warning mt-3';
+    apiKeyMessage.className = 'alert alert-warning mt-3 api-key-message';
     apiKeyMessage.innerHTML = `
         <h5><i class="fas fa-exclamation-triangle me-2"></i> API Key no configurada</h5>
-        <p>No se ha detectado una API key válida para OpenRouter. Actualmente se están usando datos de simulación.</p>
-        <p>Para usar modelos reales de IA, ingresa tu API key en el formulario de configuración.</p>
+        <p>No se ha detectado una API key válida para OpenRouter. Actualmente se están usando modelos locales.</p>
+        <p>Para usar modelos reales de IA, ingresa tu API key en el formulario de configuración o configura el archivo .env.</p>
+    `;
+
+    // Insertar mensaje antes del contenedor de chat
+    const chatCard = document.querySelector('.card:has(#chat-container)');
+    if (chatCard) {
+        chatCard.parentNode.insertBefore(apiKeyMessage, chatCard);
+    }
+}
+
+/**
+ * Muestra un mensaje indicando que la API key se ha cargado correctamente
+ */
+function showApiKeyFoundMessage() {
+    // Eliminar mensaje anterior si existe
+    const existingMessage = document.querySelector('.api-key-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+
+    const apiKeyMessage = document.createElement('div');
+    apiKeyMessage.className = 'alert alert-success mt-3 api-key-message';
+    apiKeyMessage.innerHTML = `
+        <h5><i class="fas fa-check-circle me-2"></i> API Key configurada correctamente</h5>
+        <p>Se ha detectado una API key válida para OpenRouter desde el archivo .env o variables de entorno.</p>
+        <p>Se están cargando modelos reales desde la API de OpenRouter.</p>
     `;
 
     // Insertar mensaje antes del contenedor de chat
@@ -237,41 +290,12 @@ async function loadModelsFromService() {
             console.log('Usando API key de localStorage para el chat');
         }
 
-        // Si no hay API key válida, mostrar modal para solicitarla
+        // Si no hay API key válida, cargar modelos locales directamente
         if (!apiKey || apiKey === 'demo' || apiKey === 'tu-api-key-aquí') {
-            const result = await Swal.fire({
-                title: 'API Key Requerida',
-                html: `
-                    <p>Para utilizar esta página, necesitas una API key de OpenRouter.</p>
-                    <p>Puedes obtener una en <a href="https://openrouter.ai" target="_blank">OpenRouter.ai</a></p>
-                    <div class="mb-3">
-                        <input type="password" id="swal-api-key" class="swal2-input" placeholder="Ingresa tu API key">
-                    </div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'Guardar',
-                cancelButtonText: 'Usar modelos locales',
-                allowOutsideClick: false,
-                preConfirm: () => {
-                    const apiKey = document.getElementById('swal-api-key').value;
-                    if (!apiKey) {
-                        Swal.showValidationMessage('La API key es requerida');
-                        return false;
-                    }
-                    return apiKey;
-                }
-            });
-
-            if (result.isConfirmed) {
-                apiKey = result.value;
-                localStorage.setItem('OPENROUTER_API_KEY', apiKey);
-                document.getElementById('api-key-input').value = apiKey;
-                showToast('API key guardada correctamente', 'success');
-            } else {
-                // Si el usuario cancela, cargar modelos locales
-                showToast('Usando modelos locales', 'info');
-                return loadModelsFromConfig();
-            }
+            console.log('No se encontró API key válida, cargando modelos locales');
+            showToast('Usando modelos locales', 'info');
+            const localModelsResult = loadModelsFromConfig();
+            return { models: localModelsResult, source: 'local' };
         }
 
         // Mostrar indicador de carga
