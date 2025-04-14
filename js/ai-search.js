@@ -389,8 +389,12 @@ function searchInSitemap(query) {
     }
 
     const results = [];
-    const queryLower = query.toLowerCase();
+    const queryLower = query.toLowerCase().trim();
     console.log(`Buscando "${queryLower}" en el sitemap...`);
+
+    // Dividir la consulta en palabras clave para búsqueda más flexible
+    const keywords = queryLower.split(/\s+/).filter(word => word.length > 2);
+    console.log(`Palabras clave para búsqueda: ${keywords.join(', ')}`);
 
     // Buscar en las soluciones
     const solutionsSection = sitemapData.mainSections.find(section => section.id === 'solutions');
@@ -433,39 +437,103 @@ function searchInSitemap(query) {
                     let matchScore = 0;
                     let matchDetails = [];
 
+                    const solutionName = solution.name.toLowerCase();
+                    const solutionDesc = solution.description.toLowerCase();
+                    const solutionFullDesc = solution.fullDescription ? solution.fullDescription.toLowerCase() : '';
+                    const solutionFeatures = solution.features ? solution.features.map(f => f.toLowerCase()) : [];
+                    const solutionTags = solution.tags ? solution.tags.map(t => t.toLowerCase()) : [];
+
+                    // Buscar coincidencia exacta de la consulta completa
                     // Buscar en el nombre (mayor prioridad)
-                    if (solution.name.toLowerCase().includes(queryLower)) {
+                    if (solutionName.includes(queryLower)) {
                         matchFound = true;
                         matchScore += 10;
                         matchDetails.push('nombre');
                     }
 
                     // Buscar en la descripción corta
-                    if (solution.description.toLowerCase().includes(queryLower)) {
+                    if (solutionDesc.includes(queryLower)) {
                         matchFound = true;
                         matchScore += 5;
                         matchDetails.push('descripción');
                     }
 
                     // Buscar en la descripción completa (si existe)
-                    if (solution.fullDescription && solution.fullDescription.toLowerCase().includes(queryLower)) {
+                    if (solutionFullDesc && solutionFullDesc.includes(queryLower)) {
                         matchFound = true;
                         matchScore += 8;
                         matchDetails.push('descripción completa');
                     }
 
                     // Buscar en las características (si existen)
-                    if (solution.features && solution.features.some(feature => feature.toLowerCase().includes(queryLower))) {
+                    if (solutionFeatures.some(feature => feature.includes(queryLower))) {
                         matchFound = true;
                         matchScore += 7;
                         matchDetails.push('características');
                     }
 
                     // Buscar en las etiquetas (si existen)
-                    if (solution.tags && solution.tags.some(tag => tag.toLowerCase().includes(queryLower))) {
+                    if (solutionTags.some(tag => tag.includes(queryLower))) {
                         matchFound = true;
                         matchScore += 6;
                         matchDetails.push('etiquetas');
+                    }
+
+                    // Si no se encontró coincidencia exacta, buscar por palabras clave
+                    if (!matchFound && keywords.length > 0) {
+                        // Contar cuántas palabras clave coinciden en cada campo
+                        let nameMatches = 0;
+                        let descMatches = 0;
+                        let fullDescMatches = 0;
+                        let featureMatches = 0;
+                        let tagMatches = 0;
+
+                        // Verificar coincidencias en el nombre
+                        keywords.forEach(keyword => {
+                            if (solutionName.includes(keyword)) nameMatches++;
+                        });
+
+                        // Verificar coincidencias en la descripción
+                        keywords.forEach(keyword => {
+                            if (solutionDesc.includes(keyword)) descMatches++;
+                        });
+
+                        // Verificar coincidencias en la descripción completa
+                        if (solutionFullDesc) {
+                            keywords.forEach(keyword => {
+                                if (solutionFullDesc.includes(keyword)) fullDescMatches++;
+                            });
+                        }
+
+                        // Verificar coincidencias en las características
+                        if (solutionFeatures.length > 0) {
+                            keywords.forEach(keyword => {
+                                if (solutionFeatures.some(feature => feature.includes(keyword))) featureMatches++;
+                            });
+                        }
+
+                        // Verificar coincidencias en las etiquetas
+                        if (solutionTags.length > 0) {
+                            keywords.forEach(keyword => {
+                                if (solutionTags.some(tag => tag.includes(keyword))) tagMatches++;
+                            });
+                        }
+
+                        // Calcular puntuación basada en coincidencias de palabras clave
+                        const keywordMatchScore = (nameMatches * 10 + descMatches * 5 + fullDescMatches * 8 + featureMatches * 7 + tagMatches * 6) / keywords.length;
+
+                        // Si hay suficientes coincidencias de palabras clave, considerar como coincidencia
+                        if (keywordMatchScore > 0) {
+                            matchFound = true;
+                            matchScore = keywordMatchScore;
+
+                            // Agregar detalles de dónde se encontraron las coincidencias
+                            if (nameMatches > 0) matchDetails.push(`nombre (${nameMatches}/${keywords.length})`);
+                            if (descMatches > 0) matchDetails.push(`descripción (${descMatches}/${keywords.length})`);
+                            if (fullDescMatches > 0) matchDetails.push(`descripción completa (${fullDescMatches}/${keywords.length})`);
+                            if (featureMatches > 0) matchDetails.push(`características (${featureMatches}/${keywords.length})`);
+                            if (tagMatches > 0) matchDetails.push(`etiquetas (${tagMatches}/${keywords.length})`);
+                        }
                     }
 
                     // Si se encontró alguna coincidencia, agregar a los resultados
@@ -794,6 +862,16 @@ Asegúrate de que la solución sea relevante para el ámbito judicial y que pued
         if (window.openRouterService && typeof window.openRouterService.generateCompletion === 'function') {
             console.log('Usando servicio global de OpenRouter');
             try {
+                // Verificar si el servicio global está en modo de demostración
+                if (window.openRouterService.isDemoMode && window.openRouterService.isDemoMode()) {
+                    console.log('Servicio global en modo de demostración, intentando usar API key directamente');
+                    // Si está en modo demo pero tenemos una API key, usar solicitud directa
+                    if (apiKey && apiKey !== 'using-global-service' && apiKey !== 'demo' && apiKey !== 'DEMO_MODE') {
+                        return await makeDirectApiRequest(prompt, apiKey, AI_MODEL);
+                    }
+                }
+
+                // Usar el servicio global
                 const completion = await window.openRouterService.generateCompletion(prompt, AI_MODEL);
                 console.log('Respuesta recibida del servicio global de OpenRouter');
 
@@ -803,52 +881,192 @@ Asegúrate de que la solución sea relevante para el ámbito judicial y que pued
                     throw new Error('No se pudo extraer el JSON de la respuesta');
                 }
 
+                // Verificar si es una respuesta de demostración
                 const solution = JSON.parse(jsonMatch[0]);
+                if (solution.name === 'Nombre de la solución' && solution.description === 'Descripción breve de la solución (máximo 2 líneas)') {
+                    console.log('Respuesta de demostración detectada, generando solución personalizada');
+                    return generateDemoSolution(query);
+                }
+
                 return solution;
             } catch (error) {
                 console.error('Error al usar el servicio global de OpenRouter:', error);
-                throw new Error('Error al generar contenido: ' + error.message);
+
+                // Si hay un error con el servicio global pero tenemos una API key, intentar solicitud directa
+                if (apiKey && apiKey !== 'using-global-service' && apiKey !== 'demo' && apiKey !== 'DEMO_MODE') {
+                    console.log('Intentando solicitud directa después de error en servicio global');
+                    return await makeDirectApiRequest(prompt, apiKey, AI_MODEL);
+                }
+
+                // Si no tenemos API key válida, generar una solución de demostración personalizada
+                console.log('Generando solución de demostración personalizada');
+                return generateDemoSolution(query);
             }
         } else {
             console.log('Usando solicitud directa a la API de OpenRouter');
             // Hacer solicitud directa a la API de OpenRouter
-            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`,
-                    'HTTP-Referer': window.location.origin,
-                    'X-Title': 'Marduk Ecosystem'
-                },
-                body: JSON.stringify({
-                    model: AI_MODEL,
-                    messages: [
-                        { role: 'user', content: prompt }
-                    ]
-                })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(`Error en la API de OpenRouter: ${errorData.error?.message || response.statusText}`);
-            }
-
-            const data = await response.json();
-            const content = data.choices[0].message.content;
-
-            // Extraer el JSON de la respuesta
-            const jsonMatch = content.match(/\{[\s\S]*\}/);
-            if (!jsonMatch) {
-                throw new Error('No se pudo extraer el JSON de la respuesta');
-            }
-
-            const solution = JSON.parse(jsonMatch[0]);
-            return solution;
+            return await makeDirectApiRequest(prompt, apiKey, AI_MODEL);
         }
-    } catch (error) {
-        console.error('Error al generar contenido con IA:', error);
-        throw new Error('Error al generar contenido: ' + error.message);
+
     }
+}
+
+/**
+ * Realiza una solicitud directa a la API de OpenRouter
+ * @param {string} prompt - Prompt para la IA
+ * @param {string} apiKey - API key de OpenRouter
+ * @param {string} model - Modelo de IA a utilizar
+ * @returns {Object} - Solución generada
+ */
+async function makeDirectApiRequest(prompt, apiKey, model) {
+    console.log('Realizando solicitud directa a la API de OpenRouter');
+    try {
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+                'HTTP-Referer': window.location.origin,
+                'X-Title': 'Marduk Ecosystem'
+            },
+            body: JSON.stringify({
+                model: model,
+                messages: [
+                    { role: 'user', content: prompt }
+                ]
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Error en la API de OpenRouter: ${errorData.error?.message || response.statusText}`);
+        }
+
+        const data = await response.json();
+        const content = data.choices[0].message.content;
+
+        // Extraer el JSON de la respuesta
+        const jsonMatch = content.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) {
+            throw new Error('No se pudo extraer el JSON de la respuesta');
+        }
+
+        const solution = JSON.parse(jsonMatch[0]);
+        return solution;
+    } catch (error) {
+        console.error('Error en solicitud directa a OpenRouter:', error);
+        // Si hay un error con la solicitud directa, generar una solución de demostración personalizada
+        return generateDemoSolution(prompt.split('"')[1]); // Extraer la consulta del prompt
+    }
+}
+
+/**
+ * Genera una solución de demostración personalizada basada en la consulta
+ * @param {string} query - Consulta del usuario
+ * @returns {Object} - Solución generada
+ */
+function generateDemoSolution(query) {
+    console.log('Generando solución de demostración personalizada para:', query);
+
+    // Extraer palabras clave de la consulta
+    const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 2);
+
+    // Determinar categoría basada en palabras clave
+    let category = 'ai-tools'; // Categoría por defecto
+    if (keywords.some(word => ['caso', 'casos', 'expediente', 'expedientes', 'seguimiento'].includes(word))) {
+        category = 'case-management';
+    } else if (keywords.some(word => ['investigación', 'buscar', 'búsqueda', 'jurídico', 'legal'].includes(word))) {
+        category = 'legal-research';
+    } else if (keywords.some(word => ['documento', 'documentos', 'automatización', 'plantilla'].includes(word))) {
+        category = 'document-automation';
+    } else if (keywords.some(word => ['ia', 'inteligencia', 'artificial', 'machine', 'learning', 'agente', 'agentes', 'orquestación'].includes(word))) {
+        category = 'ai-tools';
+    } else if (keywords.some(word => ['acceso', 'justicia', 'ciudadano', 'ciudadanos', 'público'].includes(word))) {
+        category = 'access-justice';
+    } else if (keywords.some(word => ['educación', 'aprendizaje', 'formación', 'capacitación'].includes(word))) {
+        category = 'legal-education';
+    }
+
+    // Generar nombre basado en la consulta
+    let name = 'Sistema ';
+    if (query.length > 5) {
+        // Capitalizar primera letra de cada palabra
+        name = query.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        // Limitar longitud
+        if (name.length > 50) {
+            name = name.substring(0, 47) + '...';
+        }
+    } else {
+        name += 'Judicial Inteligente';
+    }
+
+    // Generar descripción basada en la consulta
+    let description = `Solución para ${query}`;
+    if (description.length > 100) {
+        description = description.substring(0, 97) + '...';
+    }
+
+    // Generar etiquetas basadas en palabras clave
+    const tags = [];
+    keywords.forEach(keyword => {
+        if (keyword.length > 3 && tags.length < 5 && !tags.includes(keyword)) {
+            tags.push(keyword);
+        }
+    });
+
+    // Agregar etiquetas adicionales según la categoría
+    switch (category) {
+        case 'case-management':
+            tags.push('gestión', 'casos', 'expedientes');
+            break;
+        case 'legal-research':
+            tags.push('investigación', 'jurídica', 'búsqueda');
+            break;
+        case 'document-automation':
+            tags.push('documentos', 'automatización', 'plantillas');
+            break;
+        case 'ai-tools':
+            tags.push('inteligencia artificial', 'automatización', 'asistencia');
+            break;
+        case 'access-justice':
+            tags.push('acceso', 'justicia', 'ciudadanos');
+            break;
+        case 'legal-education':
+            tags.push('educación', 'formación', 'capacitación');
+            break;
+    }
+
+    // Eliminar duplicados y limitar a 5 etiquetas
+    const uniqueTags = [...new Set(tags)].slice(0, 5);
+
+    return {
+        name: name,
+        description: description,
+        category: category,
+        level: 1, // Nivel 1: Idea
+        type: 'community',
+        tags: uniqueTags,
+        fullDescription: `Esta solución responde a la necesidad de ${query}. Proporciona herramientas y funcionalidades adaptadas al contexto judicial, mejorando la eficiencia y calidad del trabajo de los profesionales del derecho. Implementa tecnologías modernas para resolver problemas específicos del ámbito judicial.`,
+        features: [
+            `Funcionalidad principal para ${query}`,
+            'Interfaz intuitiva y fácil de usar',
+            'Integración con sistemas judiciales existentes',
+            'Seguridad y confidencialidad de la información',
+            'Adaptabilidad a diferentes contextos judiciales'
+        ],
+        benefits: [
+            'Mejora de la eficiencia en procesos judiciales',
+            'Reducción de tiempos y costos operativos',
+            'Mayor precisión y calidad en el trabajo judicial',
+            'Acceso más fácil a la información relevante'
+        ],
+        useCases: [
+            `Aplicación en casos de ${query}`,
+            'Uso por parte de profesionales del derecho',
+            'Implementación en juzgados y tribunales'
+        ],
+        implementation: `La implementación de esta solución requiere un análisis detallado de los requisitos específicos relacionados con ${query}. Se recomienda un enfoque iterativo, comenzando con un prototipo funcional que pueda ser evaluado por usuarios finales. La solución puede desarrollarse utilizando tecnologías web modernas para la interfaz de usuario y servicios backend robustos para la lógica de negocio.`
+    };
 }
 
 /**
