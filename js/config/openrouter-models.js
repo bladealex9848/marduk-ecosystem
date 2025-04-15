@@ -7,22 +7,8 @@
 
 const OPENROUTER_MODELS_CONFIG = {
   fast_models: "google/gemini-2.0-flash-thinking-exp:free",
-  default_model: "openrouter/optimus-alpha",
-  models: [    
-    {
-      id: "openrouter/optimus-alpha",
-      name: "Optimus Alpha",
-      provider: "OpenRouter",
-      specialty: "general",
-      capabilities: [
-        "advanced_reasoning",
-        "multi_task",
-        "multilingual_support",
-        "large_scale",
-        "proprietary_architecture"
-      ],
-      prompt_types: ["general", "scientific", "historical", "philosophical", "ethical", "cultural", "political", "economic", "analytical"]
-    },
+  default_model: "meta-llama/llama-4-scout:free",
+  models: [ 
     {
       id: "meta-llama/llama-4-maverick:free",
       name: "Llama 4 Maverick",

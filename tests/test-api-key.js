@@ -126,7 +126,7 @@ async function runTest() {
 function testChatCompletions(apiKey) {
     return new Promise((resolve, reject) => {
         const data = JSON.stringify({
-            model: 'openrouter/optimus-alpha',
+            model: 'meta-llama/llama-4-scout:free',
             messages: [
                 {
                     role: 'user',

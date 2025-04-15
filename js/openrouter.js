@@ -13,7 +13,7 @@
 const OPENROUTER_CONFIG = {
   apiKey: 'demo', // Valor por defecto, se reemplazará con el valor del .env
   baseUrl: 'https://openrouter.ai/api/v1',
-  defaultModel: 'openrouter/optimus-alpha',
+  defaultModel: 'google/gemini-2.0-flash-thinking-exp:free',
   fastModel: 'google/gemini-2.0-flash-thinking-exp:free',
   availableModels: [],
   temperature: 0.7

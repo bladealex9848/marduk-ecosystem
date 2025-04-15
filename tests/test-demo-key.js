@@ -11,7 +11,7 @@ const DEMO_API_KEY = 'sk-or-v1-free-demo-12345';
 function testChatCompletions(apiKey) {
     return new Promise((resolve, reject) => {
         const data = JSON.stringify({
-            model: 'openrouter/optimus-alpha',
+            model: 'meta-llama/llama-4-scout:free',
             messages: [
                 {
                     role: 'user',

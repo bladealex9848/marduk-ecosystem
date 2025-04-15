@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loadModelsFromConfig(OPENROUTER_MODELS_CONFIG);
 
         // Seleccionar modelo por defecto
-        const defaultModel = OPENROUTER_MODELS_CONFIG.default_model || 'openrouter/optimus-alpha';
+        const defaultModel = OPENROUTER_MODELS_CONFIG.default_model || 'meta-llama/llama-4-scout:free';
         directModelSelect.value = defaultModel;
         directModel.value = defaultModel;
 
@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('OPENROUTER_MODELS_CONFIG no está definido');
         // Agregar opción por defecto en caso de error
-        directModelSelect.innerHTML = '<option value="openrouter/optimus-alpha">Optimus Alpha (OpenRouter)</option>';
-        directModel.value = 'openrouter/optimus-alpha';
+        directModelSelect.innerHTML = '<option value="meta-llama/llama-4-scout:free">Llama 4 Scout (Meta)</option>';
+        directModel.value = 'meta-llama/llama-4-scout:free';
     }
 
     // Evento para mostrar/ocultar API key
@@ -301,8 +301,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Agregar opción por defecto
                 const option = document.createElement('option');
-                option.value = 'openrouter/optimus-alpha';
-                option.text = 'Optimus Alpha (OpenRouter)';
+                option.value = 'google/gemini-2.0-flash-thinking-exp:free';
+                option.text = 'Gemini (Google)';
                 directModelSelect.add(option);
                 return;
             }
@@ -341,8 +341,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Agregar opción por defecto en caso de error
             const option = document.createElement('option');
-            option.value = 'openrouter/optimus-alpha';
-            option.text = 'Optimus Alpha (OpenRouter)';
+            option.value = 'google/gemini-2.0-flash-thinking-exp:free';
+            option.text = 'Gemini (Google)';
             directModelSelect.add(option);
         }
     }

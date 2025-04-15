@@ -393,7 +393,7 @@ async function loadModelsFromAPI() {
                         loadModelsToUI(apiModels);
 
                         // Seleccionar modelo por defecto
-                        const defaultModel = apiModels.find(m => m.id === 'openrouter/optimus-alpha') || apiModels[0];
+                        const defaultModel = apiModels.find(m => m.id === 'meta-llama/llama-4-scout:free') || apiModels[0];
                         selectModel(defaultModel);
 
                         return { models: apiModels, source: 'api' };
@@ -449,23 +449,7 @@ function loadLocalModels() {
         console.log('OPENROUTER_MODELS_CONFIG no disponible, usando modelos predefinidos');
 
         // Lista predefinida de modelos
-        return [
-            {
-                id: "openrouter/optimus-alpha",
-                name: "Optimus Alpha",
-                provider: "OpenRouter",
-                specialty: "general",
-                capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"],
-                source: "local"
-            },
-            {
-                id: "openrouter/quasar-alpha",
-                name: "Quasar Alpha",
-                provider: "OpenRouter",
-                specialty: "general",
-                capabilities: ["advanced_reasoning", "multi_task", "multilingual_support"],
-                source: "local"
-            },
+        return [            
             {
                 id: "anthropic/claude-3-haiku:beta",
                 name: "Claude 3 Haiku",
@@ -1043,7 +1027,7 @@ function setupEventListeners() {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: currentModel.id || 'openrouter/optimus-alpha', // Usar Optimus Alpha como fallback
+                        model: currentModel.id || 'meta-llama/llama-4-scout:free', // Usar Optimus Alpha como fallback
                         messages: [
                             {
                                 role: 'system',

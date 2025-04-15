@@ -24,7 +24,7 @@ async function testOpenRouterWithFetch() {
                 'X-Title': 'Marduk Ecosystem'
             },
             body: JSON.stringify({
-                model: 'openrouter/optimus-alpha',
+                model: 'meta-llama/llama-4-scout:free',
                 messages: [
                     {
                         role: 'user',
